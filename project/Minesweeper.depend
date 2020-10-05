@@ -1,7 +1,6 @@
 # depslib dependency file v1.0
-1601768534 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\main.cpp
-	<SFML/Graphics.hpp>
-	<SFML/Audio.hpp>
+1601832969 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\main.cpp
+	"MinesweeperGame.h"
 
 1525812018 c:\sfml\sfml-2.5.1\include\sfml\graphics.hpp
 	<SFML/Window.hpp>
@@ -411,4 +410,30 @@
 	<SFML/Graphics/PrimitiveType.hpp>
 	<SFML/Graphics/Drawable.hpp>
 	<SFML/Window/GlResource.hpp>
+
+1601869463 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\minesweepergame.h
+	<string>
+
+1601870999 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\minesweepergame.cpp
+	"MinesweeperGame.h"
+	<iostream>
+	<exception>
+	<SFML/Graphics.hpp>
+	"io/SimpleINIParser.h"
+	"io/ini_strings/WindowINI.h"
+
+1601868551 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\io\simpleiniparser.cpp
+	"io/SimpleINIParser.h"
+	<stdexcept>
+	<fstream>
+	<vector>
+	<algorithm>
+	<sstream>
+
+1601869623 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\io\simpleiniparser.h
+	<unordered_map>
+	<string>
+
+1601871036 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\io\ini_strings\windowini.h
+	<utility>
 
