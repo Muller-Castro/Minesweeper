@@ -13,6 +13,7 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-g" />
+					<Add option="-D__DEBUG__" />
 				</Compiler>
 				<Linker>
 					<Add library="sfml-graphics-d" />
@@ -29,6 +30,7 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-O2" />
+					<Add option="-D__RELEASE__" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
@@ -47,6 +49,7 @@
 				<Compiler>
 					<Add option="-O2" />
 					<Add option="-DSFML_STATIC" />
+					<Add option="-D__S_RELEASE__" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
@@ -80,6 +83,9 @@
 		</Linker>
 		<Unit filename="include/MinesweeperGame.h" />
 		<Unit filename="include/io/SimpleINIParser.h" />
+		<Unit filename="include/io/ini_strings/WindowINI.h">
+			<Option target="Static Release" />
+		</Unit>
 		<Unit filename="src/Main.cpp" />
 		<Unit filename="src/MinesweeperGame.cpp" />
 		<Unit filename="src/io/SimpleINIParser.cpp" />
