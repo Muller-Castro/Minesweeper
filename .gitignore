@@ -1,2 +1,4 @@
 project/obj/*
 project/bin/Debug/*
+lab/*
+tools/*
