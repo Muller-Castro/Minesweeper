@@ -48,7 +48,7 @@ namespace Minesweeper {
         else {
 
             DeviceType::pressed_inputs[input] = false;
-            is_input_just_pressed    = false;
+            is_input_just_pressed = false;
 
         }
 
