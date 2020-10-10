@@ -37,9 +37,9 @@ static const std::pair<std::string, std::string> win_ini = std::make_pair(
 
     "[WINDOW]\n"
     "Title           = Minesweeper\n"
-    "Width           = 1280\n"
-    "Height          = 720\n"
-    "BackgroundColor = GREEN\n"
+    "Width           = 800\n"
+    "Height          = 600\n"
+    "BackgroundColor = BLACK\n"
 );
 
 #endif // WINDOW_INI_H
