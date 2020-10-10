@@ -23,41 +23,12 @@
 
 #include "Input.h"
 
-#include <SFML/Window/Mouse.hpp>
-#include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Window/Event.hpp>
-
-#include "MinesweeperGame.h"
 
 using namespace Minesweeper;
 
-std::unordered_map<sf::Keyboard::Key, bool> Input::pressed_keys;
-
-bool Input::is_pressed(sf::Keyboard::Key k) noexcept
-{
-    return MinesweeperGame::window->hasFocus() && sf::Keyboard::isKeyPressed(k);
-}
-
-bool Input::is_just_pressed(sf::Keyboard::Key k)
-{
-    bool is_key_just_pressed = true;
-
-    if(sf::Keyboard::isKeyPressed(k)) {
-
-        if(Input::pressed_keys[k]) is_key_just_pressed = false;
-
-        Input::pressed_keys[k] = true;
-
-    }
-    else {
-
-        Input::pressed_keys[k] = false;
-        is_key_just_pressed    = false;
-
-    }
-
-    return MinesweeperGame::window->hasFocus() && is_key_just_pressed;
-}
+std::unordered_map<sf::Keyboard::Key, bool> Input::Key::pressed_inputs;
+std::unordered_map<sf::Mouse::Button, bool> Input::Mouse::pressed_inputs;
 
 void Input::poll_events() noexcept
 {

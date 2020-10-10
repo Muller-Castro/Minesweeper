@@ -1,5 +1,5 @@
 /****************************************************************************************/
-/* Input.h                                                                              */
+/* Input.tpp                                                                            */
 /****************************************************************************************/
 /* Copyright (c) 2020 Muller Castro.                                                    */
 /*                                                                                      */
@@ -21,41 +21,38 @@
 /* OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                                        */
 /****************************************************************************************/
 
-#ifndef INPUT_H
-#define INPUT_H
+#include <SFML/Graphics/RenderWindow.hpp>
 
-#include <unordered_map>
-
-#include <SFML/Window/Keyboard.hpp>
-#include <SFML/Window/Mouse.hpp>
+#include "MinesweeperGame.h"
 
 namespace Minesweeper {
 
-    class Input
+    template<typename DeviceType, typename DeviceInput>
+    bool Input::is_pressed(DeviceInput input) noexcept
     {
-    public:
-        struct Key
-        {
-            static std::unordered_map<sf::Keyboard::Key, bool> pressed_inputs;
+        return MinesweeperGame::window->hasFocus() && DeviceType{}(input);
+    }
 
-            inline bool operator()(sf::Keyboard::Key k) const noexcept { return sf::Keyboard::isKeyPressed(k); }
-        };
+    template<typename DeviceType, typename DeviceInput>
+    bool Input::is_just_pressed(DeviceInput input)
+    {
+        bool is_input_just_pressed = true;
 
-        struct Mouse
-        {
-            static std::unordered_map<sf::Mouse::Button, bool> pressed_inputs;
+        if(DeviceType{}(input)) {
 
-            inline bool operator()(sf::Mouse::Button b) const noexcept { return sf::Mouse::isButtonPressed(b); }
-        };
+            if(DeviceType::pressed_inputs[input]) is_input_just_pressed = false;
 
-        template<typename DeviceType, typename DeviceInput> static bool is_pressed(DeviceInput) noexcept;
-        template<typename DeviceType, typename DeviceInput> static bool is_just_pressed(DeviceInput);
+            DeviceType::pressed_inputs[input] = true;
 
-        static void poll_events() noexcept;
-    };
+        }
+        else {
+
+            DeviceType::pressed_inputs[input] = false;
+            is_input_just_pressed    = false;
+
+        }
+
+        return MinesweeperGame::window->hasFocus() && is_input_just_pressed;
+    }
 
 }
-
-#include "Input.hpp"
-
-#endif // INPUT_H
