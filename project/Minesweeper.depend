@@ -411,15 +411,18 @@
 	<SFML/Graphics/Drawable.hpp>
 	<SFML/Window/GlResource.hpp>
 
-1602343476 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\minesweepergame.h
+1602359311 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\minesweepergame.h
 	<string>
 
-1602347384 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\minesweepergame.cpp
+1602359374 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\minesweepergame.cpp
 	"MinesweeperGame.h"
 	<iostream>
 	<exception>
-	<SFML/Graphics.hpp>
+	<SFML/Graphics/RenderWindow.hpp>
+	<SFML/System/Clock.hpp>
+	<SFML/System/Time.hpp>
 	"io/SimpleINIParser.h"
+	"Input.h"
 	"io/ini_strings/WindowINI.h"
 
 1602347110 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\io\simpleiniparser.cpp
@@ -436,4 +439,22 @@
 
 1602346206 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\io\ini_strings\windowini.h
 	<utility>
+
+1602356397 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\input.cpp
+	"Input.h"
+	<SFML/Window/Event.hpp>
+
+1602357578 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\input.h
+	<unordered_map>
+	<SFML/Window/Keyboard.hpp>
+	<SFML/Window/Mouse.hpp>
+	"Input.hpp"
+
+1602356292 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\input.tpp
+	<SFML/Graphics/RenderWindow.hpp>
+	"MinesweeperGame.h"
+
+1602358770 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\input.hpp
+	<SFML/Graphics/RenderWindow.hpp>
+	"MinesweeperGame.h"
 
