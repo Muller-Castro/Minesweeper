@@ -81,11 +81,15 @@
 			<Add option="-m64" />
 			<Add directory="../thirdparty/SFML-2.5.1/lib" />
 		</Linker>
+		<Unit filename="include/Input.h" />
+		<Unit filename="include/Input.hpp" />
 		<Unit filename="include/MinesweeperGame.h" />
 		<Unit filename="include/io/SimpleINIParser.h" />
 		<Unit filename="include/io/ini_strings/WindowINI.h">
 			<Option target="Static Release" />
 		</Unit>
+		<Unit filename="include/scene/SceneManager.h" />
+		<Unit filename="src/Input.cpp" />
 		<Unit filename="src/Main.cpp" />
 		<Unit filename="src/MinesweeperGame.cpp" />
 		<Unit filename="src/io/SimpleINIParser.cpp" />
