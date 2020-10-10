@@ -26,9 +26,12 @@
 #include <iostream>
 #include <exception>
 
-#include <SFML/Graphics.hpp>
+#include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/System/Clock.hpp>
+#include <SFML/System/Time.hpp>
 
 #include "io/SimpleINIParser.h"
+#include "Input.h"
 
 #ifdef __S_RELEASE__
 #include "io/ini_strings/WindowINI.h"
@@ -55,6 +58,8 @@ int MinesweeperGame::run() noexcept
         const unsigned win_height   = stoul(win_data["WINDOW"]["Height"]);
 
         sf::RenderWindow window(sf::VideoMode(win_width, win_height), win_title);
+
+        window.setVerticalSyncEnabled(true);
 
         MinesweeperGame::window = &window;
 
@@ -98,15 +103,15 @@ void MinesweeperGame::process()
         MinesweeperGame::read_color_from_str(SimpleINIParser::load_ini_file("config/Window.ini")["WINDOW"]["BackgroundColor"], background_color);
 #endif // __S_RELEASE__
 
+        sf::Clock clock;
+
         while(MinesweeperGame::window->isOpen()) {
 
-            sf::Event event;
+            sf::Time elapsed = clock.restart();
 
-            while(MinesweeperGame::window->pollEvent(event)) {
+            Input::poll_events();
 
-                if(event.type == sf::Event::Closed) MinesweeperGame::window->close();
-
-            }
+            // update
 
             MinesweeperGame::window->clear(background_color);
 
