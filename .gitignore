@@ -1,5 +1,5 @@
 project/obj/*
-project/bin/Debug/*
+project/bin/*
 lab/*
 tools/*
 SourceCodeLicense.txt
