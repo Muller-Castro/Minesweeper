@@ -45,9 +45,9 @@ int MinesweeperGame::run() noexcept
     try {
 
 #ifdef __S_RELEASE__
-        auto win_data = SimpleINIParser::load_ini_string(win_ini).data;
+        auto win_data = SimpleINIParser::load_ini_string(win_ini);
 #else
-        auto win_data = SimpleINIParser::load_ini_file("config/Window.ini").data;
+        auto win_data = SimpleINIParser::load_ini_file("config/Window.ini");
 #endif // __S_RELEASE__
 
         const std::string win_title = win_data["WINDOW"]["Title"];
@@ -93,9 +93,9 @@ void MinesweeperGame::process()
         sf::Color background_color = sf::Color::Black;
 
 #ifdef __S_RELEASE__
-        MinesweeperGame::read_color_from_str(SimpleINIParser::load_ini_string(win_ini).data["WINDOW"]["BackgroundColor"], background_color);
+        MinesweeperGame::read_color_from_str(SimpleINIParser::load_ini_string(win_ini)["WINDOW"]["BackgroundColor"], background_color);
 #else
-        MinesweeperGame::read_color_from_str(SimpleINIParser::load_ini_file("config/Window.ini").data["WINDOW"]["BackgroundColor"], background_color);
+        MinesweeperGame::read_color_from_str(SimpleINIParser::load_ini_file("config/Window.ini")["WINDOW"]["BackgroundColor"], background_color);
 #endif // __S_RELEASE__
 
         while(MinesweeperGame::window->isOpen()) {

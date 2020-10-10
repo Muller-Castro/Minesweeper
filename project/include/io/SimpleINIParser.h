@@ -34,12 +34,17 @@ namespace Minesweeper {
     public:
         struct INIData
         {
+        public:
             using INIDataType = std::unordered_map<std::string, std::unordered_map<std::string, std::string>>;
 
             std::string file_path;
-            INIDataType data;
 
             INIData() : file_path(), data() {}
+
+            inline INIDataType::mapped_type& operator[](const std::string& key) { return data[key]; }
+
+        private:
+            INIDataType data;
         };
 
         static INIData load_ini_file(const std::string& file_path, bool should_cache = true);

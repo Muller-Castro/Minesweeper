@@ -182,7 +182,7 @@ void SimpleINIParser::fill_ini_data(SimpleINIParser::INIData& ini_data, std::ist
 
                 std::pair<std::string, std::string> key_value_pair = SimpleINIParser::extract_pair(line);
 
-                ini_data.data[current_section_name][key_value_pair.first] = key_value_pair.second;
+                ini_data[current_section_name][key_value_pair.first] = key_value_pair.second;
 
             }
 
