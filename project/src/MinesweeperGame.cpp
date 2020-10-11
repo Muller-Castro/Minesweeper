@@ -31,6 +31,7 @@
 #include <SFML/System/Time.hpp>
 
 #include "io/SimpleINIParser.h"
+#include "scene/SceneManager.h"
 #include "Input.h"
 
 #ifdef __S_RELEASE__
@@ -106,15 +107,19 @@ void MinesweeperGame::process()
 
         sf::Clock clock;
 
+        SceneManager::change_scene_to(SceneManager::Scenes::SPLASH_SCREEN);
+
         while(MinesweeperGame::is_running) {
 
             sf::Time elapsed = clock.restart();
 
             Input::poll_events();
 
-            // update
+            SceneManager::update(elapsed.asSeconds());
 
             MinesweeperGame::window->clear(background_color);
+
+            SceneManager::draw();
 
             MinesweeperGame::window->display();
 
