@@ -40,11 +40,6 @@ namespace Minesweeper {
 
         SpriteWrapper(const std::string& file_name, const sf::IntRect& area = sf::IntRect());
         SpriteWrapper(const std::tuple<std::string, const void*, size_t>& raw_texture, const sf::IntRect& area = sf::IntRect());
-
-        ~SpriteWrapper()
-        {
-            //
-        }
     };
 
 }

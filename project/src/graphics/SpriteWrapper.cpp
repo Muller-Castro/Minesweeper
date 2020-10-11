@@ -34,7 +34,9 @@ SpriteWrapper::SpriteWrapper(const std::string& file_name, const sf::IntRect& ar
     sprite.setTexture(texture);
 }
 
-SpriteWrapper::SpriteWrapper(const std::tuple<std::string, const void*, size_t>& raw_texture, const sf::IntRect& area) : texture(), sprite(texture)
+SpriteWrapper::SpriteWrapper(const std::tuple<std::string, const void*, size_t>& raw_texture, const sf::IntRect& area) : texture(), sprite()
 {
     if(!texture.loadFromMemory(std::get<1>(raw_texture), std::get<2>(raw_texture), area)) throw std::runtime_error("Failed to load \"" + std::get<0>(raw_texture) + "\"");
+
+    sprite.setTexture(texture);
 }
