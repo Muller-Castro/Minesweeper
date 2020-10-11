@@ -38,14 +38,14 @@ namespace Minesweeper {
         {
             static std::unordered_map<sf::Keyboard::Key, bool> pressed_inputs;
 
-            inline bool operator()(sf::Keyboard::Key k) const noexcept { return sf::Keyboard::isKeyPressed(k); }
+            bool operator()(sf::Keyboard::Key k) const noexcept { return sf::Keyboard::isKeyPressed(k); }
         };
 
         struct Mouse
         {
             static std::unordered_map<sf::Mouse::Button, bool> pressed_inputs;
 
-            inline bool operator()(sf::Mouse::Button b) const noexcept { return sf::Mouse::isButtonPressed(b); }
+            bool operator()(sf::Mouse::Button b) const noexcept { return sf::Mouse::isButtonPressed(b); }
         };
 
         template<typename DeviceType, typename DeviceInput> static bool is_pressed(DeviceInput) noexcept;
