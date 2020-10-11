@@ -467,27 +467,29 @@
 	<memory>
 	"scene/Scene.h"
 
-1602378639 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\scene\scene.h
+1602438000 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\scene\scene.h
 	<queue>
 	<utility>
 	"graphics/SpriteWrapper.h"
 
-1602380188 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\scene\scenes\splashscreen.cpp
+1602439534 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\scene\scenes\splashscreen.cpp
 	"scene/scenes/SplashScreen.h"
+	"MinesweeperGame.h"
+	<SFML/Graphics/RenderWindow.hpp>
 
 1602380137 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\scene\scenes\splashscreen.h
 	"scene/Scene.h"
 
-1602378766 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\scene\scene.cpp
+1602438506 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\scene\scene.cpp
 	"scene/Scene.h"
 	<SFML/Graphics/RenderWindow.hpp>
 	"MinesweeperGame.h"
 
-1602379687 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\graphics\spritewrapper.cpp
+1602438301 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\graphics\spritewrapper.cpp
 	"graphics/SpriteWrapper.h"
 	<stdexcept>
 
-1602379952 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\graphics\spritewrapper.h
+1602448927 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\graphics\spritewrapper.h
 	<tuple>
 	<SFML/Graphics/Texture.hpp>
 	<SFML/Graphics/Sprite.hpp>
