@@ -411,10 +411,10 @@
 	<SFML/Graphics/Drawable.hpp>
 	<SFML/Window/GlResource.hpp>
 
-1602360128 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\minesweepergame.h
+1602434453 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\minesweepergame.h
 	<string>
 
-1602360128 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\minesweepergame.cpp
+1602434523 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\minesweepergame.cpp
 	"MinesweeperGame.h"
 	<iostream>
 	<exception>
@@ -422,10 +422,11 @@
 	<SFML/System/Clock.hpp>
 	<SFML/System/Time.hpp>
 	"io/SimpleINIParser.h"
+	"scene/SceneManager.h"
 	"Input.h"
 	"io/ini_strings/WindowINI.h"
 
-1602360128 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\io\simpleiniparser.cpp
+1602434321 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\io\simpleiniparser.cpp
 	"io/SimpleINIParser.h"
 	<stdexcept>
 	<fstream>
@@ -433,18 +434,18 @@
 	<algorithm>
 	<sstream>
 
-1602360128 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\io\simpleiniparser.h
+1602370246 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\io\simpleiniparser.h
 	<unordered_map>
 	<string>
 
 1602360128 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\io\ini_strings\windowini.h
 	<utility>
 
-1602360128 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\input.cpp
+1602434495 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\input.cpp
 	"Input.h"
 	<SFML/Window/Event.hpp>
 
-1602360128 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\input.h
+1602370235 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\input.h
 	<unordered_map>
 	<SFML/Window/Keyboard.hpp>
 	<SFML/Window/Mouse.hpp>
@@ -458,8 +459,42 @@
 	<SFML/Graphics/RenderWindow.hpp>
 	"MinesweeperGame.h"
 
-1602360476 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\scene\scenemanager.cpp
+1602434290 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\scene\scenemanager.cpp
 	"scene/SceneManager.h"
+	"scene/scenes/SplashScreen.h"
 
-1602360434 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\scene\scenemanager.h
+1602372602 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\scene\scenemanager.h
+	<memory>
+	"scene/Scene.h"
+
+1602378639 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\scene\scene.h
+	<queue>
+	<utility>
+	"graphics/SpriteWrapper.h"
+
+1602380188 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\scene\scenes\splashscreen.cpp
+	"scene/scenes/SplashScreen.h"
+
+1602380137 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\scene\scenes\splashscreen.h
+	"scene/Scene.h"
+
+1602378766 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\scene\scene.cpp
+	"scene/Scene.h"
+	<SFML/Graphics/RenderWindow.hpp>
+	"MinesweeperGame.h"
+
+1602379687 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\graphics\spritewrapper.cpp
+	"graphics/SpriteWrapper.h"
+	<stdexcept>
+
+1602379952 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\graphics\spritewrapper.h
+	<tuple>
+	<SFML/Graphics/Texture.hpp>
+	<SFML/Graphics/Sprite.hpp>
+
+1602433197 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\globalinitializations.cpp
+	"MinesweeperGame.h"
+	"Input.h"
+	"scene/SceneManager.h"
+	"io/SimpleINIParser.h"
 
