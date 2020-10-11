@@ -40,7 +40,7 @@ void Input::poll_events() noexcept
 
             case sf::Event::Closed: {
 
-                MinesweeperGame::window->close();
+                MinesweeperGame::is_running = false;
 
             } break;
 

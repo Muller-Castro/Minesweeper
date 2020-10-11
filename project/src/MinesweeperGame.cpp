@@ -40,6 +40,7 @@
 using namespace Minesweeper;
 
 sf::RenderWindow* MinesweeperGame::window = nullptr;
+bool MinesweeperGame::is_running          = true;
 
 int MinesweeperGame::run() noexcept
 {
@@ -105,7 +106,7 @@ void MinesweeperGame::process()
 
         sf::Clock clock;
 
-        while(MinesweeperGame::window->isOpen()) {
+        while(MinesweeperGame::is_running) {
 
             sf::Time elapsed = clock.restart();
 
@@ -118,6 +119,8 @@ void MinesweeperGame::process()
             MinesweeperGame::window->display();
 
         }
+
+        MinesweeperGame::window->close();
 
     }catch(const std::exception& e) {
 
