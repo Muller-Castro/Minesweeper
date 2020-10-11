@@ -24,9 +24,33 @@
 #ifndef SCENE_MANAGER_H
 #define SCENE_MANAGER_H
 
+#include <memory>
+
+#include "scene/Scene.h"
+
 namespace Minesweeper {
 
-    //
+    class SceneManager
+    {
+    public:
+        enum class Scenes : unsigned char
+        {
+            UNDEFINED,
+
+            SPLASH_SCREEN
+            //
+        };
+
+        static void change_scene_to(Scenes scene);
+        static void restart_scene();
+
+        static void update(float);
+        static void draw();
+
+    private:
+        static std::unique_ptr<Scene> current_scene;
+        static Scenes current_scene_enum;
+    };
 
 }
 
