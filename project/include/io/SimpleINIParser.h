@@ -41,7 +41,7 @@ namespace Minesweeper {
 
             INIData() : file_path(), data() {}
 
-            inline INIDataType::mapped_type& operator[](const std::string& key) { return data[key]; }
+            INIDataType::mapped_type& operator[](const std::string& key) { return data[key]; }
 
         private:
             INIDataType data;
