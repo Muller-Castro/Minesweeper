@@ -37,12 +37,10 @@ SimpleINIParser::INIData SimpleINIParser::load_ini_file(const std::string& file_
 {
     SimpleINIParser::INIData result;
 
-    std::string fixed_file_path;
-
 #ifdef __DEBUG__
-    fixed_file_path = "bin/Debug/" + file_path;
+    const std::string fixed_file_path = "bin/Debug/" + file_path;
 #elif defined(__RELEASE__)
-    fixed_file_path = "bin/Release/" + file_path;
+    const std::string fixed_file_path = file_path;
 #endif
 
     try {
