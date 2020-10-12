@@ -27,7 +27,7 @@
 #include <queue>
 #include <utility>
 
-#include "graphics/SpriteWrapper.h"
+#include <SFML/Graphics/Sprite.hpp>
 
 namespace Minesweeper {
 
@@ -39,13 +39,14 @@ namespace Minesweeper {
         Scene();
         virtual ~Scene() noexcept;
 
+        virtual void process_inputs()    = 0;
         virtual void update(float delta) = 0;
         virtual void draw()              = 0;
 
     protected:
-        using SpriteLayer = std::pair<size_t, std::pair<SpriteWrapper, sf::RenderStates>>;
+        using SpriteLayer = std::pair<size_t, std::pair<sf::Sprite, sf::RenderStates>>;
 
-        void draw_on_layer(size_t idx, const SpriteWrapper& sprite_wrapper, const sf::RenderStates& rs = sf::RenderStates::Default);
+        void draw_on_layer(size_t idx, const sf::Sprite& sprite, const sf::RenderStates& rs = sf::RenderStates::Default);
 
     private:
         friend SceneManager;

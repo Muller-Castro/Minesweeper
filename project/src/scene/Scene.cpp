@@ -39,9 +39,9 @@ Scene::~Scene() noexcept
 
 }
 
-void Scene::draw_on_layer(size_t idx, const SpriteWrapper& sprite_wrapper, const sf::RenderStates& rs)
+void Scene::draw_on_layer(size_t idx, const sf::Sprite& sprite, const sf::RenderStates& rs)
 {
-    sprite_layers.emplace(idx, std::make_pair(sprite_wrapper, rs));
+    sprite_layers.emplace(idx, std::make_pair(sprite, rs));
 }
 
 void Scene::dispatch_layers_draws()
@@ -50,7 +50,7 @@ void Scene::dispatch_layers_draws()
 
         const auto& sprite_layer = sprite_layers.top();
 
-        MinesweeperGame::window->draw(sprite_layer.second.first.sprite, sprite_layer.second.second);
+        MinesweeperGame::window->draw(sprite_layer.second.first, sprite_layer.second.second);
 
         sprite_layers.pop();
 
