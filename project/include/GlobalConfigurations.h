@@ -1,5 +1,5 @@
 /****************************************************************************************/
-/* MinesweeperGame.h                                                                    */
+/* GlobalConfigurations.h                                                               */
 /****************************************************************************************/
 /* Copyright (c) 2020 Muller Castro.                                                    */
 /*                                                                                      */
@@ -21,37 +21,22 @@
 /* OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                                        */
 /****************************************************************************************/
 
-#ifndef MINESWEEPER_GAME_H
-#define MINESWEEPER_GAME_H
-
-#include <string>
-
-namespace sf { // Forward declarations
-
-    class RenderWindow;
-    class Color;
-
-}
+#ifndef GLOBAL_CONFIGURATIONS_H
+#define GLOBAL_CONFIGURATIONS_H
 
 namespace Minesweeper {
 
-    class MinesweeperGame
+    class GlobalConfigurations
     {
     public:
-        static sf::RenderWindow* window;
-
-        static int run() noexcept;
+        static void process_inputs();
+        static void update(float);
+        static void draw();
 
     private:
-        friend class Input;
-        friend class GlobalConfigurations;
-
-        static bool is_running;
-
-        static void read_color_from_str(const std::string&, sf::Color&) noexcept;
-        static void process();
+        static void resize_window();
     };
 
 }
 
-#endif // MINESWEEPER_GAME_H
+#endif // GLOBAL_CONFIGURATIONS_H

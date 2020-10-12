@@ -31,6 +31,7 @@
 #include <SFML/System/Time.hpp>
 
 #include "io/SimpleINIParser.h"
+#include "GlobalConfigurations.h"
 #include "scene/SceneManager.h"
 #include "Input.h"
 
@@ -115,11 +116,15 @@ void MinesweeperGame::process()
 
             Input::poll_events();
 
+            GlobalConfigurations::process_inputs();
+
+            GlobalConfigurations::update(elapsed.asSeconds());
             SceneManager::update(elapsed.asSeconds());
 
             MinesweeperGame::window->clear(background_color);
 
             SceneManager::draw();
+            GlobalConfigurations::draw();
 
             MinesweeperGame::window->display();
 
