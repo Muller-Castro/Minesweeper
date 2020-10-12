@@ -49,6 +49,7 @@ namespace Minesweeper {
         static bool is_running;
 
         static void read_color_from_str(const std::string&, sf::Color&) noexcept;
+        static void read_win_style_from_str(const std::string&, unsigned&) noexcept;
         static void process();
     };
 

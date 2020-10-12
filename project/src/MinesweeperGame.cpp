@@ -29,6 +29,7 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/System/Clock.hpp>
 #include <SFML/System/Time.hpp>
+#include <SFML/Window/WindowStyle.hpp>
 
 #include "io/SimpleINIParser.h"
 #include "GlobalConfigurations.h"
@@ -61,7 +62,11 @@ int MinesweeperGame::run() noexcept
         const unsigned win_width    = stoul(win_data["WINDOW"]["Width"]);
         const unsigned win_height   = stoul(win_data["WINDOW"]["Height"]);
 
-        sf::RenderWindow window(sf::VideoMode(win_width, win_height), win_title);
+        unsigned win_style = sf::Style::Default;
+
+        read_win_style_from_str(win_data["WINDOW"]["Style"], win_style);
+
+        sf::RenderWindow window(sf::VideoMode(win_width, win_height), win_title, win_style);
 
         window.setVerticalSyncEnabled(true);
 
@@ -93,6 +98,15 @@ void MinesweeperGame::read_color_from_str(const std::string& str, sf::Color& col
     else if(str == "CYAN")        col = sf::Color::Cyan;
     else if(str == "TRANSPARENT") col = sf::Color::Transparent;
     else                          std::cerr << "ERR: Unrecognized color name" << std::endl;
+}
+
+void MinesweeperGame::read_win_style_from_str(const std::string& str, unsigned& style) noexcept
+{
+
+    if     (str == "DEFAULT")    style = sf::Style::Titlebar | sf::Style::Close;
+    else if(str == "FULLSCREEN") style = sf::Style::Titlebar | sf::Style::Close | sf::Style::Fullscreen;
+    else if(str == "RESIZE")     style = sf::Style::Titlebar | sf::Style::Close | sf::Style::Resize;
+
 }
 
 void MinesweeperGame::process()
