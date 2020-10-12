@@ -44,6 +44,7 @@ namespace Minesweeper {
         static void change_scene_to(Scenes scene);
         static void restart_scene();
 
+        static void process_inputs();
         static void update(float);
         static void draw();
 

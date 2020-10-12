@@ -132,6 +132,7 @@ void MinesweeperGame::process()
             Input::poll_events();
 
             GlobalConfigurations::process_inputs();
+            SceneManager::process_inputs();
 
             GlobalConfigurations::update(elapsed.asSeconds());
             SceneManager::update(elapsed.asSeconds());

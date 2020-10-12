@@ -50,6 +50,11 @@ void SceneManager::restart_scene()
     SceneManager::change_scene_to(SceneManager::current_scene_enum);
 }
 
+void SceneManager::process_inputs()
+{
+    SceneManager::current_scene->process_inputs();
+}
+
 void SceneManager::update(float d)
 {
     SceneManager::current_scene->update(d);
