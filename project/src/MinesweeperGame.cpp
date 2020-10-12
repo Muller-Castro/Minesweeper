@@ -34,6 +34,7 @@
 #include "GlobalConfigurations.h"
 #include "scene/SceneManager.h"
 #include "Input.h"
+#include "io/ResourceLoader.h"
 
 #ifdef __S_RELEASE__
 #include "io/ini_strings/WindowINI.h"
@@ -127,6 +128,8 @@ void MinesweeperGame::process()
             GlobalConfigurations::draw();
 
             MinesweeperGame::window->display();
+
+            ResourceLoader::erase_unique_references();
 
         }
 
