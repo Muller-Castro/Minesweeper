@@ -31,7 +31,7 @@ namespace Minesweeper {
 #ifdef __DEBUG__
         const std::string fixed_directory = "bin/Debug/" + directory;
 #elif defined(__RELEASE__)
-        const std::string fixed_directory = "bin/Release/" + directory;
+        const std::string fixed_directory = directory;
 #endif
 
         try {
