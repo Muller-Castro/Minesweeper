@@ -146,7 +146,11 @@ void MinesweeperGame::process()
 
             ResourceLoader::erase_unique_references();
 
+            std::cout << "Total of loaded resources: " << ResourceLoader::resources.size() << '\n';
+
         }
+
+        ResourceLoader::resources.clear();
 
         MinesweeperGame::window->close();
 
