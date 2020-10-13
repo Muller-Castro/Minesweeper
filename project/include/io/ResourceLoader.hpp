@@ -44,10 +44,14 @@ namespace Minesweeper {
     template<typename ResourceType>
     ResourceReference<ResourceType>& ResourceReference<ResourceType>::operator=(const ResourceReference& rr)
     {
-        just_moved = false;
-        res = rr.res;
+        if(this != &rr) {
 
-        if(res) ++(res->internal_counter);
+            just_moved = false;
+            res = rr.res;
+
+            if(res) ++(res->internal_counter);
+
+        }
 
         return *this;
     }

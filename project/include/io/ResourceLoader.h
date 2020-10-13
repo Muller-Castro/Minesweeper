@@ -50,10 +50,14 @@ namespace Minesweeper {
 
         ResourceReference& operator=(ResourceReference&& rr) noexcept
         {
-            just_moved = true;
-            res = rr.res;
+            if(this != &rr) {
 
-            rr.res = nullptr;
+                just_moved = true;
+                res = rr.res;
+
+                rr.res = nullptr;
+
+            }
 
             return *this;
         }
@@ -110,13 +114,17 @@ namespace Minesweeper {
 //        Resource& operator=(Resource&&) noexcept = default;
         Resource& operator=(Resource&& r) noexcept
         {
-            internal_counter = r.internal_counter;
-            resource         = r.resource;
-            extension        = r.extension;
+            if(this != &r) {
 
-            r.internal_counter = 0;
-            r.resource = nullptr;
-            r.extension = Extensions::UNDEFINED;
+                internal_counter = r.internal_counter;
+                resource         = r.resource;
+                extension        = r.extension;
+
+                r.internal_counter = 0;
+                r.resource = nullptr;
+                r.extension = Extensions::UNDEFINED;
+
+            }
 
             return *this;
         }
