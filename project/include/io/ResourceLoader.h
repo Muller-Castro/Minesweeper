@@ -25,22 +25,120 @@
 #define RESOURCE_LOADER_H
 
 #include <map>
-#include <memory>
 
 namespace Minesweeper {
+
+    class Resource;
+
+    template<typename ResourceType>
+    class ResourceReference
+    {
+    public:
+        using RType = ResourceType;
+
+        ResourceReference() : just_moved(false), res(nullptr) {}
+        ResourceReference(const ResourceReference& rr);
+
+        ResourceReference(ResourceReference&& rr) noexcept : just_moved(true), res(rr.res)
+        {
+            rr.res = nullptr;
+        }
+
+        ~ResourceReference() noexcept;
+
+        ResourceReference& operator=(const ResourceReference& rr);
+
+        ResourceReference& operator=(ResourceReference&& rr) noexcept
+        {
+            just_moved = true;
+            res = rr.res;
+
+            rr.res = nullptr;
+
+            return *this;
+        }
+
+        ResourceType& operator*() noexcept;
+        ResourceType* operator->() noexcept;
+
+    private:
+        friend class Resource;
+
+        bool just_moved;
+        Resource* res;
+
+        explicit ResourceReference(Resource* p) noexcept;
+    };
+
+    class Resource
+    {
+    public:
+        unsigned internal_counter;
+        void* resource;
+
+        Resource() noexcept : internal_counter(0), resource(nullptr), extension(Extensions::UNDEFINED) {}
+        ~Resource() noexcept;
+
+    private:
+        friend class ResourceLoader;
+
+        enum class Extensions : unsigned char
+        {
+            UNDEFINED,
+
+            JPG,
+            PNG,
+            OGG,
+            WAV
+        };
+
+        Extensions extension;
+
+        explicit Resource(Extensions re);
+        Resource(const Resource&) = delete;
+
+//        Resource(Resource&&) noexcept = default;
+        Resource(Resource&& r) noexcept : internal_counter(r.internal_counter), resource(r.resource), extension(r.extension)
+        {
+            r.internal_counter = 0;
+            r.resource = nullptr;
+            r.extension = Extensions::UNDEFINED;
+        }
+
+        Resource& operator=(const Resource&) = delete;
+
+//        Resource& operator=(Resource&&) noexcept = default;
+        Resource& operator=(Resource&& r) noexcept
+        {
+            internal_counter = r.internal_counter;
+            resource         = r.resource;
+            extension        = r.extension;
+
+            r.internal_counter = 0;
+            r.resource = nullptr;
+            r.extension = Extensions::UNDEFINED;
+
+            return *this;
+        }
+
+        explicit operator bool() const noexcept { return extension != Extensions::UNDEFINED; }
+
+        template<typename ResourceType>
+        ResourceReference<ResourceType> create_res_reference() noexcept { return ResourceReference<ResourceType>(this); }
+    };
 
     class ResourceLoader
     {
     public:
         template<typename ResourceType>
-        static std::shared_ptr<ResourceType> load(const std::string& directory);
+        static ResourceReference<ResourceType> load(const std::string& directory);
 
     private:
         friend class MinesweeperGame;
 
-        static std::map<std::string, std::shared_ptr<void>> resources;
+        static std::map<std::string, Resource> resources;
 
-        static std::shared_ptr<void> load_impl(const std::string& directory);
+        static Resource load_impl(const std::string& directory);
         static void erase_unique_references();
     };
 
