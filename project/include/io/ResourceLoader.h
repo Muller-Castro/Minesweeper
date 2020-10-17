@@ -40,6 +40,9 @@ namespace Minesweeper {
 
         static std::map<std::string, std::shared_ptr<void>> resources;
 
+        template<typename ResourceType>
+        static std::shared_ptr<void> create_resource(const std::string& directory);
+
         static std::shared_ptr<void> load_impl(const std::string& directory);
         static void erase_unique_references();
     };

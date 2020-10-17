@@ -28,10 +28,31 @@
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/Audio/Music.hpp>
 #include <SFML/Audio/SoundBuffer.hpp>
+#include <SFML/Graphics/Font.hpp>
 
 using namespace Minesweeper;
 
 std::map<std::string, std::shared_ptr<void>> ResourceLoader::resources;
+
+template<typename ResourceType>
+std::shared_ptr<void> ResourceLoader::create_resource(const std::string& directory)
+{
+    std::shared_ptr<ResourceType> new_resource = std::make_shared<ResourceType>();
+
+    if(!new_resource->loadFromFile(directory)) throw std::runtime_error("Failed to load \"" + directory + "\"");
+
+    return std::static_pointer_cast<void>(new_resource);
+}
+
+template<>
+std::shared_ptr<void> ResourceLoader::create_resource<sf::Music>(const std::string& directory)
+{
+    std::shared_ptr<sf::Music> new_music = std::make_shared<sf::Music>();
+
+    if(!new_music->openFromFile(directory)) throw std::runtime_error("Failed to load \"" + directory + "\"");
+
+    return std::static_pointer_cast<void>(new_music);
+}
 
 std::shared_ptr<void> ResourceLoader::load_impl(const std::string& directory)
 {
@@ -43,39 +64,11 @@ std::shared_ptr<void> ResourceLoader::load_impl(const std::string& directory)
 
     std::string file_extension = directory.substr(dot_position);
 
-    if(file_extension == ".jpg") {
-
-        std::shared_ptr<sf::Texture> new_texture = std::make_shared<sf::Texture>();
-
-        if(!new_texture->loadFromFile(directory)) throw std::runtime_error("Failed to load \"" + directory + "\"");
-
-        result = std::static_pointer_cast<void>(new_texture);
-
-    }else if(file_extension == ".png") {
-
-        std::shared_ptr<sf::Texture> new_texture = std::make_shared<sf::Texture>();
-
-        if(!new_texture->loadFromFile(directory)) throw std::runtime_error("Failed to load \"" + directory + "\"");
-
-        result = std::static_pointer_cast<void>(new_texture);
-
-    }else if(file_extension == ".ogg") {
-
-        std::shared_ptr<sf::Music> new_music = std::make_shared<sf::Music>();
-
-        if(!new_music->openFromFile(directory)) throw std::runtime_error("Failed to load \"" + directory + "\"");
-
-        result = std::static_pointer_cast<void>(new_music);
-
-    }else if(file_extension == ".wav") {
-
-        std::shared_ptr<sf::SoundBuffer> new_sound_buffer = std::make_shared<sf::SoundBuffer>();
-
-        if(!new_sound_buffer->loadFromFile(directory)) throw std::runtime_error("Failed to load \"" + directory + "\"");
-
-        result = std::static_pointer_cast<void>(new_sound_buffer);
-
-    }
+    if     (file_extension == ".jpg") result = ResourceLoader::create_resource<sf::Texture>(directory);
+    else if(file_extension == ".png") result = ResourceLoader::create_resource<sf::Texture>(directory);
+    else if(file_extension == ".ogg") result = ResourceLoader::create_resource<sf::Music>(directory);
+    else if(file_extension == ".wav") result = ResourceLoader::create_resource<sf::SoundBuffer>(directory);
+    else if(file_extension == ".ttf") result = ResourceLoader::create_resource<sf::Font>(directory);
 
     if(!result) throw std::runtime_error("Couldn't load resource at \"" + directory + "\"");
 
