@@ -24,52 +24,7 @@
 namespace Minesweeper {
 
     template<typename ResourceType>
-    ResourceReference<ResourceType>::ResourceReference(Resource* p) noexcept : just_moved(false), res(p)
-    {
-        if(res) ++(res->internal_counter);
-    }
-
-    template<typename ResourceType>
-    ResourceReference<ResourceType>::ResourceReference(const ResourceReference& rr) : just_moved(false), res(rr.p)
-    {
-        if(res) ++(res->internal_counter);
-    }
-
-    template<typename ResourceType>
-    ResourceReference<ResourceType>::~ResourceReference() noexcept
-    {
-        if(res && !just_moved) --(res->internal_counter);
-    }
-
-    template<typename ResourceType>
-    ResourceReference<ResourceType>& ResourceReference<ResourceType>::operator=(const ResourceReference& rr)
-    {
-        if(this != &rr) {
-
-            just_moved = false;
-            res = rr.res;
-
-            if(res) ++(res->internal_counter);
-
-        }
-
-        return *this;
-    }
-
-    template<typename ResourceType>
-    ResourceType& ResourceReference<ResourceType>::operator*() noexcept
-    {
-        return *(static_cast<ResourceType*>(res->resource));
-    }
-
-    template<typename ResourceType>
-    ResourceType* ResourceReference<ResourceType>::operator->() noexcept
-    {
-        return static_cast<ResourceType*>(res->resource);
-    }
-
-    template<typename ResourceType>
-    ResourceReference<ResourceType> ResourceLoader::load(const std::string& directory)
+    std::shared_ptr<ResourceType> ResourceLoader::load(const std::string& directory)
     {
 #ifdef __DEBUG__
         const std::string fixed_directory = "bin/Debug/" + directory;
@@ -79,13 +34,13 @@ namespace Minesweeper {
 
         try {
 
-            return ResourceLoader::resources.at(fixed_directory).create_res_reference<ResourceType>();
+            return std::static_pointer_cast<ResourceType>(ResourceLoader::resources.at(fixed_directory));
 
         }catch(const std::out_of_range& e) {
 
             ResourceLoader::resources[fixed_directory] = ResourceLoader::load_impl(fixed_directory);
 
-            return ResourceLoader::resources[fixed_directory].create_res_reference<ResourceType>();
+            return std::static_pointer_cast<ResourceType>(ResourceLoader::resources[fixed_directory]);
 
         }
     }

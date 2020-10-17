@@ -31,47 +31,11 @@
 
 using namespace Minesweeper;
 
-std::map<std::string, Resource> ResourceLoader::resources;
+std::map<std::string, std::shared_ptr<void>> ResourceLoader::resources;
 
-Resource::Resource(Extensions re) : internal_counter(0), resource(nullptr), extension(re)
+std::shared_ptr<void> ResourceLoader::load_impl(const std::string& directory)
 {
-    switch(extension) {
-
-        case Extensions::JPG:
-        case Extensions::PNG: { resource = static_cast<void*>(new sf::Texture()); }     break;
-
-        case Extensions::OGG: { resource = static_cast<void*>(new sf::Music()); }       break;
-        case Extensions::WAV: { resource = static_cast<void*>(new sf::SoundBuffer()); } break;
-
-        case Extensions::UNDEFINED:
-        default: break;
-
-    }
-}
-
-Resource::~Resource() noexcept
-{
-    if(!resource) return;
-
-    switch(extension) {
-
-        case Extensions::JPG:
-        case Extensions::PNG: { delete static_cast<sf::Texture*>(resource); }     break;
-
-        case Extensions::OGG: { delete static_cast<sf::Music*>(resource); }       break;
-        case Extensions::WAV: { delete static_cast<sf::SoundBuffer*>(resource); } break;
-
-        case Extensions::UNDEFINED:
-        default: break;
-
-    }
-
-    resource = nullptr;
-}
-
-Resource ResourceLoader::load_impl(const std::string& directory)
-{
-    Resource result;
+    std::shared_ptr<void> result;
 
     size_t dot_position = directory.rfind('.');
 
@@ -81,21 +45,35 @@ Resource ResourceLoader::load_impl(const std::string& directory)
 
     if(file_extension == ".jpg") {
 
-        result = Resource(Resource::Extensions::JPG);
+        std::shared_ptr<sf::Texture> new_texture = std::make_shared<sf::Texture>();
 
-        if(!static_cast<sf::Texture*>(result.resource)->loadFromFile(directory)) throw std::runtime_error("Failed to load \"" + directory + "\"");
+        if(!new_texture->loadFromFile(directory)) throw std::runtime_error("Failed to load \"" + directory + "\"");
+
+        result = std::static_pointer_cast<void>(new_texture);
 
     }else if(file_extension == ".png") {
 
-        result = Resource(Resource::Extensions::PNG);
+        std::shared_ptr<sf::Texture> new_texture = std::make_shared<sf::Texture>();
 
-        if(!static_cast<sf::Texture*>(result.resource)->loadFromFile(directory)) throw std::runtime_error("Failed to load \"" + directory + "\"");
+        if(!new_texture->loadFromFile(directory)) throw std::runtime_error("Failed to load \"" + directory + "\"");
+
+        result = std::static_pointer_cast<void>(new_texture);
 
     }else if(file_extension == ".ogg") {
 
-        result = Resource(Resource::Extensions::OGG);
+        std::shared_ptr<sf::Music> new_music = std::make_shared<sf::Music>();
 
-        if(!static_cast<sf::Music*>(result.resource)->openFromFile(directory)) throw std::runtime_error("Failed to load \"" + directory + "\"");
+        if(!new_music->openFromFile(directory)) throw std::runtime_error("Failed to load \"" + directory + "\"");
+
+        result = std::static_pointer_cast<void>(new_music);
+
+    }else if(file_extension == ".wav") {
+
+        std::shared_ptr<sf::SoundBuffer> new_sound_buffer = std::make_shared<sf::SoundBuffer>();
+
+        if(!new_sound_buffer->loadFromFile(directory)) throw std::runtime_error("Failed to load \"" + directory + "\"");
+
+        result = std::static_pointer_cast<void>(new_sound_buffer);
 
     }
 
@@ -108,7 +86,7 @@ void ResourceLoader::erase_unique_references()
 {
     for(auto cit = ResourceLoader::resources.cbegin(); cit != ResourceLoader::resources.cend(); ++cit) {
 
-        if((*cit).second.internal_counter == 0) cit = ResourceLoader::resources.erase(cit);
+        if((*cit).second.unique()) ResourceLoader::resources.erase(cit);
 
     }
 }
