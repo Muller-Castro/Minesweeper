@@ -414,7 +414,7 @@
 1602477419 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\minesweepergame.h
 	<string>
 
-1602964791 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\minesweepergame.cpp
+1602965784 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\minesweepergame.cpp
 	"MinesweeperGame.h"
 	<iostream>
 	<exception>
@@ -471,28 +471,32 @@
 	<memory>
 	"scene/Scene.h"
 
-1602452111 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\scene\scene.h
+1602969602 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\scene\scene.h
+	<functional>
 	<queue>
 	<utility>
-	<SFML/Graphics/Sprite.hpp>
+	<SFML/Graphics/Drawable.hpp>
 
-1602962654 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\scene\scenes\splashscreen.cpp
+1602969984 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\scene\scenes\splashscreen.cpp
 	"scene/scenes/SplashScreen.h"
 	"io/ResourceLoader.h"
 	"Input.h"
 	"scene/SceneManager.h"
+	<SFML/Graphics/Text.hpp>
+	<SFML/Graphics/Sprite.hpp>
 
-1602965304 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\scene\scenes\splashscreen.h
+1602969884 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\scene\scenes\splashscreen.h
 	<memory>
 	<SFML/Graphics/Texture.hpp>
 	<SFML/Audio/Sound.hpp>
 	<SFML/Audio/Music.hpp>
+	<SFML/Graphics/Font.hpp>
 	<tweeny.h>
 	<SFML/System/Clock.hpp>
 	"scene/Scene.h"
 	"io/ResourceLoader.h"
 
-1602450304 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\scene\scene.cpp
+1602971550 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\scene\scene.cpp
 	"scene/Scene.h"
 	<SFML/Graphics/RenderWindow.hpp>
 	"MinesweeperGame.h"
@@ -525,17 +529,18 @@
 	"MinesweeperGame.h"
 	"io/SimpleINIParser.h"
 
-1602963968 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\io\resourceloader.h
+1602968046 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\io\resourceloader.h
 	<memory>
 	<map>
 	"io/ResourceLoader.hpp"
 
-1602965093 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\io\resourceloader.cpp
+1602968065 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\io\resourceloader.cpp
 	"io/ResourceLoader.h"
 	<stdexcept>
 	<SFML/Graphics/Texture.hpp>
 	<SFML/Audio/Music.hpp>
 	<SFML/Audio/SoundBuffer.hpp>
+	<SFML/Graphics/Font.hpp>
 
 1602963919 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\io\resourceloader.hpp
 
