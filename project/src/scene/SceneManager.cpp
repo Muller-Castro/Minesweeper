@@ -24,6 +24,7 @@
 #include "scene/SceneManager.h"
 
 #include "scene/scenes/SplashScreen.h"
+#include "scene/scenes/MainMenu.h"
 
 using namespace Minesweeper;
 
@@ -35,7 +36,7 @@ void SceneManager::change_scene_to(Scenes scene)
     switch(scene) {
 
         case Scenes::SPLASH_SCREEN: { SceneManager::current_scene.reset(new SplashScreen()); } break;
-        //
+        case Scenes::MAIN_MENU:     { SceneManager::current_scene.reset(new MainMenu());     } break;
 
         case Scenes::UNDEFINED:
         default: break;

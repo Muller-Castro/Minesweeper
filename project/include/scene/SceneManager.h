@@ -37,8 +37,8 @@ namespace Minesweeper {
         {
             UNDEFINED,
 
-            SPLASH_SCREEN
-            //
+            SPLASH_SCREEN,
+            MAIN_MENU
         };
 
         static void change_scene_to(Scenes scene);
