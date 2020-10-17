@@ -24,10 +24,11 @@
 #ifndef SCENE_H
 #define SCENE_H
 
+#include <functional>
 #include <queue>
 #include <utility>
 
-#include <SFML/Graphics/Sprite.hpp>
+#include <SFML/Graphics/Drawable.hpp>
 
 namespace Minesweeper {
 
@@ -44,9 +45,9 @@ namespace Minesweeper {
         virtual void draw()              = 0;
 
     protected:
-        using SpriteLayer = std::pair<size_t, std::pair<sf::Sprite, sf::RenderStates>>;
+        using DrawableLayer = std::pair<size_t, std::pair<std::reference_wrapper<const sf::Drawable>, sf::RenderStates>>;
 
-        void draw_on_layer(size_t idx, const sf::Sprite& sprite, const sf::RenderStates& rs = sf::RenderStates::Default);
+        void draw_on_layer(size_t idx, const sf::Drawable& drawable, const sf::RenderStates& rs = sf::RenderStates::Default);
 
     private:
         friend SceneManager;
@@ -58,7 +59,7 @@ namespace Minesweeper {
             bool operator()(const LayerType& lhs, const LayerType& rhs) const { return lhs.first > rhs.first; }
         };
 
-        std::priority_queue<SpriteLayer, std::vector<SpriteLayer>, LayerComparator<SpriteLayer>> sprite_layers;
+        std::priority_queue<DrawableLayer, std::vector<DrawableLayer>, LayerComparator<DrawableLayer>> drawable_layers;
 
         void dispatch_layers_draws();
     };

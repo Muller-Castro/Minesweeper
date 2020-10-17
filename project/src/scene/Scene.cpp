@@ -29,7 +29,7 @@
 
 using namespace Minesweeper;
 
-Scene::Scene() : sprite_layers()
+Scene::Scene() : drawable_layers()
 {
 
 }
@@ -39,20 +39,20 @@ Scene::~Scene() noexcept
 
 }
 
-void Scene::draw_on_layer(size_t idx, const sf::Sprite& sprite, const sf::RenderStates& rs)
+void Scene::draw_on_layer(size_t idx, const sf::Drawable& drawable, const sf::RenderStates& rs)
 {
-    sprite_layers.emplace(idx, std::make_pair(sprite, rs));
+    drawable_layers.emplace(idx, std::make_pair(std::cref(drawable), rs));
 }
 
 void Scene::dispatch_layers_draws()
 {
-    while(!sprite_layers.empty()) {
+    while(!drawable_layers.empty()) {
 
-        const auto& sprite_layer = sprite_layers.top();
+        const Scene::DrawableLayer& drawable_layer = drawable_layers.top();
 
-        MinesweeperGame::window->draw(sprite_layer.second.first, sprite_layer.second.second);
+        MinesweeperGame::window->draw(drawable_layer.second.first.get(), drawable_layer.second.second);
 
-        sprite_layers.pop();
+        drawable_layers.pop();
 
     }
 }
