@@ -68,7 +68,7 @@ std::shared_ptr<void> ResourceLoader::load_impl(const std::string& directory)
     else if(file_extension == ".png") result = ResourceLoader::create_resource<sf::Texture>(directory);
     else if(file_extension == ".ogg") result = ResourceLoader::create_resource<sf::Music>(directory);
     else if(file_extension == ".wav") result = ResourceLoader::create_resource<sf::SoundBuffer>(directory);
-    else if(file_extension == ".ttf") result = ResourceLoader::create_resource<sf::Font>(directory);
+    else if(file_extension == ".ttf" || file_extension == ".otf") result = ResourceLoader::create_resource<sf::Font>(directory);
 
     if(!result) throw std::runtime_error("Couldn't load resource at \"" + directory + "\"");
 
@@ -77,9 +77,10 @@ std::shared_ptr<void> ResourceLoader::load_impl(const std::string& directory)
 
 void ResourceLoader::erase_unique_references()
 {
-    for(auto cit = ResourceLoader::resources.cbegin(); cit != ResourceLoader::resources.cend(); ++cit) {
+    for(auto cit = ResourceLoader::resources.cbegin(); cit != ResourceLoader::resources.cend();) {
 
-        if((*cit).second.unique()) ResourceLoader::resources.erase(cit);
+        if((*cit).second.unique()) cit = ResourceLoader::resources.erase(cit);
+        else ++cit;
 
     }
 }
