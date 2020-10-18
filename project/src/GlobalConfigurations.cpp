@@ -29,12 +29,24 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/System/Clock.hpp>
 
+#ifndef __S_RELEASE__
+#include <SFML/Graphics/Text.hpp>
+#endif // __S_RELEASE__
+
 #include "Input.h"
 #include "scene/SceneManager.h"
 #include "MinesweeperGame.h"
 #include "io/SimpleINIParser.h"
 
+#ifndef __S_RELEASE__
+#include "io/ResourceLoader.h"
+#endif // __S_RELEASE__
+
 using namespace Minesweeper;
+
+#ifndef __S_RELEASE__
+std::string GlobalConfigurations::current_scene_name;
+#endif // __S_RELEASE__
 
 void GlobalConfigurations::process_inputs()
 {
@@ -76,22 +88,62 @@ void GlobalConfigurations::update(float delta)
 
     new_win_title << win_data["WINDOW"]["Title"]
                   << " | Esc: Quit"
-                  << " | F3: Resize window"
+                  << " | F3: Resize"
 #ifndef __S_RELEASE__
                   << " | F5: Restart scene"
 #endif // __S_RELEASE__
                   << " | FPS: " << fps
-                  << " | Runtime: " << (hours   < 10 ? "0" + std::to_string(hours)   : std::to_string(hours)  ) << 'h'
-                                    << (minutes < 10 ? "0" + std::to_string(minutes) : std::to_string(minutes)) << 'm'
-                                    << (seconds < 10 ? "0" + std::to_string(seconds) : std::to_string(seconds)) << 's';
+                  << " | Run-time: " << (hours   < 10 ? "0" + std::to_string(hours)   : std::to_string(hours)  ) << 'h'
+                                     << (minutes < 10 ? "0" + std::to_string(minutes) : std::to_string(minutes)) << 'm'
+                                     << (seconds < 10 ? "0" + std::to_string(seconds) : std::to_string(seconds)) << 's';
 
     MinesweeperGame::window->setTitle(new_win_title.str());
 }
 
 void GlobalConfigurations::draw()
 {
+#ifndef __S_RELEASE__
+    GlobalConfigurations::draw_current_scene_text();
 
+    GlobalConfigurations::draw_amount_of_loaded_resources();
+#endif // __S_RELEASE__
 }
+
+#ifndef __S_RELEASE__
+void GlobalConfigurations::draw_current_scene_text()
+{
+    sf::Text current_scene_text("[" + current_scene_name + "]", *(ResourceLoader::load<sf::Font>("assets/fonts/Neon Nanoborg.otf")));
+
+    current_scene_text.setPosition(sf::Vector2f{5.f, 5.f});
+
+    current_scene_text.setOutlineColor(sf::Color::Black);
+    current_scene_text.setOutlineThickness(1.f);
+
+    current_scene_text.setFillColor(sf::Color(127, 127, 127)); // light gray
+
+    MinesweeperGame::window->draw(current_scene_text);
+}
+#endif // __S_RELEASE__
+
+#ifndef __S_RELEASE__
+void GlobalConfigurations::draw_amount_of_loaded_resources()
+{
+    std::ostringstream oss;
+
+    oss << ResourceLoader::resources.size();
+
+    sf::Text loaded_resources("[Resources: " + oss.str() + "]", *(ResourceLoader::load<sf::Font>("assets/fonts/Neon Nanoborg.otf")));
+
+    loaded_resources.setPosition(sf::Vector2f{5.f, 45.f});
+
+    loaded_resources.setOutlineColor(sf::Color::Black);
+    loaded_resources.setOutlineThickness(1.f);
+
+    loaded_resources.setFillColor(sf::Color(127, 127, 127)); // light gray
+
+    MinesweeperGame::window->draw(loaded_resources);
+}
+#endif // __S_RELEASE__
 
 void GlobalConfigurations::resize_window()
 {

@@ -23,6 +23,10 @@
 
 #include "scene/SceneManager.h"
 
+#ifndef __S_RELEASE__
+#include "GlobalConfigurations.h"
+#endif // __S_RELEASE__
+
 #include "scene/scenes/SplashScreen.h"
 #include "scene/scenes/MainMenu.h"
 
@@ -35,8 +39,25 @@ void SceneManager::change_scene_to(Scenes scene)
 {
     switch(scene) {
 
-        case Scenes::SPLASH_SCREEN: { SceneManager::current_scene.reset(new SplashScreen()); } break;
-        case Scenes::MAIN_MENU:     { SceneManager::current_scene.reset(new MainMenu());     } break;
+        case Scenes::SPLASH_SCREEN: {
+
+            SceneManager::current_scene.reset(new SplashScreen());
+
+#ifndef __S_RELEASE__
+            GlobalConfigurations::current_scene_name = "SPLASH SCREEN";
+#endif // __S_RELEASE__
+
+        } break;
+
+        case Scenes::MAIN_MENU: {
+
+            SceneManager::current_scene.reset(new MainMenu());
+
+#ifndef __S_RELEASE__
+            GlobalConfigurations::current_scene_name = "MAIN MENU";
+#endif // __S_RELEASE__
+
+        } break;
 
         case Scenes::UNDEFINED:
         default: break;

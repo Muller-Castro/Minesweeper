@@ -24,6 +24,10 @@
 #ifndef GLOBAL_CONFIGURATIONS_H
 #define GLOBAL_CONFIGURATIONS_H
 
+#ifndef __S_RELEASE__
+#include <string>
+#endif // __S_RELEASE__
+
 namespace Minesweeper {
 
     class GlobalConfigurations
@@ -34,6 +38,15 @@ namespace Minesweeper {
         static void draw();
 
     private:
+#ifndef __S_RELEASE__
+        friend class SceneManager;
+
+        static std::string current_scene_name;
+
+        static void draw_current_scene_text();
+        static void draw_amount_of_loaded_resources();
+#endif // __S_RELEASE__
+
         static void resize_window();
     };
 

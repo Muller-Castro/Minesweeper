@@ -37,6 +37,7 @@ namespace Minesweeper {
 
     private:
         friend class MinesweeperGame;
+        friend class GlobalConfigurations;
 
         static std::map<std::string, std::shared_ptr<void>> resources;
 
