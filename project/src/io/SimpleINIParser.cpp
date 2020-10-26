@@ -33,6 +33,8 @@ using namespace Minesweeper;
 
 std::unordered_map<std::string, SimpleINIParser::INIData> SimpleINIParser::cached_ini_data;
 
+#ifndef __S_RELEASE__
+
 SimpleINIParser::INIData SimpleINIParser::load_ini_file(const std::string& file_path, bool should_cache)
 {
     SimpleINIParser::INIData result;
@@ -66,6 +68,8 @@ SimpleINIParser::INIData SimpleINIParser::load_ini_file(const std::string& file_
     return result;
 }
 
+#else
+
 SimpleINIParser::INIData SimpleINIParser::load_ini_string(const std::pair<std::string, std::string>& ini, bool should_cache)
 {
     SimpleINIParser::INIData result;
@@ -92,6 +96,8 @@ SimpleINIParser::INIData SimpleINIParser::load_ini_string(const std::pair<std::s
 
     return result;
 }
+
+#endif // __S_RELEASE__
 
 void SimpleINIParser::trim_edge_spaces(std::string& str)
 {
@@ -195,6 +201,8 @@ void SimpleINIParser::fill_ini_data(SimpleINIParser::INIData& ini_data, std::ist
     }
 }
 
+#ifndef __S_RELEASE__
+
 SimpleINIParser::INIData SimpleINIParser::load_ini_file_impl(const std::string& file_path)
 {
     SimpleINIParser::INIData result;
@@ -218,6 +226,8 @@ SimpleINIParser::INIData SimpleINIParser::load_ini_file_impl(const std::string& 
     return result;
 }
 
+#else
+
 SimpleINIParser::INIData SimpleINIParser::load_ini_string_impl(const std::pair<std::string, std::string>& ini)
 {
     SimpleINIParser::INIData result;
@@ -230,3 +240,5 @@ SimpleINIParser::INIData SimpleINIParser::load_ini_string_impl(const std::pair<s
 
     return result;
 }
+
+#endif // __S_RELEASE__

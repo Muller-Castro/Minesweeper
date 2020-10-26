@@ -48,7 +48,10 @@ namespace Minesweeper {
         };
 
         static INIData load_ini_file(const std::string& file_path, bool should_cache = true);
+
+#ifdef __S_RELEASE__
         static INIData load_ini_string(const std::pair<std::string, std::string>& ini, bool should_cache = true);
+#endif // __S_RELEASE__
 
     private:
         static std::unordered_map<std::string, INIData> cached_ini_data;
@@ -60,7 +63,10 @@ namespace Minesweeper {
         static void fill_ini_data(INIData& ini_data, std::istream& is);
 
         static INIData load_ini_file_impl(const std::string& file_path);
+
+#ifdef __S_RELEASE__
         static INIData load_ini_string_impl(const std::pair<std::string, std::string>& ini);
+#endif // __S_RELEASE__
     };
 
 }
