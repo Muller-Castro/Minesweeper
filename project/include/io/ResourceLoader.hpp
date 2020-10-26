@@ -21,7 +21,52 @@
 /* OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                                        */
 /****************************************************************************************/
 
+#ifdef __S_RELEASE__
+#include <SFML/Graphics/Texture.hpp>
+#include <SFML/Audio/Music.hpp>
+#include <SFML/Audio/SoundBuffer.hpp>
+#include <SFML/Graphics/Font.hpp>
+#include <SFML/Graphics/Shader.hpp>
+#endif // __S_RELEASE__
+
 namespace Minesweeper {
+
+#ifdef __S_RELEASE__
+
+    template<>
+    std::shared_ptr<void> ResourceLoader::load_impl<sf::Music>(const std::pair<std::string, std::string>& raw_data);
+
+    template<>
+    std::shared_ptr<void> ResourceLoader::load_impl<sf::Shader>(const std::pair<std::string, std::string>& raw_data);
+
+    template<typename ResourceType>
+    std::shared_ptr<void> ResourceLoader::load_impl(const std::pair<std::string, std::string>& raw_data)
+    {
+        std::shared_ptr<ResourceType> result = std::make_shared<ResourceType>();
+
+        if(!result->loadFromMemory(raw_data.second.c_str(), raw_data.second.length()))
+            throw std::runtime_error("Failed to load \"" + raw_data.first + "\"");
+
+        return std::static_pointer_cast<void>(result);
+    }
+
+    template<typename ResourceType>
+    std::shared_ptr<ResourceType> ResourceLoader::load(const std::pair<std::string, std::string>& raw_data)
+    {
+        try {
+
+            return std::static_pointer_cast<ResourceType>(ResourceLoader::resources.at(raw_data.first));
+
+        }catch(const std::out_of_range& e) {
+
+            ResourceLoader::resources[raw_data.first] = ResourceLoader::load_impl<ResourceType>(raw_data);
+
+            return std::static_pointer_cast<ResourceType>(ResourceLoader::resources[raw_data.first]);
+
+        }
+    }
+
+#else
 
     template<typename ResourceType>
     std::shared_ptr<ResourceType> ResourceLoader::load(const std::string& directory)
@@ -44,5 +89,7 @@ namespace Minesweeper {
 
         }
     }
+
+#endif // __S_RELEASE__
 
 }

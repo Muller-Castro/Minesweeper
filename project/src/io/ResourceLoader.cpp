@@ -24,16 +24,19 @@
 #include "io/ResourceLoader.h"
 
 #include <stdexcept>
+#include <iostream>
 
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/Audio/Music.hpp>
 #include <SFML/Audio/SoundBuffer.hpp>
 #include <SFML/Graphics/Font.hpp>
+#include <SFML/Graphics/Shader.hpp>
 
 using namespace Minesweeper;
 
 std::map<std::string, std::shared_ptr<void>> ResourceLoader::resources;
 
+#ifndef __S_RELEASE__
 template<typename ResourceType>
 std::shared_ptr<void> ResourceLoader::create_resource(const std::string& directory)
 {
@@ -54,6 +57,59 @@ std::shared_ptr<void> ResourceLoader::create_resource<sf::Music>(const std::stri
     return std::static_pointer_cast<void>(new_music);
 }
 
+std::shared_ptr<void> ResourceLoader::create_shader(const std::string& directory, int shader_type)
+{
+    std::shared_ptr<sf::Shader> new_shader;
+
+    if(sf::Shader::isAvailable()) {
+
+        new_shader = std::make_shared<sf::Shader>();
+
+        if(!new_shader->loadFromFile(directory, static_cast<sf::Shader::Type>(shader_type)))
+            throw std::runtime_error("Failed to load \"" + directory + "\"");
+
+    }else {
+
+        std::cout << "\n----------------------------------------------------\n"
+                  << "WARNING: Shaders are NOT supported on this computer."
+                  << "\n----------------------------------------------------\n";
+
+    }
+
+    return std::static_pointer_cast<void>(new_shader);
+}
+
+std::shared_ptr<void> ResourceLoader::create_shader(const std::string& directory, bool vrt_geo_frg)
+{
+    std::shared_ptr<sf::Shader> new_shader;
+
+    if(sf::Shader::isAvailable()) {
+
+        new_shader = std::make_shared<sf::Shader>();
+
+        if(!vrt_geo_frg) {
+
+            if(!new_shader->loadFromFile(directory + ".vrt", directory + ".frg"))
+                throw std::runtime_error("Failed to load \"" + directory + ".vrt_frg\"");
+
+        }else {
+
+            if(!new_shader->loadFromFile(directory + ".vrt", directory + ".geo", directory + ".frg"))
+                throw std::runtime_error("Failed to load \"" + directory + ".vrt_geo_frg\"");
+
+        }
+
+    }else {
+
+        std::cout << "\n----------------------------------------------------\n"
+                  << "WARNING: Shaders are NOT supported on this computer."
+                  << "\n----------------------------------------------------\n";
+
+    }
+
+    return std::static_pointer_cast<void>(new_shader);
+}
+
 std::shared_ptr<void> ResourceLoader::load_impl(const std::string& directory)
 {
     std::shared_ptr<void> result;
@@ -69,11 +125,37 @@ std::shared_ptr<void> ResourceLoader::load_impl(const std::string& directory)
     else if(file_extension == ".ogg") result = ResourceLoader::create_resource<sf::Music>(directory);
     else if(file_extension == ".wav") result = ResourceLoader::create_resource<sf::SoundBuffer>(directory);
     else if(file_extension == ".ttf" || file_extension == ".otf") result = ResourceLoader::create_resource<sf::Font>(directory);
+    else if(file_extension == ".vrt") result = ResourceLoader::create_shader(directory, sf::Shader::Vertex);
+    else if(file_extension == ".geo") result = ResourceLoader::create_shader(directory, sf::Shader::Geometry);
+    else if(file_extension == ".frg") result = ResourceLoader::create_shader(directory, sf::Shader::Fragment);
+    else if(file_extension == ".vrt_frg") result = ResourceLoader::create_shader(directory.substr(0, dot_position));
+    else if(file_extension == ".vrt_geo_frg") result = ResourceLoader::create_shader(directory.substr(0, dot_position), true);
 
     if(!result) throw std::runtime_error("Couldn't load resource at \"" + directory + "\"");
 
     return result;
 }
+
+#else
+
+template<>
+std::shared_ptr<void> ResourceLoader::load_impl<sf::Music>(const std::pair<std::string, std::string>& raw_data)
+{
+    std::shared_ptr<sf::Music> result = std::make_shared<sf::Music>();
+
+    if(!result->openFromMemory(raw_data.second.c_str(), raw_data.second.length()))
+        throw std::runtime_error("Failed to load \"" + raw_data.first + "\"");
+
+    return std::static_pointer_cast<void>(result);
+}
+
+template<>
+std::shared_ptr<void> ResourceLoader::load_impl<sf::Shader>(const std::pair<std::string, std::string>& raw_data)
+{
+    return std::static_pointer_cast<void>(std::make_shared<sf::Shader>());
+}
+
+#endif // __S_RELEASE__
 
 void ResourceLoader::erase_unique_references()
 {
