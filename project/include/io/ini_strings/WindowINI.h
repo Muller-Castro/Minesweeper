@@ -35,11 +35,14 @@ static const std::pair<std::string, std::string> win_ini = std::make_pair(
 
     "// Background colors supported: BLACK, WHITE, RED, GREEN, BLUE, YELLOW, MAGENTA, CYAN, TRANSPARENT\n"
 
+    "// Window styles supported: DEFAULT (Titlebar and Close button), FULLSCREEN, RESIZE\n"
+
     "[WINDOW]\n"
-    "Title           = Minesweeper\n"
+    "Title           = github.com/Muller-Castro/Minesweeper\n"
     "Width           = 800\n"
     "Height          = 600\n"
     "BackgroundColor = BLACK\n"
+    "Style           = DEFAULT\n"
 );
 
 #endif // WINDOW_INI_H
