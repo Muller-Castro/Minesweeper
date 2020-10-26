@@ -42,6 +42,10 @@
 #include "io/ResourceLoader.h"
 #endif // __S_RELEASE__
 
+#ifdef __S_RELEASE__
+#include "io/ini_strings/WindowINI.h"
+#endif // __S_RELEASE__
+
 using namespace Minesweeper;
 
 #ifndef __S_RELEASE__
@@ -112,7 +116,7 @@ void GlobalConfigurations::draw()
 #ifndef __S_RELEASE__
 void GlobalConfigurations::draw_current_scene_text()
 {
-    sf::Text current_scene_text("[" + current_scene_name + "]", *(ResourceLoader::load<sf::Font>("assets/fonts/Neon Nanoborg.otf")));
+    sf::Text current_scene_text("[" + current_scene_name + "]", *(ResourceLoader::load<sf::Font>("assets/fonts/NeonNanoborg.otf")));
 
     current_scene_text.setPosition(sf::Vector2f{5.f, 5.f});
 
@@ -132,7 +136,7 @@ void GlobalConfigurations::draw_amount_of_loaded_resources()
 
     oss << ResourceLoader::resources.size();
 
-    sf::Text loaded_resources("[Resources: " + oss.str() + "]", *(ResourceLoader::load<sf::Font>("assets/fonts/Neon Nanoborg.otf")));
+    sf::Text loaded_resources("[Resources: " + oss.str() + "]", *(ResourceLoader::load<sf::Font>("assets/fonts/NeonNanoborg.otf")));
 
     loaded_resources.setPosition(sf::Vector2f{5.f, 45.f});
 
