@@ -37,6 +37,8 @@
 #include "Input.h"
 #include "io/ResourceLoader.h"
 
+#include "assets/BombIcon.h"
+
 #ifdef __S_RELEASE__
 #include "io/ini_strings/WindowINI.h"
 #endif // __S_RELEASE__
@@ -67,6 +69,16 @@ int MinesweeperGame::run() noexcept
         read_win_style_from_str(win_data["WINDOW"]["Style"], win_style);
 
         sf::RenderWindow window(sf::VideoMode(win_width, win_height), win_title, win_style);
+
+        {
+            sf::Image icon;
+
+            auto raw_bomb_icon = get_raw_bomb_icon();
+
+            icon.loadFromMemory(raw_bomb_icon.second.c_str(), raw_bomb_icon.second.length());
+
+            window.setIcon(64, 64, icon.getPixelsPtr());
+        }
 
         window.setVerticalSyncEnabled(true);
 
