@@ -54,6 +54,7 @@
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
+					<Add option="-mwindows" />
 					<Add library="sfml-graphics-s" />
 					<Add library="sfml-window-s" />
 					<Add library="sfml-audio-s" />
@@ -87,6 +88,31 @@
 		<Unit filename="include/Input.h" />
 		<Unit filename="include/Input.hpp" />
 		<Unit filename="include/MinesweeperGame.h" />
+		<Unit filename="include/assets/Arial.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/BombIcon.h" />
+		<Unit filename="include/assets/BombSplashScreen.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/BombSpritesheet.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/CursorSFX.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/NeonNanoborg.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/SplashScreenSoundTrack.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/StressTestFRG.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/StressTestVRT.h">
+			<Option target="Static Release" />
+		</Unit>
 		<Unit filename="include/io/ResourceLoader.h" />
 		<Unit filename="include/io/ResourceLoader.hpp" />
 		<Unit filename="include/io/SimpleINIParser.h" />
@@ -97,10 +123,38 @@
 		<Unit filename="include/scene/SceneManager.h" />
 		<Unit filename="include/scene/scenes/MainMenu.h" />
 		<Unit filename="include/scene/scenes/SplashScreen.h" />
+		<Unit filename="res/resource.rc">
+			<Option compilerVar="WINDRES" />
+		</Unit>
 		<Unit filename="src/GlobalConfigurations.cpp" />
 		<Unit filename="src/Input.cpp" />
 		<Unit filename="src/Main.cpp" />
 		<Unit filename="src/MinesweeperGame.cpp" />
+		<Unit filename="src/assets/Arial.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/BombIcon.cpp" />
+		<Unit filename="src/assets/BombSplashScreen.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/BombSpritesheet.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/CursorSFX.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/NeonNanoborg.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/SplashScreenSoundTrack.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/StressTestFRG.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/StressTestVRT.cpp">
+			<Option target="Static Release" />
+		</Unit>
 		<Unit filename="src/io/ResourceLoader.cpp" />
 		<Unit filename="src/io/SimpleINIParser.cpp" />
 		<Unit filename="src/scene/Scene.cpp" />

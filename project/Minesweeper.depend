@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1602343380 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\main.cpp
+1603554379 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\main.cpp
 	"MinesweeperGame.h"
 
 1525812018 c:\sfml\sfml-2.5.1\include\sfml\graphics.hpp
@@ -414,7 +414,7 @@
 1602477419 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\minesweepergame.h
 	<string>
 
-1602965784 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\minesweepergame.cpp
+1603080033 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\minesweepergame.cpp
 	"MinesweeperGame.h"
 	<iostream>
 	<exception>
@@ -427,9 +427,10 @@
 	"scene/SceneManager.h"
 	"Input.h"
 	"io/ResourceLoader.h"
+	"assets/BombIcon.h"
 	"io/ini_strings/WindowINI.h"
 
-1602526387 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\io\simpleiniparser.cpp
+1603069945 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\io\simpleiniparser.cpp
 	"io/SimpleINIParser.h"
 	<stdexcept>
 	<fstream>
@@ -441,7 +442,7 @@
 	<unordered_map>
 	<string>
 
-1602360128 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\io\ini_strings\windowini.h
+1603082381 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\io\ini_strings\windowini.h
 	<utility>
 
 1602434495 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\input.cpp
@@ -462,8 +463,9 @@
 	<SFML/Graphics/RenderWindow.hpp>
 	"MinesweeperGame.h"
 
-1602962509 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\scene\scenemanager.cpp
+1603081478 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\scene\scenemanager.cpp
 	"scene/SceneManager.h"
+	"GlobalConfigurations.h"
 	"scene/scenes/SplashScreen.h"
 	"scene/scenes/MainMenu.h"
 
@@ -477,22 +479,29 @@
 	<utility>
 	<SFML/Graphics/Drawable.hpp>
 
-1602969984 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\scene\scenes\splashscreen.cpp
+1603747926 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\scene\scenes\splashscreen.cpp
 	"scene/scenes/SplashScreen.h"
+	<chrono>
 	"io/ResourceLoader.h"
 	"Input.h"
 	"scene/SceneManager.h"
-	<SFML/Graphics/Text.hpp>
-	<SFML/Graphics/Sprite.hpp>
+	"assets/SplashScreenSoundTrack.h"
+	"assets/CursorSFX.h"
+	"assets/StressTestVRT.h"
+	"assets/StressTestFRG.h"
+	"assets/BombSplashScreen.h"
+	<SFML/Graphics/RectangleShape.hpp>
 
-1602969884 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\scene\scenes\splashscreen.h
+1603591008 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\scene\scenes\splashscreen.h
 	<memory>
 	<SFML/Graphics/Texture.hpp>
 	<SFML/Audio/Sound.hpp>
 	<SFML/Audio/Music.hpp>
-	<SFML/Graphics/Font.hpp>
 	<tweeny.h>
 	<SFML/System/Clock.hpp>
+	<SFML/Graphics/Text.hpp>
+	<SFML/Graphics/Sprite.hpp>
+	<SFML/Graphics/Shader.hpp>
 	"scene/Scene.h"
 	"io/ResourceLoader.h"
 
@@ -516,37 +525,124 @@
 	"scene/SceneManager.h"
 	"io/SimpleINIParser.h"
 
-1602475265 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\globalconfigurations.h
+1602979914 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\globalconfigurations.h
+	<string>
 
-1602477511 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\globalconfigurations.cpp
+1603080168 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\globalconfigurations.cpp
 	"GlobalConfigurations.h"
 	<sstream>
 	<string>
 	<SFML/Graphics/RenderWindow.hpp>
 	<SFML/System/Clock.hpp>
+	<SFML/Graphics/Text.hpp>
 	"Input.h"
 	"scene/SceneManager.h"
 	"MinesweeperGame.h"
 	"io/SimpleINIParser.h"
+	"io/ResourceLoader.h"
+	"io/ini_strings/WindowINI.h"
 
-1602968046 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\io\resourceloader.h
+1603071715 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\io\resourceloader.h
 	<memory>
 	<map>
+	<string>
+	<utility>
 	"io/ResourceLoader.hpp"
 
-1602968065 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\io\resourceloader.cpp
+1603071240 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\io\resourceloader.cpp
 	"io/ResourceLoader.h"
 	<stdexcept>
+	<iostream>
 	<SFML/Graphics/Texture.hpp>
 	<SFML/Audio/Music.hpp>
 	<SFML/Audio/SoundBuffer.hpp>
 	<SFML/Graphics/Font.hpp>
+	<SFML/Graphics/Shader.hpp>
 
-1602963919 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\io\resourceloader.hpp
+1603071745 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\io\resourceloader.hpp
+	<SFML/Graphics/Texture.hpp>
+	<SFML/Audio/Music.hpp>
+	<SFML/Audio/SoundBuffer.hpp>
+	<SFML/Graphics/Font.hpp>
+	<SFML/Graphics/Shader.hpp>
 
-1602962054 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\scene\scenes\mainmenu.h
+1602983529 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\scene\scenes\mainmenu.h
 	"scene/Scene.h"
 
-1602962520 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\scene\scenes\mainmenu.cpp
+1602983548 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\scene\scenes\mainmenu.cpp
 	"scene/scenes/MainMenu.h"
+	"Input.h"
+	"scene/SceneManager.h"
+
+1602994497 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\res\resource.rc
+
+1603747468 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\assets\bombicon.cpp
+	"assets/BombIcon.h"
+	<vector>
+
+1603747468 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\bombicon.h
+	<string>
+	<utility>
+
+1603078390 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\assets\arial.cpp
+	"assets/Arial.h"
+	<vector>
+
+1603078388 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\arial.h
+	<string>
+	<utility>
+
+1603747468 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\assets\bombsplashscreen.cpp
+	"assets/BombSplashScreen.h"
+	<vector>
+
+1603747468 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\bombsplashscreen.h
+	<string>
+	<utility>
+
+1603747467 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\assets\bombspritesheet.cpp
+	"assets/BombSpritesheet.h"
+	<vector>
+
+1603747467 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\bombspritesheet.h
+	<string>
+	<utility>
+
+1603747485 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\assets\cursorsfx.cpp
+	"assets/CursorSFX.h"
+	<vector>
+
+1603747485 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\cursorsfx.h
+	<string>
+	<utility>
+
+1603747545 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\assets\neonnanoborg.cpp
+	"assets/NeonNanoborg.h"
+	<vector>
+
+1603747545 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\neonnanoborg.h
+	<string>
+	<utility>
+
+1603747721 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\assets\splashscreensoundtrack.cpp
+	"assets/SplashScreenSoundTrack.h"
+	<vector>
+
+1603747720 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\splashscreensoundtrack.h
+	<string>
+	<utility>
+
+1603080934 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\assets\stresstestfrg.cpp
+	"assets/StressTestFRG.h"
+
+1603065609 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\stresstestfrg.h
+	<string>
+	<utility>
+
+1603080852 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\assets\stresstestvrt.cpp
+	"assets/StressTestVRT.h"
+
+1603065609 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\stresstestvrt.h
+	<string>
+	<utility>
 
