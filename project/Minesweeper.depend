@@ -576,59 +576,59 @@
 
 1602994497 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\res\resource.rc
 
-1603747468 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\assets\bombicon.cpp
+1603751996 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\assets\bombicon.cpp
 	"assets/BombIcon.h"
 	<vector>
 
-1603747468 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\bombicon.h
+1603751996 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\bombicon.h
 	<string>
 	<utility>
 
-1603078390 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\assets\arial.cpp
+1603752257 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\assets\arial.cpp
 	"assets/Arial.h"
 	<vector>
 
-1603078388 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\arial.h
+1603752255 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\arial.h
 	<string>
 	<utility>
 
-1603747468 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\assets\bombsplashscreen.cpp
+1603751996 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\assets\bombsplashscreen.cpp
 	"assets/BombSplashScreen.h"
 	<vector>
 
-1603747468 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\bombsplashscreen.h
+1603751996 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\bombsplashscreen.h
 	<string>
 	<utility>
 
-1603747467 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\assets\bombspritesheet.cpp
+1603751996 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\assets\bombspritesheet.cpp
 	"assets/BombSpritesheet.h"
 	<vector>
 
-1603747467 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\bombspritesheet.h
+1603751996 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\bombspritesheet.h
 	<string>
 	<utility>
 
-1603747485 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\assets\cursorsfx.cpp
+1603752009 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\assets\cursorsfx.cpp
 	"assets/CursorSFX.h"
 	<vector>
 
-1603747485 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\cursorsfx.h
+1603752009 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\cursorsfx.h
 	<string>
 	<utility>
 
-1603747545 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\assets\neonnanoborg.cpp
+1603752040 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\assets\neonnanoborg.cpp
 	"assets/NeonNanoborg.h"
 	<vector>
 
-1603747545 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\neonnanoborg.h
+1603752040 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\neonnanoborg.h
 	<string>
 	<utility>
 
-1603747721 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\assets\splashscreensoundtrack.cpp
+1603752030 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\assets\splashscreensoundtrack.cpp
 	"assets/SplashScreenSoundTrack.h"
 	<vector>
 
-1603747720 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\splashscreensoundtrack.h
+1603752029 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\splashscreensoundtrack.h
 	<string>
 	<utility>
 
@@ -645,4 +645,10 @@
 1603065609 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\stresstestvrt.h
 	<string>
 	<utility>
+
+1603753520 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\io\musicstream.cpp
+	"io/MusicStream.h"
+
+1603753607 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\io\musicstream.h
+	<SFML/Audio/Music.hpp>
 
