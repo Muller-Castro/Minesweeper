@@ -23,18 +23,19 @@
 
 #ifdef __S_RELEASE__
 #include <SFML/Graphics/Texture.hpp>
-#include <SFML/Audio/Music.hpp>
 #include <SFML/Audio/SoundBuffer.hpp>
 #include <SFML/Graphics/Font.hpp>
 #include <SFML/Graphics/Shader.hpp>
 #endif // __S_RELEASE__
+
+#include "io/MusicStream.h"
 
 namespace Minesweeper {
 
 #ifdef __S_RELEASE__
 
     template<>
-    std::shared_ptr<void> ResourceLoader::load_impl<sf::Music>(const std::pair<std::string, std::string>& raw_data);
+    std::shared_ptr<void> ResourceLoader::load_impl<MusicStream>(const std::pair<std::string, std::string>& raw_data);
 
     template<>
     std::shared_ptr<void> ResourceLoader::load_impl<sf::Shader>(const std::pair<std::string, std::string>& raw_data);

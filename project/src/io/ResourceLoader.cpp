@@ -27,10 +27,11 @@
 #include <iostream>
 
 #include <SFML/Graphics/Texture.hpp>
-#include <SFML/Audio/Music.hpp>
 #include <SFML/Audio/SoundBuffer.hpp>
 #include <SFML/Graphics/Font.hpp>
 #include <SFML/Graphics/Shader.hpp>
+
+#include "io/MusicStream.h"
 
 using namespace Minesweeper;
 
@@ -48,13 +49,9 @@ std::shared_ptr<void> ResourceLoader::create_resource(const std::string& directo
 }
 
 template<>
-std::shared_ptr<void> ResourceLoader::create_resource<sf::Music>(const std::string& directory)
+std::shared_ptr<void> ResourceLoader::create_resource<MusicStream>(const std::string& directory)
 {
-    std::shared_ptr<sf::Music> new_music = std::make_shared<sf::Music>();
-
-    if(!new_music->openFromFile(directory)) throw std::runtime_error("Failed to load \"" + directory + "\"");
-
-    return std::static_pointer_cast<void>(new_music);
+    return std::static_pointer_cast<void>(std::make_shared<MusicStream>(directory));
 }
 
 std::shared_ptr<void> ResourceLoader::create_shader(const std::string& directory, int shader_type)
@@ -122,7 +119,7 @@ std::shared_ptr<void> ResourceLoader::load_impl(const std::string& directory)
 
     if     (file_extension == ".jpg") result = ResourceLoader::create_resource<sf::Texture>(directory);
     else if(file_extension == ".png") result = ResourceLoader::create_resource<sf::Texture>(directory);
-    else if(file_extension == ".ogg") result = ResourceLoader::create_resource<sf::Music>(directory);
+    else if(file_extension == ".ogg") result = ResourceLoader::create_resource<MusicStream>(directory);
     else if(file_extension == ".wav") result = ResourceLoader::create_resource<sf::SoundBuffer>(directory);
     else if(file_extension == ".ttf" || file_extension == ".otf") result = ResourceLoader::create_resource<sf::Font>(directory);
     else if(file_extension == ".vrt") result = ResourceLoader::create_shader(directory, sf::Shader::Vertex);
@@ -139,14 +136,11 @@ std::shared_ptr<void> ResourceLoader::load_impl(const std::string& directory)
 #else
 
 template<>
-std::shared_ptr<void> ResourceLoader::load_impl<sf::Music>(const std::pair<std::string, std::string>& raw_data)
+std::shared_ptr<void> ResourceLoader::load_impl<MusicStream>(const std::pair<std::string, std::string>& raw_data)
 {
-    std::shared_ptr<sf::Music> result = std::make_shared<sf::Music>();
-
-    if(!result->openFromMemory(raw_data.second.c_str(), raw_data.second.length()))
-        throw std::runtime_error("Failed to load \"" + raw_data.first + "\"");
-
-    return std::static_pointer_cast<void>(result);
+    return std::static_pointer_cast<void>(std::make_shared<MusicStream>(raw_data.first, std::move(
+        const_cast<std::pair<std::string, std::string>&>(raw_data).second
+    )));
 }
 
 template<>
