@@ -48,13 +48,8 @@ namespace Minesweeper {
         static void change_scene_to(Scenes scene);
         static void restart_scene();
 
-        static void process_inputs();
-        static void update(float);
-        static void draw();
-
         template<typename Fn>
         static void call_deferred(Fn fn) { SceneManager::deferred_processes.push(fn); }
-        static void run_deferred();
 
     private:
         friend class MinesweeperGame;
@@ -64,7 +59,13 @@ namespace Minesweeper {
 
         static std::queue<std::function<void(void)>> deferred_processes;
 
+        static void process_inputs();
+        static void update(float);
+        static void draw();
+
         static void force_scene_change(Scenes scene);
+
+        static void run_deferred();
     };
 
 }
