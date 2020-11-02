@@ -35,7 +35,14 @@ using namespace Minesweeper;
 std::unique_ptr<Scene> SceneManager::current_scene;
 SceneManager::Scenes SceneManager::current_scene_enum = SceneManager::Scenes::UNDEFINED;
 
+std::queue<std::function<void(void)>> SceneManager::deferred_processes;
+
 void SceneManager::change_scene_to(Scenes scene)
+{
+    SceneManager::call_deferred(std::bind(&SceneManager::force_scene_change, scene));
+}
+
+void SceneManager::force_scene_change(Scenes scene)
 {
     switch(scene) {
 
@@ -88,4 +95,13 @@ void SceneManager::draw()
     SceneManager::current_scene->dispatch_layers_draws();
 }
 
+void SceneManager::run_deferred()
+{
+    while(!SceneManager::deferred_processes.empty()) {
 
+        SceneManager::deferred_processes.front()();
+
+        SceneManager::deferred_processes.pop();
+
+    }
+}

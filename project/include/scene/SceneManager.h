@@ -25,10 +25,14 @@
 #define SCENE_MANAGER_H
 
 #include <memory>
+#include <functional>
+#include <queue>
 
 #include "scene/Scene.h"
 
 namespace Minesweeper {
+
+    class MinesweeperGame;
 
     class SceneManager
     {
@@ -48,9 +52,19 @@ namespace Minesweeper {
         static void update(float);
         static void draw();
 
+        template<typename Fn>
+        static void call_deferred(Fn fn) { SceneManager::deferred_processes.push(fn); }
+        static void run_deferred();
+
     private:
+        friend class MinesweeperGame;
+
         static std::unique_ptr<Scene> current_scene;
         static Scenes current_scene_enum;
+
+        static std::queue<std::function<void(void)>> deferred_processes;
+
+        static void force_scene_change(Scenes scene);
     };
 
 }

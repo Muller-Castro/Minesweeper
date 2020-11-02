@@ -135,7 +135,7 @@ void MinesweeperGame::process()
 
         sf::Clock clock;
 
-        SceneManager::change_scene_to(SceneManager::Scenes::SPLASH_SCREEN);
+        SceneManager::force_scene_change(SceneManager::Scenes::SPLASH_SCREEN);
 
         while(MinesweeperGame::is_running) {
 
@@ -155,6 +155,8 @@ void MinesweeperGame::process()
             GlobalConfigurations::draw();
 
             MinesweeperGame::window->display();
+
+            SceneManager::run_deferred();
 
             ResourceLoader::erase_unique_references();
 
