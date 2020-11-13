@@ -481,30 +481,29 @@
 	<utility>
 	<SFML/Graphics/Drawable.hpp>
 
-1604278845 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\scene\scenes\splashscreen.cpp
+1605226795 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\scene\scenes\splashscreen.cpp
 	"scene/scenes/SplashScreen.h"
 	<chrono>
 	"io/ResourceLoader.h"
 	"Input.h"
 	"scene/SceneManager.h"
 	"assets/SplashScreenSoundTrack.h"
-	"assets/CursorSFX.h"
 	"assets/StressTestVRT.h"
 	"assets/StressTestFRG.h"
 	"assets/BombSplashScreen.h"
-	<SFML/Graphics/RectangleShape.hpp>
+	"assets/Universe.h"
+	"assets/FippsRegular.h"
 
-1604275029 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\scene\scenes\splashscreen.h
+1605226815 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\scene\scenes\splashscreen.h
 	<memory>
-	<SFML/Graphics/Texture.hpp>
-	<SFML/Audio/Sound.hpp>
 	<tweeny.h>
+	<SFML/Graphics/Texture.hpp>
 	<SFML/System/Clock.hpp>
 	<SFML/Graphics/Text.hpp>
 	<SFML/Graphics/Sprite.hpp>
 	<SFML/Graphics/Shader.hpp>
+	<SFML/Graphics/RectangleShape.hpp>
 	"scene/Scene.h"
-	"io/ResourceLoader.h"
 	"io/MusicStream.h"
 
 1602971550 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\scene\scene.cpp
@@ -655,4 +654,20 @@
 1604277756 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\io\musicstream.h
 	<string>
 	<SFML/Audio/Music.hpp>
+
+1604877669 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\universe.h
+	<string>
+	<utility>
+
+1604877669 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\assets\universe.cpp
+	"assets/Universe.h"
+	<vector>
+
+1604897975 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\assets\fippsregular.cpp
+	"assets/FippsRegular.h"
+	<vector>
+
+1604897975 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\fippsregular.h
+	<string>
+	<utility>
 

@@ -101,6 +101,9 @@
 		<Unit filename="include/assets/CursorSFX.h">
 			<Option target="Static Release" />
 		</Unit>
+		<Unit filename="include/assets/FippsRegular.h">
+			<Option target="Static Release" />
+		</Unit>
 		<Unit filename="include/assets/NeonNanoborg.h">
 			<Option target="Static Release" />
 		</Unit>
@@ -111,6 +114,9 @@
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="include/assets/StressTestVRT.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/Universe.h">
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="include/io/MusicStream.h" />
@@ -144,6 +150,9 @@
 		<Unit filename="src/assets/CursorSFX.cpp">
 			<Option target="Static Release" />
 		</Unit>
+		<Unit filename="src/assets/FippsRegular.cpp">
+			<Option target="Static Release" />
+		</Unit>
 		<Unit filename="src/assets/NeonNanoborg.cpp">
 			<Option target="Static Release" />
 		</Unit>
@@ -154,6 +163,9 @@
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="src/assets/StressTestVRT.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/Universe.cpp">
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="src/io/MusicStream.cpp" />
