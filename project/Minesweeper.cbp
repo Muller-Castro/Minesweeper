@@ -91,6 +91,12 @@
 		<Unit filename="include/assets/Arial.h">
 			<Option target="Static Release" />
 		</Unit>
+		<Unit filename="include/assets/BigBombFRG.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/BigBombVRT.h">
+			<Option target="Static Release" />
+		</Unit>
 		<Unit filename="include/assets/BombIcon.h" />
 		<Unit filename="include/assets/BombSplashScreen.h">
 			<Option target="Static Release" />
@@ -101,19 +107,13 @@
 		<Unit filename="include/assets/CursorSFX.h">
 			<Option target="Static Release" />
 		</Unit>
-		<Unit filename="include/assets/FippsRegular.h">
+		<Unit filename="include/assets/INET.h">
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="include/assets/NeonNanoborg.h">
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="include/assets/SplashScreenSoundTrack.h">
-			<Option target="Static Release" />
-		</Unit>
-		<Unit filename="include/assets/StressTestFRG.h">
-			<Option target="Static Release" />
-		</Unit>
-		<Unit filename="include/assets/StressTestVRT.h">
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="include/assets/Universe.h">
@@ -140,6 +140,12 @@
 		<Unit filename="src/assets/Arial.cpp">
 			<Option target="Static Release" />
 		</Unit>
+		<Unit filename="src/assets/BigBombFRG.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/BigBombVRT.cpp">
+			<Option target="Static Release" />
+		</Unit>
 		<Unit filename="src/assets/BombIcon.cpp" />
 		<Unit filename="src/assets/BombSplashScreen.cpp">
 			<Option target="Static Release" />
@@ -150,19 +156,13 @@
 		<Unit filename="src/assets/CursorSFX.cpp">
 			<Option target="Static Release" />
 		</Unit>
-		<Unit filename="src/assets/FippsRegular.cpp">
+		<Unit filename="src/assets/INET.cpp">
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="src/assets/NeonNanoborg.cpp">
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="src/assets/SplashScreenSoundTrack.cpp">
-			<Option target="Static Release" />
-		</Unit>
-		<Unit filename="src/assets/StressTestFRG.cpp">
-			<Option target="Static Release" />
-		</Unit>
-		<Unit filename="src/assets/StressTestVRT.cpp">
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="src/assets/Universe.cpp">

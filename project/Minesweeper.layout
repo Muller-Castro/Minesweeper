@@ -1,65 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
 	<FileVersion major="1" minor="0" />
-	<ActiveTarget name="Static Release" />
-	<File name="res\resource.rc" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<ActiveTarget name="Debug" />
+	<File name="src\assets\BombSpritesheet.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="60" topLine="0" />
+			<Cursor1 position="4239" topLine="0" />
 		</Cursor>
 	</File>
 	<File name="include\io\ResourceLoader.h" open="1" top="0" tabpos="13" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="2090" topLine="54" />
+			<Cursor1 position="2090" topLine="47" />
 		</Cursor>
 	</File>
-	<File name="src\assets\BombIcon.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="src\assets\BigBombFRG.cpp" open="0" top="0" tabpos="17" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="2150" topLine="14" />
-		</Cursor>
-	</File>
-	<File name="include\MinesweeperGame.h" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="2396" topLine="27" />
-		</Cursor>
-	</File>
-	<File name="src\assets\BombSplashScreen.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="262" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="include\Input.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="2276" topLine="44" />
-		</Cursor>
-	</File>
-	<File name="src\MinesweeperGame.cpp" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="6243" topLine="128" />
-		</Cursor>
-	</File>
-	<File name="include\scene\scenes\SplashScreen.h" open="1" top="1" tabpos="11" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="3025" topLine="59" />
-		</Cursor>
-	</File>
-	<File name="include\GlobalConfigurations.h" open="1" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="2572" topLine="25" />
-		</Cursor>
-	</File>
-	<File name="src\scene\scenes\SplashScreen.cpp" open="1" top="0" tabpos="12" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="2643" topLine="85" />
-		</Cursor>
-	</File>
-	<File name="src\scene\Scene.cpp" open="0" top="0" tabpos="10" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="2541" topLine="42" />
-		</Cursor>
-	</File>
-	<File name="src\io\ResourceLoader.cpp" open="0" top="0" tabpos="15" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="2264" topLine="14" />
+			<Cursor1 position="109" topLine="0" />
 		</Cursor>
 	</File>
 	<File name="include\assets\BombIcon.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -67,9 +22,119 @@
 			<Cursor1 position="104" topLine="17" />
 		</Cursor>
 	</File>
+	<File name="src\assets\BigBombVRT.cpp" open="0" top="0" tabpos="18" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="109" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="include\io\SimpleINIParser.h" open="1" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1716" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="include\assets\Arial.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2024" topLine="9" />
+		</Cursor>
+	</File>
+	<File name="src\io\ResourceLoader.cpp" open="0" top="0" tabpos="15" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2264" topLine="137" />
+		</Cursor>
+	</File>
+	<File name="include\scene\SceneManager.h" open="1" top="0" tabpos="9" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2254" topLine="40" />
+		</Cursor>
+	</File>
+	<File name="include\GlobalConfigurations.h" open="1" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2572" topLine="25" />
+		</Cursor>
+	</File>
+	<File name="src\scene\scenes\SplashScreen.cpp" open="1" top="1" tabpos="12" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="8818" topLine="264" />
+		</Cursor>
+	</File>
+	<File name="src\MinesweeperGame.cpp" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="6243" topLine="128" />
+		</Cursor>
+	</File>
+	<File name="src\scene\SceneManager.cpp" open="1" top="0" tabpos="10" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="3356" topLine="62" />
+		</Cursor>
+	</File>
 	<File name="include\scene\scenes\MainMenu.h" open="1" top="0" tabpos="15" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="2165" topLine="14" />
+		</Cursor>
+	</File>
+	<File name="include\io\ini_strings\WindowINI.h" open="1" top="0" tabpos="17" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2699" topLine="18" />
+		</Cursor>
+	</File>
+	<File name="res\resource.rc" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="60" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="include\scene\Scene.h" open="1" top="0" tabpos="8" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2070" topLine="39" />
+		</Cursor>
+	</File>
+	<File name="src\assets\SplashScreenSoundTrack.cpp" open="0" top="0" tabpos="22" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="39" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="include\Input.hpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="0" topLine="12" />
+		</Cursor>
+	</File>
+	<File name="src\io\MusicStream.cpp" open="0" top="0" tabpos="22" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="503" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="include\Input.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2276" topLine="44" />
+		</Cursor>
+	</File>
+	<File name="include\assets\BigBombFRG.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="109" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="src\scene\Scene.cpp" open="0" top="0" tabpos="10" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2541" topLine="42" />
+		</Cursor>
+	</File>
+	<File name="include\assets\BigBombVRT.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="107" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="src\assets\BombIcon.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2150" topLine="14" />
+		</Cursor>
+	</File>
+	<File name="src\io\SimpleINIParser.cpp" open="0" top="0" tabpos="21" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="7363" topLine="225" />
+		</Cursor>
+	</File>
+	<File name="include\io\MusicStream.h" open="1" top="0" tabpos="14" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="242" topLine="0" />
 		</Cursor>
 	</File>
 	<File name="src\Main.cpp" open="1" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -82,44 +147,19 @@
 			<Cursor1 position="122" topLine="24" />
 		</Cursor>
 	</File>
+	<File name="src\GlobalConfigurations.cpp" open="1" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="5717" topLine="110" />
+		</Cursor>
+	</File>
 	<File name="include\io\ResourceLoader.hpp" open="0" top="0" tabpos="14" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="2084" topLine="15" />
+			<Cursor1 position="3461" topLine="48" />
 		</Cursor>
 	</File>
-	<File name="include\scene\SceneManager.h" open="1" top="0" tabpos="9" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="src\assets\BombSplashScreen.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="2254" topLine="40" />
-		</Cursor>
-	</File>
-	<File name="include\io\MusicStream.h" open="1" top="0" tabpos="14" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="242" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="src\assets\StressTestFRG.cpp" open="1" top="0" tabpos="17" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="344" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="include\scene\Scene.h" open="1" top="0" tabpos="8" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="2070" topLine="39" />
-		</Cursor>
-	</File>
-	<File name="src\assets\BombSpritesheet.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="4239" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="include\io\SimpleINIParser.h" open="1" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="1716" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="include\Input.hpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="0" topLine="12" />
+			<Cursor1 position="262" topLine="0" />
 		</Cursor>
 	</File>
 	<File name="src\Input.cpp" open="1" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -127,39 +167,14 @@
 			<Cursor1 position="2511" topLine="37" />
 		</Cursor>
 	</File>
-	<File name="src\GlobalConfigurations.cpp" open="1" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="include\scene\scenes\SplashScreen.h" open="1" top="0" tabpos="11" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="5717" topLine="110" />
+			<Cursor1 position="2902" topLine="48" />
 		</Cursor>
 	</File>
-	<File name="include\io\ini_strings\WindowINI.h" open="1" top="0" tabpos="19" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="include\MinesweeperGame.h" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="2699" topLine="18" />
-		</Cursor>
-	</File>
-	<File name="src\assets\SplashScreenSoundTrack.cpp" open="0" top="0" tabpos="22" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="39" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="src\io\SimpleINIParser.cpp" open="0" top="0" tabpos="21" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="7363" topLine="225" />
-		</Cursor>
-	</File>
-	<File name="src\io\MusicStream.cpp" open="0" top="0" tabpos="22" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="503" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="src\scene\SceneManager.cpp" open="1" top="0" tabpos="10" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="3356" topLine="62" />
-		</Cursor>
-	</File>
-	<File name="src\assets\StressTestVRT.cpp" open="1" top="0" tabpos="18" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="593" topLine="0" />
+			<Cursor1 position="2396" topLine="27" />
 		</Cursor>
 	</File>
 </CodeBlocks_layout_file>
