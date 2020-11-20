@@ -1,5 +1,5 @@
 /****************************************************************************************/
-/* FippsRegular.h                                                                       */
+/* INET.h                                                                               */
 /****************************************************************************************/
 /* Copyright (c) 2020 Muller Castro.                                                    */
 /*                                                                                      */
@@ -21,16 +21,16 @@
 /* OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                                        */
 /****************************************************************************************/
 
-#ifndef FIPPS_REGULAR_H
-#define FIPPS_REGULAR_H
+#ifndef INET_H
+#define INET_H
 
 #include <string>
 #include <utility>
 
 namespace Minesweeper {
 
-	std::pair<std::string, std::string> get_raw_fipps_regular();
+	std::pair<std::string, std::string> get_raw_inet();
 
 }
 
-#endif // FIPPS_REGULAR_H
+#endif // INET_H
