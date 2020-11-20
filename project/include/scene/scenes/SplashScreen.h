@@ -24,7 +24,21 @@
 #ifndef SPLASH_SCREEN_H
 #define SPLASH_SCREEN_H
 
+#include <chrono>
+
+#include <memory>
+
+#include <tweeny.h>
+
+#include <SFML/Graphics/Texture.hpp>
+#include <SFML/System/Clock.hpp>
+#include <SFML/Graphics/Text.hpp>
+#include <SFML/Graphics/Sprite.hpp>
+#include <SFML/Graphics/Shader.hpp>
+#include <SFML/Graphics/RectangleShape.hpp>
+
 #include "scene/Scene.h"
+#include "io/MusicStream.h"
 
 namespace Minesweeper {
 
@@ -34,11 +48,58 @@ namespace Minesweeper {
         SplashScreen();
         ~SplashScreen() noexcept override;
 
-        void update(float) override;
-        void draw() override;
+        void process_inputs() override;
+        void update(float)    override;
+        void draw()           override;
 
     private:
-        SpriteWrapper bomb;
+        enum class Transitions : unsigned char
+        {
+            OPENING,
+            WAITING,
+            CLOSING
+        };
+
+        bool should_flip_bomb_direction;
+
+        std::chrono::high_resolution_clock::time_point scene_start_point;
+
+        Transitions transition;
+
+        sf::Clock transitions_clock;
+        sf::Clock bomb_layer_clock;
+
+        sf::RectangleShape transition_rect;
+
+#ifdef __S_RELEASE__
+        std::pair<std::string, std::string> credits_font_data;
+#endif // __S_RELEASE__
+
+        std::shared_ptr<MusicStream> sound_track;
+
+        std::shared_ptr<sf::Texture> universe_texture;
+        std::shared_ptr<sf::Texture> bomb_texture;
+
+        std::shared_ptr<sf::Font> credits_font;
+
+        tweeny::tween<float> bomb_tween;
+
+        std::shared_ptr<sf::Shader> shader;
+
+        sf::Sprite universe_sprite;
+        sf::Sprite big_bomb_sprite;
+        sf::Sprite bomb_sprite;
+
+        sf::Text credits_text;
+
+        int run_fade(bool in, float d) noexcept;
+        void fade_soundtrack(float d) noexcept;
+        void update_transitions(float d) noexcept;
+
+        void move_universe(float d) noexcept;
+
+        void draw_big_bomb();
+        void draw_bomb();
     };
 
 }
