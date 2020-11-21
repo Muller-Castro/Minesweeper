@@ -33,6 +33,10 @@ namespace Minesweeper {
     class GlobalConfigurations
     {
     public:
+#ifdef __DEBUG__
+        static bool show_bb;
+#endif // __DEBUG__
+
         static void process_inputs();
         static void update(float);
         static void draw();

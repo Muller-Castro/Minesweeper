@@ -48,6 +48,10 @@
 
 using namespace Minesweeper;
 
+#ifdef __DEBUG__
+bool GlobalConfigurations::show_bb = true;
+#endif // __DEBUG__
+
 #ifndef __S_RELEASE__
 std::string GlobalConfigurations::current_scene_name;
 #endif // __S_RELEASE__
@@ -59,6 +63,9 @@ void GlobalConfigurations::process_inputs()
 #ifndef __S_RELEASE__
     else if(Input::is_just_pressed<Input::Key>(sf::Keyboard::F5)) SceneManager::restart_scene();
 #endif // __S_RELEASE__
+#ifdef __DEBUG__
+    else if(Input::is_just_pressed<Input::Key>(sf::Keyboard::F9)) GlobalConfigurations::show_bb = !GlobalConfigurations::show_bb;
+#endif // __DEBUG__
 }
 
 void GlobalConfigurations::update(float delta)
@@ -99,7 +106,11 @@ void GlobalConfigurations::update(float delta)
                   << " | FPS: " << fps
                   << " | Run-time: " << (hours   < 10 ? "0" + std::to_string(hours)   : std::to_string(hours)  ) << 'h'
                                      << (minutes < 10 ? "0" + std::to_string(minutes) : std::to_string(minutes)) << 'm'
-                                     << (seconds < 10 ? "0" + std::to_string(seconds) : std::to_string(seconds)) << 's';
+                                     << (seconds < 10 ? "0" + std::to_string(seconds) : std::to_string(seconds)) << 's'
+#ifdef __DEBUG__
+                  << " | F9: BB"
+#endif // __DEBUG__
+                  ;
 
     MinesweeperGame::window->setTitle(new_win_title.str());
 }
