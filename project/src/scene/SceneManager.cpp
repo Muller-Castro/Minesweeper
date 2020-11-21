@@ -29,6 +29,7 @@
 
 #include "scene/scenes/SplashScreen.h"
 #include "scene/scenes/MainMenu.h"
+#include "scene/scenes/Game.h"
 
 using namespace Minesweeper;
 
@@ -62,6 +63,16 @@ void SceneManager::force_scene_change(Scenes scene)
 
 #ifndef __S_RELEASE__
             GlobalConfigurations::current_scene_name = "MAIN MENU";
+#endif // __S_RELEASE__
+
+        } break;
+
+        case Scenes::GAME: {
+
+            SceneManager::current_scene.reset(new Game());
+
+#ifndef __S_RELEASE__
+            GlobalConfigurations::current_scene_name = "GAME";
 #endif // __S_RELEASE__
 
         } break;
