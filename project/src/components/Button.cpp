@@ -119,8 +119,6 @@ void Button::set_state() noexcept
 
     bool mouse_entered = bounding_box.contains(sf::Vector2f(mouse_position.x, mouse_position.y));
 
-    state = States::NONE;
-
     if(mouse_entered && Input::is_pressed<Input::Mouse>(sf::Mouse::Left)) {
 
         state = States::PRESSED;
@@ -130,6 +128,10 @@ void Button::set_state() noexcept
 
         if(state == States::PRESSED) state = States::RELEASED;
         else                         state = States::HOVERED;
+
+    }else {
+
+        state = States::NONE;
 
     }
 }
