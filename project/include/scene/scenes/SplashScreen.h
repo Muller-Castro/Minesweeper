@@ -42,7 +42,7 @@
 
 namespace Minesweeper {
 
-    class SplashScreen : public Scene
+    class SplashScreen final : public Scene
     {
     public:
         SplashScreen();
