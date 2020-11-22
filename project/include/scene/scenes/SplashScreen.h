@@ -25,8 +25,10 @@
 #define SPLASH_SCREEN_H
 
 #include <chrono>
-
 #include <memory>
+#ifdef __S_RELEASE__
+#include <utility>
+#endif // __S_RELEASE__
 
 #include <tweeny.h>
 
