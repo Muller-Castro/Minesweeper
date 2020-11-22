@@ -31,6 +31,8 @@
 #include "scene/scenes/MainMenu.h"
 #include "scene/scenes/Game.h"
 
+#include "io/ResourceLoader.h"
+
 using namespace Minesweeper;
 
 std::unique_ptr<Scene> SceneManager::current_scene;
@@ -45,6 +47,9 @@ void SceneManager::change_scene_to(Scenes scene)
 
 void SceneManager::force_scene_change(Scenes scene)
 {
+    SceneManager::current_scene.reset(nullptr);
+    ResourceLoader::erase_unique_references();
+
     switch(scene) {
 
         case Scenes::SPLASH_SCREEN: {

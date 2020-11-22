@@ -47,6 +47,7 @@ namespace Minesweeper {
 
     private:
         friend class MinesweeperGame;
+        friend class SceneManager;
 #ifndef __S_RELEASE__
         friend class GlobalConfigurations;
 #endif // __S_RELEASE__
