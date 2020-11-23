@@ -1,5 +1,5 @@
 /****************************************************************************************/
-/* SceneManager.h                                                                       */
+/* TestZone.cpp                                                                         */
 /****************************************************************************************/
 /* Copyright (c) 2020 Muller Castro.                                                    */
 /*                                                                                      */
@@ -21,56 +21,69 @@
 /* OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                                        */
 /****************************************************************************************/
 
-#ifndef SCENE_MANAGER_H
-#define SCENE_MANAGER_H
+#include "scene/scenes/TestZone.h"
 
-#include <memory>
-#include <functional>
-#include <queue>
+#include "io/ResourceLoader.h"
 
-#include "scene/Scene.h"
+using namespace Minesweeper;
 
-namespace Minesweeper {
+TestZone::TestZone() :
+    ignited_bomb_texture(),
+    ignited_bomb_sprite(),
+    animation_player(
 
-    class MinesweeperGame;
-
-    class SceneManager
-    {
-    public:
-        enum class Scenes : unsigned char
         {
-            UNDEFINED,
-#ifdef __DEBUG__
-            TEST_ZONE,
-#endif // __DEBUG__
-            SPLASH_SCREEN,
-            MAIN_MENU,
-            GAME
-        };
+            Animation("IGNITED_BOMB", 3.f, {
 
-        static void change_scene_to(Scenes scene);
-        static void restart_scene();
+                KeyFrame(0.f, [&]() {
 
-        template<typename Fn>
-        static void call_deferred(Fn fn) { SceneManager::deferred_processes.push(fn); }
+                    ignited_bomb_sprite.setTextureRect(sf::IntRect(0, 0, 64, 64));
 
-    private:
-        friend class MinesweeperGame;
+                }),
 
-        static std::unique_ptr<Scene> current_scene;
-        static Scenes current_scene_enum;
+                KeyFrame(1.f, [&]() {
 
-        static std::queue<std::function<void(void)>> deferred_processes;
+                    ignited_bomb_sprite.setTextureRect(sf::IntRect(64, 0, 64, 64));
 
-        static void process_inputs();
-        static void update(float);
-        static void draw();
+                }),
 
-        static void force_scene_change(Scenes scene);
+                KeyFrame(2.f, [&]() {
 
-        static void run_deferred();
-    };
+                    ignited_bomb_sprite.setTextureRect(sf::IntRect(128, 0, 64, 64));
 
+                }),
+
+            })
+        },
+
+        "IGNITED_BOMB", true, true, 2.f
+
+    )
+{
+    ignited_bomb_texture = ResourceLoader::load<sf::Texture>("assets/textures/BombSpritesheet.png");
+
+    ignited_bomb_sprite.setTexture(*ignited_bomb_texture);
+    ignited_bomb_sprite.setPosition(400.f, 300.f);
+
+    animation_player.play();
 }
 
-#endif // SCENE_MANAGER_H
+TestZone::~TestZone()
+{
+    //
+}
+
+void TestZone::process_inputs()
+{
+    //
+}
+
+void TestZone::update(float delta)
+{
+    animation_player.update(delta);
+}
+
+void TestZone::draw()
+{
+    draw_on_layer(0, ignited_bomb_sprite);
+}

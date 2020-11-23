@@ -65,6 +65,7 @@ void GlobalConfigurations::process_inputs()
 #endif // __S_RELEASE__
 #ifdef __DEBUG__
     else if(Input::is_just_pressed<Input::Key>(sf::Keyboard::F9)) GlobalConfigurations::show_bb = !GlobalConfigurations::show_bb;
+    else if(Input::is_just_pressed<Input::Key>(sf::Keyboard::F10)) SceneManager::change_scene_to(SceneManager::Scenes::TEST_ZONE);
 #endif // __DEBUG__
 }
 
@@ -101,14 +102,20 @@ void GlobalConfigurations::update(float delta)
                   << " | Esc: Quit"
                   << " | F3: Resize"
 #ifndef __S_RELEASE__
-                  << " | F5: Restart scene"
+                  << " | F5: RST Scene"
 #endif // __S_RELEASE__
                   << " | FPS: " << fps
-                  << " | Run-time: " << (hours   < 10 ? "0" + std::to_string(hours)   : std::to_string(hours)  ) << 'h'
-                                     << (minutes < 10 ? "0" + std::to_string(minutes) : std::to_string(minutes)) << 'm'
-                                     << (seconds < 10 ? "0" + std::to_string(seconds) : std::to_string(seconds)) << 's'
+#ifndef __DEBUG__
+                  << " | Run-time: "
+#else
+                  << " | RT: "
+#endif // __DEBUG__
+                  << (hours   < 10 ? "0" + std::to_string(hours)   : std::to_string(hours)  ) << 'h'
+                  << (minutes < 10 ? "0" + std::to_string(minutes) : std::to_string(minutes)) << 'm'
+                  << (seconds < 10 ? "0" + std::to_string(seconds) : std::to_string(seconds)) << 's'
 #ifdef __DEBUG__
                   << " | F9: BB"
+                  << " | F10: TZ"
 #endif // __DEBUG__
                   ;
 

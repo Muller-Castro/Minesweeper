@@ -27,6 +27,9 @@
 #include "GlobalConfigurations.h"
 #endif // __S_RELEASE__
 
+#ifdef __DEBUG__
+#include "scene/scenes/TestZone.h"
+#endif // __DEBUG__
 #include "scene/scenes/SplashScreen.h"
 #include "scene/scenes/MainMenu.h"
 #include "scene/scenes/Game.h"
@@ -51,6 +54,16 @@ void SceneManager::force_scene_change(Scenes scene)
     ResourceLoader::erase_unique_references();
 
     switch(scene) {
+
+#ifdef __DEBUG__
+        case Scenes::TEST_ZONE: {
+
+            SceneManager::current_scene.reset(new TestZone());
+
+            GlobalConfigurations::current_scene_name = "TEST ZONE";
+
+        } break;
+#endif // __DEBUG__
 
         case Scenes::SPLASH_SCREEN: {
 

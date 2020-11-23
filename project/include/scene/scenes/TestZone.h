@@ -1,5 +1,5 @@
 /****************************************************************************************/
-/* SceneManager.h                                                                       */
+/* TestZone.h                                                                           */
 /****************************************************************************************/
 /* Copyright (c) 2020 Muller Castro.                                                    */
 /*                                                                                      */
@@ -21,56 +21,37 @@
 /* OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                                        */
 /****************************************************************************************/
 
-#ifndef SCENE_MANAGER_H
-#define SCENE_MANAGER_H
+#ifndef TEST_ZONE_H
+#define TEST_ZONE_H
 
 #include <memory>
-#include <functional>
-#include <queue>
+
+#include <SFML/Graphics/Texture.hpp>
+#include <SFML/Graphics/Sprite.hpp>
 
 #include "scene/Scene.h"
+#include "tools/AnimationPlayer.h"
 
 namespace Minesweeper {
 
-    class MinesweeperGame;
-
-    class SceneManager
+    class TestZone final : public Scene
     {
     public:
-        enum class Scenes : unsigned char
-        {
-            UNDEFINED,
-#ifdef __DEBUG__
-            TEST_ZONE,
-#endif // __DEBUG__
-            SPLASH_SCREEN,
-            MAIN_MENU,
-            GAME
-        };
+        TestZone();
+        ~TestZone() noexcept override;
 
-        static void change_scene_to(Scenes scene);
-        static void restart_scene();
-
-        template<typename Fn>
-        static void call_deferred(Fn fn) { SceneManager::deferred_processes.push(fn); }
+        void process_inputs()    override;
+        void update(float delta) override;
+        void draw()              override;
 
     private:
-        friend class MinesweeperGame;
+        std::shared_ptr<sf::Texture> ignited_bomb_texture;
 
-        static std::unique_ptr<Scene> current_scene;
-        static Scenes current_scene_enum;
+        sf::Sprite ignited_bomb_sprite;
 
-        static std::queue<std::function<void(void)>> deferred_processes;
-
-        static void process_inputs();
-        static void update(float);
-        static void draw();
-
-        static void force_scene_change(Scenes scene);
-
-        static void run_deferred();
+        AnimationPlayer animation_player;
     };
 
 }
 
-#endif // SCENE_MANAGER_H
+#endif // TEST_ZONE_H
