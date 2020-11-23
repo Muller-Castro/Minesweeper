@@ -24,3 +24,84 @@
 #include "tools/AnimationPlayer.h"
 
 using namespace Minesweeper;
+
+Animation::Animation(const std::string& name_, float length_, std::initializer_list<KeyFrame> key_frame_list) :
+    name(name_),
+    length(length_),
+    key_frames()
+{
+    key_frames.reserve(key_frame_list.size());
+
+    for(std::initializer_list<KeyFrame>::iterator it = key_frame_list.begin(); it != key_frame_list.end(); ++it) key_frames.push_back(*it);
+}
+
+AnimationPlayer::AnimationPlayer(std::initializer_list<Animation> animation_list, const std::string& current_animation_name_, bool loop_, bool paused_, float speed_, bool backwards_) :
+    loop(loop_),
+    speed(speed_),
+    paused(paused_),
+    backwards(backwards_),
+    time(0.f),
+    current_animation_name(current_animation_name_),
+    animations()
+{
+    for(std::initializer_list<Animation>::iterator it = animation_list.begin(); it != animation_list.end(); ++it) animations[(*it).name] = *it;
+}
+
+void AnimationPlayer::update(float delta)
+{
+    if(!paused) {
+
+        Animation& current_animation = animations[current_animation_name];
+
+        for(KeyFrame& kf : current_animation.key_frames) {
+
+            if((backwards ? time <= kf.time_point : time >= kf.time_point) && !kf.already_set) {
+
+                kf.set_value();
+                kf.already_set = true;
+
+            }
+
+        }
+
+        time = backwards ? time - delta * speed : time + delta * speed;
+
+        if(backwards) time = time > current_animation.length ? current_animation.length : time;
+        else          time = time < 0.f ? 0.f : time;
+
+        if(backwards ? time <= 0.f : time >= current_animation.length) {
+
+            for(KeyFrame& kf : current_animation.key_frames) kf.already_set = false;
+
+            if(loop) time = backwards ? current_animation.length : 0.f;
+            else     pause();
+
+        }
+
+    }
+}
+
+void AnimationPlayer::play(const std::string& anim_name, bool backwards_)
+{
+    paused = false;
+    backwards = backwards_;
+
+    if(!anim_name.empty()) {
+
+        current_animation_name = anim_name;
+
+        if(backwards) time = animations[current_animation_name].length;
+
+    }
+}
+
+void AnimationPlayer::pause()
+{
+    paused = true;
+}
+
+void AnimationPlayer::stop()
+{
+    paused = true;
+    time = 0.f;
+}

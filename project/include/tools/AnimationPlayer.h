@@ -24,12 +24,62 @@
 #ifndef ANIMATION_PLAYER_H
 #define ANIMATION_PLAYER_H
 
+#include <vector>
+#include <string>
+#include <functional>
+#include <initializer_list>
+#include <unordered_map>
+
 namespace Minesweeper {
 
-    template<typename T>
+    struct KeyFrame
+    {
+        bool already_set;
+        float time_point;
+        std::function<void(void)> set_value;
+
+        KeyFrame() : already_set(), time_point(0.f), set_value() {}
+
+        template<typename Fn>
+        KeyFrame(float time_point_, Fn set_value_) : already_set(), time_point(time_point_), set_value(set_value_) {}
+    };
+
+    struct Animation
+    {
+        std::string name;
+        float length;
+        std::vector<KeyFrame> key_frames;
+
+        Animation() : name(), length(0.f), key_frames() {}
+        Animation(const std::string& name_, float length_, std::initializer_list<KeyFrame> key_frame_list);
+    };
+
     class AnimationPlayer
     {
-        //
+    public:
+        bool loop;
+        float speed;
+
+        AnimationPlayer(std::initializer_list<Animation> animation_list, const std::string& current_animation_name_, bool loop_ = true, bool paused_ = true, float speed_ = 1.f, bool backwards_ = false);
+
+        void update(float delta);
+
+        void play(const std::string& anim_name = std::string(), bool backwards_ = false);
+        void pause();
+        void stop();
+
+        bool is_paused() const noexcept { return paused; }
+        float get_time() const noexcept { return time; }
+        const Animation& get_current_animation() const { return animations.at(current_animation_name); }
+
+    private:
+        bool paused;
+        bool backwards;
+
+        float time;
+
+        std::string current_animation_name;
+        std::unordered_map<std::string, Animation> animations;
     };
 
 }
