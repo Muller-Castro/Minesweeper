@@ -24,11 +24,25 @@
 #ifndef MAIN_MENU_H
 #define MAIN_MENU_H
 
+#include <vector>
+#include <memory>
+#include <string>
+#include <map>
+#ifdef __S_RELEASE__
+#include <utility>
+#endif // __S_RELEASE__
+
+#include <SFML/Graphics/Texture.hpp>
+#include <SFML/Graphics/Font.hpp>
+#include <SFML/Graphics/Text.hpp>
+
 #include "scene/Scene.h"
+#include "components/Button.h"
+#include "tools/AnimationPlayer.h"
 
 namespace Minesweeper {
 
-    class MainMenu : public Scene
+    class MainMenu final : public Scene
     {
     public:
         MainMenu();
@@ -37,6 +51,38 @@ namespace Minesweeper {
         void process_inputs()    override;
         void update(float delta) override;
         void draw()              override;
+
+    private:
+        friend class CreditsButton;
+        friend class CreditsReturnButton;
+
+        bool show_credits;
+
+        AnimationPlayer animations;
+
+#ifdef __S_RELEASE__
+        std::pair<std::string, std::string> font_data;
+#endif // __S_RELEASE__
+
+        std::shared_ptr<sf::Texture> background_texture;
+        std::shared_ptr<sf::Texture> title_texture;
+        std::shared_ptr<sf::Texture> p1_flag_texture;
+        std::shared_ptr<sf::Texture> p2_flag_texture;
+        std::shared_ptr<sf::Texture> bomb_texture;
+
+        std::shared_ptr<sf::Font> font;
+
+        sf::Sprite background_sprite;
+        sf::Sprite title_sprite;
+        sf::Sprite p1_flag_sprite;
+        sf::Sprite p2_flag_sprite;
+        sf::Sprite bomb_sprite;
+
+        std::map<std::string, sf::Text> credits_texts;
+
+        std::vector<std::unique_ptr<Button>> buttons;
+
+        void draw_flags();
     };
 
 }
