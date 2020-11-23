@@ -104,23 +104,84 @@
 		<Unit filename="include/assets/BombSpritesheet.h">
 			<Option target="Static Release" />
 		</Unit>
+		<Unit filename="include/assets/CreditsDown.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/CreditsHovered.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/CreditsNHovered.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/CreditsReturnDown.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/CreditsReturnHovered.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/CreditsReturnNHovered.h">
+			<Option target="Static Release" />
+		</Unit>
 		<Unit filename="include/assets/CursorSFX.h">
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="include/assets/INET.h">
 			<Option target="Static Release" />
 		</Unit>
+		<Unit filename="include/assets/MainMenuBG.h">
+			<Option target="Static Release" />
+		</Unit>
 		<Unit filename="include/assets/NeonNanoborg.h">
 			<Option target="Static Release" />
 		</Unit>
+		<Unit filename="include/assets/P1Flag.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/P2Flag.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/PlayOfflineDown.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/PlayOfflineHovered.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/PlayOfflineNHovered.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/PlayOnlineDown.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/PlayOnlineHovered.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/PlayOnlineNHovered.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/QuitDown.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/QuitHovered.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/QuitNHovered.h">
+			<Option target="Static Release" />
+		</Unit>
 		<Unit filename="include/assets/SplashScreenSoundTrack.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/TitleScreen.h">
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="include/assets/Universe.h">
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="include/components/Button.h" />
+		<Unit filename="include/components/buttons/CreditsButton.h" />
+		<Unit filename="include/components/buttons/CreditsReturnButton.h" />
 		<Unit filename="include/components/buttons/PlayOfflineButton.h" />
+		<Unit filename="include/components/buttons/PlayOnlineButton.h" />
+		<Unit filename="include/components/buttons/QuitButton.h" />
 		<Unit filename="include/io/MusicStream.h" />
 		<Unit filename="include/io/ResourceLoader.h" />
 		<Unit filename="include/io/ResourceLoader.hpp" />
@@ -133,6 +194,10 @@
 		<Unit filename="include/scene/scenes/Game.h" />
 		<Unit filename="include/scene/scenes/MainMenu.h" />
 		<Unit filename="include/scene/scenes/SplashScreen.h" />
+		<Unit filename="include/scene/scenes/TestZone.h">
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="include/tools/AnimationPlayer.h" />
 		<Unit filename="res/resource.rc">
 			<Option compilerVar="WINDRES" />
 		</Unit>
@@ -156,23 +221,84 @@
 		<Unit filename="src/assets/BombSpritesheet.cpp">
 			<Option target="Static Release" />
 		</Unit>
+		<Unit filename="src/assets/CreditsDown.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/CreditsHovered.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/CreditsNHovered.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/CreditsReturnDown.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/CreditsReturnHovered.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/CreditsReturnNHovered.cpp">
+			<Option target="Static Release" />
+		</Unit>
 		<Unit filename="src/assets/CursorSFX.cpp">
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="src/assets/INET.cpp">
 			<Option target="Static Release" />
 		</Unit>
+		<Unit filename="src/assets/MainMenuBG.cpp">
+			<Option target="Static Release" />
+		</Unit>
 		<Unit filename="src/assets/NeonNanoborg.cpp">
 			<Option target="Static Release" />
 		</Unit>
+		<Unit filename="src/assets/P1Flag.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/P2Flag.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/PlayOfflineDown.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/PlayOfflineHovered.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/PlayOfflineNHovered.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/PlayOnlineDown.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/PlayOnlineHovered.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/PlayOnlineNHovered.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/QuitDown.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/QuitHovered.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/QuitNHovered.cpp">
+			<Option target="Static Release" />
+		</Unit>
 		<Unit filename="src/assets/SplashScreenSoundTrack.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/TitleScreen.cpp">
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="src/assets/Universe.cpp">
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="src/components/Button.cpp" />
+		<Unit filename="src/components/buttons/CreditsButton.cpp" />
+		<Unit filename="src/components/buttons/CreditsReturnButton.cpp" />
 		<Unit filename="src/components/buttons/PlayOfflineButton.cpp" />
+		<Unit filename="src/components/buttons/PlayOnlineButton.cpp" />
+		<Unit filename="src/components/buttons/QuitButton.cpp" />
 		<Unit filename="src/io/MusicStream.cpp" />
 		<Unit filename="src/io/ResourceLoader.cpp" />
 		<Unit filename="src/io/SimpleINIParser.cpp" />
@@ -181,6 +307,8 @@
 		<Unit filename="src/scene/scenes/Game.cpp" />
 		<Unit filename="src/scene/scenes/MainMenu.cpp" />
 		<Unit filename="src/scene/scenes/SplashScreen.cpp" />
+		<Unit filename="src/scene/scenes/TestZone.cpp" />
+		<Unit filename="src/tools/AnimationPlayer.cpp" />
 		<Extensions>
 			<lib_finder disable_auto="1" />
 		</Extensions>
