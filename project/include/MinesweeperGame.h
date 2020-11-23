@@ -45,6 +45,7 @@ namespace Minesweeper {
     private:
         friend class Input;
         friend class GlobalConfigurations;
+        friend class QuitButton;
 
         static bool is_running;
 
