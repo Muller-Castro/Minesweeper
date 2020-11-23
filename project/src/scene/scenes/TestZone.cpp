@@ -23,49 +23,11 @@
 
 #include "scene/scenes/TestZone.h"
 
-#include "io/ResourceLoader.h"
-
 using namespace Minesweeper;
 
-TestZone::TestZone() :
-    ignited_bomb_texture(),
-    ignited_bomb_sprite(),
-    animation_player(
-
-        {
-            Animation("IGNITED_BOMB", 3.f, {
-
-                KeyFrame(0.f, [&]() {
-
-                    ignited_bomb_sprite.setTextureRect(sf::IntRect(0, 0, 64, 64));
-
-                }),
-
-                KeyFrame(1.f, [&]() {
-
-                    ignited_bomb_sprite.setTextureRect(sf::IntRect(64, 0, 64, 64));
-
-                }),
-
-                KeyFrame(2.f, [&]() {
-
-                    ignited_bomb_sprite.setTextureRect(sf::IntRect(128, 0, 64, 64));
-
-                }),
-
-            })
-        },
-
-        "IGNITED_BOMB", true, true, 2.f
-
-    )
+TestZone::TestZone()
 {
-    ignited_bomb_texture = ResourceLoader::load<sf::Texture>("assets/textures/BombSpritesheet.png");
-
-    ignited_bomb_sprite.setTexture(*ignited_bomb_texture);
-    ignited_bomb_sprite.setPosition(400.f, 300.f);
-
-    animation_player.play();
+    //
 }
 
 TestZone::~TestZone()
@@ -80,10 +42,10 @@ void TestZone::process_inputs()
 
 void TestZone::update(float delta)
 {
-    animation_player.update(delta);
+    //
 }
 
 void TestZone::draw()
 {
-    draw_on_layer(0, ignited_bomb_sprite);
+    //
 }

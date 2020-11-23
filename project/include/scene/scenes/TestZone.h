@@ -24,13 +24,7 @@
 #ifndef TEST_ZONE_H
 #define TEST_ZONE_H
 
-#include <memory>
-
-#include <SFML/Graphics/Texture.hpp>
-#include <SFML/Graphics/Sprite.hpp>
-
 #include "scene/Scene.h"
-#include "tools/AnimationPlayer.h"
 
 namespace Minesweeper {
 
@@ -43,13 +37,6 @@ namespace Minesweeper {
         void process_inputs()    override;
         void update(float delta) override;
         void draw()              override;
-
-    private:
-        std::shared_ptr<sf::Texture> ignited_bomb_texture;
-
-        sf::Sprite ignited_bomb_sprite;
-
-        AnimationPlayer animation_player;
     };
 
 }
