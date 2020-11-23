@@ -44,7 +44,9 @@ AnimationPlayer::AnimationPlayer(std::initializer_list<Animation> animation_list
     current_animation_name(current_animation_name_),
     animations()
 {
-    for(std::initializer_list<Animation>::iterator it = animation_list.begin(); it != animation_list.end(); ++it) animations[(*it).name] = *it;
+    if(animation_list.size() == 0) pause();
+
+    add_animations(animation_list);
 }
 
 void AnimationPlayer::update(float delta)
@@ -79,6 +81,11 @@ void AnimationPlayer::update(float delta)
         }
 
     }
+}
+
+void AnimationPlayer::add_animations(std::initializer_list<Animation> animation_list)
+{
+    for(std::initializer_list<Animation>::iterator it = animation_list.begin(); it != animation_list.end(); ++it) animations[(*it).name] = *it;
 }
 
 void AnimationPlayer::play(const std::string& anim_name, bool backwards_)

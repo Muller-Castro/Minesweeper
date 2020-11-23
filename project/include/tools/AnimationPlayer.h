@@ -64,6 +64,8 @@ namespace Minesweeper {
 
         void update(float delta);
 
+        void add_animations(std::initializer_list<Animation> animation_list);
+
         void play(const std::string& anim_name = std::string(), bool backwards_ = false);
         void pause();
         void stop();
