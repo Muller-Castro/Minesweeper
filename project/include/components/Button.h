@@ -55,6 +55,7 @@ namespace Minesweeper {
         void update(float d);
         void draw(sf::RenderTarget& target, sf::RenderStates states) const final override;
 
+        bool is_hovered() const noexcept { return current_texture == HOVERED; }
         States get_state() const noexcept { return state; }
 
     protected:
