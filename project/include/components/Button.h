@@ -24,7 +24,7 @@
 #ifndef BUTTON_H
 #define BUTTON_H
 
-#include <vector>
+#include <array>
 #include <memory>
 
 #include <SFML/Graphics/Drawable.hpp>
@@ -74,7 +74,7 @@ namespace Minesweeper {
 
         sf::FloatRect bounding_box;
 
-        std::vector<std::shared_ptr<sf::Texture>> textures;
+        std::array<std::shared_ptr<sf::Texture>, 3> textures;
         sf::Sprite sprite;
 
         void set_state() noexcept;

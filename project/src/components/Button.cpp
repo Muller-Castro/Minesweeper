@@ -39,7 +39,7 @@ Button::Button(const sf::Vector2f& position_, const sf::Vector2f& scale_, const 
     state(States::NONE),
     current_texture(Button::N_HOVERED),
     bounding_box(),
-    textures(3),
+    textures(),
     sprite()
 {
     textures[Button::HOVERED]   = hovered;
