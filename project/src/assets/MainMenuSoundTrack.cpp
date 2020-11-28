@@ -1,5 +1,5 @@
 /****************************************************************************************/
-/* MainMenuSoundTrack.cpp                                                               */
+/* MainMenuSoundtrack.cpp                                                               */
 /****************************************************************************************/
 /* Copyright (c) 2020 Muller Castro.                                                    */
 /*                                                                                      */
@@ -21,13 +21,13 @@
 /* OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                                        */
 /****************************************************************************************/
 
-#include "assets/MainMenuSoundTrack.h"
+#include "assets/MainMenuSoundtrack.h"
 
 #include <vector>
 
-std::pair<std::string, std::string> Minesweeper::get_raw_main_menu_sound_track()
+std::pair<std::string, std::string> Minesweeper::get_raw_main_menu_soundtrack()
 {
-	std::pair<std::string, std::string> result = std::make_pair("MainMenuSoundTrack", "");
+	std::pair<std::string, std::string> result = std::make_pair("MainMenuSoundtrack", "");
 
 	std::vector<short> raw_data {
 		

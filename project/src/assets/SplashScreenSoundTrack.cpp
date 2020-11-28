@@ -1,5 +1,5 @@
 /****************************************************************************************/
-/* SplashScreenSoundTrack.cpp                                                           */
+/* SplashScreenSoundtrack.cpp                                                           */
 /****************************************************************************************/
 /* Copyright (c) 2020 Muller Castro.                                                    */
 /*                                                                                      */
@@ -21,13 +21,13 @@
 /* OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                                        */
 /****************************************************************************************/
 
-#include "assets/SplashScreenSoundTrack.h"
+#include "assets/SplashScreenSoundtrack.h"
 
 #include <vector>
 
-std::pair<std::string, std::string> Minesweeper::get_raw_splash_screen_sound_track()
+std::pair<std::string, std::string> Minesweeper::get_raw_splash_screen_soundtrack()
 {
-	std::pair<std::string, std::string> result = std::make_pair("SplashScreenSoundTrack", "");
+	std::pair<std::string, std::string> result = std::make_pair("SplashScreenSoundtrack", "");
 
 	std::vector<short> raw_data {
 		

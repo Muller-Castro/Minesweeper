@@ -1,5 +1,5 @@
 /****************************************************************************************/
-/* MainMenuSoundTrack.h                                                                 */
+/* MainMenuSoundtrack.h                                                                 */
 /****************************************************************************************/
 /* Copyright (c) 2020 Muller Castro.                                                    */
 /*                                                                                      */
@@ -29,7 +29,7 @@
 
 namespace Minesweeper {
 
-	std::pair<std::string, std::string> get_raw_main_menu_sound_track();
+	std::pair<std::string, std::string> get_raw_main_menu_soundtrack();
 
 }
 

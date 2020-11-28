@@ -29,7 +29,7 @@
 #include "scene/SceneManager.h"
 
 #ifdef __S_RELEASE__
-#include "assets/SplashScreenSoundTrack.h"
+#include "assets/SplashScreenSoundtrack.h"
 #include "assets/BigBombVRT.h"
 #include "assets/BigBombFRG.h"
 #include "assets/BombSplashScreen.h"
@@ -49,7 +49,7 @@ SplashScreen::SplashScreen() :
 #ifdef __S_RELEASE__
     credits_font_data(get_raw_inet()),
 #endif // __S_RELEASE__
-    sound_track(),
+    soundtrack(),
     universe_texture(), bomb_texture(),
     credits_font(),
     bomb_tween(tweeny::from(0.f).to(697.6f).during(100).via(tweeny::easing::cubicInOut)),
@@ -60,13 +60,13 @@ SplashScreen::SplashScreen() :
     credits_text()
 {
 #ifndef __S_RELEASE__
-    sound_track = ResourceLoader::load<MusicStream>("assets/musics/SplashScreenSoundTrack.ogg");
+    soundtrack = ResourceLoader::load<MusicStream>("assets/musics/SplashScreenSoundtrack.ogg");
 #else
-    sound_track = ResourceLoader::load<MusicStream>(get_raw_splash_screen_sound_track());
+    soundtrack = ResourceLoader::load<MusicStream>(get_raw_splash_screen_soundtrack());
 #endif // __S_RELEASE__
 
-    sound_track->music.play();
-    sound_track->music.setVolume(0.f);
+    soundtrack->music.play();
+    soundtrack->music.setVolume(0.f);
 
 #ifndef __S_RELEASE__
     shader = ResourceLoader::load<sf::Shader>("assets/shaders/BigBomb.vrt_frg");
@@ -183,13 +183,13 @@ void SplashScreen::fade_soundtrack(float d) noexcept
 {
     constexpr float TRANS_SPEED = 50.f;
 
-    float new_volume = sound_track->music.getVolume();
+    float new_volume = soundtrack->music.getVolume();
 
     new_volume += TRANS_SPEED * d;
 
     if(new_volume > 100.f) new_volume = 100.f;
 
-    sound_track->music.setVolume(new_volume);
+    soundtrack->music.setVolume(new_volume);
 }
 
 void SplashScreen::update_transitions(float d) noexcept
@@ -200,7 +200,7 @@ void SplashScreen::update_transitions(float d) noexcept
 
         if(run_fade(true, d) <= 0) {
 
-            sound_track->music.setVolume(100.f);
+            soundtrack->music.setVolume(100.f);
 
             transition = Transitions::WAITING;
 

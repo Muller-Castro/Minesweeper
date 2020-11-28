@@ -77,7 +77,7 @@ namespace Minesweeper {
         std::pair<std::string, std::string> credits_font_data;
 #endif // __S_RELEASE__
 
-        std::shared_ptr<MusicStream> sound_track;
+        std::shared_ptr<MusicStream> soundtrack;
 
         std::shared_ptr<sf::Texture> universe_texture;
         std::shared_ptr<sf::Texture> bomb_texture;

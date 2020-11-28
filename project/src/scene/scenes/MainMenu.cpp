@@ -40,8 +40,8 @@
 #include "assets/TitleScreen.h"
 #include "assets/P1Flag.h"
 #include "assets/P2Flag.h"
-#include "assets/BombSpritesheet.h"
-#include "assets/MainMenuSoundTrack.h"
+#include "assets/BombSpriteSheet.h"
+#include "assets/MainMenuSoundtrack.h"
 #include "assets/INET.h"
 #include "assets/MainMenuButtonHovered.h"
 #include "assets/MainMenuButtonPressed.h"
@@ -145,15 +145,15 @@ MainMenu::MainMenu() :
     title_texture      = ResourceLoader::load<sf::Texture>("assets/textures/TitleScreen.png");
     p1_flag_texture    = ResourceLoader::load<sf::Texture>("assets/textures/P1Flag.png");
     p2_flag_texture    = ResourceLoader::load<sf::Texture>("assets/textures/P2Flag.png");
-    bomb_texture       = ResourceLoader::load<sf::Texture>("assets/textures/BombSpritesheet.png");
+    bomb_texture       = ResourceLoader::load<sf::Texture>("assets/textures/BombSpriteSheet.png");
     soundtrack         = ResourceLoader::load<MusicStream>("assets/musics/MainMenuSoundtrack.ogg");
 #else
     background_texture = ResourceLoader::load<sf::Texture>(get_raw_main_menu_bg());
     title_texture      = ResourceLoader::load<sf::Texture>(get_raw_title_screen());
     p1_flag_texture    = ResourceLoader::load<sf::Texture>(get_raw_p1_flag());
     p2_flag_texture    = ResourceLoader::load<sf::Texture>(get_raw_p2_flag());
-    bomb_texture       = ResourceLoader::load<sf::Texture>(get_raw_bomb_spritesheet());
-    soundtrack         = ResourceLoader::load<MusicStream>(get_raw_main_menu_sound_track());
+    bomb_texture       = ResourceLoader::load<sf::Texture>(get_raw_bomb_sprite_sheet());
+    soundtrack         = ResourceLoader::load<MusicStream>(get_raw_main_menu_soundtrack());
 #endif // __S_RELEASE__
 
     background_sprite.setTexture(*background_texture);

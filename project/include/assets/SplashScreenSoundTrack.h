@@ -1,5 +1,5 @@
 /****************************************************************************************/
-/* SplashScreenSoundTrack.h                                                             */
+/* SplashScreenSoundtrack.h                                                             */
 /****************************************************************************************/
 /* Copyright (c) 2020 Muller Castro.                                                    */
 /*                                                                                      */
@@ -29,7 +29,7 @@
 
 namespace Minesweeper {
 
-	std::pair<std::string, std::string> get_raw_splash_screen_sound_track();
+	std::pair<std::string, std::string> get_raw_splash_screen_soundtrack();
 
 }
 

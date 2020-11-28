@@ -1,5 +1,5 @@
 /****************************************************************************************/
-/* BombSpritesheet.cpp                                                                  */
+/* BombSpriteSheet.cpp                                                                  */
 /****************************************************************************************/
 /* Copyright (c) 2020 Muller Castro.                                                    */
 /*                                                                                      */
@@ -21,13 +21,13 @@
 /* OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                                        */
 /****************************************************************************************/
 
-#include "assets/BombSpritesheet.h"
+#include "assets/BombSpriteSheet.h"
 
 #include <vector>
 
-std::pair<std::string, std::string> Minesweeper::get_raw_bomb_spritesheet()
+std::pair<std::string, std::string> Minesweeper::get_raw_bomb_sprite_sheet()
 {
-	std::pair<std::string, std::string> result = std::make_pair("BombSpritesheet", "");
+	std::pair<std::string, std::string> result = std::make_pair("BombSpriteSheet", "");
 
 	std::vector<short> raw_data {
 		

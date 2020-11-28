@@ -1,5 +1,5 @@
 /****************************************************************************************/
-/* BombSpritesheet.h                                                                    */
+/* BombSpriteSheet.h                                                                    */
 /****************************************************************************************/
 /* Copyright (c) 2020 Muller Castro.                                                    */
 /*                                                                                      */
@@ -29,7 +29,7 @@
 
 namespace Minesweeper {
 
-	std::pair<std::string, std::string> get_raw_bomb_spritesheet();
+	std::pair<std::string, std::string> get_raw_bomb_sprite_sheet();
 
 }
 
