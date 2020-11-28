@@ -34,17 +34,24 @@
 
 using namespace Minesweeper;
 
-Button::Button(const sf::Vector2f& position_, const sf::Vector2f& scale_, const std::shared_ptr<sf::Texture>& hovered, const std::shared_ptr<sf::Texture>& non_hovered, const std::shared_ptr<sf::Texture>& down) :
+Button::Button(const sf::Vector2f& position_, const sf::Vector2f& scale_, const std::shared_ptr<sf::Texture>& hovered, const std::shared_ptr<sf::Texture>& non_hovered, const std::shared_ptr<sf::Texture>& down, const std::shared_ptr<sf::SoundBuffer>& hovered_sfx, const std::shared_ptr<sf::SoundBuffer>& pressed_sfx) :
     position(position_), scale(scale_),
     state(States::NONE),
     current_texture(Button::N_HOVERED),
     bounding_box(),
     textures(),
-    sprite()
+    sound_buffers(),
+    sprite(),
+    sound()
 {
     textures[Button::HOVERED]   = hovered;
     textures[Button::N_HOVERED] = non_hovered;
     textures[Button::DOWN]      = down;
+
+    sound_buffers[Button::HOVERED_SFX] = {hovered_sfx, false};
+    sound_buffers[Button::PRESSED_SFX] = {pressed_sfx, false};
+
+    sound.setVolume(20.f);
 
     sprite.setTexture(*textures[current_texture]);
 
@@ -119,19 +126,58 @@ void Button::set_state() noexcept
 
     bool mouse_entered = bounding_box.contains(sf::Vector2f(mouse_position.x, mouse_position.y));
 
-    if(mouse_entered && Input::is_pressed<Input::Mouse>(sf::Mouse::Left)) {
+    if(MinesweeperGame::window->hasFocus() && mouse_entered && Input::is_pressed<Input::Mouse>(sf::Mouse::Left)) {
 
         state = States::PRESSED;
 
     }
-    else if(mouse_entered && !Input::is_pressed<Input::Mouse>(sf::Mouse::Left)) {
+    else if(MinesweeperGame::window->hasFocus() && mouse_entered && !Input::is_pressed<Input::Mouse>(sf::Mouse::Left)) {
 
-        if(state == States::PRESSED) state = States::RELEASED;
-        else                         state = States::HOVERED;
+        if(state == States::PRESSED) {
+
+            state = States::RELEASED;
+
+            if(sound_buffers[Button::PRESSED_SFX].first && !sound_buffers[Button::PRESSED_SFX].second) {
+
+                sound.stop();
+
+                float past_volume = sound.getVolume();
+
+                sound.setVolume(100.f);
+                sound.setBuffer(*sound_buffers[Button::PRESSED_SFX].first);
+                sound.play();
+
+                sound.setVolume(past_volume);
+
+//                sound_buffers[Button::PRESSED_SFX].second = true;
+
+            }
+
+        }
+        else {
+
+            state = States::HOVERED;
+
+            if(sound_buffers[Button::HOVERED_SFX].first && !sound_buffers[Button::HOVERED_SFX].second) {
+
+                if(sound.getStatus() != sf::Sound::Playing) {
+
+                    sound.setBuffer(*sound_buffers[Button::HOVERED_SFX].first);
+                    sound.play();
+
+                }
+
+                sound_buffers[Button::HOVERED_SFX].second = true;
+
+            }
+
+        }
 
     }else {
 
         state = States::NONE;
+
+        sound_buffers[Button::HOVERED_SFX].second = false;
 
     }
 }

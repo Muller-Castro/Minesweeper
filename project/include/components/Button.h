@@ -26,9 +26,12 @@
 
 #include <array>
 #include <memory>
+#include <utility>
 
 #include <SFML/Graphics/Drawable.hpp>
 #include <SFML/Graphics/Texture.hpp>
+#include <SFML/Audio/SoundBuffer.hpp>
+#include <SFML/Audio/Sound.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Rect.hpp>
 #include <SFML/Graphics/RenderStates.hpp>
@@ -48,7 +51,7 @@ namespace Minesweeper {
 
         sf::Vector2f position, scale;
 
-        Button(const sf::Vector2f& position_, const sf::Vector2f& scale_, const std::shared_ptr<sf::Texture>& hovered, const std::shared_ptr<sf::Texture>& non_hovered, const std::shared_ptr<sf::Texture>& down);
+        Button(const sf::Vector2f& position_, const sf::Vector2f& scale_, const std::shared_ptr<sf::Texture>& hovered, const std::shared_ptr<sf::Texture>& non_hovered, const std::shared_ptr<sf::Texture>& down, const std::shared_ptr<sf::SoundBuffer>& hovered_sfx = {}, const std::shared_ptr<sf::SoundBuffer>& pressed_sfx = {});
         ~Button() override {}
 
         void process_inputs();
@@ -70,12 +73,19 @@ namespace Minesweeper {
         static constexpr unsigned char N_HOVERED = 1;
         static constexpr unsigned char DOWN      = 2;
 
+        static constexpr unsigned char HOVERED_SFX = 0;
+        static constexpr unsigned char PRESSED_SFX = 1;
+
         unsigned char current_texture;
 
         sf::FloatRect bounding_box;
 
         std::array<std::shared_ptr<sf::Texture>, 3> textures;
+        std::array<std::pair<std::shared_ptr<sf::SoundBuffer>, bool>, 2> sound_buffers;
+
         sf::Sprite sprite;
+
+        sf::Sound sound;
 
         void set_state() noexcept;
         void dispatch_actions();
