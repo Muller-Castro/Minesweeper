@@ -484,19 +484,19 @@
 	<utility>
 	<SFML/Graphics/Drawable.hpp>
 
-1605888259 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\scene\scenes\splashscreen.cpp
+1606590671 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\scene\scenes\splashscreen.cpp
 	"scene/scenes/SplashScreen.h"
 	"io/ResourceLoader.h"
 	"Input.h"
 	"scene/SceneManager.h"
-	"assets/SplashScreenSoundTrack.h"
+	"assets/SplashScreenSoundtrack.h"
 	"assets/BigBombVRT.h"
 	"assets/BigBombFRG.h"
 	"assets/BombSplashScreen.h"
 	"assets/Universe.h"
 	"assets/INET.h"
 
-1606063238 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\scene\scenes\splashscreen.h
+1606590524 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\scene\scenes\splashscreen.h
 	<chrono>
 	<memory>
 	<utility>
@@ -571,7 +571,7 @@
 	<SFML/Graphics/Shader.hpp>
 	"io/MusicStream.h"
 
-1606265241 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\scene\scenes\mainmenu.h
+1606590333 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\scene\scenes\mainmenu.h
 	<vector>
 	<memory>
 	<string>
@@ -586,7 +586,7 @@
 	"tools/AnimationPlayer.h"
 	"io/MusicStream.h"
 
-1606265970 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\scene\scenes\mainmenu.cpp
+1606591114 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\scene\scenes\mainmenu.cpp
 	"scene/scenes/MainMenu.h"
 	<SFML/Graphics/RenderWindow.hpp>
 	"MinesweeperGame.h"
@@ -602,8 +602,8 @@
 	"assets/TitleScreen.h"
 	"assets/P1Flag.h"
 	"assets/P2Flag.h"
-	"assets/BombSpritesheet.h"
-	"assets/MainMenuSoundTrack.h"
+	"assets/BombSpriteSheet.h"
+	"assets/MainMenuSoundtrack.h"
 	"assets/INET.h"
 	"assets/MainMenuButtonHovered.h"
 	"assets/MainMenuButtonPressed.h"
@@ -649,11 +649,11 @@
 	<string>
 	<utility>
 
-1605888258 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\assets\bombspritesheet.cpp
-	"assets/BombSpritesheet.h"
+1606591114 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\assets\bombspritesheet.cpp
+	"assets/BombSpriteSheet.h"
 	<vector>
 
-1605888256 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\bombspritesheet.h
+1606591081 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\bombspritesheet.h
 	<string>
 	<utility>
 
@@ -673,11 +673,11 @@
 	<string>
 	<utility>
 
-1605888258 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\assets\splashscreensoundtrack.cpp
-	"assets/SplashScreenSoundTrack.h"
+1606590671 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\assets\splashscreensoundtrack.cpp
+	"assets/SplashScreenSoundtrack.h"
 	<vector>
 
-1605888256 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\splashscreensoundtrack.h
+1606590524 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\splashscreensoundtrack.h
 	<string>
 	<utility>
 
@@ -990,11 +990,11 @@
 	"assets/MainMenuButtonPressed.h"
 	<vector>
 
-1606265800 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\mainmenusoundtrack.h
+1606590524 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\mainmenusoundtrack.h
 	<string>
 	<utility>
 
-1606265801 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\assets\mainmenusoundtrack.cpp
-	"assets/MainMenuSoundTrack.h"
+1606590670 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\assets\mainmenusoundtrack.cpp
+	"assets/MainMenuSoundtrack.h"
 	<vector>
 

@@ -101,7 +101,7 @@
 		<Unit filename="include/assets/BombSplashScreen.h">
 			<Option target="Static Release" />
 		</Unit>
-		<Unit filename="include/assets/BombSpritesheet.h">
+		<Unit filename="include/assets/BombSpriteSheet.h">
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="include/assets/CreditsDown.h">
@@ -137,7 +137,7 @@
 		<Unit filename="include/assets/MainMenuButtonPressed.h">
 			<Option target="Static Release" />
 		</Unit>
-		<Unit filename="include/assets/MainMenuSoundTrack.h">
+		<Unit filename="include/assets/MainMenuSoundtrack.h">
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="include/assets/NeonNanoborg.h">
@@ -176,7 +176,7 @@
 		<Unit filename="include/assets/QuitNHovered.h">
 			<Option target="Static Release" />
 		</Unit>
-		<Unit filename="include/assets/SplashScreenSoundTrack.h">
+		<Unit filename="include/assets/SplashScreenSoundtrack.h">
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="include/assets/TitleScreen.h">
@@ -227,7 +227,7 @@
 		<Unit filename="src/assets/BombSplashScreen.cpp">
 			<Option target="Static Release" />
 		</Unit>
-		<Unit filename="src/assets/BombSpritesheet.cpp">
+		<Unit filename="src/assets/BombSpriteSheet.cpp">
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="src/assets/CreditsDown.cpp">
@@ -263,7 +263,7 @@
 		<Unit filename="src/assets/MainMenuButtonPressed.cpp">
 			<Option target="Static Release" />
 		</Unit>
-		<Unit filename="src/assets/MainMenuSoundTrack.cpp">
+		<Unit filename="src/assets/MainMenuSoundtrack.cpp">
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="src/assets/NeonNanoborg.cpp">
@@ -302,7 +302,7 @@
 		<Unit filename="src/assets/QuitNHovered.cpp">
 			<Option target="Static Release" />
 		</Unit>
-		<Unit filename="src/assets/SplashScreenSoundTrack.cpp">
+		<Unit filename="src/assets/SplashScreenSoundtrack.cpp">
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="src/assets/TitleScreen.cpp">
