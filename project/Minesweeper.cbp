@@ -131,6 +131,15 @@
 		<Unit filename="include/assets/MainMenuBG.h">
 			<Option target="Static Release" />
 		</Unit>
+		<Unit filename="include/assets/MainMenuButtonHovered.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/MainMenuButtonPressed.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/MainMenuSoundTrack.h">
+			<Option target="Static Release" />
+		</Unit>
 		<Unit filename="include/assets/NeonNanoborg.h">
 			<Option target="Static Release" />
 		</Unit>
@@ -246,6 +255,15 @@
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="src/assets/MainMenuBG.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/MainMenuButtonHovered.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/MainMenuButtonPressed.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/MainMenuSoundTrack.cpp">
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="src/assets/NeonNanoborg.cpp">
