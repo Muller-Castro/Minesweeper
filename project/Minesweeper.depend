@@ -586,7 +586,7 @@
 	"tools/AnimationPlayer.h"
 	"io/MusicStream.h"
 
-1606591114 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\scene\scenes\mainmenu.cpp
+1606594868 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\scene\scenes\mainmenu.cpp
 	"scene/scenes/MainMenu.h"
 	<SFML/Graphics/RenderWindow.hpp>
 	"MinesweeperGame.h"
@@ -599,7 +599,7 @@
 	"Input.h"
 	"scene/SceneManager.h"
 	"assets/MainMenuBG.h"
-	"assets/TitleScreen.h"
+	"assets/Title.h"
 	"assets/P1Flag.h"
 	"assets/P2Flag.h"
 	"assets/BombSpriteSheet.h"
@@ -996,5 +996,13 @@
 
 1606590670 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\assets\mainmenusoundtrack.cpp
 	"assets/MainMenuSoundtrack.h"
+	<vector>
+
+1606594763 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\title.h
+	<string>
+	<utility>
+
+1606594763 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\assets\title.cpp
+	"assets/Title.h"
 	<vector>
 

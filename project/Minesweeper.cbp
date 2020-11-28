@@ -179,7 +179,7 @@
 		<Unit filename="include/assets/SplashScreenSoundtrack.h">
 			<Option target="Static Release" />
 		</Unit>
-		<Unit filename="include/assets/TitleScreen.h">
+		<Unit filename="include/assets/Title.h">
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="include/assets/Universe.h">
@@ -305,7 +305,7 @@
 		<Unit filename="src/assets/SplashScreenSoundtrack.cpp">
 			<Option target="Static Release" />
 		</Unit>
-		<Unit filename="src/assets/TitleScreen.cpp">
+		<Unit filename="src/assets/Title.cpp">
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="src/assets/Universe.cpp">
