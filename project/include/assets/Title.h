@@ -1,5 +1,5 @@
 /****************************************************************************************/
-/* TitleScreen.h                                                                        */
+/* Title.h                                                                              */
 /****************************************************************************************/
 /* Copyright (c) 2020 Muller Castro.                                                    */
 /*                                                                                      */
@@ -21,16 +21,16 @@
 /* OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                                        */
 /****************************************************************************************/
 
-#ifndef TITLE_SCREEN_H
-#define TITLE_SCREEN_H
+#ifndef TITLE_H
+#define TITLE_H
 
 #include <string>
 #include <utility>
 
 namespace Minesweeper {
 
-	std::pair<std::string, std::string> get_raw_title_screen();
+	std::pair<std::string, std::string> get_raw_title();
 
 }
 
-#endif // TITLE_SCREEN_H
+#endif // TITLE_H
