@@ -225,3 +225,27 @@ SOFTWARE.
 +#######################################+
 
 --------------------------------C&C Red Alert [INET]------------------------------
+
+--------------------------confirm / Low Rez Tough Guy / Hint----------------------
+
+This game uses these sounds from freesound:
+confirm by VincentM400 ( https://freesound.org/people/VincentM400/ )
+
+"Low Rez Tough Guy", by TeknoAXE, available under Creative Commons 4.0.
+Downloaded at:
+http://teknoaxe.com/Link_Code_3.php?q=696
+
+"Hint", by dland and "Explosion", by kutedjnikov, available under Creative Commons 0 license.
+Downloaded at:
+https://freesound.org/people/dland/sounds/320181/
+https://freesound.org/people/kutejnikov/sounds/522209/
+
+--------------------------confirm / Low Rez Tough Guy / Hint----------------------
+
+-------------------------------Eight_Bit_Commando-Menu----------------------------
+
+This game uses these sounds from freesound and teknoaxe:
+confirm by VincentM400 ( https://freesound.org/people/VincentM400/ )
+and Eight Bit Commando ( http://teknoaxe.com/Link_Code_3.php?q=836 )
+
+-------------------------------Eight_Bit_Commando-Menu----------------------------
