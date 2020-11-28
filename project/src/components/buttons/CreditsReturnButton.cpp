@@ -28,8 +28,8 @@
 
 using namespace Minesweeper;
 
-CreditsReturnButton::CreditsReturnButton(MainMenu& mm_ref_, const sf::Vector2f& position_, const sf::Vector2f& scale_, const std::shared_ptr<sf::Texture>& hovered, const std::shared_ptr<sf::Texture>& non_hovered, const std::shared_ptr<sf::Texture>& down) :
-    Button(position_, scale_, hovered, non_hovered, down),
+CreditsReturnButton::CreditsReturnButton(MainMenu& mm_ref_, const sf::Vector2f& position_, const sf::Vector2f& scale_, const std::shared_ptr<sf::Texture>& hovered, const std::shared_ptr<sf::Texture>& non_hovered, const std::shared_ptr<sf::Texture>& down, const std::shared_ptr<sf::SoundBuffer>& hovered_sfx, const std::shared_ptr<sf::SoundBuffer>& pressed_sfx) :
+    Button(position_, scale_, hovered, non_hovered, down, hovered_sfx, pressed_sfx),
     mm_ref(std::ref(mm_ref_))
 {
     //
