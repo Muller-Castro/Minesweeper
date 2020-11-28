@@ -34,11 +34,13 @@
 
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/Graphics/Font.hpp>
+#include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Text.hpp>
 
 #include "scene/Scene.h"
 #include "components/Button.h"
 #include "tools/AnimationPlayer.h"
+#include "io/MusicStream.h"
 
 namespace Minesweeper {
 
@@ -71,6 +73,8 @@ namespace Minesweeper {
         std::shared_ptr<sf::Texture> bomb_texture;
 
         std::shared_ptr<sf::Font> font;
+
+        std::shared_ptr<MusicStream> soundtrack;
 
         sf::Sprite background_sprite;
         sf::Sprite title_sprite;

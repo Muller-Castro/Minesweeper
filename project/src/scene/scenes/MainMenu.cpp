@@ -41,7 +41,10 @@
 #include "assets/P1Flag.h"
 #include "assets/P2Flag.h"
 #include "assets/BombSpritesheet.h"
+#include "assets/MainMenuSoundTrack.h"
 #include "assets/INET.h"
+#include "assets/MainMenuButtonHovered.h"
+#include "assets/MainMenuButtonPressed.h"
 #include "assets/PlayOfflineNHovered.h"
 #include "assets/PlayOfflineHovered.h"
 #include "assets/PlayOfflineDown.h"
@@ -120,6 +123,7 @@ MainMenu::MainMenu() :
     p2_flag_texture(),
     bomb_texture(),
     font(),
+    soundtrack(),
     background_sprite(),
     title_sprite(),
     p1_flag_sprite(),
@@ -142,12 +146,14 @@ MainMenu::MainMenu() :
     p1_flag_texture    = ResourceLoader::load<sf::Texture>("assets/textures/P1Flag.png");
     p2_flag_texture    = ResourceLoader::load<sf::Texture>("assets/textures/P2Flag.png");
     bomb_texture       = ResourceLoader::load<sf::Texture>("assets/textures/BombSpritesheet.png");
+    soundtrack         = ResourceLoader::load<MusicStream>("assets/musics/MainMenuSoundtrack.ogg");
 #else
     background_texture = ResourceLoader::load<sf::Texture>(get_raw_main_menu_bg());
     title_texture      = ResourceLoader::load<sf::Texture>(get_raw_title_screen());
     p1_flag_texture    = ResourceLoader::load<sf::Texture>(get_raw_p1_flag());
     p2_flag_texture    = ResourceLoader::load<sf::Texture>(get_raw_p2_flag());
     bomb_texture       = ResourceLoader::load<sf::Texture>(get_raw_bomb_spritesheet());
+    soundtrack         = ResourceLoader::load<MusicStream>(get_raw_main_menu_sound_track());
 #endif // __S_RELEASE__
 
     background_sprite.setTexture(*background_texture);
@@ -155,6 +161,10 @@ MainMenu::MainMenu() :
     p1_flag_sprite.setTexture(*p1_flag_texture);
     p2_flag_sprite.setTexture(*p2_flag_texture);
     bomb_sprite.setTexture(*bomb_texture);
+
+    soundtrack->music.setLoop(true);
+    soundtrack->music.play();
+    soundtrack->music.setVolume(40.f);
 
     title_sprite.setPosition(117.f, 18.f);
 
@@ -228,11 +238,15 @@ MainMenu::MainMenu() :
 #ifndef __S_RELEASE__
         ResourceLoader::load<sf::Texture>("assets/textures/PlayOnlineHovered.png"),
         ResourceLoader::load<sf::Texture>("assets/textures/PlayOnlineNHovered.png"),
-        ResourceLoader::load<sf::Texture>("assets/textures/PlayOnlineDown.png")
+        ResourceLoader::load<sf::Texture>("assets/textures/PlayOnlineDown.png"),
+        ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonHovered.wav"),
+        ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonPressed.wav")
 #else
         ResourceLoader::load<sf::Texture>(get_raw_play_online_hovered()),
         ResourceLoader::load<sf::Texture>(get_raw_play_online_n_hovered()),
-        ResourceLoader::load<sf::Texture>(get_raw_play_online_down())
+        ResourceLoader::load<sf::Texture>(get_raw_play_online_down()),
+        ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_hovered()),
+        ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_pressed())
 #endif // __S_RELEASE__
     )));
 
@@ -242,11 +256,15 @@ MainMenu::MainMenu() :
 #ifndef __S_RELEASE__
         ResourceLoader::load<sf::Texture>("assets/textures/PlayOfflineHovered.png"),
         ResourceLoader::load<sf::Texture>("assets/textures/PlayOfflineNHovered.png"),
-        ResourceLoader::load<sf::Texture>("assets/textures/PlayOfflineDown.png")
+        ResourceLoader::load<sf::Texture>("assets/textures/PlayOfflineDown.png"),
+        ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonHovered.wav"),
+        ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonPressed.wav")
 #else
         ResourceLoader::load<sf::Texture>(get_raw_play_offline_hovered()),
         ResourceLoader::load<sf::Texture>(get_raw_play_offline_n_hovered()),
-        ResourceLoader::load<sf::Texture>(get_raw_play_offline_down())
+        ResourceLoader::load<sf::Texture>(get_raw_play_offline_down()),
+        ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_hovered()),
+        ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_pressed())
 #endif // __S_RELEASE__
     )));
 
@@ -257,11 +275,15 @@ MainMenu::MainMenu() :
 #ifndef __S_RELEASE__
         ResourceLoader::load<sf::Texture>("assets/textures/CreditsHovered.png"),
         ResourceLoader::load<sf::Texture>("assets/textures/CreditsNHovered.png"),
-        ResourceLoader::load<sf::Texture>("assets/textures/CreditsDown.png")
+        ResourceLoader::load<sf::Texture>("assets/textures/CreditsDown.png"),
+        ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonHovered.wav"),
+        ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonPressed.wav")
 #else
         ResourceLoader::load<sf::Texture>(get_raw_credits_hovered()),
         ResourceLoader::load<sf::Texture>(get_raw_credits_n_hovered()),
-        ResourceLoader::load<sf::Texture>(get_raw_credits_down())
+        ResourceLoader::load<sf::Texture>(get_raw_credits_down()),
+        ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_hovered()),
+        ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_pressed())
 #endif // __S_RELEASE__
     )));
 
@@ -271,11 +293,15 @@ MainMenu::MainMenu() :
 #ifndef __S_RELEASE__
         ResourceLoader::load<sf::Texture>("assets/textures/QuitHovered.png"),
         ResourceLoader::load<sf::Texture>("assets/textures/QuitNHovered.png"),
-        ResourceLoader::load<sf::Texture>("assets/textures/QuitDown.png")
+        ResourceLoader::load<sf::Texture>("assets/textures/QuitDown.png"),
+        ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonHovered.wav"),
+        ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonPressed.wav")
 #else
         ResourceLoader::load<sf::Texture>(get_raw_quit_hovered()),
         ResourceLoader::load<sf::Texture>(get_raw_quit_n_hovered()),
-        ResourceLoader::load<sf::Texture>(get_raw_quit_down())
+        ResourceLoader::load<sf::Texture>(get_raw_quit_down()),
+        ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_hovered()),
+        ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_pressed())
 #endif // __S_RELEASE__
     )));
 
@@ -287,11 +313,15 @@ MainMenu::MainMenu() :
 #ifndef __S_RELEASE__
         ResourceLoader::load<sf::Texture>("assets/textures/CreditsReturnHovered.png"),
         ResourceLoader::load<sf::Texture>("assets/textures/CreditsReturnNHovered.png"),
-        ResourceLoader::load<sf::Texture>("assets/textures/CreditsReturnDown.png")
+        ResourceLoader::load<sf::Texture>("assets/textures/CreditsReturnDown.png"),
+        ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonHovered.wav"),
+        ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonPressed.wav")
 #else
         ResourceLoader::load<sf::Texture>(get_raw_credits_return_hovered()),
         ResourceLoader::load<sf::Texture>(get_raw_credits_return_n_hovered()),
-        ResourceLoader::load<sf::Texture>(get_raw_credits_return_down())
+        ResourceLoader::load<sf::Texture>(get_raw_credits_return_down()),
+        ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_hovered()),
+        ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_pressed())
 #endif // __S_RELEASE__
     )));
     //////////////////
