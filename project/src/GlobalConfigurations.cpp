@@ -53,6 +53,7 @@ bool GlobalConfigurations::show_bb = true;
 #endif // __DEBUG__
 
 #ifndef __S_RELEASE__
+std::shared_ptr<sf::Font> GlobalConfigurations::font;
 std::string GlobalConfigurations::current_scene_name;
 #endif // __S_RELEASE__
 
@@ -134,7 +135,9 @@ void GlobalConfigurations::draw()
 #ifndef __S_RELEASE__
 void GlobalConfigurations::draw_current_scene_text()
 {
-    sf::Text current_scene_text("[" + current_scene_name + "]", *(ResourceLoader::load<sf::Font>("assets/fonts/NeonNanoborg.otf")));
+    if(!GlobalConfigurations::font) GlobalConfigurations::font = ResourceLoader::load<sf::Font>("assets/fonts/NeonNanoborg.otf");
+
+    sf::Text current_scene_text("[" + current_scene_name + "]", *GlobalConfigurations::font);
 
     current_scene_text.setPosition(sf::Vector2f{5.f, 5.f});
 

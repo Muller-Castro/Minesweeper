@@ -25,7 +25,10 @@
 #define GLOBAL_CONFIGURATIONS_H
 
 #ifndef __S_RELEASE__
+#include <memory>
 #include <string>
+
+#include <SFML/Graphics/Font.hpp>
 #endif // __S_RELEASE__
 
 namespace Minesweeper {
@@ -44,6 +47,8 @@ namespace Minesweeper {
     private:
 #ifndef __S_RELEASE__
         friend class SceneManager;
+
+        static std::shared_ptr<sf::Font> font;
 
         static std::string current_scene_name;
 
