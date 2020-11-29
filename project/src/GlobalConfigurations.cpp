@@ -59,8 +59,8 @@ std::string GlobalConfigurations::current_scene_name;
 
 void GlobalConfigurations::process_inputs()
 {
-    if(Input::is_just_pressed<Input::Key>(sf::Keyboard::F3)) GlobalConfigurations::resize_window();
-    else if(Input::is_just_pressed<Input::Key>(sf::Keyboard::Escape)) MinesweeperGame::is_running = false;
+//    if(Input::is_just_pressed<Input::Key>(sf::Keyboard::F3)) GlobalConfigurations::resize_window();
+    /*else*/ if(Input::is_just_pressed<Input::Key>(sf::Keyboard::Escape)) MinesweeperGame::is_running = false;
 #ifndef __S_RELEASE__
     else if(Input::is_just_pressed<Input::Key>(sf::Keyboard::F5)) SceneManager::restart_scene();
 #endif // __S_RELEASE__
@@ -101,7 +101,7 @@ void GlobalConfigurations::update(float delta)
 
     new_win_title << win_data["WINDOW"]["Title"]
                   << " | Esc: Quit"
-                  << " | F3: Resize"
+                  //<< " | F3: Resize"
 #ifndef __S_RELEASE__
                   << " | F5: RST Scene"
 #endif // __S_RELEASE__
