@@ -55,20 +55,22 @@ namespace Minesweeper {
         ~Button() override {}
 
         void process_inputs();
-        void update(float d);
+        virtual void update(float d);
         void draw(sf::RenderTarget& target, sf::RenderStates states) const final override;
 
         bool is_hovered() const noexcept { return current_texture == HOVERED; }
         States get_state() const noexcept { return state; }
 
     protected:
+        States state;
+
+        sf::FloatRect bounding_box;
+
         virtual void on_button_up()      = 0;
         virtual void on_button_down()    = 0;
         virtual void on_button_pressed() = 0;
 
     private:
-        States state;
-
         static constexpr unsigned char HOVERED   = 0;
         static constexpr unsigned char N_HOVERED = 1;
         static constexpr unsigned char DOWN      = 2;
@@ -76,16 +78,14 @@ namespace Minesweeper {
         static constexpr unsigned char HOVERED_SFX = 0;
         static constexpr unsigned char PRESSED_SFX = 1;
 
-        unsigned char current_texture;
+        static sf::Sound sound;
 
-        sf::FloatRect bounding_box;
+        unsigned char current_texture;
 
         std::array<std::shared_ptr<sf::Texture>, 3> textures;
         std::array<std::pair<std::shared_ptr<sf::SoundBuffer>, bool>, 2> sound_buffers;
 
         sf::Sprite sprite;
-
-        sf::Sound sound;
 
         void set_state() noexcept;
         void dispatch_actions();

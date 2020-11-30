@@ -34,15 +34,16 @@
 
 using namespace Minesweeper;
 
+sf::Sound Button::sound;
+
 Button::Button(const sf::Vector2f& position_, const sf::Vector2f& scale_, const std::shared_ptr<sf::Texture>& hovered, const std::shared_ptr<sf::Texture>& non_hovered, const std::shared_ptr<sf::Texture>& down, const std::shared_ptr<sf::SoundBuffer>& hovered_sfx, const std::shared_ptr<sf::SoundBuffer>& pressed_sfx) :
     position(position_), scale(scale_),
     state(States::NONE),
-    current_texture(Button::N_HOVERED),
     bounding_box(),
+    current_texture(Button::N_HOVERED),
     textures(),
     sound_buffers(),
-    sprite(),
-    sound()
+    sprite()
 {
     textures[Button::HOVERED]   = hovered;
     textures[Button::N_HOVERED] = non_hovered;
@@ -51,7 +52,7 @@ Button::Button(const sf::Vector2f& position_, const sf::Vector2f& scale_, const 
     sound_buffers[Button::HOVERED_SFX] = {hovered_sfx, false};
     sound_buffers[Button::PRESSED_SFX] = {pressed_sfx, false};
 
-    sound.setVolume(20.f);
+    Button::sound.setVolume(20.f);
 
     sprite.setTexture(*textures[current_texture]);
 
@@ -83,8 +84,8 @@ void Button::update(float d)
         if(state != States::PRESSED) {
             sf::Vector2f new_position = position;
 
-            new_position.x -= current_texture_size.x / 2;
-            new_position.y -= current_texture_size.y / 2;
+            new_position.x -= current_texture_size.x * scale.x / 2;
+            new_position.y -= current_texture_size.y * scale.y / 2;
 
             bounding_box = sf::FloatRect(new_position, sf::Vector2f(current_texture_size.x, current_texture_size.y));
         }
@@ -139,15 +140,15 @@ void Button::set_state() noexcept
 
             if(sound_buffers[Button::PRESSED_SFX].first && !sound_buffers[Button::PRESSED_SFX].second) {
 
-                sound.stop();
+                Button::sound.stop();
 
-                float past_volume = sound.getVolume();
+                float past_volume = Button::sound.getVolume();
 
-                sound.setVolume(100.f);
-                sound.setBuffer(*sound_buffers[Button::PRESSED_SFX].first);
-                sound.play();
+                Button::sound.setVolume(100.f);
+                Button::sound.setBuffer(*sound_buffers[Button::PRESSED_SFX].first);
+                Button::sound.play();
 
-                sound.setVolume(past_volume);
+                Button::sound.setVolume(past_volume);
 
 //                sound_buffers[Button::PRESSED_SFX].second = true;
 
@@ -160,10 +161,10 @@ void Button::set_state() noexcept
 
             if(sound_buffers[Button::HOVERED_SFX].first && !sound_buffers[Button::HOVERED_SFX].second) {
 
-                if(sound.getStatus() != sf::Sound::Playing) {
+                if(Button::sound.getStatus() != sf::Sound::Playing) {
 
-                    sound.setBuffer(*sound_buffers[Button::HOVERED_SFX].first);
-                    sound.play();
+                    Button::sound.setBuffer(*sound_buffers[Button::HOVERED_SFX].first);
+                    Button::sound.play();
 
                 }
 
