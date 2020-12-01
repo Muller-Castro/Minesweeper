@@ -1,5 +1,5 @@
 /****************************************************************************************/
-/* CreditsReturnNHovered.h                                                              */
+/* ReturnDown.h                                                                         */
 /****************************************************************************************/
 /* Copyright (c) 2020 Muller Castro.                                                    */
 /*                                                                                      */
@@ -21,16 +21,16 @@
 /* OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                                        */
 /****************************************************************************************/
 
-#ifndef CREDITS_RETURN_N_HOVERED_H
-#define CREDITS_RETURN_N_HOVERED_H
+#ifndef RETURN_DOWN_H
+#define RETURN_DOWN_H
 
 #include <string>
 #include <utility>
 
 namespace Minesweeper {
 
-	std::pair<std::string, std::string> get_raw_credits_return_n_hovered();
+	std::pair<std::string, std::string> get_raw_return_down();
 
 }
 
-#endif // CREDITS_RETURN_N_HOVERED_H
+#endif // RETURN_DOWN_H

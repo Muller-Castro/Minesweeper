@@ -1,5 +1,5 @@
 /****************************************************************************************/
-/* CreditsReturnNHovered.cpp                                                            */
+/* ReturnNHovered.cpp                                                                   */
 /****************************************************************************************/
 /* Copyright (c) 2020 Muller Castro.                                                    */
 /*                                                                                      */
@@ -21,13 +21,13 @@
 /* OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                                        */
 /****************************************************************************************/
 
-#include "assets/CreditsReturnNHovered.h"
+#include "assets/ReturnNHovered.h"
 
 #include <vector>
 
-std::pair<std::string, std::string> Minesweeper::get_raw_credits_return_n_hovered()
+std::pair<std::string, std::string> Minesweeper::get_raw_return_n_hovered()
 {
-	std::pair<std::string, std::string> result = std::make_pair("CreditsReturnNHovered", "");
+	std::pair<std::string, std::string> result = std::make_pair("ReturnNHovered", "");
 
 	std::vector<short> raw_data {
 		

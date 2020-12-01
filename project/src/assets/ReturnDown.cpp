@@ -1,5 +1,5 @@
 /****************************************************************************************/
-/* CreditsReturnDown.cpp                                                                */
+/* ReturnDown.cpp                                                                       */
 /****************************************************************************************/
 /* Copyright (c) 2020 Muller Castro.                                                    */
 /*                                                                                      */
@@ -21,13 +21,13 @@
 /* OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                                        */
 /****************************************************************************************/
 
-#include "assets/CreditsReturnDown.h"
+#include "assets/ReturnDown.h"
 
 #include <vector>
 
-std::pair<std::string, std::string> Minesweeper::get_raw_credits_return_down()
+std::pair<std::string, std::string> Minesweeper::get_raw_return_down()
 {
-	std::pair<std::string, std::string> result = std::make_pair("CreditsReturnDown", "");
+	std::pair<std::string, std::string> result = std::make_pair("ReturnDown", "");
 
 	std::vector<short> raw_data {
 		
