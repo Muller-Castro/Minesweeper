@@ -38,6 +38,8 @@
 
 using namespace Minesweeper;
 
+std::unordered_map<std::string, std::string> SceneManager::shared_data;
+
 std::unique_ptr<Scene> SceneManager::current_scene;
 SceneManager::Scenes SceneManager::current_scene_enum = SceneManager::Scenes::UNDEFINED;
 
