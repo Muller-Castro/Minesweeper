@@ -31,6 +31,10 @@
 #include "components/buttons/CreditsButton.h"
 #include "components/buttons/QuitButton.h"
 #include "components/buttons/CreditsReturnButton.h"
+#include "components/buttons/BeginnerButton.h"
+#include "components/buttons/AverageButton.h"
+#include "components/buttons/ExpertButton.h"
+#include "components/buttons/PlayOfflineReturnButton.h"
 #include "io/ResourceLoader.h"
 #include "Input.h"
 #include "scene/SceneManager.h"
@@ -57,15 +61,16 @@
 #include "assets/QuitNHovered.h"
 #include "assets/QuitHovered.h"
 #include "assets/QuitDown.h"
-#include "assets/CreditsReturnNHovered.h"
-#include "assets/CreditsReturnHovered.h"
-#include "assets/CreditsReturnDown.h"
+#include "assets/ReturnNHovered.h"
+#include "assets/ReturnHovered.h"
+#include "assets/ReturnDown.h"
 #endif // __S_RELEASE__
 
 using namespace Minesweeper;
 
 MainMenu::MainMenu() :
     show_credits(),
+    show_difficulty_levels(),
 
     animations(
 
@@ -251,6 +256,7 @@ MainMenu::MainMenu() :
     )));
 
     buttons.push_back(std::unique_ptr<Button>(new PlayOfflineButton(
+        *this,
         sf::Vector2f(397.f, 322.f),
         sf::Vector2f(1.f, 1.f),
 #ifndef __S_RELEASE__
@@ -305,26 +311,99 @@ MainMenu::MainMenu() :
 #endif // __S_RELEASE__
     )));
 
-    //////////////////
     buttons.push_back(std::unique_ptr<Button>(new CreditsReturnButton(
         *this,
         sf::Vector2f(745.f, 550.f),
         sf::Vector2f(1.f, 1.f),
 #ifndef __S_RELEASE__
-        ResourceLoader::load<sf::Texture>("assets/textures/CreditsReturnHovered.png"),
-        ResourceLoader::load<sf::Texture>("assets/textures/CreditsReturnNHovered.png"),
-        ResourceLoader::load<sf::Texture>("assets/textures/CreditsReturnDown.png"),
+        ResourceLoader::load<sf::Texture>("assets/textures/ReturnHovered.png"),
+        ResourceLoader::load<sf::Texture>("assets/textures/ReturnNHovered.png"),
+        ResourceLoader::load<sf::Texture>("assets/textures/ReturnDown.png"),
         ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonHovered.wav"),
         ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonPressed.wav")
 #else
-        ResourceLoader::load<sf::Texture>(get_raw_credits_return_hovered()),
-        ResourceLoader::load<sf::Texture>(get_raw_credits_return_n_hovered()),
-        ResourceLoader::load<sf::Texture>(get_raw_credits_return_down()),
+        ResourceLoader::load<sf::Texture>(get_raw_return_hovered()),
+        ResourceLoader::load<sf::Texture>(get_raw_return_n_hovered()),
+        ResourceLoader::load<sf::Texture>(get_raw_return_down()),
         ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_hovered()),
         ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_pressed())
 #endif // __S_RELEASE__
     )));
-    //////////////////
+
+    ////////////
+    buttons.push_back(std::unique_ptr<Button>(new BeginnerButton(
+        sf::Vector2f(397.f, 222.f),
+        sf::Vector2f(1.f, 1.f),
+#ifndef __S_RELEASE__
+        ResourceLoader::load<sf::Texture>("assets/textures/BeginnerButtonHovered.png"),
+        ResourceLoader::load<sf::Texture>("assets/textures/BeginnerButtonNHovered.png"),
+        ResourceLoader::load<sf::Texture>("assets/textures/BeginnerButtonDown.png"),
+        ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonHovered.wav"),
+        ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonPressed.wav")
+#else
+        ResourceLoader::load<sf::Texture>(get_raw_XXX()),
+        ResourceLoader::load<sf::Texture>(get_raw_XXX()),
+        ResourceLoader::load<sf::Texture>(get_raw_XXX()),
+        ResourceLoader::load<sf::SoundBuffer>(get_raw_XXX()),
+        ResourceLoader::load<sf::SoundBuffer>(get_raw_XXX())
+#endif // __S_RELEASE__
+    )));
+
+    buttons.push_back(std::unique_ptr<Button>(new AverageButton(
+        sf::Vector2f(397.f, 322.f),
+        sf::Vector2f(1.f, 1.f),
+#ifndef __S_RELEASE__
+        ResourceLoader::load<sf::Texture>("assets/textures/AverageButtonHovered.png"),
+        ResourceLoader::load<sf::Texture>("assets/textures/AverageButtonNHovered.png"),
+        ResourceLoader::load<sf::Texture>("assets/textures/AverageButtonDown.png"),
+        ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonHovered.wav"),
+        ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonPressed.wav")
+#else
+        ResourceLoader::load<sf::Texture>(get_raw_XXX()),
+        ResourceLoader::load<sf::Texture>(get_raw_XXX()),
+        ResourceLoader::load<sf::Texture>(get_raw_XXX()),
+        ResourceLoader::load<sf::SoundBuffer>(get_raw_XXX()),
+        ResourceLoader::load<sf::SoundBuffer>(get_raw_XXX())
+#endif // __S_RELEASE__
+    )));
+
+    buttons.push_back(std::unique_ptr<Button>(new ExpertButton(
+        sf::Vector2f(397.f, 422.f),
+        sf::Vector2f(1.f, 1.f),
+#ifndef __S_RELEASE__
+        ResourceLoader::load<sf::Texture>("assets/textures/ExpertButtonHovered.png"),
+        ResourceLoader::load<sf::Texture>("assets/textures/ExpertButtonNHovered.png"),
+        ResourceLoader::load<sf::Texture>("assets/textures/ExpertButtonDown.png"),
+        ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonHovered.wav"),
+        ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonPressed.wav")
+#else
+        ResourceLoader::load<sf::Texture>(get_raw_XXX()),
+        ResourceLoader::load<sf::Texture>(get_raw_XXX()),
+        ResourceLoader::load<sf::Texture>(get_raw_XXX()),
+        ResourceLoader::load<sf::SoundBuffer>(get_raw_XXX()),
+        ResourceLoader::load<sf::SoundBuffer>(get_raw_XXX())
+#endif // __S_RELEASE__
+    )));
+
+    buttons.push_back(std::unique_ptr<Button>(new PlayOfflineReturnButton(
+        *this,
+        sf::Vector2f(745.f, 550.f),
+        sf::Vector2f(1.f, 1.f),
+#ifndef __S_RELEASE__
+        ResourceLoader::load<sf::Texture>("assets/textures/ReturnHovered.png"),
+        ResourceLoader::load<sf::Texture>("assets/textures/ReturnNHovered.png"),
+        ResourceLoader::load<sf::Texture>("assets/textures/ReturnDown.png"),
+        ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonHovered.wav"),
+        ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonPressed.wav")
+#else
+        ResourceLoader::load<sf::Texture>(get_raw_return_hovered()),
+        ResourceLoader::load<sf::Texture>(get_raw_return_n_hovered()),
+        ResourceLoader::load<sf::Texture>(get_raw_return_down()),
+        ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_hovered()),
+        ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_pressed())
+#endif // __S_RELEASE__
+    )));
+    ////////////
 }
 
 MainMenu::~MainMenu()
@@ -342,13 +421,22 @@ void MainMenu::process_inputs()
 
         CreditsReturnButton* crb = dynamic_cast<CreditsReturnButton*>(buttons[i].get());
 
+        BeginnerButton*          bb   = dynamic_cast<BeginnerButton*>(buttons[i].get());
+        AverageButton*           ab   = dynamic_cast<AverageButton*>(buttons[i].get());
+        ExpertButton*            eb   = dynamic_cast<ExpertButton*>(buttons[i].get());
+        PlayOfflineReturnButton* porb = dynamic_cast<PlayOfflineReturnButton*>(buttons[i].get());
+
         if(show_credits) {
 
             if(crb) buttons[i]->process_inputs();
 
+        }else if(show_difficulty_levels) {
+
+            if(bb || ab || eb || porb) buttons[i]->process_inputs();
+
         }else {
 
-            if(!crb) buttons[i]->process_inputs();
+            if(!crb && !bb && !ab && !eb && !porb) buttons[i]->process_inputs();
 
         }
 
@@ -361,13 +449,22 @@ void MainMenu::update(float delta)
 
         CreditsReturnButton* crb = dynamic_cast<CreditsReturnButton*>(buttons[i].get());
 
+        BeginnerButton*          bb   = dynamic_cast<BeginnerButton*>(buttons[i].get());
+        AverageButton*           ab   = dynamic_cast<AverageButton*>(buttons[i].get());
+        ExpertButton*            eb   = dynamic_cast<ExpertButton*>(buttons[i].get());
+        PlayOfflineReturnButton* porb = dynamic_cast<PlayOfflineReturnButton*>(buttons[i].get());
+
         if(show_credits) {
 
             if(crb) buttons[i]->update(delta);
 
+        }else if(show_difficulty_levels) {
+
+            if(bb || ab || eb || porb) buttons[i]->update(delta);
+
         }else {
 
-            if(!crb) buttons[i]->update(delta);
+            if(!crb && !bb && !ab && !eb && !porb) buttons[i]->update(delta);
 
         }
 
@@ -403,13 +500,22 @@ void MainMenu::draw()
 
         CreditsReturnButton* crb = dynamic_cast<CreditsReturnButton*>(buttons[i].get());
 
+        BeginnerButton*          bb   = dynamic_cast<BeginnerButton*>(buttons[i].get());
+        AverageButton*           ab   = dynamic_cast<AverageButton*>(buttons[i].get());
+        ExpertButton*            eb   = dynamic_cast<ExpertButton*>(buttons[i].get());
+        PlayOfflineReturnButton* porb = dynamic_cast<PlayOfflineReturnButton*>(buttons[i].get());
+
         if(show_credits) {
 
             if(crb) MinesweeperGame::window->draw(*buttons[i]);
 
+        }else if(show_difficulty_levels) {
+
+            if(bb || ab || eb || porb) MinesweeperGame::window->draw(*buttons[i]);
+
         }else {
 
-            if(!crb) MinesweeperGame::window->draw(*buttons[i]);
+            if(!crb && !bb && !ab && !eb && !porb) MinesweeperGame::window->draw(*buttons[i]);
 
         }
 

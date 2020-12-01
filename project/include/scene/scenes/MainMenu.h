@@ -57,8 +57,11 @@ namespace Minesweeper {
     private:
         friend class CreditsButton;
         friend class CreditsReturnButton;
+        friend class PlayOfflineButton;
+        friend class PlayOfflineReturnButton;
 
         bool show_credits;
+        bool show_difficulty_levels;
 
         AnimationPlayer animations;
 
