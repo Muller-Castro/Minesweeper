@@ -24,20 +24,27 @@
 #ifndef PLAY_OFFLINE_BUTTON
 #define PLAY_OFFLINE_BUTTON
 
+#include <functional>
+
 #include "components/Button.h"
 
 namespace Minesweeper {
 
+    class MainMenu;
+
     class PlayOfflineButton final : public Button
     {
     public:
-        PlayOfflineButton(const sf::Vector2f& position_, const sf::Vector2f& scale_, const std::shared_ptr<sf::Texture>& hovered, const std::shared_ptr<sf::Texture>& non_hovered, const std::shared_ptr<sf::Texture>& down, const std::shared_ptr<sf::SoundBuffer>& hovered_sfx = {}, const std::shared_ptr<sf::SoundBuffer>& pressed_sfx = {});
+        PlayOfflineButton(MainMenu& mm_ref_, const sf::Vector2f& position_, const sf::Vector2f& scale_, const std::shared_ptr<sf::Texture>& hovered, const std::shared_ptr<sf::Texture>& non_hovered, const std::shared_ptr<sf::Texture>& down, const std::shared_ptr<sf::SoundBuffer>& hovered_sfx = {}, const std::shared_ptr<sf::SoundBuffer>& pressed_sfx = {});
         ~PlayOfflineButton() override {}
 
     protected:
         void on_button_up()      override;
         void on_button_down()    override;
         void on_button_pressed() override;
+
+    private:
+        std::reference_wrapper<MainMenu> mm_ref;
     };
 
 }
