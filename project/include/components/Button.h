@@ -54,27 +54,31 @@ namespace Minesweeper {
         Button(const sf::Vector2f& position_, const sf::Vector2f& scale_, const std::shared_ptr<sf::Texture>& hovered, const std::shared_ptr<sf::Texture>& non_hovered, const std::shared_ptr<sf::Texture>& down, const std::shared_ptr<sf::SoundBuffer>& hovered_sfx = {}, const std::shared_ptr<sf::SoundBuffer>& pressed_sfx = {});
         ~Button() override {}
 
-        void process_inputs();
+        virtual void process_inputs();
         virtual void update(float d);
-        void draw(sf::RenderTarget& target, sf::RenderStates states) const final override;
+        virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
         bool is_hovered() const noexcept { return current_texture == HOVERED; }
         States get_state() const noexcept { return state; }
 
     protected:
+        static constexpr unsigned char HOVERED   = 0;
+        static constexpr unsigned char N_HOVERED = 1;
+        static constexpr unsigned char DOWN      = 2;
+
         States state;
 
         sf::FloatRect bounding_box;
+
+        sf::Sprite sprite;
 
         virtual void on_button_up()      = 0;
         virtual void on_button_down()    = 0;
         virtual void on_button_pressed() = 0;
 
-    private:
-        static constexpr unsigned char HOVERED   = 0;
-        static constexpr unsigned char N_HOVERED = 1;
-        static constexpr unsigned char DOWN      = 2;
+        void set_current_texture(unsigned char texture);
 
+    private:
         static constexpr unsigned char HOVERED_SFX = 0;
         static constexpr unsigned char PRESSED_SFX = 1;
 
@@ -84,8 +88,6 @@ namespace Minesweeper {
 
         std::array<std::shared_ptr<sf::Texture>, 3> textures;
         std::array<std::pair<std::shared_ptr<sf::SoundBuffer>, bool>, 2> sound_buffers;
-
-        sf::Sprite sprite;
 
         void set_state() noexcept;
         void dispatch_actions();

@@ -40,10 +40,10 @@ Button::Button(const sf::Vector2f& position_, const sf::Vector2f& scale_, const 
     position(position_), scale(scale_),
     state(States::NONE),
     bounding_box(),
+    sprite(),
     current_texture(Button::N_HOVERED),
     textures(),
-    sound_buffers(),
-    sprite()
+    sound_buffers()
 {
     textures[Button::HOVERED]   = hovered;
     textures[Button::N_HOVERED] = non_hovered;
@@ -121,6 +121,12 @@ void Button::draw(sf::RenderTarget& target, sf::RenderStates states) const
 #endif // __DEBUG__
 }
 
+void Button::set_current_texture(unsigned char texture)
+{
+    current_texture = texture;
+    sprite.setTexture(*textures[current_texture], true);
+}
+
 void Button::set_state() noexcept
 {
     sf::Vector2i mouse_position = sf::Mouse::getPosition(*MinesweeperGame::window);
@@ -163,6 +169,7 @@ void Button::set_state() noexcept
 
                 if(Button::sound.getStatus() != sf::Sound::Playing) {
 
+//                    Button::sound.stop();
                     Button::sound.setBuffer(*sound_buffers[Button::HOVERED_SFX].first);
                     Button::sound.play();
 
@@ -189,12 +196,7 @@ void Button::dispatch_actions()
 
         case States::NONE: {
 
-            if(current_texture != N_HOVERED) {
-
-                current_texture = N_HOVERED;
-                sprite.setTexture(*textures[current_texture], true);
-
-            }
+            if(current_texture != N_HOVERED) set_current_texture(N_HOVERED);
 
             on_button_up();
 
@@ -202,12 +204,7 @@ void Button::dispatch_actions()
 
         case States::HOVERED: {
 
-            if(current_texture != HOVERED) {
-
-                current_texture = HOVERED;
-                sprite.setTexture(*textures[current_texture], true);
-
-            }
+            if(current_texture != HOVERED) set_current_texture(HOVERED);
 
             on_button_up();
 
@@ -215,12 +212,7 @@ void Button::dispatch_actions()
 
         case States::PRESSED: {
 
-            if(current_texture != DOWN) {
-
-                current_texture = DOWN;
-                sprite.setTexture(*textures[current_texture], true);
-
-            }
+            if(current_texture != DOWN) set_current_texture(DOWN);
 
             on_button_down();
 
@@ -228,12 +220,7 @@ void Button::dispatch_actions()
 
         case States::RELEASED: {
 
-            if(current_texture != N_HOVERED) {
-
-                current_texture = N_HOVERED;
-                sprite.setTexture(*textures[current_texture], true);
-
-            }
+            if(current_texture != N_HOVERED) set_current_texture(N_HOVERED);
 
             on_button_up();
             on_button_pressed();
