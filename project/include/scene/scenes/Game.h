@@ -24,18 +24,41 @@
 #ifndef GAME_H
 #define GAME_H
 
+#include <vector>
+#include <memory>
+#include <unordered_set>
+
+#include <SFML/Graphics/Texture.hpp>
+#include <SFML/Graphics/Sprite.hpp>
+#include <SFML/Graphics/RectangleShape.hpp>
+
 #include "scene/Scene.h"
+#include "components/buttons/GridButton.h"
 
 namespace Minesweeper {
 
     class Game final : public Scene
     {
     public:
+        Game();
         ~Game() noexcept override;
 
         void process_inputs()    override;
         void update(float delta) override;
         void draw()              override;
+
+    private:
+        std::vector<std::vector<std::unique_ptr<GridButton>>> grid;
+
+        std::shared_ptr<sf::Texture> panel_texture;
+
+        sf::Sprite panel_sprite;
+
+        sf::RectangleShape grid_outline;
+
+        void build_grid();
+        std::unordered_set<sf::Vector2i> create_bomb_positions(int width, int height, int max_bombs) const;
+        unsigned parse_adjacent_cells(int x, int y, const std::unordered_set<sf::Vector2i>& bomb_positions) const noexcept;
     };
 
 }
