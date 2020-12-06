@@ -25,21 +25,46 @@
 #define GRID_BUTTON_H
 
 #include "components/Button.h"
+#include "tools/AnimationPlayer.h"
 
 namespace Minesweeper {
 
     class GridButton final : public Button
     {
     public:
-        GridButton(const sf::Vector2f& position_, const sf::Vector2f& scale_, const std::shared_ptr<sf::Texture>& hovered, const std::shared_ptr<sf::Texture>& non_hovered, const std::shared_ptr<sf::Texture>& down, const std::shared_ptr<sf::SoundBuffer>& hovered_sfx = {}, const std::shared_ptr<sf::SoundBuffer>& pressed_sfx = {});
+        enum class Types : unsigned char
+        {
+            NEUTRAL,
+            NUMBER,
+            BOMB
+        };
+
+        GridButton(Types type_, const sf::Vector2f& position_, const sf::Vector2f& scale_, const std::shared_ptr<sf::Texture>& hovered, const std::shared_ptr<sf::Texture>& non_hovered, const std::shared_ptr<sf::Texture>& down, const std::shared_ptr<sf::Texture>& icon, const std::shared_ptr<sf::Texture>& p1_flag, const std::shared_ptr<sf::Texture>& p2_flag, const std::shared_ptr<sf::SoundBuffer>& hovered_sfx = {}, const std::shared_ptr<sf::SoundBuffer>& pressed_sfx = {});
         ~GridButton() override {}
 
+        void process_inputs()    override;
         void update(float delta) override;
+        void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
     protected:
         void on_button_up()      override;
         void on_button_down()    override;
         void on_button_pressed() override;
+
+    private:
+        bool disabled;
+
+        Types type;
+
+        std::shared_ptr<sf::Texture> icon_texture;
+        std::shared_ptr<sf::Texture> p1_flag_texture;
+        std::shared_ptr<sf::Texture> p2_flag_texture;
+
+        sf::Sprite icon_sprite;
+        sf::Sprite p1_flag_sprite;
+        sf::Sprite p2_flag_sprite;
+
+        AnimationPlayer animations;
     };
 
 }
