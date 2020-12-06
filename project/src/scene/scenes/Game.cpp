@@ -176,7 +176,7 @@ void Game::build_grid()
                         case 7: { icon_texture = ResourceLoader::load<sf::Texture>("assets/textures/Icon7.png"); } break;
                         case 8: { icon_texture = ResourceLoader::load<sf::Texture>("assets/textures/Icon8.png"); } break;
 
-                        default: { throw std::runtime_error("This shouldn't be possible..."); };
+                        default: { throw std::runtime_error("Adjacent bombs > 8 ... This shouldn't be possible..."); };
 
                     }
 
