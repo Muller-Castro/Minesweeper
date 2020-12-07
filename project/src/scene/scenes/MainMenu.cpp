@@ -47,6 +47,15 @@
 #include "assets/BombSpriteSheet.h"
 #include "assets/MainMenuSoundtrack.h"
 #include "assets/INET.h"
+#include "assets/AverageButtonNHovered.h"
+#include "assets/AverageButtonHovered.h"
+#include "assets/AverageButtonDown.h"
+#include "assets/BeginnerButtonNHovered.h"
+#include "assets/BeginnerButtonHovered.h"
+#include "assets/BeginnerButtonDown.h"
+#include "assets/ExpertButtonNHovered.h"
+#include "assets/ExpertButtonHovered.h"
+#include "assets/ExpertButtonDown.h"
 #include "assets/MainMenuButtonHovered.h"
 #include "assets/MainMenuButtonPressed.h"
 #include "assets/PlayOfflineNHovered.h"
@@ -341,11 +350,11 @@ MainMenu::MainMenu() :
         ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonHovered.wav"),
         ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonPressed.wav")
 #else
-        ResourceLoader::load<sf::Texture>(get_raw_XXX()),
-        ResourceLoader::load<sf::Texture>(get_raw_XXX()),
-        ResourceLoader::load<sf::Texture>(get_raw_XXX()),
-        ResourceLoader::load<sf::SoundBuffer>(get_raw_XXX()),
-        ResourceLoader::load<sf::SoundBuffer>(get_raw_XXX())
+        ResourceLoader::load<sf::Texture>(get_raw_beginner_button_hovered()),
+        ResourceLoader::load<sf::Texture>(get_raw_beginner_button_n_hovered()),
+        ResourceLoader::load<sf::Texture>(get_raw_beginner_button_down()),
+        ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_hovered()),
+        ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_pressed())
 #endif // __S_RELEASE__
     )));
 
@@ -359,11 +368,11 @@ MainMenu::MainMenu() :
         ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonHovered.wav"),
         ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonPressed.wav")
 #else
-        ResourceLoader::load<sf::Texture>(get_raw_XXX()),
-        ResourceLoader::load<sf::Texture>(get_raw_XXX()),
-        ResourceLoader::load<sf::Texture>(get_raw_XXX()),
-        ResourceLoader::load<sf::SoundBuffer>(get_raw_XXX()),
-        ResourceLoader::load<sf::SoundBuffer>(get_raw_XXX())
+        ResourceLoader::load<sf::Texture>(get_raw_average_button_hovered()),
+        ResourceLoader::load<sf::Texture>(get_raw_average_button_n_hovered()),
+        ResourceLoader::load<sf::Texture>(get_raw_average_button_down()),
+        ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_hovered()),
+        ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_pressed())
 #endif // __S_RELEASE__
     )));
 
@@ -377,11 +386,11 @@ MainMenu::MainMenu() :
         ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonHovered.wav"),
         ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonPressed.wav")
 #else
-        ResourceLoader::load<sf::Texture>(get_raw_XXX()),
-        ResourceLoader::load<sf::Texture>(get_raw_XXX()),
-        ResourceLoader::load<sf::Texture>(get_raw_XXX()),
-        ResourceLoader::load<sf::SoundBuffer>(get_raw_XXX()),
-        ResourceLoader::load<sf::SoundBuffer>(get_raw_XXX())
+        ResourceLoader::load<sf::Texture>(get_raw_expert_button_hovered()),
+        ResourceLoader::load<sf::Texture>(get_raw_expert_button_n_hovered()),
+        ResourceLoader::load<sf::Texture>(get_raw_expert_button_down()),
+        ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_hovered()),
+        ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_pressed())
 #endif // __S_RELEASE__
     )));
 
