@@ -24,6 +24,10 @@
 #ifndef GRID_BUTTON_H
 #define GRID_BUTTON_H
 
+#include <functional>
+
+#include <SFML/System/Vector2.hpp>
+
 #include "components/Button.h"
 #include "tools/AnimationPlayer.h"
 
@@ -39,7 +43,7 @@ namespace Minesweeper {
             BOMB
         };
 
-        GridButton(Types type_, const sf::Vector2f& position_, const sf::Vector2f& scale_, const std::shared_ptr<sf::Texture>& hovered, const std::shared_ptr<sf::Texture>& non_hovered, const std::shared_ptr<sf::Texture>& down, const std::shared_ptr<sf::Texture>& icon, const std::shared_ptr<sf::Texture>& p1_flag, const std::shared_ptr<sf::Texture>& p2_flag, const std::shared_ptr<sf::SoundBuffer>& hovered_sfx = {}, const std::shared_ptr<sf::SoundBuffer>& pressed_sfx = {});
+        GridButton(Types type_, std::vector<std::vector<std::unique_ptr<GridButton>>>& grid, const sf::Vector2i& cell_position_, const sf::Vector2f& position_, const sf::Vector2f& scale_, const std::shared_ptr<sf::Texture>& hovered, const std::shared_ptr<sf::Texture>& non_hovered, const std::shared_ptr<sf::Texture>& down, const std::shared_ptr<sf::Texture>& icon, const std::shared_ptr<sf::Texture>& p1_flag, const std::shared_ptr<sf::Texture>& p2_flag, const std::shared_ptr<sf::SoundBuffer>& hovered_sfx = {}, const std::shared_ptr<sf::SoundBuffer>& pressed_sfx = {});
         ~GridButton() override {}
 
         void process_inputs()    override;
@@ -56,15 +60,22 @@ namespace Minesweeper {
 
         Types type;
 
+        std::reference_wrapper<std::vector<std::vector<std::unique_ptr<GridButton>>>> grid_ref;
+
         std::shared_ptr<sf::Texture> icon_texture;
         std::shared_ptr<sf::Texture> p1_flag_texture;
         std::shared_ptr<sf::Texture> p2_flag_texture;
+
+        sf::Vector2i cell_position;
 
         sf::Sprite icon_sprite;
         sf::Sprite p1_flag_sprite;
         sf::Sprite p2_flag_sprite;
 
         AnimationPlayer animations;
+
+        void disable();
+        void find_and_disable();
     };
 
 }

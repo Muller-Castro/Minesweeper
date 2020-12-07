@@ -23,19 +23,42 @@
 
 #include "components/buttons/GridButton.h"
 
+#include <unordered_set>
+#include <sstream>
+#include <list>
+
 #include <SFML/Graphics/RenderWindow.hpp>
 
 #include "scene/SceneManager.h"
 
 using namespace Minesweeper;
 
-GridButton::GridButton(Types type_, const sf::Vector2f& position_, const sf::Vector2f& scale_, const std::shared_ptr<sf::Texture>& hovered, const std::shared_ptr<sf::Texture>& non_hovered, const std::shared_ptr<sf::Texture>& down, const std::shared_ptr<sf::Texture>& icon, const std::shared_ptr<sf::Texture>& p1_flag, const std::shared_ptr<sf::Texture>& p2_flag, const std::shared_ptr<sf::SoundBuffer>& hovered_sfx, const std::shared_ptr<sf::SoundBuffer>& pressed_sfx) :
+namespace std {
+
+    template<>
+    struct hash<sf::Vector2i>
+    {
+        size_t operator()(const sf::Vector2i& v) const noexcept
+        {
+            std::ostringstream oss;
+
+            oss << v.x << v.y;
+
+            return hash<std::string>()(oss.str());
+        }
+    };
+
+}
+
+GridButton::GridButton(Types type_, std::vector<std::vector<std::unique_ptr<GridButton>>>& grid, const sf::Vector2i& cell_position_, const sf::Vector2f& position_, const sf::Vector2f& scale_, const std::shared_ptr<sf::Texture>& hovered, const std::shared_ptr<sf::Texture>& non_hovered, const std::shared_ptr<sf::Texture>& down, const std::shared_ptr<sf::Texture>& icon, const std::shared_ptr<sf::Texture>& p1_flag, const std::shared_ptr<sf::Texture>& p2_flag, const std::shared_ptr<sf::SoundBuffer>& hovered_sfx, const std::shared_ptr<sf::SoundBuffer>& pressed_sfx) :
     Button(position_, scale_, hovered, non_hovered, down, hovered_sfx, pressed_sfx),
     disabled(),
     type(type_),
+    grid_ref(grid),
     icon_texture(icon),
     p1_flag_texture(p1_flag),
     p2_flag_texture(p2_flag),
+    cell_position(cell_position_),
     icon_sprite(),
     p1_flag_sprite(*p1_flag_texture),
     p2_flag_sprite(*p2_flag_texture),
@@ -151,15 +174,71 @@ void GridButton::on_button_down()
 
 void GridButton::on_button_pressed()
 {
-    set_current_texture(DOWN);
+    disable();
+
+    if(type == Types::NEUTRAL) find_and_disable();
+}
+
+void GridButton::disable()
+{
+//    set_current_texture(DOWN);
     sprite.setColor(sf::Color(200, 200, 200));
 //    sprite.setColor(sf::Color(255, 255, 255));
 
     SceneManager::call_deferred([&]() {
+        set_current_texture(DOWN);
 
         disabled = true;
 
         if(type == Types::BOMB) animations.play("IGNITED_BOMB");
 
     });
+}
+
+void GridButton::find_and_disable()
+{
+    std::unordered_set<sf::Vector2i> queued_buttons;
+
+    std::list<GridButton*> neutral_buttons;
+
+    neutral_buttons.push_back(grid_ref.get()[cell_position.y][cell_position.x].get());
+
+    for(std::list<GridButton*>::iterator it = neutral_buttons.begin(); it != neutral_buttons.end(); ++it) {
+
+        GridButton* current_button = *it;
+
+        sf::Vector2i current_cell_pos = current_button->cell_position;
+
+        for(int y_parse = current_cell_pos.y - 1; y_parse != (current_cell_pos.y + 2); ++y_parse) {
+
+            for(int x_parse = current_cell_pos.x - 1; x_parse != (current_cell_pos.x + 2); ++x_parse) {
+
+                if(
+                   ((x_parse == current_cell_pos.x) && (y_parse == current_cell_pos.y))                      ||
+                   ((y_parse < 0) || (static_cast<size_t>(y_parse) >= grid_ref.get().size()))                ||
+                   ((x_parse < 0) || (static_cast<size_t>(x_parse) >= grid_ref.get()[y_parse].size()))
+                ) {
+
+                    continue;
+
+                }
+
+                current_button = grid_ref.get()[y_parse][x_parse].get();
+
+                if(queued_buttons.find(sf::Vector2i(x_parse, y_parse)) == queued_buttons.end()) {
+
+                    current_button->disable();
+                    queued_buttons.emplace(x_parse, y_parse);
+
+                    if(current_button->type == Types::NEUTRAL) neutral_buttons.push_back(current_button);
+
+                }
+
+    //            if(bomb_positions.find(sf::Vector2i(x_parse, y_parse)) != bomb_positions.end()) ++result;
+
+            }
+
+        }
+
+    }
 }
