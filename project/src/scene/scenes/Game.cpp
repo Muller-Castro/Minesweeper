@@ -33,6 +33,24 @@
 #include "io/ResourceLoader.h"
 #include "scene/SceneManager.h"
 #include "MinesweeperGame.h"
+#ifdef __S_RELEASE__
+#include "assets/BombExplosion.h"
+#include "assets/EmptyCell.h"
+#include "assets/GridButtonPressed.h"
+#include "assets/GridButtonUp.h"
+#include "assets/GamePanel.h"
+#include "assets/Icon1.h"
+#include "assets/Icon2.h"
+#include "assets/Icon3.h"
+#include "assets/Icon4.h"
+#include "assets/Icon5.h"
+#include "assets/Icon6.h"
+#include "assets/Icon7.h"
+#include "assets/Icon8.h"
+#include "assets/MiniBombSpriteSheet.h"
+#include "assets/P1Flag.h"
+#include "assets/P2Flag.h"
+#endif // __S_RELEASE__
 
 using namespace Minesweeper;
 
@@ -62,7 +80,7 @@ Game::Game() :
 #ifndef __S_RELEASE__
     panel_texture = ResourceLoader::load<sf::Texture>("assets/textures/GamePanel.png");
 #else
-    //
+    panel_texture = ResourceLoader::load<sf::Texture>(get_raw_game_panel());
 #endif // __S_RELEASE__
 
     panel_sprite.setTexture(*panel_texture);
@@ -167,6 +185,7 @@ void Game::build_grid()
 
                     switch(adjacent_bomb_count) {
 
+#ifndef __S_RELEASE__
                         case 1: { icon_texture = ResourceLoader::load<sf::Texture>("assets/textures/Icon1.png"); } break;
                         case 2: { icon_texture = ResourceLoader::load<sf::Texture>("assets/textures/Icon2.png"); } break;
                         case 3: { icon_texture = ResourceLoader::load<sf::Texture>("assets/textures/Icon3.png"); } break;
@@ -175,7 +194,16 @@ void Game::build_grid()
                         case 6: { icon_texture = ResourceLoader::load<sf::Texture>("assets/textures/Icon6.png"); } break;
                         case 7: { icon_texture = ResourceLoader::load<sf::Texture>("assets/textures/Icon7.png"); } break;
                         case 8: { icon_texture = ResourceLoader::load<sf::Texture>("assets/textures/Icon8.png"); } break;
-
+#else
+                        case 1: { icon_texture = ResourceLoader::load<sf::Texture>(get_raw_icon1()); } break;
+                        case 2: { icon_texture = ResourceLoader::load<sf::Texture>(get_raw_icon2()); } break;
+                        case 3: { icon_texture = ResourceLoader::load<sf::Texture>(get_raw_icon3()); } break;
+                        case 4: { icon_texture = ResourceLoader::load<sf::Texture>(get_raw_icon4()); } break;
+                        case 5: { icon_texture = ResourceLoader::load<sf::Texture>(get_raw_icon5()); } break;
+                        case 6: { icon_texture = ResourceLoader::load<sf::Texture>(get_raw_icon6()); } break;
+                        case 7: { icon_texture = ResourceLoader::load<sf::Texture>(get_raw_icon7()); } break;
+                        case 8: { icon_texture = ResourceLoader::load<sf::Texture>(get_raw_icon8()); } break;
+#endif // __S_RELEASE__
                         default: { throw std::runtime_error("Adjacent bombs > 8 ... This shouldn't be possible..."); };
 
                     }
@@ -184,22 +212,43 @@ void Game::build_grid()
 
             }else {
 
+#ifndef __S_RELEASE__
                 icon_texture = ResourceLoader::load<sf::Texture>("assets/textures/MiniBombSpriteSheet.png");
+#else
+                icon_texture = ResourceLoader::load<sf::Texture>(get_raw_mini_bomb_sprite_sheet());
+#endif // __S_RELEASE__
 
             }
 
             grid[y][x] = std::unique_ptr<GridButton>(new GridButton(
                 button_type,
+                grid,
+                sf::Vector2i(x, y),
                 sf::Vector2f(x * 20.f + grid_x, y * 20.f + grid_y),
                 sf::Vector2f(1.f, 1.f),
+#ifndef __S_RELEASE__
                 ResourceLoader::load<sf::Texture>("assets/textures/GridButtonUp.png"),
                 ResourceLoader::load<sf::Texture>("assets/textures/GridButtonUp.png"),
                 ResourceLoader::load<sf::Texture>("assets/textures/EmptyCell.png"),
+#else
+                ResourceLoader::load<sf::Texture>(get_raw_grid_button_up()),
+                ResourceLoader::load<sf::Texture>(get_raw_grid_button_up()),
+                ResourceLoader::load<sf::Texture>(get_raw_empty_cell()),
+#endif // __S_RELEASE__
                 icon_texture,
+#ifndef __S_RELEASE__
                 ResourceLoader::load<sf::Texture>("assets/textures/P1Flag.png"),
                 ResourceLoader::load<sf::Texture>("assets/textures/P2Flag.png"),
+#else
+                ResourceLoader::load<sf::Texture>(get_raw_p1_flag()),
+                ResourceLoader::load<sf::Texture>(get_raw_p2_flag()),
+#endif // __S_RELEASE__
                 {},
+#ifndef __S_RELEASE__
                 ResourceLoader::load<sf::SoundBuffer>(std::string("assets/sounds/") + (is_bomb ? "BombExplosion.wav" : "GridButtonPressed.wav"))
+#else
+                ResourceLoader::load<sf::SoundBuffer>(is_bomb ? get_raw_bomb_explosion() : get_raw_grid_button_pressed())
+#endif // __S_RELEASE__
             ));
 
         }
