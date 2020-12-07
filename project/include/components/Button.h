@@ -66,6 +66,8 @@ namespace Minesweeper {
         static constexpr unsigned char N_HOVERED = 1;
         static constexpr unsigned char DOWN      = 2;
 
+        static sf::Sound sound;
+
         States state;
 
         sf::FloatRect bounding_box;
@@ -81,8 +83,6 @@ namespace Minesweeper {
     private:
         static constexpr unsigned char HOVERED_SFX = 0;
         static constexpr unsigned char PRESSED_SFX = 1;
-
-        static sf::Sound sound;
 
         unsigned char current_texture;
 

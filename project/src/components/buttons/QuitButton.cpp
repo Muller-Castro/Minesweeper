@@ -45,5 +45,7 @@ void QuitButton::on_button_down()
 
 void QuitButton::on_button_pressed()
 {
+    Button::sound.setVolume(0.f);
+
     MinesweeperGame::is_running = false;
 }
