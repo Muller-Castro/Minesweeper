@@ -262,12 +262,12 @@ std::unordered_set<sf::Vector2i> Game::create_bomb_positions(int width, int heig
 
             new_entry = result.emplace(new_x, new_y);
 
-            if(new_x == (width - 1)) {
+            if(new_x >= (width - 1)) {
 
                 new_x = 0;
                 ++new_y;
 
-                if(new_y == (height - 1)) new_y = 0;
+                if(new_y >= (height - 1)) new_y = 0;
 
             }else {
 
