@@ -36,11 +36,11 @@ namespace std {
     {
         size_t operator()(const sf::Vector2i& v) const noexcept
         {
-            std::ostringstream oss;
+            ostringstream oss;
 
             oss << v.x << v.y;
 
-            return hash<std::string>()(oss.str());
+            return hash<string>()(oss.str());
         }
     };
 
