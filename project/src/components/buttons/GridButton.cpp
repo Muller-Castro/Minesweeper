@@ -29,26 +29,10 @@
 
 #include <SFML/Graphics/RenderWindow.hpp>
 
+#include "tools/Vector2Hash.h"
 #include "scene/SceneManager.h"
 
 using namespace Minesweeper;
-
-namespace std {
-
-    template<>
-    struct hash<sf::Vector2i>
-    {
-        size_t operator()(const sf::Vector2i& v) const noexcept
-        {
-            std::ostringstream oss;
-
-            oss << v.x << v.y;
-
-            return hash<std::string>()(oss.str());
-        }
-    };
-
-}
 
 GridButton::GridButton(Types type_, std::vector<std::vector<std::unique_ptr<GridButton>>>& grid, const sf::Vector2i& cell_position_, const sf::Vector2f& position_, const sf::Vector2f& scale_, const std::shared_ptr<sf::Texture>& hovered, const std::shared_ptr<sf::Texture>& non_hovered, const std::shared_ptr<sf::Texture>& down, const std::shared_ptr<sf::Texture>& icon, const std::shared_ptr<sf::Texture>& p1_flag, const std::shared_ptr<sf::Texture>& p2_flag, const std::shared_ptr<sf::SoundBuffer>& hovered_sfx, const std::shared_ptr<sf::SoundBuffer>& pressed_sfx) :
     Button(position_, scale_, hovered, non_hovered, down, hovered_sfx, pressed_sfx),

@@ -31,6 +31,7 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 
 #include "io/ResourceLoader.h"
+#include "tools/Vector2Hash.h"
 #include "scene/SceneManager.h"
 #include "MinesweeperGame.h"
 #ifdef __S_RELEASE__
@@ -53,23 +54,6 @@
 #endif // __S_RELEASE__
 
 using namespace Minesweeper;
-
-namespace std {
-
-    template<>
-    struct hash<sf::Vector2i>
-    {
-        size_t operator()(const sf::Vector2i& v) const noexcept
-        {
-            std::ostringstream oss;
-
-            oss << v.x << v.y;
-
-            return hash<std::string>()(oss.str());
-        }
-    };
-
-}
 
 Game::Game() :
     grid(),
