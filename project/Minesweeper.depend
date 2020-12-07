@@ -411,10 +411,10 @@
 	<SFML/Graphics/Drawable.hpp>
 	<SFML/Window/GlResource.hpp>
 
-1606000821 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\minesweepergame.h
+1606595573 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\minesweepergame.h
 	<string>
 
-1606072630 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\minesweepergame.cpp
+1606701764 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\minesweepergame.cpp
 	"MinesweeperGame.h"
 	<iostream>
 	<exception>
@@ -463,7 +463,7 @@
 	<SFML/Graphics/RenderWindow.hpp>
 	"MinesweeperGame.h"
 
-1606085727 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\scene\scenemanager.cpp
+1606713114 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\scene\scenemanager.cpp
 	"scene/SceneManager.h"
 	"GlobalConfigurations.h"
 	"scene/scenes/TestZone.h"
@@ -472,7 +472,9 @@
 	"scene/scenes/Game.h"
 	"io/ResourceLoader.h"
 
-1606085637 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\scene\scenemanager.h
+1606713407 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\scene\scenemanager.h
+	<unordered_map>
+	<string>
 	<memory>
 	<functional>
 	<queue>
@@ -484,7 +486,7 @@
 	<utility>
 	<SFML/Graphics/Drawable.hpp>
 
-1606590671 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\scene\scenes\splashscreen.cpp
+1606595575 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\scene\scenes\splashscreen.cpp
 	"scene/scenes/SplashScreen.h"
 	"io/ResourceLoader.h"
 	"Input.h"
@@ -496,7 +498,7 @@
 	"assets/Universe.h"
 	"assets/INET.h"
 
-1606590524 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\scene\scenes\splashscreen.h
+1606595574 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\scene\scenes\splashscreen.h
 	<chrono>
 	<memory>
 	<utility>
@@ -530,10 +532,12 @@
 	"scene/SceneManager.h"
 	"io/SimpleINIParser.h"
 
-1605973896 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\globalconfigurations.h
+1606667293 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\globalconfigurations.h
+	<memory>
 	<string>
+	<SFML/Graphics/Font.hpp>
 
-1606086068 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\globalconfigurations.cpp
+1606667781 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\globalconfigurations.cpp
 	"GlobalConfigurations.h"
 	<sstream>
 	<string>
@@ -547,7 +551,7 @@
 	"io/ResourceLoader.h"
 	"io/ini_strings/WindowINI.h"
 
-1606072829 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\io\resourceloader.h
+1606595574 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\io\resourceloader.h
 	<memory>
 	<map>
 	<string>
@@ -564,14 +568,14 @@
 	<SFML/Graphics/Shader.hpp>
 	"io/MusicStream.h"
 
-1605888256 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\io\resourceloader.hpp
+1606617932 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\io\resourceloader.hpp
 	<SFML/Graphics/Texture.hpp>
 	<SFML/Audio/SoundBuffer.hpp>
 	<SFML/Graphics/Font.hpp>
 	<SFML/Graphics/Shader.hpp>
 	"io/MusicStream.h"
 
-1606590333 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\scene\scenes\mainmenu.h
+1606711721 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\scene\scenes\mainmenu.h
 	<vector>
 	<memory>
 	<string>
@@ -586,7 +590,7 @@
 	"tools/AnimationPlayer.h"
 	"io/MusicStream.h"
 
-1606594868 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\scene\scenes\mainmenu.cpp
+1607299827 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\scene\scenes\mainmenu.cpp
 	"scene/scenes/MainMenu.h"
 	<SFML/Graphics/RenderWindow.hpp>
 	"MinesweeperGame.h"
@@ -595,6 +599,10 @@
 	"components/buttons/CreditsButton.h"
 	"components/buttons/QuitButton.h"
 	"components/buttons/CreditsReturnButton.h"
+	"components/buttons/BeginnerButton.h"
+	"components/buttons/AverageButton.h"
+	"components/buttons/ExpertButton.h"
+	"components/buttons/PlayOfflineReturnButton.h"
 	"io/ResourceLoader.h"
 	"Input.h"
 	"scene/SceneManager.h"
@@ -605,6 +613,15 @@
 	"assets/BombSpriteSheet.h"
 	"assets/MainMenuSoundtrack.h"
 	"assets/INET.h"
+	"assets/AverageButtonNHovered.h"
+	"assets/AverageButtonHovered.h"
+	"assets/AverageButtonDown.h"
+	"assets/BeginnerButtonNHovered.h"
+	"assets/BeginnerButtonHovered.h"
+	"assets/BeginnerButtonDown.h"
+	"assets/ExpertButtonNHovered.h"
+	"assets/ExpertButtonHovered.h"
+	"assets/ExpertButtonDown.h"
 	"assets/MainMenuButtonHovered.h"
 	"assets/MainMenuButtonPressed.h"
 	"assets/PlayOfflineNHovered.h"
@@ -619,9 +636,9 @@
 	"assets/QuitNHovered.h"
 	"assets/QuitHovered.h"
 	"assets/QuitDown.h"
-	"assets/CreditsReturnNHovered.h"
-	"assets/CreditsReturnHovered.h"
-	"assets/CreditsReturnDown.h"
+	"assets/ReturnNHovered.h"
+	"assets/ReturnHovered.h"
+	"assets/ReturnDown.h"
 
 1605888257 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\res\resource.rc
 
@@ -649,11 +666,11 @@
 	<string>
 	<utility>
 
-1606591114 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\assets\bombspritesheet.cpp
+1606595574 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\assets\bombspritesheet.cpp
 	"assets/BombSpriteSheet.h"
 	<vector>
 
-1606591081 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\bombspritesheet.h
+1606595573 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\bombspritesheet.h
 	<string>
 	<utility>
 
@@ -673,11 +690,11 @@
 	<string>
 	<utility>
 
-1606590671 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\assets\splashscreensoundtrack.cpp
+1606595575 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\assets\splashscreensoundtrack.cpp
 	"assets/SplashScreenSoundtrack.h"
 	<vector>
 
-1606590524 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\splashscreensoundtrack.h
+1606595574 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\splashscreensoundtrack.h
 	<string>
 	<utility>
 
@@ -741,7 +758,7 @@
 1605888258 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\assets\bigbombvrt.cpp
 	"assets/BigBombVRT.h"
 
-1606276624 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\components\button.cpp
+1607273781 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\components\button.cpp
 	"components/Button.h"
 	<SFML/Graphics/RenderTarget.hpp>
 	<SFML/Graphics/RectangleShape.hpp>
@@ -749,7 +766,7 @@
 	"MinesweeperGame.h"
 	"Input.h"
 
-1606177935 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\components\button.h
+1607273759 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\components\button.h
 	<array>
 	<memory>
 	<utility>
@@ -761,53 +778,86 @@
 	<SFML/Graphics/Rect.hpp>
 	<SFML/Graphics/RenderStates.hpp>
 
-1606177056 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\components\buttons\playofflinebutton.cpp
+1607305764 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\components\buttons\playofflinebutton.cpp
 	"components/buttons/PlayOfflineButton.h"
+	"scene/scenes/MainMenu.h"
 	"scene/SceneManager.h"
 
-1606177027 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\components\buttons\playofflinebutton.h
+1606711810 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\components\buttons\playofflinebutton.h
+	<functional>
 	"components/Button.h"
 
-1605977062 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\scene\scenes\game.cpp
+1607299888 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\scene\scenes\game.cpp
 	"scene/scenes/Game.h"
+	<sstream>
+	<chrono>
+	<random>
+	<vector>
+	<SFML/Graphics/RenderWindow.hpp>
+	"io/ResourceLoader.h"
+	"scene/SceneManager.h"
+	"MinesweeperGame.h"
+	"assets/BombExplosion.h"
+	"assets/EmptyCell.h"
+	"assets/GridButtonPressed.h"
+	"assets/GridButtonUp.h"
+	"assets/GamePanel.h"
+	"assets/Icon1.h"
+	"assets/Icon2.h"
+	"assets/Icon3.h"
+	"assets/Icon4.h"
+	"assets/Icon5.h"
+	"assets/Icon6.h"
+	"assets/Icon7.h"
+	"assets/Icon8.h"
+	"assets/MiniBombSpriteSheet.h"
+	"assets/P1Flag.h"
+	"assets/P2Flag.h"
 
-1605977048 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\scene\scenes\game.h
+1607220114 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\scene\scenes\game.h
+	<vector>
+	<memory>
+	<unordered_set>
+	<SFML/Graphics/Texture.hpp>
+	<SFML/Graphics/Sprite.hpp>
+	<SFML/Graphics/RectangleShape.hpp>
 	"scene/Scene.h"
+	"components/buttons/GridButton.h"
 
-1606096847 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\tools\animationplayer.cpp
+1606595576 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\tools\animationplayer.cpp
 	"tools/AnimationPlayer.h"
 
-1606096789 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\tools\animationplayer.h
+1606595574 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\tools\animationplayer.h
 	<vector>
 	<string>
 	<functional>
 	<initializer_list>
 	<unordered_map>
 
-1606175999 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\components\buttons\playonlinebutton.cpp
+1606595711 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\components\buttons\playonlinebutton.cpp
 	"components/buttons/PlayOnlineButton.h"
 	"scene/SceneManager.h"
 
-1606175949 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\components\buttons\playonlinebutton.h
+1606595574 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\components\buttons\playonlinebutton.h
 	"components/Button.h"
 
-1606177117 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\components\buttons\quitbutton.cpp
+1606595575 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\components\buttons\quitbutton.cpp
 	"components/buttons/QuitButton.h"
 	"MinesweeperGame.h"
 
-1606177087 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\components\buttons\quitbutton.h
+1606595574 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\components\buttons\quitbutton.h
 	"components/Button.h"
 
-1606176934 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\components\buttons\creditsbutton.cpp
+1607305749 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\components\buttons\creditsbutton.cpp
 	"components/buttons/CreditsButton.h"
 	"scene/scenes/MainMenu.h"
 	"scene/SceneManager.h"
 
-1606176903 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\components\buttons\creditsbutton.h
+1606711765 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\components\buttons\creditsbutton.h
 	<functional>
 	"components/Button.h"
 
-1606061676 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\mainmenubg.h
+1606595573 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\mainmenubg.h
 	<string>
 	<utility>
 
@@ -815,103 +865,103 @@
 	<string>
 	<utility>
 
-1606061810 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\playofflinenhovered.h
+1606595574 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\playofflinenhovered.h
 	<string>
 	<utility>
 
-1606061810 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\playofflinehovered.h
+1606595574 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\playofflinehovered.h
 	<string>
 	<utility>
 
-1606061810 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\playofflinedown.h
+1606595574 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\playofflinedown.h
 	<string>
 	<utility>
 
-1606061811 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\playonlinenhovered.h
+1606595574 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\playonlinenhovered.h
 	<string>
 	<utility>
 
-1606061811 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\playonlinehovered.h
+1606595574 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\playonlinehovered.h
 	<string>
 	<utility>
 
-1606061811 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\playonlinedown.h
+1606595574 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\playonlinedown.h
 	<string>
 	<utility>
 
-1606061810 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\creditsnhovered.h
+1606595573 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\creditsnhovered.h
 	<string>
 	<utility>
 
-1606061810 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\creditshovered.h
+1606595573 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\creditshovered.h
 	<string>
 	<utility>
 
-1606061810 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\creditsdown.h
+1606595573 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\creditsdown.h
 	<string>
 	<utility>
 
-1606061811 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\quitnhovered.h
+1606595574 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\quitnhovered.h
 	<string>
 	<utility>
 
-1606061811 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\quithovered.h
+1606595574 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\quithovered.h
 	<string>
 	<utility>
 
-1606061811 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\quitdown.h
+1606595574 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\quitdown.h
 	<string>
 	<utility>
 
-1606061810 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\assets\creditsdown.cpp
+1606595574 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\assets\creditsdown.cpp
 	"assets/CreditsDown.h"
 	<vector>
 
-1606061810 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\assets\creditshovered.cpp
+1606595574 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\assets\creditshovered.cpp
 	"assets/CreditsHovered.h"
 	<vector>
 
-1606061810 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\assets\creditsnhovered.cpp
+1606595574 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\assets\creditsnhovered.cpp
 	"assets/CreditsNHovered.h"
 	<vector>
 
-1606061692 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\assets\mainmenubg.cpp
+1606595574 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\assets\mainmenubg.cpp
 	"assets/MainMenuBG.h"
 	<vector>
 
-1606061810 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\assets\playofflinedown.cpp
+1606595575 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\assets\playofflinedown.cpp
 	"assets/PlayOfflineDown.h"
 	<vector>
 
-1606061810 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\assets\playofflinehovered.cpp
+1606595575 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\assets\playofflinehovered.cpp
 	"assets/PlayOfflineHovered.h"
 	<vector>
 
-1606061810 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\assets\playofflinenhovered.cpp
+1606595575 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\assets\playofflinenhovered.cpp
 	"assets/PlayOfflineNHovered.h"
 	<vector>
 
-1606061811 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\assets\playonlinedown.cpp
+1606595575 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\assets\playonlinedown.cpp
 	"assets/PlayOnlineDown.h"
 	<vector>
 
-1606061811 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\assets\playonlinehovered.cpp
+1606595575 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\assets\playonlinehovered.cpp
 	"assets/PlayOnlineHovered.h"
 	<vector>
 
-1606061811 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\assets\playonlinenhovered.cpp
+1606595575 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\assets\playonlinenhovered.cpp
 	"assets/PlayOnlineNHovered.h"
 	<vector>
 
-1606061811 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\assets\quitdown.cpp
+1606595575 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\assets\quitdown.cpp
 	"assets/QuitDown.h"
 	<vector>
 
-1606061811 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\assets\quithovered.cpp
+1606595575 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\assets\quithovered.cpp
 	"assets/QuitHovered.h"
 	<vector>
 
-1606061811 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\assets\quitnhovered.cpp
+1606595575 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\assets\quitnhovered.cpp
 	"assets/QuitNHovered.h"
 	<vector>
 
@@ -919,38 +969,38 @@
 	"assets/TitleScreen.h"
 	<vector>
 
-1606103652 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\scene\scenes\testzone.h
+1606595574 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\scene\scenes\testzone.h
 	"scene/Scene.h"
 
-1606103627 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\scene\scenes\testzone.cpp
+1606595576 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\scene\scenes\testzone.cpp
 	"scene/scenes/TestZone.h"
 
-1606177010 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\components\buttons\creditsreturnbutton.cpp
+1607305758 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\components\buttons\creditsreturnbutton.cpp
 	"components/buttons/CreditsReturnButton.h"
 	"scene/scenes/MainMenu.h"
 	"scene/SceneManager.h"
 
-1606176979 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\components\buttons\creditsreturnbutton.h
+1606711746 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\components\buttons\creditsreturnbutton.h
 	<functional>
 	"components/Button.h"
 
-1606105602 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\p1flag.h
+1606595573 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\p1flag.h
 	<string>
 	<utility>
 
-1606105616 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\p2flag.h
+1606595573 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\p2flag.h
 	<string>
 	<utility>
 
-1606105485 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\creditsreturnnhovered.h
+1606595573 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\creditsreturnnhovered.h
 	<string>
 	<utility>
 
-1606105485 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\creditsreturnhovered.h
+1606595573 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\creditsreturnhovered.h
 	<string>
 	<utility>
 
-1606105485 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\creditsreturndown.h
+1606595573 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\creditsreturndown.h
 	<string>
 	<utility>
 
@@ -966,43 +1016,295 @@
 	"assets/CreditsReturnNHovered.h"
 	<vector>
 
-1606105628 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\assets\p1flag.cpp
+1606595575 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\assets\p1flag.cpp
 	"assets/P1Flag.h"
 	<vector>
 
-1606105634 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\assets\p2flag.cpp
+1606595575 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\assets\p2flag.cpp
 	"assets/P2Flag.h"
 	<vector>
 
-1606177185 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\mainmenubuttonhovered.h
+1606595573 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\mainmenubuttonhovered.h
 	<string>
 	<utility>
 
-1606177184 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\mainmenubuttonpressed.h
+1606595573 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\mainmenubuttonpressed.h
 	<string>
 	<utility>
 
-1606177185 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\assets\mainmenubuttonhovered.cpp
+1606595574 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\assets\mainmenubuttonhovered.cpp
 	"assets/MainMenuButtonHovered.h"
 	<vector>
 
-1606177184 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\assets\mainmenubuttonpressed.cpp
+1606595575 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\assets\mainmenubuttonpressed.cpp
 	"assets/MainMenuButtonPressed.h"
 	<vector>
 
-1606590524 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\mainmenusoundtrack.h
+1606595573 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\mainmenusoundtrack.h
 	<string>
 	<utility>
 
-1606590670 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\assets\mainmenusoundtrack.cpp
+1606595575 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\assets\mainmenusoundtrack.cpp
 	"assets/MainMenuSoundtrack.h"
 	<vector>
 
-1606594763 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\title.h
+1606595574 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\title.h
 	<string>
 	<utility>
 
-1606594763 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\assets\title.cpp
+1606595575 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\assets\title.cpp
 	"assets/Title.h"
 	<vector>
+
+1607285511 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\components\buttons\gridbutton.h
+	<functional>
+	<SFML/System/Vector2.hpp>
+	"components/Button.h"
+	"tools/AnimationPlayer.h"
+
+1607307035 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\components\buttons\gridbutton.cpp
+	"components/buttons/GridButton.h"
+	<unordered_set>
+	<sstream>
+	<list>
+	<SFML/Graphics/RenderWindow.hpp>
+	"scene/SceneManager.h"
+
+1606713279 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\components\buttons\beginnerbutton.cpp
+	"components/buttons/BeginnerButton.h"
+	"scene/SceneManager.h"
+
+1606705322 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\components\buttons\beginnerbutton.h
+	"components/Button.h"
+
+1606713358 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\components\buttons\averagebutton.cpp
+	"components/buttons/AverageButton.h"
+	"scene/SceneManager.h"
+
+1606709161 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\components\buttons\averagebutton.h
+	"components/Button.h"
+
+1606713363 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\components\buttons\expertbutton.cpp
+	"components/buttons/ExpertButton.h"
+	"scene/SceneManager.h"
+
+1606709535 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\components\buttons\expertbutton.h
+	"components/Button.h"
+
+1607305772 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\components\buttons\playofflinereturnbutton.cpp
+	"components/buttons/PlayOfflineReturnButton.h"
+	"scene/scenes/MainMenu.h"
+	"scene/SceneManager.h"
+
+1606711916 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\components\buttons\playofflinereturnbutton.h
+	<functional>
+	"components/Button.h"
+
+1606712771 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\returnnhovered.h
+	<string>
+	<utility>
+
+1606712770 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\returnhovered.h
+	<string>
+	<utility>
+
+1606712771 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\returndown.h
+	<string>
+	<utility>
+
+1606712771 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\assets\returndown.cpp
+	"assets/ReturnDown.h"
+	<vector>
+
+1606712771 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\assets\returnhovered.cpp
+	"assets/ReturnHovered.h"
+	<vector>
+
+1606712771 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\assets\returnnhovered.cpp
+	"assets/ReturnNHovered.h"
+	<vector>
+
+1607297266 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\assets\bombexplosion.cpp
+	"assets/BombExplosion.h"
+	<vector>
+
+1607297266 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\bombexplosion.h
+	<string>
+	<utility>
+
+1607297265 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\assets\emptycell.cpp
+	"assets/EmptyCell.h"
+	<vector>
+
+1607297265 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\emptycell.h
+	<string>
+	<utility>
+
+1607297265 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\assets\gamepanel.cpp
+	"assets/GamePanel.h"
+	<vector>
+
+1607297265 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\gamepanel.h
+	<string>
+	<utility>
+
+1607297266 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\assets\gridbuttonpressed.cpp
+	"assets/GridButtonPressed.h"
+	<vector>
+
+1607297265 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\gridbuttonpressed.h
+	<string>
+	<utility>
+
+1607297266 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\assets\gridbuttonup.cpp
+	"assets/GridButtonUp.h"
+	<vector>
+
+1607297266 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\gridbuttonup.h
+	<string>
+	<utility>
+
+1607298197 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\assets\icon1.cpp
+	"assets/Icon1.h"
+	<vector>
+
+1607298113 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\icon1.h
+	<string>
+	<utility>
+
+1607298208 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\assets\icon2.cpp
+	"assets/Icon2.h"
+	<vector>
+
+1607298127 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\icon2.h
+	<string>
+	<utility>
+
+1607298216 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\assets\icon3.cpp
+	"assets/Icon3.h"
+	<vector>
+
+1607298135 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\icon3.h
+	<string>
+	<utility>
+
+1607298225 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\assets\icon4.cpp
+	"assets/Icon4.h"
+	<vector>
+
+1607298144 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\icon4.h
+	<string>
+	<utility>
+
+1607298235 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\assets\icon5.cpp
+	"assets/Icon5.h"
+	<vector>
+
+1607298157 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\icon5.h
+	<string>
+	<utility>
+
+1607298254 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\assets\icon6.cpp
+	"assets/Icon6.h"
+	<vector>
+
+1607298166 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\icon6.h
+	<string>
+	<utility>
+
+1607298262 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\assets\icon7.cpp
+	"assets/Icon7.h"
+	<vector>
+
+1607298178 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\icon7.h
+	<string>
+	<utility>
+
+1607298271 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\assets\icon8.cpp
+	"assets/Icon8.h"
+	<vector>
+
+1607298188 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\icon8.h
+	<string>
+	<utility>
+
+1607297266 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\assets\minibombspritesheet.cpp
+	"assets/MiniBombSpriteSheet.h"
+	<vector>
+
+1607297266 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\minibombspritesheet.h
+	<string>
+	<utility>
+
+1607299048 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\assets\averagebuttondown.cpp
+	"assets/AverageButtonDown.h"
+	<vector>
+
+1607299048 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\averagebuttondown.h
+	<string>
+	<utility>
+
+1607299047 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\assets\averagebuttonhovered.cpp
+	"assets/AverageButtonHovered.h"
+	<vector>
+
+1607299047 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\averagebuttonhovered.h
+	<string>
+	<utility>
+
+1607299047 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\assets\averagebuttonnhovered.cpp
+	"assets/AverageButtonNHovered.h"
+	<vector>
+
+1607299047 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\averagebuttonnhovered.h
+	<string>
+	<utility>
+
+1607299048 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\assets\beginnerbuttondown.cpp
+	"assets/BeginnerButtonDown.h"
+	<vector>
+
+1607299048 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\beginnerbuttondown.h
+	<string>
+	<utility>
+
+1607299048 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\assets\beginnerbuttonhovered.cpp
+	"assets/BeginnerButtonHovered.h"
+	<vector>
+
+1607299048 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\beginnerbuttonhovered.h
+	<string>
+	<utility>
+
+1607299048 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\assets\beginnerbuttonnhovered.cpp
+	"assets/BeginnerButtonNHovered.h"
+	<vector>
+
+1607299048 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\beginnerbuttonnhovered.h
+	<string>
+	<utility>
+
+1607299048 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\assets\expertbuttondown.cpp
+	"assets/ExpertButtonDown.h"
+	<vector>
+
+1607299048 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\expertbuttondown.h
+	<string>
+	<utility>
+
+1607299048 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\assets\expertbuttonhovered.cpp
+	"assets/ExpertButtonHovered.h"
+	<vector>
+
+1607299048 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\expertbuttonhovered.h
+	<string>
+	<utility>
+
+1607299048 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\assets\expertbuttonnhovered.cpp
+	"assets/ExpertButtonNHovered.h"
+	<vector>
+
+1607299048 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\assets\expertbuttonnhovered.h
+	<string>
+	<utility>
 
