@@ -71,6 +71,7 @@ namespace Minesweeper {
         void stop();
 
         bool is_paused() const noexcept { return paused; }
+        bool has_animation(const std::string& anim_name) const;
         float get_time() const noexcept { return time; }
         const Animation& get_current_animation() const { return animations.at(current_animation_name); }
 

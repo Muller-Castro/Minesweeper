@@ -112,3 +112,20 @@ void AnimationPlayer::stop()
     paused = true;
     time = 0.f;
 }
+
+bool AnimationPlayer::has_animation(const std::string& anim_name) const
+{
+    bool result = true;
+
+    try {
+
+        animations.at(anim_name);
+
+    }catch(const std::out_of_range&) {
+
+        result = false;
+
+    }
+
+    return result;
+}
