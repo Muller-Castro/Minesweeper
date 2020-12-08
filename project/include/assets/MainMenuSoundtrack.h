@@ -21,8 +21,8 @@
 /* OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                                        */
 /****************************************************************************************/
 
-#ifndef MAIN_MENU_SOUND_TRACK_H
-#define MAIN_MENU_SOUND_TRACK_H
+#ifndef MAIN_MENU_SOUNDTRACK_H
+#define MAIN_MENU_SOUNDTRACK_H
 
 #include <string>
 #include <utility>
@@ -33,4 +33,4 @@ namespace Minesweeper {
 
 }
 
-#endif // MAIN_MENU_SOUND_TRACK_H
+#endif // MAIN_MENU_SOUNDTRACK_H
