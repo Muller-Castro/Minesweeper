@@ -62,6 +62,8 @@ Button::Button(const sf::Vector2f& position_, const sf::Vector2f& scale_, const 
     current_texture_size.y *= scale.y;
 
     sprite.setOrigin(current_texture_size.x / 2, current_texture_size.y / 2);
+    sprite.setPosition(position);
+    sprite.setScale(scale);
 }
 
 void Button::process_inputs()
