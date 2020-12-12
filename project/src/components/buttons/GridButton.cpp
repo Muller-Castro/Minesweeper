@@ -31,15 +31,16 @@
 
 #include "tools/Vector2Hash.h"
 #include "scene/SceneManager.h"
+#include "scene/scenes/Game.h"
 
 using namespace Minesweeper;
 
-GridButton::GridButton(Types type_, std::vector<std::vector<std::unique_ptr<GridButton>>>& grid, const sf::Vector2i& cell_position_, const sf::Vector2f& position_, const sf::Vector2f& scale_, const std::shared_ptr<sf::Texture>& hovered, const std::shared_ptr<sf::Texture>& non_hovered, const std::shared_ptr<sf::Texture>& down, const std::shared_ptr<sf::Texture>& icon, const std::shared_ptr<sf::Texture>& p1_flag, const std::shared_ptr<sf::Texture>& p2_flag, const std::shared_ptr<sf::SoundBuffer>& hovered_sfx, const std::shared_ptr<sf::SoundBuffer>& pressed_sfx) :
+GridButton::GridButton(Game& game, Types type_, bool disabled_, const sf::Vector2i& cell_position_, const sf::Vector2f& position_, const sf::Vector2f& scale_, const std::shared_ptr<sf::Texture>& hovered, const std::shared_ptr<sf::Texture>& non_hovered, const std::shared_ptr<sf::Texture>& down, const std::shared_ptr<sf::Texture>& icon, const std::shared_ptr<sf::Texture>& p1_flag, const std::shared_ptr<sf::Texture>& p2_flag, const std::shared_ptr<sf::SoundBuffer>& hovered_sfx, const std::shared_ptr<sf::SoundBuffer>& pressed_sfx) :
     Button(position_, scale_, hovered, non_hovered, down, hovered_sfx, pressed_sfx),
-    disabled(),
-    type(type_),
-    grid_ref(grid),
-    icon_texture(icon),
+    disabled(disabled_),
+    type(),
+    game_ref(game),
+    icon_texture(),
     p1_flag_texture(p1_flag),
     p2_flag_texture(p2_flag),
     cell_position(cell_position_),
@@ -48,53 +49,26 @@ GridButton::GridButton(Types type_, std::vector<std::vector<std::unique_ptr<Grid
     p2_flag_sprite(*p2_flag_texture),
     animations({}, "IGNITED_BOMB")
 {
-    if(icon_texture) {
+    change_button_type(type_, icon);
 
-        icon_sprite.setTexture(*icon_texture);
+//    SceneManager::call_deferred([&]() {
+    if(disabled) {
 
-        if(type == Types::BOMB) {
+        sprite.setColor(sf::Color(200, 200, 200));
 
-            animations.add_animations(
+        set_current_texture(DOWN);
 
-                {
-                    Animation("IGNITED_BOMB", 0.75f, {
+        if(type == Types::BOMB) animations.play("IGNITED_BOMB");
+        else if(type == Types::NEUTRAL) {
 
-                        KeyFrame(0.f, [&]() {
-
-                            icon_sprite.setTextureRect(sf::IntRect(0, 0, 16, 16));
-
-                        }),
-
-                        KeyFrame(0.25f, [&]() {
-
-                            icon_sprite.setTextureRect(sf::IntRect(16, 0, 16, 16));
-
-                        }),
-
-                        KeyFrame(0.5f, [&]() {
-
-                            icon_sprite.setTextureRect(sf::IntRect(32, 0, 16, 16));
-
-                        }),
-
-                    })
-                }
-
-            );
-
-            icon_sprite.setOrigin(8.f, 8.f);
-
-#ifdef __DEBUG__
-            animations.play("IGNITED_BOMB");
-#endif // __DEBUG__
-
-        }else {
-
-            icon_sprite.setOrigin((icon_texture->getSize().x * scale.x) / 2, (icon_texture->getSize().y * scale.y) / 2);
+            SceneManager::call_deferred([&]() {
+                find_and_disable();
+            });
 
         }
 
     }
+//    });
 }
 
 void GridButton::process_inputs()
@@ -158,9 +132,81 @@ void GridButton::on_button_down()
 
 void GridButton::on_button_pressed()
 {
-    disable();
+    if(game_ref.get().is_first_click) {
 
-    if(type == Types::NEUTRAL) find_and_disable();
+        sprite.setColor(sf::Color(200, 200, 200));
+        set_current_texture(DOWN);
+
+        SceneManager::call_deferred([&]() {
+            game_ref.get().is_first_click = false;
+            game_ref.get().build_grid(cell_position);
+        });
+
+    }else {
+
+        disable();
+
+        if(type == Types::NEUTRAL) find_and_disable();
+
+    }
+}
+
+void GridButton::change_button_type(Types new_type, const std::shared_ptr<sf::Texture>& new_icon_texture)
+{
+    type         = new_type;
+    icon_texture = new_icon_texture;
+
+    if(icon_texture) {
+
+        icon_sprite.setTexture(*icon_texture);
+
+        if(type == Types::BOMB) {
+
+            if(!animations.has_animation("IGNITED_BOMB")) {
+
+                animations.add_animations(
+
+                    {
+                        Animation("IGNITED_BOMB", 0.75f, {
+
+                            KeyFrame(0.f, [&]() {
+
+                                icon_sprite.setTextureRect(sf::IntRect(0, 0, 16, 16));
+
+                            }),
+
+                            KeyFrame(0.25f, [&]() {
+
+                                icon_sprite.setTextureRect(sf::IntRect(16, 0, 16, 16));
+
+                            }),
+
+                            KeyFrame(0.5f, [&]() {
+
+                                icon_sprite.setTextureRect(sf::IntRect(32, 0, 16, 16));
+
+                            }),
+
+                        })
+                    }
+
+                );
+
+            }
+
+            icon_sprite.setOrigin(8.f, 8.f);
+
+#ifdef __DEBUG__
+            animations.play("IGNITED_BOMB");
+#endif // __DEBUG__
+
+        }else {
+
+            icon_sprite.setOrigin((icon_texture->getSize().x * scale.x) / 2, (icon_texture->getSize().y * scale.y) / 2);
+
+        }
+
+    }
 }
 
 void GridButton::disable()
@@ -185,7 +231,7 @@ void GridButton::find_and_disable()
 
     std::list<GridButton*> neutral_buttons;
 
-    neutral_buttons.push_back(grid_ref.get()[cell_position.y][cell_position.x].get());
+    neutral_buttons.push_back(game_ref.get().grid[cell_position.y][cell_position.x].get());
 
     for(std::list<GridButton*>::iterator it = neutral_buttons.begin(); it != neutral_buttons.end(); ++it) {
 
@@ -198,16 +244,16 @@ void GridButton::find_and_disable()
             for(int x_parse = current_cell_pos.x - 1; x_parse != (current_cell_pos.x + 2); ++x_parse) {
 
                 if(
-                   ((x_parse == current_cell_pos.x) && (y_parse == current_cell_pos.y))                      ||
-                   ((y_parse < 0) || (static_cast<size_t>(y_parse) >= grid_ref.get().size()))                ||
-                   ((x_parse < 0) || (static_cast<size_t>(x_parse) >= grid_ref.get()[y_parse].size()))
+                   ((x_parse == current_cell_pos.x) && (y_parse == current_cell_pos.y))                ||
+                   ((y_parse < 0) || (static_cast<size_t>(y_parse) >= game_ref.get().grid.size()))     ||
+                   ((x_parse < 0) || (static_cast<size_t>(x_parse) >= game_ref.get().grid[y_parse].size()))
                 ) {
 
                     continue;
 
                 }
 
-                current_button = grid_ref.get()[y_parse][x_parse].get();
+                current_button = game_ref.get().grid[y_parse][x_parse].get();
 
                 if(queued_buttons.find(sf::Vector2i(x_parse, y_parse)) == queued_buttons.end()) {
 
