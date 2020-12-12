@@ -157,7 +157,7 @@ void GlobalConfigurations::draw_amount_of_loaded_resources()
 
     oss << ResourceLoader::resources.size();
 
-    sf::Text loaded_resources("[Resources: " + oss.str() + "]", *(ResourceLoader::load<sf::Font>("assets/fonts/NeonNanoborg.otf")));
+    sf::Text loaded_resources("[Resources: " + oss.str() + "]", *GlobalConfigurations::font);
 
     loaded_resources.setPosition(sf::Vector2f{5.f, 45.f});
 
