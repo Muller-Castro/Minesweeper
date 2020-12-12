@@ -247,6 +247,7 @@ MainMenu::MainMenu() :
     credits_texts["LICENSE"].setOutlineColor(sf::Color::Black);
 
     buttons.push_back(std::unique_ptr<Button>(new PlayOnlineButton(
+        Button::Enabled::LEFT,
         sf::Vector2f(397.f, 222.f),
         sf::Vector2f(1.f, 1.f),
 #ifndef __S_RELEASE__
@@ -266,6 +267,7 @@ MainMenu::MainMenu() :
 
     buttons.push_back(std::unique_ptr<Button>(new PlayOfflineButton(
         *this,
+        Button::Enabled::LEFT,
         sf::Vector2f(397.f, 322.f),
         sf::Vector2f(1.f, 1.f),
 #ifndef __S_RELEASE__
@@ -285,6 +287,7 @@ MainMenu::MainMenu() :
 
     buttons.push_back(std::unique_ptr<Button>(new CreditsButton(
         *this,
+        Button::Enabled::LEFT,
         sf::Vector2f(397.f, 422.f),
         sf::Vector2f(1.f, 1.f),
 #ifndef __S_RELEASE__
@@ -303,6 +306,7 @@ MainMenu::MainMenu() :
     )));
 
     buttons.push_back(std::unique_ptr<Button>(new QuitButton(
+        Button::Enabled::LEFT,
         sf::Vector2f(397.f, 522.f),
         sf::Vector2f(1.f, 1.f),
 #ifndef __S_RELEASE__
@@ -322,6 +326,7 @@ MainMenu::MainMenu() :
 
     buttons.push_back(std::unique_ptr<Button>(new CreditsReturnButton(
         *this,
+        Button::Enabled::LEFT,
         sf::Vector2f(745.f, 550.f),
         sf::Vector2f(1.f, 1.f),
 #ifndef __S_RELEASE__
@@ -341,6 +346,7 @@ MainMenu::MainMenu() :
 
     ////////////
     buttons.push_back(std::unique_ptr<Button>(new BeginnerButton(
+        Button::Enabled::LEFT,
         sf::Vector2f(397.f, 222.f),
         sf::Vector2f(1.f, 1.f),
 #ifndef __S_RELEASE__
@@ -359,6 +365,7 @@ MainMenu::MainMenu() :
     )));
 
     buttons.push_back(std::unique_ptr<Button>(new AverageButton(
+        Button::Enabled::LEFT,
         sf::Vector2f(397.f, 322.f),
         sf::Vector2f(1.f, 1.f),
 #ifndef __S_RELEASE__
@@ -377,6 +384,7 @@ MainMenu::MainMenu() :
     )));
 
     buttons.push_back(std::unique_ptr<Button>(new ExpertButton(
+        Button::Enabled::LEFT,
         sf::Vector2f(397.f, 422.f),
         sf::Vector2f(1.f, 1.f),
 #ifndef __S_RELEASE__
@@ -396,6 +404,7 @@ MainMenu::MainMenu() :
 
     buttons.push_back(std::unique_ptr<Button>(new PlayOfflineReturnButton(
         *this,
+        Button::Enabled::LEFT,
         sf::Vector2f(745.f, 550.f),
         sf::Vector2f(1.f, 1.f),
 #ifndef __S_RELEASE__

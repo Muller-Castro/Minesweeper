@@ -41,6 +41,18 @@ namespace Minesweeper {
     class Button : public sf::Drawable
     {
     public:
+        enum class Enabled : unsigned char
+        {
+            NONE         = 0x0000,
+            LEFT         = 0x0001,
+            MIDDLE       = 0x0002,
+            RIGHT        = 0x0004,
+            LEFT_RIGHT   = LEFT  | RIGHT,
+            LEFT_MIDDLE  = LEFT  | MIDDLE,
+            RIGHT_MIDDLE = RIGHT | MIDDLE,
+            ALL          = LEFT  | MIDDLE | RIGHT
+        };
+
         enum class States : unsigned char
         {
             NONE,
@@ -51,7 +63,7 @@ namespace Minesweeper {
 
         sf::Vector2f position, scale;
 
-        Button(const sf::Vector2f& position_, const sf::Vector2f& scale_, const std::shared_ptr<sf::Texture>& hovered, const std::shared_ptr<sf::Texture>& non_hovered, const std::shared_ptr<sf::Texture>& down, const std::shared_ptr<sf::SoundBuffer>& hovered_sfx = {}, const std::shared_ptr<sf::SoundBuffer>& pressed_sfx = {});
+        Button(Enabled enabled_, const sf::Vector2f& position_, const sf::Vector2f& scale_, const std::shared_ptr<sf::Texture>& hovered, const std::shared_ptr<sf::Texture>& non_hovered, const std::shared_ptr<sf::Texture>& down, const std::shared_ptr<sf::SoundBuffer>& hovered_sfx = {}, const std::shared_ptr<sf::SoundBuffer>& pressed_sfx = {});
         ~Button() override {}
 
         virtual void process_inputs();
@@ -85,6 +97,8 @@ namespace Minesweeper {
         static constexpr unsigned char PRESSED_SFX = 1;
 
         unsigned char current_texture;
+
+        Enabled enabled;
 
         std::array<std::shared_ptr<sf::Texture>, 3> textures;
         std::array<std::pair<std::shared_ptr<sf::SoundBuffer>, bool>, 2> sound_buffers;

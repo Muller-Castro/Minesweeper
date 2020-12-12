@@ -36,12 +36,13 @@ using namespace Minesweeper;
 
 sf::Sound Button::sound;
 
-Button::Button(const sf::Vector2f& position_, const sf::Vector2f& scale_, const std::shared_ptr<sf::Texture>& hovered, const std::shared_ptr<sf::Texture>& non_hovered, const std::shared_ptr<sf::Texture>& down, const std::shared_ptr<sf::SoundBuffer>& hovered_sfx, const std::shared_ptr<sf::SoundBuffer>& pressed_sfx) :
+Button::Button(Enabled enabled_, const sf::Vector2f& position_, const sf::Vector2f& scale_, const std::shared_ptr<sf::Texture>& hovered, const std::shared_ptr<sf::Texture>& non_hovered, const std::shared_ptr<sf::Texture>& down, const std::shared_ptr<sf::SoundBuffer>& hovered_sfx, const std::shared_ptr<sf::SoundBuffer>& pressed_sfx) :
     position(position_), scale(scale_),
     state(States::NONE),
     bounding_box(),
     sprite(),
     current_texture(Button::N_HOVERED),
+    enabled(enabled_),
     textures(),
     sound_buffers()
 {
@@ -135,12 +136,33 @@ void Button::set_state() noexcept
 
     bool mouse_entered = bounding_box.contains(sf::Vector2f(mouse_position.x, mouse_position.y));
 
-    if(MinesweeperGame::window->hasFocus() && mouse_entered && Input::is_pressed<Input::Mouse>(sf::Mouse::Left)) {
+    const bool LEFT_BUTTON_PRESSED   = Input::is_pressed<Input::Mouse>(sf::Mouse::Left);
+    const bool MIDDLE_BUTTON_PRESSED = Input::is_pressed<Input::Mouse>(sf::Mouse::Middle);
+    const bool RIGHT_BUTTON_PRESSED  = Input::is_pressed<Input::Mouse>(sf::Mouse::Right);
+
+    bool mouse_button_pressed = false;
+
+    switch(enabled) {
+
+        case Enabled::LEFT:         { mouse_button_pressed = LEFT_BUTTON_PRESSED;                                                   } break;
+        case Enabled::MIDDLE:       { mouse_button_pressed = MIDDLE_BUTTON_PRESSED;                                                 } break;
+        case Enabled::RIGHT:        { mouse_button_pressed = RIGHT_BUTTON_PRESSED;                                                  } break;
+        case Enabled::LEFT_RIGHT:   { mouse_button_pressed = LEFT_BUTTON_PRESSED  || RIGHT_BUTTON_PRESSED;                          } break;
+        case Enabled::LEFT_MIDDLE:  { mouse_button_pressed = LEFT_BUTTON_PRESSED  || MIDDLE_BUTTON_PRESSED;                         } break;
+        case Enabled::RIGHT_MIDDLE: { mouse_button_pressed = RIGHT_BUTTON_PRESSED || MIDDLE_BUTTON_PRESSED;                         } break;
+        case Enabled::ALL:          { mouse_button_pressed = LEFT_BUTTON_PRESSED  || MIDDLE_BUTTON_PRESSED || RIGHT_BUTTON_PRESSED; } break;
+
+        case Enabled::NONE:
+        default: break;
+
+    }
+
+    if(MinesweeperGame::window->hasFocus() && mouse_entered && mouse_button_pressed) {
 
         state = States::PRESSED;
 
     }
-    else if(MinesweeperGame::window->hasFocus() && mouse_entered && !Input::is_pressed<Input::Mouse>(sf::Mouse::Left)) {
+    else if(MinesweeperGame::window->hasFocus() && mouse_entered && !mouse_button_pressed) {
 
         if(state == States::PRESSED) {
 
