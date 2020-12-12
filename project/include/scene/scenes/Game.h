@@ -26,11 +26,14 @@
 
 #include <vector>
 #include <memory>
+#include <string>
 #include <unordered_set>
+#include <unordered_map>
 
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
+#include <SFML/Audio/SoundBuffer.hpp>
 
 #include "scene/Scene.h"
 #include "components/buttons/GridButton.h"
@@ -57,6 +60,9 @@ namespace Minesweeper {
         int max_bombs;
 
         std::vector<std::vector<std::unique_ptr<GridButton>>> grid;
+
+        std::unordered_map<std::string, std::shared_ptr<sf::Texture>>     cached_grid_button_textures;
+        std::unordered_map<std::string, std::shared_ptr<sf::SoundBuffer>> cached_grid_button_sounds;
 
         std::shared_ptr<sf::Texture> panel_texture;
 

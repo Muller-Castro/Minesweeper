@@ -61,14 +61,56 @@ Game::Game() :
     grid_height(),
     max_bombs(),
     grid(),
+    cached_grid_button_textures(),
+    cached_grid_button_sounds(),
     panel_texture(),
     panel_sprite(),
     grid_outline()
 {
 #ifndef __S_RELEASE__
     panel_texture = ResourceLoader::load<sf::Texture>("assets/textures/GamePanel.png");
+
+    cached_grid_button_textures["GB_UP"]     = ResourceLoader::load<sf::Texture>("assets/textures/GridButtonUp.png");
+    cached_grid_button_textures["EMP_CELL"]  = ResourceLoader::load<sf::Texture>("assets/textures/EmptyCell.png");
+
+    cached_grid_button_textures["P1_FLAG"]   = ResourceLoader::load<sf::Texture>("assets/textures/P1Flag.png");
+    cached_grid_button_textures["P2_FLAG"]   = ResourceLoader::load<sf::Texture>("assets/textures/P2Flag.png");
+
+    cached_grid_button_textures["ICON_1"]    = ResourceLoader::load<sf::Texture>("assets/textures/Icon1.png");
+    cached_grid_button_textures["ICON_2"]    = ResourceLoader::load<sf::Texture>("assets/textures/Icon2.png");
+    cached_grid_button_textures["ICON_3"]    = ResourceLoader::load<sf::Texture>("assets/textures/Icon3.png");
+    cached_grid_button_textures["ICON_4"]    = ResourceLoader::load<sf::Texture>("assets/textures/Icon4.png");
+    cached_grid_button_textures["ICON_5"]    = ResourceLoader::load<sf::Texture>("assets/textures/Icon5.png");
+    cached_grid_button_textures["ICON_6"]    = ResourceLoader::load<sf::Texture>("assets/textures/Icon6.png");
+    cached_grid_button_textures["ICON_7"]    = ResourceLoader::load<sf::Texture>("assets/textures/Icon7.png");
+    cached_grid_button_textures["ICON_8"]    = ResourceLoader::load<sf::Texture>("assets/textures/Icon8.png");
+
+    cached_grid_button_textures["M_BOMB_SS"] = ResourceLoader::load<sf::Texture>("assets/textures/MiniBombSpriteSheet.png");
+
+    cached_grid_button_sounds["GB_PR"]       = ResourceLoader::load<sf::SoundBuffer>("assets/sounds/GridButtonPressed.wav");
+    cached_grid_button_sounds["BOMB_E"]      = ResourceLoader::load<sf::SoundBuffer>("assets/sounds/BombExplosion.wav");
 #else
     panel_texture = ResourceLoader::load<sf::Texture>(get_raw_game_panel());
+
+    cached_grid_button_textures["GB_UP"]     = ResourceLoader::load<sf::Texture>(get_raw_grid_button_up());
+    cached_grid_button_textures["EMP_CELL"]  = ResourceLoader::load<sf::Texture>(get_raw_empty_cell());
+
+    cached_grid_button_textures["P1_FLAG"]   = ResourceLoader::load<sf::Texture>(get_raw_p1_flag());
+    cached_grid_button_textures["P2_FLAG"]   = ResourceLoader::load<sf::Texture>(get_raw_p2_flag());
+
+    cached_grid_button_textures["ICON_1"]    = ResourceLoader::load<sf::Texture>(get_raw_icon1());
+    cached_grid_button_textures["ICON_2"]    = ResourceLoader::load<sf::Texture>(get_raw_icon2());
+    cached_grid_button_textures["ICON_3"]    = ResourceLoader::load<sf::Texture>(get_raw_icon3());
+    cached_grid_button_textures["ICON_4"]    = ResourceLoader::load<sf::Texture>(get_raw_icon4());
+    cached_grid_button_textures["ICON_5"]    = ResourceLoader::load<sf::Texture>(get_raw_icon5());
+    cached_grid_button_textures["ICON_6"]    = ResourceLoader::load<sf::Texture>(get_raw_icon6());
+    cached_grid_button_textures["ICON_7"]    = ResourceLoader::load<sf::Texture>(get_raw_icon7());
+    cached_grid_button_textures["ICON_8"]    = ResourceLoader::load<sf::Texture>(get_raw_icon8());
+
+    cached_grid_button_textures["M_BOMB_SS"] = ResourceLoader::load<sf::Texture>(get_raw_mini_bomb_sprite_sheet());
+
+    cached_grid_button_sounds["GB_PR"]       = ResourceLoader::load<sf::SoundBuffer>(get_raw_grid_button_pressed());
+    cached_grid_button_sounds["BOMB_E"]      = ResourceLoader::load<sf::SoundBuffer>(get_raw_bomb_explosion());
 #endif // __S_RELEASE__
 
     panel_sprite.setTexture(*panel_texture);
@@ -154,29 +196,14 @@ void Game::build_initial_grid()
                 sf::Vector2i(x, y),
                 sf::Vector2f(x * 20.f + grid_x, y * 20.f + grid_y),
                 sf::Vector2f(1.f, 1.f),
-#ifndef __S_RELEASE__
-                ResourceLoader::load<sf::Texture>("assets/textures/GridButtonUp.png"),
-                ResourceLoader::load<sf::Texture>("assets/textures/GridButtonUp.png"),
-                ResourceLoader::load<sf::Texture>("assets/textures/EmptyCell.png"),
-#else
-                ResourceLoader::load<sf::Texture>(get_raw_grid_button_up()),
-                ResourceLoader::load<sf::Texture>(get_raw_grid_button_up()),
-                ResourceLoader::load<sf::Texture>(get_raw_empty_cell()),
-#endif // __S_RELEASE__
+                cached_grid_button_textures["GB_UP"],
+                cached_grid_button_textures["GB_UP"],
+                cached_grid_button_textures["EMP_CELL"],
                 {},
-#ifndef __S_RELEASE__
-                ResourceLoader::load<sf::Texture>("assets/textures/P1Flag.png"),
-                ResourceLoader::load<sf::Texture>("assets/textures/P2Flag.png"),
-#else
-                ResourceLoader::load<sf::Texture>(get_raw_p1_flag()),
-                ResourceLoader::load<sf::Texture>(get_raw_p2_flag()),
-#endif // __S_RELEASE__
+                cached_grid_button_textures["P1_FLAG"],
+                cached_grid_button_textures["P2_FLAG"],
                 {},
-#ifndef __S_RELEASE__
-                ResourceLoader::load<sf::SoundBuffer>("assets/sounds/GridButtonPressed.wav")
-#else
-                ResourceLoader::load<sf::SoundBuffer>(get_raw_grid_button_pressed())
-#endif // __S_RELEASE__
+                cached_grid_button_sounds["GB_PR"]
             ));
 
         }
@@ -220,25 +247,15 @@ void Game::build_grid(const sf::Vector2i& first_disabled_cell_position)
 
                     switch(adjacent_bomb_count) {
 
-#ifndef __S_RELEASE__
-                        case 1: { icon_texture = ResourceLoader::load<sf::Texture>("assets/textures/Icon1.png"); } break;
-                        case 2: { icon_texture = ResourceLoader::load<sf::Texture>("assets/textures/Icon2.png"); } break;
-                        case 3: { icon_texture = ResourceLoader::load<sf::Texture>("assets/textures/Icon3.png"); } break;
-                        case 4: { icon_texture = ResourceLoader::load<sf::Texture>("assets/textures/Icon4.png"); } break;
-                        case 5: { icon_texture = ResourceLoader::load<sf::Texture>("assets/textures/Icon5.png"); } break;
-                        case 6: { icon_texture = ResourceLoader::load<sf::Texture>("assets/textures/Icon6.png"); } break;
-                        case 7: { icon_texture = ResourceLoader::load<sf::Texture>("assets/textures/Icon7.png"); } break;
-                        case 8: { icon_texture = ResourceLoader::load<sf::Texture>("assets/textures/Icon8.png"); } break;
-#else
-                        case 1: { icon_texture = ResourceLoader::load<sf::Texture>(get_raw_icon1()); } break;
-                        case 2: { icon_texture = ResourceLoader::load<sf::Texture>(get_raw_icon2()); } break;
-                        case 3: { icon_texture = ResourceLoader::load<sf::Texture>(get_raw_icon3()); } break;
-                        case 4: { icon_texture = ResourceLoader::load<sf::Texture>(get_raw_icon4()); } break;
-                        case 5: { icon_texture = ResourceLoader::load<sf::Texture>(get_raw_icon5()); } break;
-                        case 6: { icon_texture = ResourceLoader::load<sf::Texture>(get_raw_icon6()); } break;
-                        case 7: { icon_texture = ResourceLoader::load<sf::Texture>(get_raw_icon7()); } break;
-                        case 8: { icon_texture = ResourceLoader::load<sf::Texture>(get_raw_icon8()); } break;
-#endif // __S_RELEASE__
+                        case 1: { icon_texture = cached_grid_button_textures["ICON_1"]; } break;
+                        case 2: { icon_texture = cached_grid_button_textures["ICON_2"]; } break;
+                        case 3: { icon_texture = cached_grid_button_textures["ICON_3"]; } break;
+                        case 4: { icon_texture = cached_grid_button_textures["ICON_4"]; } break;
+                        case 5: { icon_texture = cached_grid_button_textures["ICON_5"]; } break;
+                        case 6: { icon_texture = cached_grid_button_textures["ICON_6"]; } break;
+                        case 7: { icon_texture = cached_grid_button_textures["ICON_7"]; } break;
+                        case 8: { icon_texture = cached_grid_button_textures["ICON_8"]; } break;
+
                         default: { throw std::runtime_error("Adjacent bombs > 8 ... This shouldn't be possible..."); };
 
                     }
@@ -247,11 +264,7 @@ void Game::build_grid(const sf::Vector2i& first_disabled_cell_position)
 
             }else {
 
-#ifndef __S_RELEASE__
-                icon_texture = ResourceLoader::load<sf::Texture>("assets/textures/MiniBombSpriteSheet.png");
-#else
-                icon_texture = ResourceLoader::load<sf::Texture>(get_raw_mini_bomb_sprite_sheet());
-#endif // __S_RELEASE__
+                icon_texture = cached_grid_button_textures["M_BOMB_SS"];
 
             }
 
@@ -262,29 +275,14 @@ void Game::build_grid(const sf::Vector2i& first_disabled_cell_position)
                 sf::Vector2i(x, y),
                 sf::Vector2f(x * 20.f + grid_x, y * 20.f + grid_y),
                 sf::Vector2f(1.f, 1.f),
-#ifndef __S_RELEASE__
-                ResourceLoader::load<sf::Texture>("assets/textures/GridButtonUp.png"),
-                ResourceLoader::load<sf::Texture>("assets/textures/GridButtonUp.png"),
-                ResourceLoader::load<sf::Texture>("assets/textures/EmptyCell.png"),
-#else
-                ResourceLoader::load<sf::Texture>(get_raw_grid_button_up()),
-                ResourceLoader::load<sf::Texture>(get_raw_grid_button_up()),
-                ResourceLoader::load<sf::Texture>(get_raw_empty_cell()),
-#endif // __S_RELEASE__
+                cached_grid_button_textures["GB_UP"],
+                cached_grid_button_textures["GB_UP"],
+                cached_grid_button_textures["EMP_CELL"],
                 icon_texture,
-#ifndef __S_RELEASE__
-                ResourceLoader::load<sf::Texture>("assets/textures/P1Flag.png"),
-                ResourceLoader::load<sf::Texture>("assets/textures/P2Flag.png"),
-#else
-                ResourceLoader::load<sf::Texture>(get_raw_p1_flag()),
-                ResourceLoader::load<sf::Texture>(get_raw_p2_flag()),
-#endif // __S_RELEASE__
+                cached_grid_button_textures["P1_FLAG"],
+                cached_grid_button_textures["P2_FLAG"],
                 {},
-#ifndef __S_RELEASE__
-                ResourceLoader::load<sf::SoundBuffer>(std::string("assets/sounds/") + (is_bomb ? "BombExplosion.wav" : "GridButtonPressed.wav"))
-#else
-                ResourceLoader::load<sf::SoundBuffer>(is_bomb ? get_raw_bomb_explosion() : get_raw_grid_button_pressed())
-#endif // __S_RELEASE__
+                is_bomb ? cached_grid_button_sounds["BOMB_E"] : cached_grid_button_sounds["GB_PR"]
             ));
 
         }
