@@ -56,6 +56,10 @@
 using namespace Minesweeper;
 
 Game::Game() :
+    is_first_click(true),
+    grid_width(),
+    grid_height(),
+    max_bombs(),
     grid(),
     panel_texture(),
     panel_sprite(),
@@ -69,7 +73,7 @@ Game::Game() :
 
     panel_sprite.setTexture(*panel_texture);
 
-    build_grid();
+    build_initial_grid();
 }
 
 Game::~Game() noexcept
@@ -108,46 +112,93 @@ void Game::draw()
     }
 }
 
-void Game::build_grid()
+void Game::build_initial_grid()
 {
     std::string difficulty_level = SceneManager::shared_data["DIFFICULTY"];
 
-    int width     = 0;
-    int height    = 0;
-    int max_bombs = 0;
-
     if(difficulty_level == "0") {
 
-        width = height = 16;
+        grid_width = grid_height = 16;
         max_bombs = 31;
 
     }else if(difficulty_level == "1") {
 
-        width  = 16;
-        height = 23;
+        grid_width  = 16;
+        grid_height = 23;
         max_bombs = 55;
 
     }else if(difficulty_level == "2") {
 
-        width  = 38;
-        height = 23;
+        grid_width  = 38;
+        grid_height = 23;
         max_bombs = 175; // 186
 
     }
 
-    std::unordered_set<sf::Vector2i> bomb_positions = create_bomb_positions(width, height, max_bombs);
+    // When you are done fixing the window resize, change these calculations from constant to dynamic
+    float grid_x = 800 / 2 - grid_width * 10 + 10;
+    float grid_y = (92 + 508 / 2) - grid_height * 10 + 10;
+
+    grid.resize(grid_height);
+
+    for(int y = 0; y < grid_height; ++y) {
+
+        grid[y].resize(grid_width);
+
+        for(int x = 0; x < grid_width; ++x) {
+
+            grid[y][x] = std::unique_ptr<GridButton>(new GridButton(
+                *this,
+                GridButton::Types::NEUTRAL,
+                false,
+                sf::Vector2i(x, y),
+                sf::Vector2f(x * 20.f + grid_x, y * 20.f + grid_y),
+                sf::Vector2f(1.f, 1.f),
+#ifndef __S_RELEASE__
+                ResourceLoader::load<sf::Texture>("assets/textures/GridButtonUp.png"),
+                ResourceLoader::load<sf::Texture>("assets/textures/GridButtonUp.png"),
+                ResourceLoader::load<sf::Texture>("assets/textures/EmptyCell.png"),
+#else
+                ResourceLoader::load<sf::Texture>(get_raw_grid_button_up()),
+                ResourceLoader::load<sf::Texture>(get_raw_grid_button_up()),
+                ResourceLoader::load<sf::Texture>(get_raw_empty_cell()),
+#endif // __S_RELEASE__
+                {},
+#ifndef __S_RELEASE__
+                ResourceLoader::load<sf::Texture>("assets/textures/P1Flag.png"),
+                ResourceLoader::load<sf::Texture>("assets/textures/P2Flag.png"),
+#else
+                ResourceLoader::load<sf::Texture>(get_raw_p1_flag()),
+                ResourceLoader::load<sf::Texture>(get_raw_p2_flag()),
+#endif // __S_RELEASE__
+                {},
+#ifndef __S_RELEASE__
+                ResourceLoader::load<sf::SoundBuffer>("assets/sounds/GridButtonPressed.wav")
+#else
+                ResourceLoader::load<sf::SoundBuffer>(get_raw_grid_button_pressed())
+#endif // __S_RELEASE__
+            ));
+
+        }
+
+    }
+
+    grid_outline.setPosition(sf::Vector2f{grid_x - 15.f, grid_y - 15.f});
+    grid_outline.setSize(sf::Vector2f{20.f * grid_width + 10.f, 20.f * grid_height + 10.f});
+    grid_outline.setFillColor(sf::Color::Black);
+}
+
+void Game::build_grid(const sf::Vector2i& first_disabled_cell_position)
+{
+    std::unordered_set<sf::Vector2i> bomb_positions = create_bomb_positions(first_disabled_cell_position);
 
     // When you are done fixing the window resize, change these calculations from constant to dynamic
-    float grid_x = 800 / 2 - width * 10 + 10;
-    float grid_y = (92 + 508 / 2) - height * 10 + 10;
+    float grid_x = 800 / 2 - grid_width * 10 + 10;
+    float grid_y = (92 + 508 / 2) - grid_height * 10 + 10;
 
-    grid.resize(height);
+    for(int y = 0; y < grid_height; ++y) {
 
-    for(int y = 0; y < height; ++y) {
-
-        grid[y].resize(width);
-
-        for(int x = 0; x < width; ++x) {
+        for(int x = 0; x < grid_width; ++x) {
 
             bool is_bomb = bomb_positions.find(sf::Vector2i(x, y)) != bomb_positions.end();
 
@@ -205,8 +256,9 @@ void Game::build_grid()
             }
 
             grid[y][x] = std::unique_ptr<GridButton>(new GridButton(
+                *this,
                 button_type,
-                grid,
+                (sf::Vector2i(x, y) == first_disabled_cell_position),
                 sf::Vector2i(x, y),
                 sf::Vector2f(x * 20.f + grid_x, y * 20.f + grid_y),
                 sf::Vector2f(1.f, 1.f),
@@ -238,18 +290,14 @@ void Game::build_grid()
         }
 
     }
-
-    grid_outline.setPosition(sf::Vector2f{grid_x - 15.f, grid_y - 15.f});
-    grid_outline.setSize(sf::Vector2f{20.f * width + 10.f, 20.f * height + 10.f});
-    grid_outline.setFillColor(sf::Color::Black);
 }
 
-std::unordered_set<sf::Vector2i> Game::create_bomb_positions(int width, int height, int max_bombs) const
+std::unordered_set<sf::Vector2i> Game::create_bomb_positions(const sf::Vector2i& first_disabled_cell_position) const
 {
     std::unordered_set<sf::Vector2i> result;
 
     std::default_random_engine generator(std::chrono::system_clock::now().time_since_epoch().count());
-    std::uniform_int_distribution<int> x_distribution(0, width - 1), y_distribution(0, height - 1);
+    std::uniform_int_distribution<int> x_distribution(0, grid_width - 1), y_distribution(0, grid_height - 1);
 
     for(int i = 0; i < max_bombs; ++i) {
 
@@ -260,14 +308,14 @@ std::unordered_set<sf::Vector2i> Game::create_bomb_positions(int width, int heig
 
         while(!new_entry.second) {
 
-            new_entry = result.emplace(new_x, new_y);
+            if(sf::Vector2i(new_x, new_y) != first_disabled_cell_position) new_entry = result.emplace(new_x, new_y);
 
-            if(new_x >= (width - 1)) {
+            if(new_x >= (grid_width - 1)) {
 
                 new_x = 0;
                 ++new_y;
 
-                if(new_y >= (height - 1)) new_y = 0;
+                if(new_y >= (grid_height - 1)) new_y = 0;
 
             }else {
 

@@ -48,6 +48,14 @@ namespace Minesweeper {
         void draw()              override;
 
     private:
+        friend class GridButton;
+
+        bool is_first_click;
+
+        int grid_width;
+        int grid_height;
+        int max_bombs;
+
         std::vector<std::vector<std::unique_ptr<GridButton>>> grid;
 
         std::shared_ptr<sf::Texture> panel_texture;
@@ -56,8 +64,9 @@ namespace Minesweeper {
 
         sf::RectangleShape grid_outline;
 
-        void build_grid();
-        std::unordered_set<sf::Vector2i> create_bomb_positions(int width, int height, int max_bombs) const;
+        void build_initial_grid();
+        void build_grid(const sf::Vector2i& first_disabled_cell_position);
+        std::unordered_set<sf::Vector2i> create_bomb_positions(const sf::Vector2i& first_disabled_cell_position) const;
         unsigned parse_adjacent_cells(int x, int y, const std::unordered_set<sf::Vector2i>& bomb_positions) const noexcept;
     };
 
