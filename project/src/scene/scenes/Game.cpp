@@ -49,8 +49,8 @@
 #include "assets/Icon7.h"
 #include "assets/Icon8.h"
 #include "assets/MiniBombSpriteSheet.h"
-#include "assets/P1Flag.h"
-#include "assets/P2Flag.h"
+#include "assets/MiniP1Flag.h"
+#include "assets/MiniP2Flag.h"
 #endif // __S_RELEASE__
 
 using namespace Minesweeper;
@@ -73,8 +73,8 @@ Game::Game() :
     cached_grid_button_textures["GB_UP"]     = ResourceLoader::load<sf::Texture>("assets/textures/GridButtonUp.png");
     cached_grid_button_textures["EMP_CELL"]  = ResourceLoader::load<sf::Texture>("assets/textures/EmptyCell.png");
 
-    cached_grid_button_textures["P1_FLAG"]   = ResourceLoader::load<sf::Texture>("assets/textures/P1Flag.png");
-    cached_grid_button_textures["P2_FLAG"]   = ResourceLoader::load<sf::Texture>("assets/textures/P2Flag.png");
+    cached_grid_button_textures["P1_FLAG"]   = ResourceLoader::load<sf::Texture>("assets/textures/MiniP1Flag.png");
+    cached_grid_button_textures["P2_FLAG"]   = ResourceLoader::load<sf::Texture>("assets/textures/MiniP2Flag.png");
 
     cached_grid_button_textures["ICON_1"]    = ResourceLoader::load<sf::Texture>("assets/textures/Icon1.png");
     cached_grid_button_textures["ICON_2"]    = ResourceLoader::load<sf::Texture>("assets/textures/Icon2.png");
@@ -95,8 +95,8 @@ Game::Game() :
     cached_grid_button_textures["GB_UP"]     = ResourceLoader::load<sf::Texture>(get_raw_grid_button_up());
     cached_grid_button_textures["EMP_CELL"]  = ResourceLoader::load<sf::Texture>(get_raw_empty_cell());
 
-    cached_grid_button_textures["P1_FLAG"]   = ResourceLoader::load<sf::Texture>(get_raw_p1_flag());
-    cached_grid_button_textures["P2_FLAG"]   = ResourceLoader::load<sf::Texture>(get_raw_p2_flag());
+    cached_grid_button_textures["P1_FLAG"]   = ResourceLoader::load<sf::Texture>(get_raw_mini_p1_flag());
+    cached_grid_button_textures["P2_FLAG"]   = ResourceLoader::load<sf::Texture>(get_raw_mini_p2_flag());
 
     cached_grid_button_textures["ICON_1"]    = ResourceLoader::load<sf::Texture>(get_raw_icon1());
     cached_grid_button_textures["ICON_2"]    = ResourceLoader::load<sf::Texture>(get_raw_icon2());
@@ -193,8 +193,9 @@ void Game::build_initial_grid()
                 *this,
                 GridButton::Types::NEUTRAL,
                 false,
+                false,
                 sf::Vector2i(x, y),
-                Button::Enabled::LEFT_RIGHT,
+                Button::Enabled::LEFT,
                 sf::Vector2f(x * 20.f + grid_x, y * 20.f + grid_y),
                 sf::Vector2f(1.f, 1.f),
                 cached_grid_button_textures["GB_UP"],
@@ -273,8 +274,9 @@ void Game::build_grid(const sf::Vector2i& first_disabled_cell_position)
                 *this,
                 button_type,
                 (sf::Vector2i(x, y) == first_disabled_cell_position),
+                grid[y][x]->is_flagged(),
                 sf::Vector2i(x, y),
-                Button::Enabled::LEFT_RIGHT,
+                Button::Enabled::LEFT,
                 sf::Vector2f(x * 20.f + grid_x, y * 20.f + grid_y),
                 sf::Vector2f(1.f, 1.f),
                 cached_grid_button_textures["GB_UP"],
