@@ -128,9 +128,14 @@ void GridButton::update(float delta)
 
     }
 
-    icon_sprite.setPosition(position);
-    p1_flag_sprite.setPosition(position);
-    p2_flag_sprite.setPosition(position);
+    icon_sprite.setPosition(position); // Don't put this line in an "else" of the "if" above to be able to see the icons on debug
+
+    if(flagged) {
+
+        p1_flag_sprite.setPosition(position);
+        p2_flag_sprite.setPosition(position);
+
+    }
 }
 
 void GridButton::draw(sf::RenderTarget& target, sf::RenderStates states) const
@@ -244,7 +249,7 @@ void GridButton::change_button_type(Types new_type, const std::shared_ptr<sf::Te
 
 void GridButton::set_flag()
 {
-    if(disabled) return;
+    if(disabled || Input::is_pressed<Input::Mouse>(sf::Mouse::Left)) return;
 
     sf::Vector2i mouse_position = sf::Mouse::getPosition(*MinesweeperGame::window);
 
@@ -269,7 +274,10 @@ void GridButton::disable()
 {
     sprite.setColor(pressed_color);
 
+    if(!game_ref.get().is_first_click) set_current_texture(DOWN);
+
     SceneManager::call_deferred([&]() {
+
         set_current_texture(DOWN);
 
         disabled = true;
