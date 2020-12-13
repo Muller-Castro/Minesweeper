@@ -74,7 +74,6 @@ GridButton::GridButton(Game& game, Types type_, bool disabled_, bool flagged_, c
     p1_flag_sprite.setOrigin(8.f, 8.f);
     p2_flag_sprite.setOrigin(8.f, 8.f);
 
-//    SceneManager::call_deferred([&]() {
     if(disabled) {
 
         sprite.setColor(pressed_color);
@@ -90,8 +89,11 @@ GridButton::GridButton(Game& game, Types type_, bool disabled_, bool flagged_, c
 
         }
 
+    }else if(flagged) {
+
+        animations.play("WAVING_FLAG");
+
     }
-//    });
 }
 
 void GridButton::process_inputs()
@@ -249,23 +251,31 @@ void GridButton::change_button_type(Types new_type, const std::shared_ptr<sf::Te
 
 void GridButton::set_flag()
 {
-    if(disabled || Input::is_pressed<Input::Mouse>(sf::Mouse::Left)) return;
+    if(disabled) return;
+
+    if((game_ref.get().flag_counter <= 0) && !flagged) return;
 
     sf::Vector2i mouse_position = sf::Mouse::getPosition(*MinesweeperGame::window);
 
     bool mouse_entered = bounding_box.contains(sf::Vector2f(mouse_position.x, mouse_position.y));
 
-    if(MinesweeperGame::window->hasFocus() && mouse_entered && Input::is_just_pressed<Input::Mouse>(sf::Mouse::Right)) {
+    if(MinesweeperGame::window->hasFocus() && mouse_entered && Input::is_just_pressed<Input::Mouse>(sf::Mouse::Right) && !Input::is_pressed<Input::Mouse>(sf::Mouse::Left)) {
 
         flagged = !flagged;
 
         animations.stop();
 
-    }
+        if(flagged) {
 
-    if(flagged) {
+            --game_ref.get().flag_counter;
 
-        if(animations.is_paused()) animations.play("WAVING_FLAG");
+            animations.play("WAVING_FLAG");
+
+        }else {
+
+            ++game_ref.get().flag_counter;
+
+        }
 
     }
 }

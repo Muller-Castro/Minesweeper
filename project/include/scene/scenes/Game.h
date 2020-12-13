@@ -59,6 +59,8 @@ namespace Minesweeper {
         int grid_height;
         int max_bombs;
 
+        int flag_counter;
+
         std::vector<std::vector<std::unique_ptr<GridButton>>> grid;
 
         std::unordered_map<std::string, std::shared_ptr<sf::Texture>>     cached_grid_button_textures;

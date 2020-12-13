@@ -60,6 +60,7 @@ Game::Game() :
     grid_width(),
     grid_height(),
     max_bombs(),
+    flag_counter(),
     grid(),
     cached_grid_button_textures(),
     cached_grid_button_sounds(),
@@ -176,6 +177,8 @@ void Game::build_initial_grid()
         max_bombs = 175; // 186
 
     }
+
+    flag_counter = max_bombs;
 
     // When you are done fixing the window resize, change these calculations from constant to dynamic
     float grid_x = 800 / 2 - grid_width * 10 + 10;
