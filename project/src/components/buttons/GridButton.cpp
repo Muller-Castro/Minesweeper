@@ -32,29 +32,52 @@
 #include "tools/Vector2Hash.h"
 #include "scene/SceneManager.h"
 #include "scene/scenes/Game.h"
+#include "Input.h"
 
 using namespace Minesweeper;
 
-GridButton::GridButton(Game& game, Types type_, bool disabled_, const sf::Vector2i& cell_position_, Enabled enabled_, const sf::Vector2f& position_, const sf::Vector2f& scale_, const std::shared_ptr<sf::Texture>& hovered, const std::shared_ptr<sf::Texture>& non_hovered, const std::shared_ptr<sf::Texture>& down, const std::shared_ptr<sf::Texture>& icon, const std::shared_ptr<sf::Texture>& p1_flag, const std::shared_ptr<sf::Texture>& p2_flag, const std::shared_ptr<sf::SoundBuffer>& hovered_sfx, const std::shared_ptr<sf::SoundBuffer>& pressed_sfx) :
+GridButton::GridButton(Game& game, Types type_, bool disabled_, bool flagged_, const sf::Vector2i& cell_position_, Enabled enabled_, const sf::Vector2f& position_, const sf::Vector2f& scale_, const std::shared_ptr<sf::Texture>& hovered, const std::shared_ptr<sf::Texture>& non_hovered, const std::shared_ptr<sf::Texture>& down, const std::shared_ptr<sf::Texture>& icon, const std::shared_ptr<sf::Texture>& p1_flag, const std::shared_ptr<sf::Texture>& p2_flag, const std::shared_ptr<sf::SoundBuffer>& hovered_sfx, const std::shared_ptr<sf::SoundBuffer>& pressed_sfx) :
     Button(enabled_, position_, scale_, hovered, non_hovered, down, hovered_sfx, pressed_sfx),
     disabled(disabled_),
+    flagged(flagged_),
     type(),
     game_ref(game),
     icon_texture(),
     p1_flag_texture(p1_flag),
     p2_flag_texture(p2_flag),
     cell_position(cell_position_),
+    pressed_color(sf::Color(200, 200, 200)),
     icon_sprite(),
     p1_flag_sprite(*p1_flag_texture),
     p2_flag_sprite(*p2_flag_texture),
-    animations({}, "IGNITED_BOMB")
+    animations({
+        Animation("WAVING_FLAG", 0.25f, {
+
+            KeyFrame(0.f, [&]() {
+
+                p1_flag_sprite.setTextureRect(sf::IntRect(0, 0, 16, 16));
+                p2_flag_sprite.setTextureRect(sf::IntRect(0, 0, 16, 16));
+
+            }),
+            KeyFrame(0.125f, [&]() {
+
+                p1_flag_sprite.setTextureRect(sf::IntRect(0, 16, 16, 16));
+                p2_flag_sprite.setTextureRect(sf::IntRect(0, 16, 16, 16));
+
+            })
+
+        })
+    }, "WAVING_FLAG")
 {
     change_button_type(type_, icon);
+
+    p1_flag_sprite.setOrigin(8.f, 8.f);
+    p2_flag_sprite.setOrigin(8.f, 8.f);
 
 //    SceneManager::call_deferred([&]() {
     if(disabled) {
 
-        sprite.setColor(sf::Color(200, 200, 200));
+        sprite.setColor(pressed_color);
 
         set_current_texture(DOWN);
 
@@ -73,11 +96,23 @@ GridButton::GridButton(Game& game, Types type_, bool disabled_, const sf::Vector
 
 void GridButton::process_inputs()
 {
-    if(!disabled) Button::process_inputs();
+    set_flag();
+
+    if(!disabled && !flagged) Button::process_inputs();
 }
 
 void GridButton::update(float delta)
 {
+#ifndef __DEBUG__
+    if(disabled || flagged) {
+#endif // __DEBUG__
+
+        animations.update(delta);
+
+#ifndef __DEBUG__
+    }
+#endif // __DEBUG__
+
     if(!disabled) {
 
         Button::update(delta);
@@ -92,25 +127,23 @@ void GridButton::update(float delta)
         }
 
     }
-#ifndef __DEBUG__
-    else {
-#endif // __DEBUG__
-
-        animations.update(delta);
-
-#ifndef __DEBUG__
-    }
-#endif // __DEBUG__
 
     icon_sprite.setPosition(position);
+    p1_flag_sprite.setPosition(position);
+    p2_flag_sprite.setPosition(position);
 }
 
 void GridButton::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
     Button::draw(target, states);
 
+    if(flagged) {
+
+        target.draw(p1_flag_sprite, states);
+
+    }
 #ifndef __DEBUG__
-    if(disabled) {
+    else if(disabled) {
 #endif // __DEBUG__
 
         target.draw(icon_sprite, states);
@@ -134,7 +167,7 @@ void GridButton::on_button_pressed()
 {
     if(game_ref.get().is_first_click) {
 
-        sprite.setColor(sf::Color(200, 200, 200));
+        sprite.setColor(pressed_color);
         set_current_texture(DOWN);
 
         SceneManager::call_deferred([&]() {
@@ -209,10 +242,33 @@ void GridButton::change_button_type(Types new_type, const std::shared_ptr<sf::Te
     }
 }
 
+void GridButton::set_flag()
+{
+    if(disabled) return;
+
+    sf::Vector2i mouse_position = sf::Mouse::getPosition(*MinesweeperGame::window);
+
+    bool mouse_entered = bounding_box.contains(sf::Vector2f(mouse_position.x, mouse_position.y));
+
+    if(MinesweeperGame::window->hasFocus() && mouse_entered && Input::is_just_pressed<Input::Mouse>(sf::Mouse::Right)) {
+
+        flagged = !flagged;
+
+        animations.stop();
+
+    }
+
+    if(flagged) {
+
+        if(animations.is_paused()) animations.play("WAVING_FLAG");
+
+    }
+}
+
 void GridButton::disable()
 {
 //    set_current_texture(DOWN);
-    sprite.setColor(sf::Color(200, 200, 200));
+    sprite.setColor(pressed_color);
 //    sprite.setColor(sf::Color(255, 255, 255));
 
     SceneManager::call_deferred([&]() {
@@ -255,7 +311,7 @@ void GridButton::find_and_disable()
 
                 current_button = game_ref.get().grid[y_parse][x_parse].get();
 
-                if(queued_buttons.find(sf::Vector2i(x_parse, y_parse)) == queued_buttons.end()) {
+                if((queued_buttons.find(sf::Vector2i(x_parse, y_parse)) == queued_buttons.end()) && !current_button->flagged) {
 
                     current_button->disable();
                     queued_buttons.emplace(x_parse, y_parse);

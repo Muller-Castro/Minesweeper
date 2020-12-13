@@ -45,12 +45,14 @@ namespace Minesweeper {
             BOMB
         };
 
-        GridButton(Game& game, Types type_, bool disabled_, const sf::Vector2i& cell_position_, Enabled enabled_, const sf::Vector2f& position_, const sf::Vector2f& scale_, const std::shared_ptr<sf::Texture>& hovered, const std::shared_ptr<sf::Texture>& non_hovered, const std::shared_ptr<sf::Texture>& down, const std::shared_ptr<sf::Texture>& icon, const std::shared_ptr<sf::Texture>& p1_flag, const std::shared_ptr<sf::Texture>& p2_flag, const std::shared_ptr<sf::SoundBuffer>& hovered_sfx = {}, const std::shared_ptr<sf::SoundBuffer>& pressed_sfx = {});
+        GridButton(Game& game, Types type_, bool disabled_, bool flagged_, const sf::Vector2i& cell_position_, Enabled enabled_, const sf::Vector2f& position_, const sf::Vector2f& scale_, const std::shared_ptr<sf::Texture>& hovered, const std::shared_ptr<sf::Texture>& non_hovered, const std::shared_ptr<sf::Texture>& down, const std::shared_ptr<sf::Texture>& icon, const std::shared_ptr<sf::Texture>& p1_flag, const std::shared_ptr<sf::Texture>& p2_flag, const std::shared_ptr<sf::SoundBuffer>& hovered_sfx = {}, const std::shared_ptr<sf::SoundBuffer>& pressed_sfx = {});
         ~GridButton() override {}
 
         void process_inputs()    override;
         void update(float delta) override;
         void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
+
+        bool is_flagged() const noexcept { return flagged; }
 
     protected:
         void on_button_up()      override;
@@ -59,6 +61,7 @@ namespace Minesweeper {
 
     private:
         bool disabled;
+        bool flagged;
 
         Types type;
 
@@ -70,6 +73,8 @@ namespace Minesweeper {
 
         sf::Vector2i cell_position;
 
+        sf::Color pressed_color;
+
         sf::Sprite icon_sprite;
         sf::Sprite p1_flag_sprite;
         sf::Sprite p2_flag_sprite;
@@ -77,6 +82,7 @@ namespace Minesweeper {
         AnimationPlayer animations;
 
         void change_button_type(Types new_type, const std::shared_ptr<sf::Texture>& new_icon_texture);
+        void set_flag();
         void disable();
         void find_and_disable();
     };
