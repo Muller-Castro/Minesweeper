@@ -267,9 +267,7 @@ void GridButton::set_flag()
 
 void GridButton::disable()
 {
-//    set_current_texture(DOWN);
     sprite.setColor(pressed_color);
-//    sprite.setColor(sf::Color(255, 255, 255));
 
     SceneManager::call_deferred([&]() {
         set_current_texture(DOWN);
