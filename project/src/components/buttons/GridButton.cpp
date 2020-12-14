@@ -36,7 +36,7 @@
 
 using namespace Minesweeper;
 
-GridButton::GridButton(Game& game, Types type_, bool disabled_, bool flagged_, const sf::Vector2i& cell_position_, Enabled enabled_, const sf::Vector2f& position_, const sf::Vector2f& scale_, const std::shared_ptr<sf::Texture>& hovered, const std::shared_ptr<sf::Texture>& non_hovered, const std::shared_ptr<sf::Texture>& down, const std::shared_ptr<sf::Texture>& icon, const std::shared_ptr<sf::Texture>& p1_flag, const std::shared_ptr<sf::Texture>& p2_flag, const std::shared_ptr<sf::SoundBuffer>& hovered_sfx, const std::shared_ptr<sf::SoundBuffer>& pressed_sfx) :
+GridButton::GridButton(Game& game, Types type_, bool disabled_, bool flagged_, const sf::Vector2i& cell_position_, Enabled enabled_, const sf::Vector2f& position_, const sf::Vector2f& scale_, const std::shared_ptr<sf::Texture>& hovered, const std::shared_ptr<sf::Texture>& non_hovered, const std::shared_ptr<sf::Texture>& down, const std::shared_ptr<sf::Texture>& icon, const std::shared_ptr<sf::Texture>& p1_flag, const std::shared_ptr<sf::Texture>& p2_flag, const std::shared_ptr<sf::Texture>& not_a_bomb_texture_, const std::shared_ptr<sf::SoundBuffer>& hovered_sfx, const std::shared_ptr<sf::SoundBuffer>& pressed_sfx) :
     Button(enabled_, position_, scale_, hovered, non_hovered, down, hovered_sfx, pressed_sfx),
     disabled(disabled_),
     flagged(flagged_),
@@ -45,6 +45,7 @@ GridButton::GridButton(Game& game, Types type_, bool disabled_, bool flagged_, c
     icon_texture(),
     p1_flag_texture(p1_flag),
     p2_flag_texture(p2_flag),
+    not_a_bomb_texture(not_a_bomb_texture_),
     cell_position(cell_position_),
     pressed_color(sf::Color(200, 200, 200)),
     icon_sprite(),
@@ -98,6 +99,8 @@ GridButton::GridButton(Game& game, Types type_, bool disabled_, bool flagged_, c
 
 void GridButton::process_inputs()
 {
+    if(game_ref.get().finished) return;
+
     set_flag();
 
     if(!disabled && !flagged) Button::process_inputs();
@@ -184,11 +187,80 @@ void GridButton::on_button_pressed()
 
     }else {
 
+        if(type == Types::BOMB) {
+
+            pressed_color = sf::Color::Red;
+
+            for(size_t y = 0; y < game_ref.get().grid.size(); ++y) {
+
+                for(size_t x = 0; x < game_ref.get().grid[y].size(); ++x) {
+
+                    GridButton* grid_button = game_ref.get().grid[y][x].get();
+
+                    if(cell_position == grid_button->cell_position) continue;
+
+                    if(grid_button->type == Types::BOMB && !grid_button->flagged) {
+
+                        grid_button->disable();
+
+                    }else if(grid_button->type != Types::BOMB && grid_button->flagged) {
+
+                        grid_button->flagged = false;
+                        grid_button->disable();
+
+                        // Recycling the "IGNITED_BOMB" animation
+                        grid_button->icon_sprite.setTexture(*not_a_bomb_texture);
+                        grid_button->icon_sprite.setOrigin(8.f, 8.f);
+                        grid_button->add_bomb_animation();
+                        grid_button->animations.play("IGNITED_BOMB");
+                        // Recycling the "IGNITED_BOMB" animation
+
+                    }
+
+                }
+
+            }
+
+            game_ref.get().finished = true;
+
+        }
+
         disable();
 
         if(type == Types::NEUTRAL) find_and_disable();
 
     }
+}
+
+void GridButton::add_bomb_animation()
+{
+    animations.add_animations(
+
+        {
+            Animation("IGNITED_BOMB", 0.75f, {
+
+                KeyFrame(0.f, [&]() {
+
+                    icon_sprite.setTextureRect(sf::IntRect(0, 0, 16, 16));
+
+                }),
+
+                KeyFrame(0.25f, [&]() {
+
+                    icon_sprite.setTextureRect(sf::IntRect(16, 0, 16, 16));
+
+                }),
+
+                KeyFrame(0.5f, [&]() {
+
+                    icon_sprite.setTextureRect(sf::IntRect(32, 0, 16, 16));
+
+                }),
+
+            })
+        }
+
+    );
 }
 
 void GridButton::change_button_type(Types new_type, const std::shared_ptr<sf::Texture>& new_icon_texture)
@@ -202,37 +274,7 @@ void GridButton::change_button_type(Types new_type, const std::shared_ptr<sf::Te
 
         if(type == Types::BOMB) {
 
-            if(!animations.has_animation("IGNITED_BOMB")) {
-
-                animations.add_animations(
-
-                    {
-                        Animation("IGNITED_BOMB", 0.75f, {
-
-                            KeyFrame(0.f, [&]() {
-
-                                icon_sprite.setTextureRect(sf::IntRect(0, 0, 16, 16));
-
-                            }),
-
-                            KeyFrame(0.25f, [&]() {
-
-                                icon_sprite.setTextureRect(sf::IntRect(16, 0, 16, 16));
-
-                            }),
-
-                            KeyFrame(0.5f, [&]() {
-
-                                icon_sprite.setTextureRect(sf::IntRect(32, 0, 16, 16));
-
-                            }),
-
-                        })
-                    }
-
-                );
-
-            }
+            if(!animations.has_animation("IGNITED_BOMB")) add_bomb_animation();
 
             icon_sprite.setOrigin(8.f, 8.f);
 

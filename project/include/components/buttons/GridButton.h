@@ -45,7 +45,7 @@ namespace Minesweeper {
             BOMB
         };
 
-        GridButton(Game& game, Types type_, bool disabled_, bool flagged_, const sf::Vector2i& cell_position_, Enabled enabled_, const sf::Vector2f& position_, const sf::Vector2f& scale_, const std::shared_ptr<sf::Texture>& hovered, const std::shared_ptr<sf::Texture>& non_hovered, const std::shared_ptr<sf::Texture>& down, const std::shared_ptr<sf::Texture>& icon, const std::shared_ptr<sf::Texture>& p1_flag, const std::shared_ptr<sf::Texture>& p2_flag, const std::shared_ptr<sf::SoundBuffer>& hovered_sfx = {}, const std::shared_ptr<sf::SoundBuffer>& pressed_sfx = {});
+        GridButton(Game& game, Types type_, bool disabled_, bool flagged_, const sf::Vector2i& cell_position_, Enabled enabled_, const sf::Vector2f& position_, const sf::Vector2f& scale_, const std::shared_ptr<sf::Texture>& hovered, const std::shared_ptr<sf::Texture>& non_hovered, const std::shared_ptr<sf::Texture>& down, const std::shared_ptr<sf::Texture>& icon, const std::shared_ptr<sf::Texture>& p1_flag, const std::shared_ptr<sf::Texture>& p2_flag, const std::shared_ptr<sf::Texture>& not_a_bomb_texture_, const std::shared_ptr<sf::SoundBuffer>& hovered_sfx = {}, const std::shared_ptr<sf::SoundBuffer>& pressed_sfx = {});
         ~GridButton() override {}
 
         void process_inputs()    override;
@@ -70,6 +70,7 @@ namespace Minesweeper {
         std::shared_ptr<sf::Texture> icon_texture;
         std::shared_ptr<sf::Texture> p1_flag_texture;
         std::shared_ptr<sf::Texture> p2_flag_texture;
+        std::shared_ptr<sf::Texture> not_a_bomb_texture;
 
         sf::Vector2i cell_position;
 
@@ -81,6 +82,7 @@ namespace Minesweeper {
 
         AnimationPlayer animations;
 
+        void add_bomb_animation(); // since this is going to be used twice...
         void change_button_type(Types new_type, const std::shared_ptr<sf::Texture>& new_icon_texture);
         void set_flag();
         void disable();
