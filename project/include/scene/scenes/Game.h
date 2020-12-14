@@ -54,6 +54,7 @@ namespace Minesweeper {
         friend class GridButton;
 
         bool is_first_click;
+        bool finished;
 
         int grid_width;
         int grid_height;

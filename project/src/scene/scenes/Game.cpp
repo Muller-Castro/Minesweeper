@@ -51,12 +51,14 @@
 #include "assets/MiniBombSpriteSheet.h"
 #include "assets/MiniP1Flag.h"
 #include "assets/MiniP2Flag.h"
+#include "assets/NotABomb.h"
 #endif // __S_RELEASE__
 
 using namespace Minesweeper;
 
 Game::Game() :
     is_first_click(true),
+    finished(),
     grid_width(),
     grid_height(),
     max_bombs(),
@@ -76,6 +78,7 @@ Game::Game() :
 
     cached_grid_button_textures["P1_FLAG"]   = ResourceLoader::load<sf::Texture>("assets/textures/MiniP1Flag.png");
     cached_grid_button_textures["P2_FLAG"]   = ResourceLoader::load<sf::Texture>("assets/textures/MiniP2Flag.png");
+    cached_grid_button_textures["N_A_BOMB"]  = ResourceLoader::load<sf::Texture>("assets/textures/NotABomb.png");
 
     cached_grid_button_textures["ICON_1"]    = ResourceLoader::load<sf::Texture>("assets/textures/Icon1.png");
     cached_grid_button_textures["ICON_2"]    = ResourceLoader::load<sf::Texture>("assets/textures/Icon2.png");
@@ -98,6 +101,7 @@ Game::Game() :
 
     cached_grid_button_textures["P1_FLAG"]   = ResourceLoader::load<sf::Texture>(get_raw_mini_p1_flag());
     cached_grid_button_textures["P2_FLAG"]   = ResourceLoader::load<sf::Texture>(get_raw_mini_p2_flag());
+    cached_grid_button_textures["N_A_BOMB"]  = ResourceLoader::load<sf::Texture>(get_raw_not_a_bomb());
 
     cached_grid_button_textures["ICON_1"]    = ResourceLoader::load<sf::Texture>(get_raw_icon1());
     cached_grid_button_textures["ICON_2"]    = ResourceLoader::load<sf::Texture>(get_raw_icon2());
@@ -126,9 +130,13 @@ Game::~Game() noexcept
 
 void Game::process_inputs()
 {
-    for(std::vector<std::unique_ptr<GridButton>>& row : grid) {
+    if(!finished) {
 
-        for(auto& grid_button : row) grid_button->process_inputs();
+        for(std::vector<std::unique_ptr<GridButton>>& row : grid) {
+
+            for(auto& grid_button : row) grid_button->process_inputs();
+
+        }
 
     }
 }
@@ -207,6 +215,7 @@ void Game::build_initial_grid()
                 {},
                 cached_grid_button_textures["P1_FLAG"],
                 cached_grid_button_textures["P2_FLAG"],
+                cached_grid_button_textures["N_A_BOMB"],
                 {},
                 cached_grid_button_sounds["GB_PR"]
             ));
@@ -288,6 +297,7 @@ void Game::build_grid(const sf::Vector2i& first_disabled_cell_position)
                 icon_texture,
                 cached_grid_button_textures["P1_FLAG"],
                 cached_grid_button_textures["P2_FLAG"],
+                cached_grid_button_textures["N_A_BOMB"],
                 {},
                 is_bomb ? cached_grid_button_sounds["BOMB_E"] : cached_grid_button_sounds["GB_PR"]
             ));
