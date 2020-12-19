@@ -229,7 +229,7 @@ void Game::build_initial_grid()
     grid_outline.setFillColor(sf::Color::Black);
 }
 
-void Game::build_grid(const sf::Vector2i& first_disabled_cell_position)
+void Game::build_grid(sf::Vector2i first_disabled_cell_position)
 {
     std::unordered_set<sf::Vector2i> bomb_positions = create_bomb_positions(first_disabled_cell_position);
 

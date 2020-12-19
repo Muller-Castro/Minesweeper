@@ -183,6 +183,7 @@ void GridButton::on_button_pressed()
         SceneManager::call_deferred([&]() {
             game_ref.get().is_first_click = false;
             game_ref.get().build_grid(cell_position);
+            // Do NOT do anything further
         });
 
     }else {

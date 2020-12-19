@@ -74,7 +74,7 @@ namespace Minesweeper {
         sf::RectangleShape grid_outline;
 
         void build_initial_grid();
-        void build_grid(const sf::Vector2i& first_disabled_cell_position);
+        void build_grid(sf::Vector2i first_disabled_cell_position);
         std::unordered_set<sf::Vector2i> create_bomb_positions(const sf::Vector2i& first_disabled_cell_position) const;
         unsigned parse_adjacent_cells(int x, int y, const std::unordered_set<sf::Vector2i>& bomb_positions) const noexcept;
     };
