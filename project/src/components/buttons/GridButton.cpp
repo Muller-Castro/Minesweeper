@@ -101,7 +101,7 @@ void GridButton::process_inputs()
 {
     if(game_ref.get().finished) return;
 
-    set_flag();
+    check_flag_input();
 
     if(!disabled && !flagged) Button::process_inputs();
 }
@@ -292,7 +292,7 @@ void GridButton::change_button_type(Types new_type, const std::shared_ptr<sf::Te
     }
 }
 
-void GridButton::set_flag()
+void GridButton::check_flag_input()
 {
     if(disabled) return;
 
@@ -304,21 +304,26 @@ void GridButton::set_flag()
 
     if(MinesweeperGame::window->hasFocus() && mouse_entered && Input::is_just_pressed<Input::Mouse>(sf::Mouse::Right) && !Input::is_pressed<Input::Mouse>(sf::Mouse::Left)) {
 
-        flagged = !flagged;
+        set_flag(!flagged);
 
-        animations.stop();
+    }
+}
 
-        if(flagged) {
+void GridButton::set_flag(bool b)
+{
+    flagged = b;
 
-            --game_ref.get().flag_counter;
+    animations.stop();
 
-            animations.play("WAVING_FLAG");
+    if(flagged) {
 
-        }else {
+        if(!game_ref.get().finished) --game_ref.get().flag_counter;
 
-            ++game_ref.get().flag_counter;
+        animations.play("WAVING_FLAG");
 
-        }
+    }else {
+
+        ++game_ref.get().flag_counter;
 
     }
 }

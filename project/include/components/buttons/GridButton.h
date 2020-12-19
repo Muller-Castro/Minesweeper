@@ -52,14 +52,14 @@ namespace Minesweeper {
         void update(float delta) override;
         void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
-        bool is_flagged() const noexcept { return flagged; }
-
     protected:
         void on_button_up()      override;
         void on_button_down()    override;
         void on_button_pressed() override;
 
     private:
+        friend class Game;
+
         bool disabled;
         bool flagged;
 
@@ -84,7 +84,8 @@ namespace Minesweeper {
 
         void add_bomb_animation(); // since this is going to be used twice...
         void change_button_type(Types new_type, const std::shared_ptr<sf::Texture>& new_icon_texture);
-        void set_flag();
+        void check_flag_input();
+        void set_flag(bool b);
         void disable();
         void find_and_disable();
     };

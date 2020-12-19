@@ -143,9 +143,35 @@ void Game::process_inputs()
 
 void Game::update(float delta)
 {
+    bool all_non_bombs_disabled = true;
+
     for(std::vector<std::unique_ptr<GridButton>>& row : grid) {
 
-        for(auto& grid_button : row) grid_button->update(delta);
+        for(auto& grid_button : row) {
+
+            grid_button->update(delta);
+
+            if(finished) continue;
+
+            if((grid_button->type != GridButton::Types::BOMB) && (!grid_button->disabled)) all_non_bombs_disabled = false;
+
+        }
+
+    }
+
+    if(all_non_bombs_disabled && !finished) {
+
+        for(std::vector<std::unique_ptr<GridButton>>& row : grid) {
+
+            for(auto& grid_button : row) {
+
+                if(grid_button->type == GridButton::Types::BOMB) grid_button->set_flag(true);
+
+            }
+
+        }
+
+        finished = true;
 
     }
 }
@@ -286,7 +312,7 @@ void Game::build_grid(sf::Vector2i first_disabled_cell_position)
                 *this,
                 button_type,
                 (sf::Vector2i(x, y) == first_disabled_cell_position),
-                grid[y][x]->is_flagged(),
+                grid[y][x]->flagged,
                 sf::Vector2i(x, y),
                 Button::Enabled::LEFT,
                 sf::Vector2f(x * 20.f + grid_x, y * 20.f + grid_y),
