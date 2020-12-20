@@ -194,6 +194,7 @@ void Button::set_state() noexcept
                 if(Button::sound.getStatus() != sf::Sound::Playing) {
 
 //                    Button::sound.stop();
+                    Button::sound.setVolume(20.f);
                     Button::sound.setBuffer(*sound_buffers[Button::HOVERED_SFX].first);
                     Button::sound.play();
 
