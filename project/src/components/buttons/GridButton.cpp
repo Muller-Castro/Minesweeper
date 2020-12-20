@@ -36,7 +36,7 @@
 
 using namespace Minesweeper;
 
-GridButton::GridButton(Game& game, Types type_, bool disabled_, bool flagged_, const sf::Vector2i& cell_position_, Enabled enabled_, const sf::Vector2f& position_, const sf::Vector2f& scale_, const std::shared_ptr<sf::Texture>& hovered, const std::shared_ptr<sf::Texture>& non_hovered, const std::shared_ptr<sf::Texture>& down, const std::shared_ptr<sf::Texture>& icon, const std::shared_ptr<sf::Texture>& p1_flag, const std::shared_ptr<sf::Texture>& p2_flag, const std::shared_ptr<sf::Texture>& not_a_bomb_texture_, const std::shared_ptr<sf::SoundBuffer>& hovered_sfx, const std::shared_ptr<sf::SoundBuffer>& pressed_sfx) :
+GridButton::GridButton(Game& game, Types type_, bool disabled_, bool flagged_, const sf::Vector2i& cell_position_, Enabled enabled_, const sf::Vector2f& position_, const sf::Vector2f& scale_, const std::shared_ptr<sf::Texture>& hovered, const std::shared_ptr<sf::Texture>& non_hovered, const std::shared_ptr<sf::Texture>& down, const std::shared_ptr<sf::Texture>& icon, const std::shared_ptr<sf::Texture>& p1_flag, const std::shared_ptr<sf::Texture>& p2_flag, const std::shared_ptr<sf::Texture>& not_a_bomb_texture_, const std::shared_ptr<sf::SoundBuffer>& flag_sound_, const std::shared_ptr<sf::SoundBuffer>& hovered_sfx, const std::shared_ptr<sf::SoundBuffer>& pressed_sfx) :
     Button(enabled_, position_, scale_, hovered, non_hovered, down, hovered_sfx, pressed_sfx),
     disabled(disabled_),
     flagged(flagged_),
@@ -46,6 +46,7 @@ GridButton::GridButton(Game& game, Types type_, bool disabled_, bool flagged_, c
     p1_flag_texture(p1_flag),
     p2_flag_texture(p2_flag),
     not_a_bomb_texture(not_a_bomb_texture_),
+    flag_sound(flag_sound_),
     cell_position(cell_position_),
     pressed_color(sf::Color(200, 200, 200)),
     icon_sprite(),
@@ -222,6 +223,11 @@ void GridButton::on_button_pressed()
 
             }
 
+            game_ref.get().sound.stop();
+            game_ref.get().sound.setBuffer(*game_ref.get().oooh_sound);
+            game_ref.get().sound.setVolume(100.f);
+            game_ref.get().sound.play();
+
             game_ref.get().finished = true;
 
         }
@@ -303,6 +309,11 @@ void GridButton::check_flag_input()
     bool mouse_entered = bounding_box.contains(sf::Vector2f(mouse_position.x, mouse_position.y));
 
     if(MinesweeperGame::window->hasFocus() && mouse_entered && Input::is_just_pressed<Input::Mouse>(sf::Mouse::Right) && !Input::is_pressed<Input::Mouse>(sf::Mouse::Left)) {
+
+        Button::sound.setBuffer(*flag_sound);
+        Button::sound.setVolume(20.f);
+        Button::sound.stop();
+        Button::sound.play();
 
         set_flag(!flagged);
 
