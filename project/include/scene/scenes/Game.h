@@ -34,9 +34,12 @@
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Audio/SoundBuffer.hpp>
+#include <SFML/Audio/Sound.hpp>
 
 #include "scene/Scene.h"
+#include "components/Button.h"
 #include "components/buttons/GridButton.h"
+#include "io/MusicStream.h"
 
 namespace Minesweeper {
 
@@ -51,6 +54,7 @@ namespace Minesweeper {
         void draw()              override;
 
     private:
+        friend class RestartButton;
         friend class GridButton;
 
         bool is_first_click;
@@ -62,6 +66,7 @@ namespace Minesweeper {
 
         int flag_counter;
 
+        std::vector<std::unique_ptr<Button>> buttons;
         std::vector<std::vector<std::unique_ptr<GridButton>>> grid;
 
         std::unordered_map<std::string, std::shared_ptr<sf::Texture>>     cached_grid_button_textures;
@@ -69,7 +74,14 @@ namespace Minesweeper {
 
         std::shared_ptr<sf::Texture> panel_texture;
 
+        std::shared_ptr<sf::SoundBuffer> clapping_sound;
+        std::shared_ptr<sf::SoundBuffer> oooh_sound;
+
+        std::shared_ptr<MusicStream> soundtrack;
+
         sf::Sprite panel_sprite;
+
+        sf::Sound sound;
 
         sf::RectangleShape grid_outline;
 
@@ -77,6 +89,8 @@ namespace Minesweeper {
         void build_grid(sf::Vector2i first_disabled_cell_position);
         std::unordered_set<sf::Vector2i> create_bomb_positions(const sf::Vector2i& first_disabled_cell_position) const;
         unsigned parse_adjacent_cells(int x, int y, const std::unordered_set<sf::Vector2i>& bomb_positions) const noexcept;
+
+        void restart();
     };
 
 }
