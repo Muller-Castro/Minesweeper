@@ -328,7 +328,7 @@ void GridButton::set_flag(bool b)
 
     if(flagged) {
 
-        if(!game_ref.get().finished) --game_ref.get().flag_counter;
+        if(game_ref.get().flag_counter > 0) --game_ref.get().flag_counter;
 
         animations.play("WAVING_FLAG");
 
