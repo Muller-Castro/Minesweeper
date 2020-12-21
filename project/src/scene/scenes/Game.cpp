@@ -43,8 +43,10 @@
 #include "assets/GridButtonPressed.h"
 #include "assets/GridButtonUp.h"
 #include "assets/GamePanel.h"
+#include "assets/CounterPanel.h"
 #include "assets/Clapping.h"
 #include "assets/Oooh.h"
+#include "assets/Digital7Mono.h"
 #include "assets/GameSoundtrack.h"
 #include "assets/Icon1.h"
 #include "assets/Icon2.h"
@@ -77,26 +79,38 @@ Game::Game() :
     grid_height(),
     max_bombs(),
     flag_counter(),
+#ifdef __S_RELEASE__
+    counter_font_data(get_raw_digital7_mono()),
+#endif // __S_RELEASE__
     buttons(),
     grid(),
     cached_grid_button_textures(),
     cached_grid_button_sounds(),
     panel_texture(),
+    counter_panel_texture(),
     clapping_sound(),
     oooh_sound(),
+    counter_font(),
     soundtrack(),
+    timer(),
     panel_sprite(),
+    counter_panel_sprite(),
     sound(),
+    counter_text(),
     grid_outline()
 {
 #ifndef __S_RELEASE__
-    panel_texture  = ResourceLoader::load<sf::Texture>("assets/textures/GamePanel.png");
+    panel_texture         = ResourceLoader::load<sf::Texture>("assets/textures/GamePanel.png");
 
-    clapping_sound = ResourceLoader::load<sf::SoundBuffer>("assets/sounds/Clapping.wav");
+    counter_panel_texture = ResourceLoader::load<sf::Texture>("assets/textures/CounterPanel.png");
 
-    oooh_sound     = ResourceLoader::load<sf::SoundBuffer>("assets/sounds/Oooh.wav");
+    clapping_sound        = ResourceLoader::load<sf::SoundBuffer>("assets/sounds/Clapping.wav");
 
-    soundtrack     = ResourceLoader::load<MusicStream>("assets/musics/GameSoundtrack.ogg");
+    oooh_sound            = ResourceLoader::load<sf::SoundBuffer>("assets/sounds/Oooh.wav");
+
+    counter_font          = ResourceLoader::load<sf::Font>("assets/fonts/Digital7Mono.ttf");
+
+    soundtrack            = ResourceLoader::load<MusicStream>("assets/musics/GameSoundtrack.ogg");
 
     cached_grid_button_textures["GB_UP"]     = ResourceLoader::load<sf::Texture>("assets/textures/GridButtonUp.png");
     cached_grid_button_textures["EMP_CELL"]  = ResourceLoader::load<sf::Texture>("assets/textures/EmptyCell.png");
@@ -120,13 +134,17 @@ Game::Game() :
     cached_grid_button_sounds["BOMB_E"]      = ResourceLoader::load<sf::SoundBuffer>("assets/sounds/BombExplosion.wav");
     cached_grid_button_sounds["FLAG_S"]      = ResourceLoader::load<sf::SoundBuffer>("assets/sounds/FlagSet.wav");
 #else
-    panel_texture  = ResourceLoader::load<sf::Texture>(get_raw_game_panel());
+    panel_texture         = ResourceLoader::load<sf::Texture>(get_raw_game_panel());
 
-    clapping_sound = ResourceLoader::load<sf::SoundBuffer>(get_raw_clapping());
+    counter_panel_texture = ResourceLoader::load<sf::Texture>(get_raw_counter_panel());
 
-    oooh_sound     = ResourceLoader::load<sf::SoundBuffer>(get_raw_oooh());
+    clapping_sound        = ResourceLoader::load<sf::SoundBuffer>(get_raw_clapping());
 
-    soundtrack     = ResourceLoader::load<MusicStream>(get_raw_game_soundtrack());
+    oooh_sound            = ResourceLoader::load<sf::SoundBuffer>(get_raw_oooh());
+
+    counter_font          = ResourceLoader::load<sf::Font>(counter_font_data);
+
+    soundtrack            = ResourceLoader::load<MusicStream>(get_raw_game_soundtrack());
 
     cached_grid_button_textures["GB_UP"]     = ResourceLoader::load<sf::Texture>(get_raw_grid_button_up());
     cached_grid_button_textures["EMP_CELL"]  = ResourceLoader::load<sf::Texture>(get_raw_empty_cell());
@@ -152,6 +170,14 @@ Game::Game() :
 #endif // __S_RELEASE__
 
     panel_sprite.setTexture(*panel_texture);
+    counter_panel_sprite.setTexture(*counter_panel_texture);
+
+    counter_text.setFont(*counter_font);
+//    counter_text.setOutlineColor(sf::Color::Black);
+//    counter_text.setOutlineThickness(3.f);
+    counter_text.setCharacterSize(48);
+    counter_text.setFillColor(sf::Color::Red);
+    counter_text.setPosition(sf::Vector2f(0.f, 27.f));
 
     soundtrack->music.setLoop(true);
     soundtrack->music.play();
@@ -195,6 +221,8 @@ Game::Game() :
     )));
 
     build_initial_grid();
+
+    timer.restart();
 }
 
 Game::~Game() noexcept
@@ -263,6 +291,8 @@ void Game::draw()
 {
     MinesweeperGame::window->draw(panel_sprite);
 
+    draw_counters();
+
     for(auto& button : buttons) MinesweeperGame::window->draw(*button);
 
     MinesweeperGame::window->draw(grid_outline);
@@ -282,6 +312,58 @@ void Game::restart()
     grid.clear();
 
     build_initial_grid();
+
+    timer.restart();
+}
+
+void Game::draw_counters()
+{
+    counter_panel_sprite.setPosition(sf::Vector2f(52.f, 34.f));
+    MinesweeperGame::window->draw(counter_panel_sprite);
+    counter_panel_sprite.setPosition(sf::Vector2f(656.f, 34.f));
+    MinesweeperGame::window->draw(counter_panel_sprite);
+
+    float last_timer_x_position = counter_text.getPosition().x;
+    std::string last_timer_str  = counter_text.getString();
+
+    // Flags
+    {
+        std::string flag_counter_str = std::to_string(flag_counter);
+        size_t flag_counter_length   = flag_counter_str.length();
+
+        float x_pos = flag_counter_length == 3 ? 66.f : (flag_counter_length == 2) ? 88.f : 110.f;
+
+        counter_text.setPosition(x_pos, counter_text.getPosition().y);
+        counter_text.setString(flag_counter_str);
+        MinesweeperGame::window->draw(counter_text);
+    }
+    // Flags
+
+    // Timer
+    {
+
+        int timer_as_seconds = static_cast<int>(timer.getElapsedTime().asSeconds());
+
+        if(!finished && timer_as_seconds <= 999) {
+
+            std::string timer_str = std::to_string(timer_as_seconds);
+            size_t timer_length   = timer_str.length();
+
+            float x_pos = timer_length == 3 ? 670.f : (timer_length == 2) ? 692.f : 714.f;
+
+            counter_text.setPosition(x_pos, counter_text.getPosition().y);
+            counter_text.setString(timer_str);
+
+        }else {
+
+            counter_text.setPosition(last_timer_x_position, counter_text.getPosition().y);
+            counter_text.setString(last_timer_str);
+
+        }
+
+        MinesweeperGame::window->draw(counter_text);
+    }
+    // Timer
 }
 
 void Game::build_initial_grid()
