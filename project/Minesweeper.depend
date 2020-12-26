@@ -1479,3 +1479,36 @@
 	"assets/Digital7Mono.h"
 	<vector>
 
+1595108376 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\thirdparty\encryptions\common\includes.cpp
+	"includes.h"
+
+1595108376 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\thirdparty\encryptions\common\includes.h
+	<cstdint>
+	<iostream>
+	<sstream>
+	<stdexcept>
+
+1595108376 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\thirdparty\encryptions\encryptions\symalg.cpp
+	"SymAlg.h"
+
+1595108376 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\thirdparty\encryptions\encryptions\symalg.h
+	<iostream>
+	<memory>
+	<stdexcept>
+
+1595108376 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\thirdparty\encryptions\encryptions\aes.cpp
+	"AES.h"
+
+1595108376 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\thirdparty\encryptions\encryptions\aes.h
+	<algorithm>
+	<vector>
+	"../common/cryptomath.h"
+	"../common/includes.h"
+	"SymAlg.h"
+	"AES_Const.h"
+
+1595108376 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\thirdparty\encryptions\common\cryptomath.h
+	<iostream>
+
+1595108376 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\thirdparty\encryptions\encryptions\aes_const.h
+

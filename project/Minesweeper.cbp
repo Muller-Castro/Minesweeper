@@ -84,6 +84,14 @@
 			<Add option="-m64" />
 			<Add directory="../thirdparty/SFML-2.5.1/lib" />
 		</Linker>
+		<Unit filename="../thirdparty/Encryptions/Encryptions/AES.cpp" />
+		<Unit filename="../thirdparty/Encryptions/Encryptions/AES.h" />
+		<Unit filename="../thirdparty/Encryptions/Encryptions/AES_Const.h" />
+		<Unit filename="../thirdparty/Encryptions/Encryptions/SymAlg.cpp" />
+		<Unit filename="../thirdparty/Encryptions/Encryptions/SymAlg.h" />
+		<Unit filename="../thirdparty/Encryptions/common/cryptomath.h" />
+		<Unit filename="../thirdparty/Encryptions/common/includes.cpp" />
+		<Unit filename="../thirdparty/Encryptions/common/includes.h" />
 		<Unit filename="include/GlobalConfigurations.h" />
 		<Unit filename="include/Input.h" />
 		<Unit filename="include/Input.hpp" />
