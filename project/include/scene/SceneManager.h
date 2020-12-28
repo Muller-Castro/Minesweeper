@@ -56,6 +56,7 @@ namespace Minesweeper {
 
     private:
         friend class MinesweeperGame;
+        friend class MainMenu;
         friend class BeginnerButton;
         friend class AverageButton;
         friend class ExpertButton;
