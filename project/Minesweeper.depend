@@ -472,7 +472,7 @@
 	"scene/scenes/Game.h"
 	"io/ResourceLoader.h"
 
-1606713407 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\scene\scenemanager.h
+1609111337 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\scene\scenemanager.h
 	<unordered_map>
 	<string>
 	<memory>
@@ -575,10 +575,11 @@
 	<SFML/Graphics/Shader.hpp>
 	"io/MusicStream.h"
 
-1606711721 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\scene\scenes\mainmenu.h
+1609135313 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\scene\scenes\mainmenu.h
 	<vector>
 	<memory>
 	<string>
+	<array>
 	<map>
 	<utility>
 	<SFML/Graphics/Texture.hpp>
@@ -590,10 +591,15 @@
 	"tools/AnimationPlayer.h"
 	"io/MusicStream.h"
 
-1607802291 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\scene\scenes\mainmenu.cpp
+1609135972 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\scene\scenes\mainmenu.cpp
 	"scene/scenes/MainMenu.h"
+	<fstream>
+	<algorithm>
 	<SFML/Graphics/RenderWindow.hpp>
+	<SFML/Graphics/RectangleShape.hpp>
+	"Encryptions/AES.h"
 	"MinesweeperGame.h"
+	"tools/EncryptionKey.h"
 	"components/buttons/PlayOfflineButton.h"
 	"components/buttons/PlayOnlineButton.h"
 	"components/buttons/CreditsButton.h"
@@ -613,6 +619,7 @@
 	"assets/BombSpriteSheet.h"
 	"assets/MainMenuSoundtrack.h"
 	"assets/INET.h"
+	"assets/Digital7Mono.h"
 	"assets/AverageButtonNHovered.h"
 	"assets/AverageButtonHovered.h"
 	"assets/AverageButtonDown.h"
@@ -787,13 +794,19 @@
 	<functional>
 	"components/Button.h"
 
-1608510159 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\scene\scenes\game.cpp
+1609136408 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\scene\scenes\game.cpp
 	"scene/scenes/Game.h"
+	<fstream>
 	<sstream>
 	<chrono>
 	<random>
 	<vector>
+	<algorithm>
+	<iomanip>
+	<array>
 	<SFML/Graphics/RenderWindow.hpp>
+	"tools/EncryptionKey.h"
+	"Encryptions/AES.h"
 	"io/ResourceLoader.h"
 	"tools/Vector2Hash.h"
 	"scene/SceneManager.h"
@@ -832,7 +845,7 @@
 	"components/buttons/RestartButton.h"
 	"components/buttons/MainMenuButton.h"
 
-1608511516 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\scene\scenes\game.h
+1609130244 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\scene\scenes\game.h
 	<vector>
 	<memory>
 	<utility>
@@ -1000,7 +1013,7 @@
 1606595574 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\scene\scenes\testzone.h
 	"scene/Scene.h"
 
-1606595576 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\scene\scenes\testzone.cpp
+1609136729 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\scene\scenes\testzone.cpp
 	"scene/scenes/TestZone.h"
 
 1607802629 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\components\buttons\creditsreturnbutton.cpp
@@ -1090,7 +1103,7 @@
 	"components/Button.h"
 	"tools/AnimationPlayer.h"
 
-1608510135 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\components\buttons\gridbutton.cpp
+1609133109 source:c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\src\components\buttons\gridbutton.cpp
 	"components/buttons/GridButton.h"
 	<unordered_set>
 	<sstream>
@@ -1511,4 +1524,6 @@
 	<iostream>
 
 1595108376 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\thirdparty\encryptions\encryptions\aes_const.h
+
+1609134890 c:\users\mulle\desktop\c++\projects\sfml\2020\minesweeper\project\include\tools\encryptionkey.h
 
