@@ -23,13 +23,19 @@
 
 #include "scene/scenes/Game.h"
 
+#include <fstream>
 #include <sstream>
 #include <chrono>
 #include <random>
 #include <vector>
+#include <algorithm>
+#include <iomanip>
+#include <array>
 
 #include <SFML/Graphics/RenderWindow.hpp>
 
+#include "tools/EncryptionKey.h"
+#include "Encryptions/AES.h"
 #include "io/ResourceLoader.h"
 #include "tools/Vector2Hash.h"
 #include "scene/SceneManager.h"
@@ -267,6 +273,8 @@ void Game::update(float delta)
 
     if(all_non_bombs_disabled && !finished) {
 
+        save_record();
+
         for(std::vector<std::unique_ptr<GridButton>>& row : grid) {
 
             for(auto& grid_button : row) {
@@ -314,6 +322,90 @@ void Game::restart()
     build_initial_grid();
 
     timer.restart();
+}
+
+void Game::save_record() const
+{
+    std::string difficulty_level = SceneManager::shared_data["DIFFICULTY"];
+
+    int timer_as_seconds = static_cast<int>(timer.getElapsedTime().asSeconds());
+
+    int beg_record_value = SceneManager::shared_data["BEG_R"] == "NaN" ? -1 : std::stoi(SceneManager::shared_data["BEG_R"]);
+    int ave_record_value = SceneManager::shared_data["AVE_R"] == "NaN" ? -1 : std::stoi(SceneManager::shared_data["AVE_R"]);
+    int exp_record_value = SceneManager::shared_data["EXP_R"] == "NaN" ? -1 : std::stoi(SceneManager::shared_data["EXP_R"]);
+
+    int value = 0;
+
+    if     (difficulty_level == "0") value = beg_record_value;
+    else if(difficulty_level == "1") value = ave_record_value;
+    else if(difficulty_level == "2") value = exp_record_value;
+
+    if((timer_as_seconds < value) || (value == -1)) {
+
+        beg_record_value = ((difficulty_level == "0") ? timer_as_seconds : beg_record_value);
+        ave_record_value = ((difficulty_level == "1") ? timer_as_seconds : ave_record_value);
+        exp_record_value = ((difficulty_level == "2") ? timer_as_seconds : exp_record_value);
+
+        generate_encrypted_file({
+            "B" + static_cast<std::ostringstream&>(std::ostringstream() << std::setw(3) << std::setfill('0') << ((beg_record_value) == -1 ? "NaN" : std::to_string(beg_record_value))).str(),
+            "A" + static_cast<std::ostringstream&>(std::ostringstream() << std::setw(3) << std::setfill('0') << ((ave_record_value) == -1 ? "NaN" : std::to_string(ave_record_value))).str(),
+            "E" + static_cast<std::ostringstream&>(std::ostringstream() << std::setw(3) << std::setfill('0') << ((exp_record_value) == -1 ? "NaN" : std::to_string(exp_record_value))).str()
+        });
+
+    }
+}
+
+void Game::generate_encrypted_file(std::array<std::string, 3>&& record_values) const
+{
+    std::string junk_data = "junkdata";
+    std::string content;
+
+    std::default_random_engine generator(std::chrono::system_clock::now().time_since_epoch().count());
+
+    AES aes(SAVE_FILE_KEY);
+
+    for(int l = 0; l < 30; ++l) {
+
+        for(int c = 0; c < 4; ++c) {
+
+            if((l == 14) && (c == 1)) {
+
+                std::string records_string = "RCD:";
+
+                std::shuffle(record_values.begin(), record_values.end(), generator);
+
+                for(const std::string& value : record_values) records_string += value;
+
+                content += aes.encrypt(records_string);
+
+            }
+
+            std::string buffer;
+
+            for(int i = 0; i < 2; ++i) {
+
+                std::shuffle(junk_data.begin(), junk_data.end(), generator);
+                buffer += junk_data;
+
+            }
+
+            content += aes.encrypt(buffer);
+
+        }
+
+    }
+
+    std::ofstream output_file(
+#ifdef __DEBUG__
+        std::string("bin/Debug/") + SAVE_FILE_NAME,
+#else
+        SAVE_FILE_NAME,
+#endif // __DEBUG__
+        std::ios_base::out | std::ios_base::trunc | std::ios_base::binary
+    );
+
+    output_file << content;
+    output_file.close();
 }
 
 void Game::draw_counters()

@@ -108,6 +108,9 @@ namespace Minesweeper {
 
         void restart();
 
+        void save_record() const;
+        void generate_encrypted_file(std::array<std::string, 3>&& record_values) const;
+
         void draw_counters();
     };
 
