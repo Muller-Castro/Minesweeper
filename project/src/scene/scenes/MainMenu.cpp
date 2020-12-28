@@ -23,9 +23,16 @@
 
 #include "scene/scenes/MainMenu.h"
 
+#include <fstream>
+#include <algorithm>
+
 #include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/Graphics/RectangleShape.hpp>
+
+#include "Encryptions/AES.h"
 
 #include "MinesweeperGame.h"
+#include "tools/EncryptionKey.h"
 #include "components/buttons/PlayOfflineButton.h"
 #include "components/buttons/PlayOnlineButton.h"
 #include "components/buttons/CreditsButton.h"
@@ -38,7 +45,6 @@
 #include "io/ResourceLoader.h"
 #include "Input.h"
 #include "scene/SceneManager.h"
-
 #ifdef __S_RELEASE__
 #include "assets/MainMenuBG.h"
 #include "assets/Title.h"
@@ -47,6 +53,7 @@
 #include "assets/BombSpriteSheet.h"
 #include "assets/MainMenuSoundtrack.h"
 #include "assets/INET.h"
+#include "assets/Digital7Mono.h"
 #include "assets/AverageButtonNHovered.h"
 #include "assets/AverageButtonHovered.h"
 #include "assets/AverageButtonDown.h"
@@ -129,20 +136,24 @@ MainMenu::MainMenu() :
     ),
 
 #ifdef __S_RELEASE__
-    font_data(get_raw_inet()),
+    credits_font_data(get_raw_inet()),
+    record_font_data(get_raw_digital7_mono()),
 #endif // __S_RELEASE__
     background_texture(),
     title_texture(),
     p1_flag_texture(),
     p2_flag_texture(),
     bomb_texture(),
-    font(),
+    credits_font(),
+    record_font(),
     soundtrack(),
     background_sprite(),
     title_sprite(),
     p1_flag_sprite(),
     p2_flag_sprite(),
     bomb_sprite(),
+    record_texts(),
+    record_values(),
     credits_texts{
 
         {"ROLES"  , sf::Text()},
@@ -152,6 +163,8 @@ MainMenu::MainMenu() :
     },
     buttons()
 {
+    record_values.fill("   "); // just to remove leading zeros and pre-allocate 3 chars for each string to receive the record values
+
     animations.play();
 
 #ifndef __S_RELEASE__
@@ -186,14 +199,20 @@ MainMenu::MainMenu() :
     bomb_sprite.setScale(0.5f, 0.5f);
 
 #ifndef __S_RELEASE__
-    font = ResourceLoader::load<sf::Font>("assets/fonts/INET.ttf");
+    credits_font = ResourceLoader::load<sf::Font>("assets/fonts/INET.ttf");
+    record_font  = ResourceLoader::load<sf::Font>("assets/fonts/Digital7Mono.ttf");
 #else
-    font = ResourceLoader::load<sf::Font>(font_data);
+    credits_font = ResourceLoader::load<sf::Font>(credits_font_data);
+    record_font  = ResourceLoader::load<sf::Font>(record_font_data);
 #endif // __S_RELEASE__
+
+    load_records();
+
+    record_texts.setFont(*record_font);
 
     for(auto& credits_pair : credits_texts) {
 
-        credits_pair.second.setFont(*font);
+        credits_pair.second.setFont(*credits_font);
         credits_pair.second.setOutlineColor(sf::Color::Black);
         credits_pair.second.setOutlineThickness(3.f);
 
@@ -347,7 +366,7 @@ MainMenu::MainMenu() :
     ////////////
     buttons.push_back(std::unique_ptr<Button>(new BeginnerButton(
         Button::Enabled::LEFT,
-        sf::Vector2f(397.f, 222.f),
+        sf::Vector2f(397.f, 322.f),
         sf::Vector2f(1.f, 1.f),
 #ifndef __S_RELEASE__
         ResourceLoader::load<sf::Texture>("assets/textures/BeginnerButtonHovered.png"),
@@ -366,7 +385,7 @@ MainMenu::MainMenu() :
 
     buttons.push_back(std::unique_ptr<Button>(new AverageButton(
         Button::Enabled::LEFT,
-        sf::Vector2f(397.f, 322.f),
+        sf::Vector2f(397.f, 422.f),
         sf::Vector2f(1.f, 1.f),
 #ifndef __S_RELEASE__
         ResourceLoader::load<sf::Texture>("assets/textures/AverageButtonHovered.png"),
@@ -385,7 +404,7 @@ MainMenu::MainMenu() :
 
     buttons.push_back(std::unique_ptr<Button>(new ExpertButton(
         Button::Enabled::LEFT,
-        sf::Vector2f(397.f, 422.f),
+        sf::Vector2f(397.f, 522.f),
         sf::Vector2f(1.f, 1.f),
 #ifndef __S_RELEASE__
         ResourceLoader::load<sf::Texture>("assets/textures/ExpertButtonHovered.png"),
@@ -495,13 +514,7 @@ void MainMenu::draw()
 {
     MinesweeperGame::window->draw(background_sprite);
 
-    if(!show_credits) {
-
-        MinesweeperGame::window->draw(title_sprite);
-
-        draw_flags();
-
-    }else {
+    if(show_credits) {
 
         for(int i = 0; i < 20; ++i) {
 
@@ -511,6 +524,14 @@ void MainMenu::draw()
         }
 
         for(auto& credits_pair : credits_texts) MinesweeperGame::window->draw(credits_pair.second);
+
+    }else {
+
+        MinesweeperGame::window->draw(title_sprite);
+
+        draw_flags();
+
+        if(show_difficulty_levels) draw_records();
 
     }
 
@@ -540,6 +561,55 @@ void MainMenu::draw()
     }
 }
 
+void MainMenu::load_records()
+{
+    std::ifstream save_file(
+#ifdef __DEBUG__
+        std::string("bin/Debug/") + SAVE_FILE_NAME,
+#else
+        SAVE_FILE_NAME,
+#endif // __DEBUG__
+        std::ios_base::in | std::ios_base::binary
+    );
+
+    if(save_file.is_open()) {
+
+        std::string encrypted_content;
+
+        {
+            std::string line;
+
+            while(std::getline(save_file, line)) encrypted_content += (line + '\n');
+        }
+
+        save_file.close();
+
+        AES aes(SAVE_FILE_KEY);
+
+        std::string records_str = aes.decrypt(encrypted_content.substr(912, 16));
+
+        auto pred = [](char c) { return c != '0'; };
+
+        std::string value = records_str.substr(records_str.find('B', 3) + 1, 3);
+        std::copy_if(value.rbegin(), value.rend(), record_values[0].rbegin(), pred);
+
+        value = records_str.substr(records_str.find('A', 3) + 1, 3);
+        std::copy_if(value.rbegin(), value.rend(), record_values[1].rbegin(), pred);
+
+        value = records_str.substr(records_str.find('E', 3) + 1, 3);
+        std::copy_if(value.rbegin(), value.rend(), record_values[2].rbegin(), pred);
+
+    }else {
+
+        record_values.fill("NaN");
+
+    }
+
+    SceneManager::shared_data["BEG_R"] = record_values[0];
+    SceneManager::shared_data["AVE_R"] = record_values[1];
+    SceneManager::shared_data["EXP_R"] = record_values[2];
+}
+
 void MainMenu::draw_flags()
 {
     //// Blue
@@ -563,4 +633,97 @@ void MainMenu::draw_flags()
     p2_flag_sprite.setPosition(539.f, 207.f);
     MinesweeperGame::window->draw(p2_flag_sprite);
     //// Red
+}
+
+void MainMenu::draw_records()
+{
+    //// Letters
+    record_texts.setOutlineColor(sf::Color::Black);
+    record_texts.setOutlineThickness(2.f);
+    record_texts.setCharacterSize(36);
+
+    record_texts.setFillColor(sf::Color(132, 0, 255));
+    record_texts.setString('D');
+    record_texts.setPosition(315.f, 150.f);
+    MinesweeperGame::window->draw(record_texts);
+
+    record_texts.setString('R');
+    record_texts.setPosition(315.f, 200.f);
+    MinesweeperGame::window->draw(record_texts);
+
+    record_texts.setFillColor(sf::Color(12, 255, 0));
+    record_texts.setString('B');
+    record_texts.setPosition(365.f, 150.f);
+    MinesweeperGame::window->draw(record_texts);
+
+    record_texts.setFillColor(sf::Color(255, 240, 0));
+    record_texts.setString('A');
+    record_texts.setPosition(415.f, 150.f);
+    MinesweeperGame::window->draw(record_texts);
+
+    record_texts.setFillColor(sf::Color(255, 0, 0));
+    record_texts.setString('E');
+    record_texts.setPosition(465.f, 150.f);
+    MinesweeperGame::window->draw(record_texts);
+    //// Letters
+
+    //// Squares
+    {
+        sf::RectangleShape shape(sf::Vector2f(45.f, 45.f));
+
+        shape.setFillColor(sf::Color::Black);
+
+        shape.setPosition(350.f, 200.f);
+        MinesweeperGame::window->draw(shape);
+
+        shape.setPosition(400.f, 200.f);
+        MinesweeperGame::window->draw(shape);
+
+        shape.setPosition(450.f, 200.f);
+        MinesweeperGame::window->draw(shape);
+    }
+    //// Squares
+
+    //// Values
+    record_texts.setOutlineThickness(0.f);
+    record_texts.setCharacterSize(30);
+
+    record_texts.setFillColor(sf::Color(255, 0, 0, 80));
+    record_texts.setString("000");
+
+    record_texts.setPosition(352.f, 203.f);
+    MinesweeperGame::window->draw(record_texts);
+
+    record_texts.setPosition(402.f, 203.f);
+    MinesweeperGame::window->draw(record_texts);
+
+    record_texts.setPosition(452.f, 203.f);
+    MinesweeperGame::window->draw(record_texts);
+
+    record_texts.setFillColor(sf::Color::Red);
+
+    if(record_values[0] != "NaN") {
+
+        record_texts.setString(record_values[0]);
+        record_texts.setPosition(352.f, 203.f);
+        MinesweeperGame::window->draw(record_texts);
+
+    }
+
+    if(record_values[1] != "NaN") {
+
+        record_texts.setString(record_values[1]);
+        record_texts.setPosition(402.f, 203.f);
+        MinesweeperGame::window->draw(record_texts);
+
+    }
+
+    if(record_values[2] != "NaN") {
+
+        record_texts.setString(record_values[2]);
+        record_texts.setPosition(452.f, 203.f);
+        MinesweeperGame::window->draw(record_texts);
+
+    }
+    //// Values
 }
