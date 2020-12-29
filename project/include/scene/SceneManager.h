@@ -45,6 +45,7 @@ namespace Minesweeper {
 #endif // __DEBUG__
             SPLASH_SCREEN,
             MAIN_MENU,
+            LOBBY,
             GAME
         };
 
