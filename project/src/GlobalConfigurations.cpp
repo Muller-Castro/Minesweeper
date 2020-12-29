@@ -53,13 +53,14 @@ bool GlobalConfigurations::show_bb = true;
 #endif // __DEBUG__
 
 #ifndef __S_RELEASE__
+std::shared_ptr<sf::Font> GlobalConfigurations::font;
 std::string GlobalConfigurations::current_scene_name;
 #endif // __S_RELEASE__
 
 void GlobalConfigurations::process_inputs()
 {
-    if(Input::is_just_pressed<Input::Key>(sf::Keyboard::F3)) GlobalConfigurations::resize_window();
-    else if(Input::is_just_pressed<Input::Key>(sf::Keyboard::Escape)) MinesweeperGame::is_running = false;
+//    if(Input::is_just_pressed<Input::Key>(sf::Keyboard::F3)) GlobalConfigurations::resize_window();
+    /*else*/ if(Input::is_just_pressed<Input::Key>(sf::Keyboard::Escape)) MinesweeperGame::is_running = false;
 #ifndef __S_RELEASE__
     else if(Input::is_just_pressed<Input::Key>(sf::Keyboard::F5)) SceneManager::restart_scene();
 #endif // __S_RELEASE__
@@ -100,7 +101,7 @@ void GlobalConfigurations::update(float delta)
 
     new_win_title << win_data["WINDOW"]["Title"]
                   << " | Esc: Quit"
-                  << " | F3: Resize"
+                  //<< " | F3: Resize"
 #ifndef __S_RELEASE__
                   << " | F5: RST Scene"
 #endif // __S_RELEASE__
@@ -134,7 +135,9 @@ void GlobalConfigurations::draw()
 #ifndef __S_RELEASE__
 void GlobalConfigurations::draw_current_scene_text()
 {
-    sf::Text current_scene_text("[" + current_scene_name + "]", *(ResourceLoader::load<sf::Font>("assets/fonts/NeonNanoborg.otf")));
+    if(!GlobalConfigurations::font) GlobalConfigurations::font = ResourceLoader::load<sf::Font>("assets/fonts/NeonNanoborg.otf");
+
+    sf::Text current_scene_text("[" + current_scene_name + "]", *GlobalConfigurations::font);
 
     current_scene_text.setPosition(sf::Vector2f{5.f, 5.f});
 
@@ -154,7 +157,7 @@ void GlobalConfigurations::draw_amount_of_loaded_resources()
 
     oss << ResourceLoader::resources.size();
 
-    sf::Text loaded_resources("[Resources: " + oss.str() + "]", *(ResourceLoader::load<sf::Font>("assets/fonts/NeonNanoborg.otf")));
+    sf::Text loaded_resources("[Resources: " + oss.str() + "]", *GlobalConfigurations::font);
 
     loaded_resources.setPosition(sf::Vector2f{5.f, 45.f});
 

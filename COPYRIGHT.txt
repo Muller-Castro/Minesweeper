@@ -212,6 +212,32 @@ SOFTWARE.
 
 --------------------------------------tweeny--------------------------------------
 
+------------------------------------Encryptions-----------------------------------
+
+The MIT License (MIT)
+
+Copyright (c) 2013 - 2017 Jason Lee @ calccrypto@gmail.com
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+
+------------------------------------Encryptions-----------------------------------
+
 --------------------------------C&C Red Alert [INET]------------------------------
 
 +#######################################+
@@ -226,10 +252,13 @@ SOFTWARE.
 
 --------------------------------C&C Red Alert [INET]------------------------------
 
---------------------------confirm / Low Rez Tough Guy / Hint----------------------
+--------------------------------freesound / teknoaxe------------------------------
 
-This game uses these sounds from freesound:
-confirm by VincentM400 ( https://freesound.org/people/VincentM400/ )
+This game uses these sounds from freesound and teknoaxe:
+confirm by VincentM400 ( https://freesound.org/people/VincentM400/ ),
+Eight Bit Commando ( http://teknoaxe.com/Link_Code_3.php?q=836 ),
+SW04 by mad-monkey ( https://freesound.org/people/mad-monkey/ )
+and Button Click 1 by Mellau ( https://freesound.org/people/Mellau/ )
 
 "Low Rez Tough Guy", by TeknoAXE, available under Creative Commons 4.0.
 Downloaded at:
@@ -240,12 +269,37 @@ Downloaded at:
 https://freesound.org/people/dland/sounds/320181/
 https://freesound.org/people/kutejnikov/sounds/522209/
 
---------------------------confirm / Low Rez Tough Guy / Hint----------------------
+"Button Click 1", by Mellau, available under the Attribution Noncommercial License.
+Downloaded at:
+https://freesound.org/people/Mellau/sounds/506054/
 
--------------------------------Eight_Bit_Commando-Menu----------------------------
+"Clapping", by Clagnar, available under Creative Commons 0 license.
+Downloaded at:
+https://freesound.org/people/Clagnar/sounds/149465/
 
-This game uses these sounds from freesound and teknoaxe:
-confirm by VincentM400 ( https://freesound.org/people/VincentM400/ )
-and Eight Bit Commando ( http://teknoaxe.com/Link_Code_3.php?q=836 )
+"Crowd Ooohs and Ahhhs in Excitement", by noah0189, available under Creative Commons 0 license.
+Downloaded at:
+https://freesound.org/people/noah0189/sounds/264499/
 
--------------------------------Eight_Bit_Commando-Menu----------------------------
+--------------------------------freesound / teknoaxe------------------------------
+
+--------------------------------------OpenMoji------------------------------------
+
+All emojis designed by OpenMoji – the open-source emoji and icon project. License: CC BY-SA 4.0
+
+--------------------------------------OpenMoji------------------------------------
+
+--------------------------------------OtoLogic------------------------------------
+
+bo-tto hidamari (BGM)
+Hyoshigi        (SFX)
+
+--------------------------------------OtoLogic------------------------------------
+
+--------------------------------------fontspace------------------------------------
+
+"Digital-7 Mono", by Sizenko Alexander (Style-7). Downloaded at: https://www.fontspace.com/digital-7-font-f7087
+http://www.styleseven.com
+Created: October 7 2008
+
+--------------------------------------fontspace------------------------------------

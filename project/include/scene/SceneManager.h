@@ -24,6 +24,8 @@
 #ifndef SCENE_MANAGER_H
 #define SCENE_MANAGER_H
 
+#include <unordered_map>
+#include <string>
 #include <memory>
 #include <functional>
 #include <queue>
@@ -31,8 +33,6 @@
 #include "scene/Scene.h"
 
 namespace Minesweeper {
-
-    class MinesweeperGame;
 
     class SceneManager
     {
@@ -56,6 +56,13 @@ namespace Minesweeper {
 
     private:
         friend class MinesweeperGame;
+        friend class MainMenu;
+        friend class BeginnerButton;
+        friend class AverageButton;
+        friend class ExpertButton;
+        friend class Game;
+
+        static std::unordered_map<std::string, std::string> shared_data;
 
         static std::unique_ptr<Scene> current_scene;
         static Scenes current_scene_enum;

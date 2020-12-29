@@ -78,17 +78,39 @@
 			<Add option="-m64" />
 			<Add option='-isystem &quot;..\thirdparty\SFML-2.5.1\include&quot;' />
 			<Add option='-isystem &quot;..\thirdparty\tweeny-3.1.1\include&quot;' />
+			<Add option='-isystem &quot;..\thirdparty\Encryptions&quot;' />
 			<Add directory="include" />
 		</Compiler>
 		<Linker>
 			<Add option="-m64" />
 			<Add directory="../thirdparty/SFML-2.5.1/lib" />
 		</Linker>
+		<Unit filename="../thirdparty/Encryptions/Encryptions/AES.cpp" />
+		<Unit filename="../thirdparty/Encryptions/Encryptions/SymAlg.cpp" />
+		<Unit filename="../thirdparty/Encryptions/common/includes.cpp" />
 		<Unit filename="include/GlobalConfigurations.h" />
 		<Unit filename="include/Input.h" />
 		<Unit filename="include/Input.hpp" />
 		<Unit filename="include/MinesweeperGame.h" />
 		<Unit filename="include/assets/Arial.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/AverageButtonDown.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/AverageButtonHovered.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/AverageButtonNHovered.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/BeginnerButtonDown.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/BeginnerButtonHovered.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/BeginnerButtonNHovered.h">
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="include/assets/BigBombFRG.h">
@@ -97,11 +119,20 @@
 		<Unit filename="include/assets/BigBombVRT.h">
 			<Option target="Static Release" />
 		</Unit>
+		<Unit filename="include/assets/BombExplosion.h">
+			<Option target="Static Release" />
+		</Unit>
 		<Unit filename="include/assets/BombIcon.h" />
 		<Unit filename="include/assets/BombSplashScreen.h">
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="include/assets/BombSpriteSheet.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/Clapping.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/CounterPanel.h">
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="include/assets/CreditsDown.h">
@@ -113,25 +144,79 @@
 		<Unit filename="include/assets/CreditsNHovered.h">
 			<Option target="Static Release" />
 		</Unit>
-		<Unit filename="include/assets/CreditsReturnDown.h">
-			<Option target="Static Release" />
-		</Unit>
-		<Unit filename="include/assets/CreditsReturnHovered.h">
-			<Option target="Static Release" />
-		</Unit>
-		<Unit filename="include/assets/CreditsReturnNHovered.h">
-			<Option target="Static Release" />
-		</Unit>
 		<Unit filename="include/assets/CursorSFX.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/Digital7Mono.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/EmptyCell.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/ExpertButtonDown.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/ExpertButtonHovered.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/ExpertButtonNHovered.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/FlagSet.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/GamePanel.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/GameSoundtrack.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/GridButtonPressed.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/GridButtonUp.h">
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="include/assets/INET.h">
 			<Option target="Static Release" />
 		</Unit>
+		<Unit filename="include/assets/Icon1.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/Icon2.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/Icon3.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/Icon4.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/Icon5.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/Icon6.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/Icon7.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/Icon8.h">
+			<Option target="Static Release" />
+		</Unit>
 		<Unit filename="include/assets/MainMenuBG.h">
 			<Option target="Static Release" />
 		</Unit>
+		<Unit filename="include/assets/MainMenuButtonDownT.h">
+			<Option target="Static Release" />
+		</Unit>
 		<Unit filename="include/assets/MainMenuButtonHovered.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/MainMenuButtonHoveredT.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/MainMenuButtonNHoveredT.h">
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="include/assets/MainMenuButtonPressed.h">
@@ -140,7 +225,22 @@
 		<Unit filename="include/assets/MainMenuSoundtrack.h">
 			<Option target="Static Release" />
 		</Unit>
+		<Unit filename="include/assets/MiniBombSpriteSheet.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/MiniP1Flag.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/MiniP2Flag.h">
+			<Option target="Static Release" />
+		</Unit>
 		<Unit filename="include/assets/NeonNanoborg.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/NotABomb.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/Oooh.h">
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="include/assets/P1Flag.h">
@@ -176,6 +276,24 @@
 		<Unit filename="include/assets/QuitNHovered.h">
 			<Option target="Static Release" />
 		</Unit>
+		<Unit filename="include/assets/RestartButtonDown.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/RestartButtonHovered.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/RestartButtonNHovered.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/ReturnDown.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/ReturnHovered.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/ReturnNHovered.h">
+			<Option target="Static Release" />
+		</Unit>
 		<Unit filename="include/assets/SplashScreenSoundtrack.h">
 			<Option target="Static Release" />
 		</Unit>
@@ -186,11 +304,18 @@
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="include/components/Button.h" />
+		<Unit filename="include/components/buttons/AverageButton.h" />
+		<Unit filename="include/components/buttons/BeginnerButton.h" />
 		<Unit filename="include/components/buttons/CreditsButton.h" />
 		<Unit filename="include/components/buttons/CreditsReturnButton.h" />
+		<Unit filename="include/components/buttons/ExpertButton.h" />
+		<Unit filename="include/components/buttons/GridButton.h" />
+		<Unit filename="include/components/buttons/MainMenuButton.h" />
 		<Unit filename="include/components/buttons/PlayOfflineButton.h" />
+		<Unit filename="include/components/buttons/PlayOfflineReturnButton.h" />
 		<Unit filename="include/components/buttons/PlayOnlineButton.h" />
 		<Unit filename="include/components/buttons/QuitButton.h" />
+		<Unit filename="include/components/buttons/RestartButton.h" />
 		<Unit filename="include/io/MusicStream.h" />
 		<Unit filename="include/io/ResourceLoader.h" />
 		<Unit filename="include/io/ResourceLoader.hpp" />
@@ -207,6 +332,8 @@
 			<Option target="Debug" />
 		</Unit>
 		<Unit filename="include/tools/AnimationPlayer.h" />
+		<Unit filename="include/tools/EncryptionKey.h" />
+		<Unit filename="include/tools/Vector2Hash.h" />
 		<Unit filename="res/resource.rc">
 			<Option compilerVar="WINDRES" />
 		</Unit>
@@ -217,10 +344,31 @@
 		<Unit filename="src/assets/Arial.cpp">
 			<Option target="Static Release" />
 		</Unit>
+		<Unit filename="src/assets/AverageButtonDown.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/AverageButtonHovered.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/AverageButtonNHovered.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/BeginnerButtonDown.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/BeginnerButtonHovered.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/BeginnerButtonNHovered.cpp">
+			<Option target="Static Release" />
+		</Unit>
 		<Unit filename="src/assets/BigBombFRG.cpp">
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="src/assets/BigBombVRT.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/BombExplosion.cpp">
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="src/assets/BombIcon.cpp" />
@@ -228,6 +376,12 @@
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="src/assets/BombSpriteSheet.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/Clapping.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/CounterPanel.cpp">
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="src/assets/CreditsDown.cpp">
@@ -239,25 +393,79 @@
 		<Unit filename="src/assets/CreditsNHovered.cpp">
 			<Option target="Static Release" />
 		</Unit>
-		<Unit filename="src/assets/CreditsReturnDown.cpp">
-			<Option target="Static Release" />
-		</Unit>
-		<Unit filename="src/assets/CreditsReturnHovered.cpp">
-			<Option target="Static Release" />
-		</Unit>
-		<Unit filename="src/assets/CreditsReturnNHovered.cpp">
-			<Option target="Static Release" />
-		</Unit>
 		<Unit filename="src/assets/CursorSFX.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/Digital7Mono.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/EmptyCell.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/ExpertButtonDown.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/ExpertButtonHovered.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/ExpertButtonNHovered.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/FlagSet.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/GamePanel.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/GameSoundtrack.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/GridButtonPressed.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/GridButtonUp.cpp">
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="src/assets/INET.cpp">
 			<Option target="Static Release" />
 		</Unit>
+		<Unit filename="src/assets/Icon1.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/Icon2.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/Icon3.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/Icon4.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/Icon5.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/Icon6.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/Icon7.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/Icon8.cpp">
+			<Option target="Static Release" />
+		</Unit>
 		<Unit filename="src/assets/MainMenuBG.cpp">
 			<Option target="Static Release" />
 		</Unit>
+		<Unit filename="src/assets/MainMenuButtonDownT.cpp">
+			<Option target="Static Release" />
+		</Unit>
 		<Unit filename="src/assets/MainMenuButtonHovered.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/MainMenuButtonHoveredT.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/MainMenuButtonNHoveredT.cpp">
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="src/assets/MainMenuButtonPressed.cpp">
@@ -266,7 +474,22 @@
 		<Unit filename="src/assets/MainMenuSoundtrack.cpp">
 			<Option target="Static Release" />
 		</Unit>
+		<Unit filename="src/assets/MiniBombSpriteSheet.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/MiniP1Flag.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/MiniP2Flag.cpp">
+			<Option target="Static Release" />
+		</Unit>
 		<Unit filename="src/assets/NeonNanoborg.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/NotABomb.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/Oooh.cpp">
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="src/assets/P1Flag.cpp">
@@ -302,6 +525,24 @@
 		<Unit filename="src/assets/QuitNHovered.cpp">
 			<Option target="Static Release" />
 		</Unit>
+		<Unit filename="src/assets/RestartButtonDown.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/RestartButtonHovered.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/RestartButtonNHovered.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/ReturnDown.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/ReturnHovered.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/ReturnNHovered.cpp">
+			<Option target="Static Release" />
+		</Unit>
 		<Unit filename="src/assets/SplashScreenSoundtrack.cpp">
 			<Option target="Static Release" />
 		</Unit>
@@ -312,11 +553,18 @@
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="src/components/Button.cpp" />
+		<Unit filename="src/components/buttons/AverageButton.cpp" />
+		<Unit filename="src/components/buttons/BeginnerButton.cpp" />
 		<Unit filename="src/components/buttons/CreditsButton.cpp" />
 		<Unit filename="src/components/buttons/CreditsReturnButton.cpp" />
+		<Unit filename="src/components/buttons/ExpertButton.cpp" />
+		<Unit filename="src/components/buttons/GridButton.cpp" />
+		<Unit filename="src/components/buttons/MainMenuButton.cpp" />
 		<Unit filename="src/components/buttons/PlayOfflineButton.cpp" />
+		<Unit filename="src/components/buttons/PlayOfflineReturnButton.cpp" />
 		<Unit filename="src/components/buttons/PlayOnlineButton.cpp" />
 		<Unit filename="src/components/buttons/QuitButton.cpp" />
+		<Unit filename="src/components/buttons/RestartButton.cpp" />
 		<Unit filename="src/io/MusicStream.cpp" />
 		<Unit filename="src/io/ResourceLoader.cpp" />
 		<Unit filename="src/io/SimpleINIParser.cpp" />

@@ -23,18 +23,28 @@
 
 #include "scene/scenes/MainMenu.h"
 
+#include <fstream>
+#include <algorithm>
+
 #include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/Graphics/RectangleShape.hpp>
+
+#include "Encryptions/AES.h"
 
 #include "MinesweeperGame.h"
+#include "tools/EncryptionKey.h"
 #include "components/buttons/PlayOfflineButton.h"
 #include "components/buttons/PlayOnlineButton.h"
 #include "components/buttons/CreditsButton.h"
 #include "components/buttons/QuitButton.h"
 #include "components/buttons/CreditsReturnButton.h"
+#include "components/buttons/BeginnerButton.h"
+#include "components/buttons/AverageButton.h"
+#include "components/buttons/ExpertButton.h"
+#include "components/buttons/PlayOfflineReturnButton.h"
 #include "io/ResourceLoader.h"
 #include "Input.h"
 #include "scene/SceneManager.h"
-
 #ifdef __S_RELEASE__
 #include "assets/MainMenuBG.h"
 #include "assets/Title.h"
@@ -43,6 +53,16 @@
 #include "assets/BombSpriteSheet.h"
 #include "assets/MainMenuSoundtrack.h"
 #include "assets/INET.h"
+#include "assets/Digital7Mono.h"
+#include "assets/AverageButtonNHovered.h"
+#include "assets/AverageButtonHovered.h"
+#include "assets/AverageButtonDown.h"
+#include "assets/BeginnerButtonNHovered.h"
+#include "assets/BeginnerButtonHovered.h"
+#include "assets/BeginnerButtonDown.h"
+#include "assets/ExpertButtonNHovered.h"
+#include "assets/ExpertButtonHovered.h"
+#include "assets/ExpertButtonDown.h"
 #include "assets/MainMenuButtonHovered.h"
 #include "assets/MainMenuButtonPressed.h"
 #include "assets/PlayOfflineNHovered.h"
@@ -57,15 +77,16 @@
 #include "assets/QuitNHovered.h"
 #include "assets/QuitHovered.h"
 #include "assets/QuitDown.h"
-#include "assets/CreditsReturnNHovered.h"
-#include "assets/CreditsReturnHovered.h"
-#include "assets/CreditsReturnDown.h"
+#include "assets/ReturnNHovered.h"
+#include "assets/ReturnHovered.h"
+#include "assets/ReturnDown.h"
 #endif // __S_RELEASE__
 
 using namespace Minesweeper;
 
 MainMenu::MainMenu() :
     show_credits(),
+    show_difficulty_levels(),
 
     animations(
 
@@ -115,20 +136,24 @@ MainMenu::MainMenu() :
     ),
 
 #ifdef __S_RELEASE__
-    font_data(get_raw_inet()),
+    credits_font_data(get_raw_inet()),
+    record_font_data(get_raw_digital7_mono()),
 #endif // __S_RELEASE__
     background_texture(),
     title_texture(),
     p1_flag_texture(),
     p2_flag_texture(),
     bomb_texture(),
-    font(),
+    credits_font(),
+    record_font(),
     soundtrack(),
     background_sprite(),
     title_sprite(),
     p1_flag_sprite(),
     p2_flag_sprite(),
     bomb_sprite(),
+    record_texts(),
+    record_values(),
     credits_texts{
 
         {"ROLES"  , sf::Text()},
@@ -138,6 +163,8 @@ MainMenu::MainMenu() :
     },
     buttons()
 {
+    record_values.fill("   "); // just to remove leading zeros and pre-allocate 3 chars for each string to receive the record values
+
     animations.play();
 
 #ifndef __S_RELEASE__
@@ -172,14 +199,20 @@ MainMenu::MainMenu() :
     bomb_sprite.setScale(0.5f, 0.5f);
 
 #ifndef __S_RELEASE__
-    font = ResourceLoader::load<sf::Font>("assets/fonts/INET.ttf");
+    credits_font = ResourceLoader::load<sf::Font>("assets/fonts/INET.ttf");
+    record_font  = ResourceLoader::load<sf::Font>("assets/fonts/Digital7Mono.ttf");
 #else
-    font = ResourceLoader::load<sf::Font>(font_data);
+    credits_font = ResourceLoader::load<sf::Font>(credits_font_data);
+    record_font  = ResourceLoader::load<sf::Font>(record_font_data);
 #endif // __S_RELEASE__
+
+    load_records();
+
+    record_texts.setFont(*record_font);
 
     for(auto& credits_pair : credits_texts) {
 
-        credits_pair.second.setFont(*font);
+        credits_pair.second.setFont(*credits_font);
         credits_pair.second.setOutlineColor(sf::Color::Black);
         credits_pair.second.setOutlineThickness(3.f);
 
@@ -233,6 +266,7 @@ MainMenu::MainMenu() :
     credits_texts["LICENSE"].setOutlineColor(sf::Color::Black);
 
     buttons.push_back(std::unique_ptr<Button>(new PlayOnlineButton(
+        Button::Enabled::LEFT,
         sf::Vector2f(397.f, 222.f),
         sf::Vector2f(1.f, 1.f),
 #ifndef __S_RELEASE__
@@ -251,6 +285,8 @@ MainMenu::MainMenu() :
     )));
 
     buttons.push_back(std::unique_ptr<Button>(new PlayOfflineButton(
+        *this,
+        Button::Enabled::LEFT,
         sf::Vector2f(397.f, 322.f),
         sf::Vector2f(1.f, 1.f),
 #ifndef __S_RELEASE__
@@ -270,6 +306,7 @@ MainMenu::MainMenu() :
 
     buttons.push_back(std::unique_ptr<Button>(new CreditsButton(
         *this,
+        Button::Enabled::LEFT,
         sf::Vector2f(397.f, 422.f),
         sf::Vector2f(1.f, 1.f),
 #ifndef __S_RELEASE__
@@ -288,6 +325,7 @@ MainMenu::MainMenu() :
     )));
 
     buttons.push_back(std::unique_ptr<Button>(new QuitButton(
+        Button::Enabled::LEFT,
         sf::Vector2f(397.f, 522.f),
         sf::Vector2f(1.f, 1.f),
 #ifndef __S_RELEASE__
@@ -305,26 +343,104 @@ MainMenu::MainMenu() :
 #endif // __S_RELEASE__
     )));
 
-    //////////////////
     buttons.push_back(std::unique_ptr<Button>(new CreditsReturnButton(
         *this,
+        Button::Enabled::LEFT,
         sf::Vector2f(745.f, 550.f),
         sf::Vector2f(1.f, 1.f),
 #ifndef __S_RELEASE__
-        ResourceLoader::load<sf::Texture>("assets/textures/CreditsReturnHovered.png"),
-        ResourceLoader::load<sf::Texture>("assets/textures/CreditsReturnNHovered.png"),
-        ResourceLoader::load<sf::Texture>("assets/textures/CreditsReturnDown.png"),
+        ResourceLoader::load<sf::Texture>("assets/textures/ReturnHovered.png"),
+        ResourceLoader::load<sf::Texture>("assets/textures/ReturnNHovered.png"),
+        ResourceLoader::load<sf::Texture>("assets/textures/ReturnDown.png"),
         ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonHovered.wav"),
         ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonPressed.wav")
 #else
-        ResourceLoader::load<sf::Texture>(get_raw_credits_return_hovered()),
-        ResourceLoader::load<sf::Texture>(get_raw_credits_return_n_hovered()),
-        ResourceLoader::load<sf::Texture>(get_raw_credits_return_down()),
+        ResourceLoader::load<sf::Texture>(get_raw_return_hovered()),
+        ResourceLoader::load<sf::Texture>(get_raw_return_n_hovered()),
+        ResourceLoader::load<sf::Texture>(get_raw_return_down()),
         ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_hovered()),
         ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_pressed())
 #endif // __S_RELEASE__
     )));
-    //////////////////
+
+    ////////////
+    buttons.push_back(std::unique_ptr<Button>(new BeginnerButton(
+        Button::Enabled::LEFT,
+        sf::Vector2f(397.f, 322.f),
+        sf::Vector2f(1.f, 1.f),
+#ifndef __S_RELEASE__
+        ResourceLoader::load<sf::Texture>("assets/textures/BeginnerButtonHovered.png"),
+        ResourceLoader::load<sf::Texture>("assets/textures/BeginnerButtonNHovered.png"),
+        ResourceLoader::load<sf::Texture>("assets/textures/BeginnerButtonDown.png"),
+        ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonHovered.wav"),
+        ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonPressed.wav")
+#else
+        ResourceLoader::load<sf::Texture>(get_raw_beginner_button_hovered()),
+        ResourceLoader::load<sf::Texture>(get_raw_beginner_button_n_hovered()),
+        ResourceLoader::load<sf::Texture>(get_raw_beginner_button_down()),
+        ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_hovered()),
+        ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_pressed())
+#endif // __S_RELEASE__
+    )));
+
+    buttons.push_back(std::unique_ptr<Button>(new AverageButton(
+        Button::Enabled::LEFT,
+        sf::Vector2f(397.f, 422.f),
+        sf::Vector2f(1.f, 1.f),
+#ifndef __S_RELEASE__
+        ResourceLoader::load<sf::Texture>("assets/textures/AverageButtonHovered.png"),
+        ResourceLoader::load<sf::Texture>("assets/textures/AverageButtonNHovered.png"),
+        ResourceLoader::load<sf::Texture>("assets/textures/AverageButtonDown.png"),
+        ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonHovered.wav"),
+        ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonPressed.wav")
+#else
+        ResourceLoader::load<sf::Texture>(get_raw_average_button_hovered()),
+        ResourceLoader::load<sf::Texture>(get_raw_average_button_n_hovered()),
+        ResourceLoader::load<sf::Texture>(get_raw_average_button_down()),
+        ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_hovered()),
+        ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_pressed())
+#endif // __S_RELEASE__
+    )));
+
+    buttons.push_back(std::unique_ptr<Button>(new ExpertButton(
+        Button::Enabled::LEFT,
+        sf::Vector2f(397.f, 522.f),
+        sf::Vector2f(1.f, 1.f),
+#ifndef __S_RELEASE__
+        ResourceLoader::load<sf::Texture>("assets/textures/ExpertButtonHovered.png"),
+        ResourceLoader::load<sf::Texture>("assets/textures/ExpertButtonNHovered.png"),
+        ResourceLoader::load<sf::Texture>("assets/textures/ExpertButtonDown.png"),
+        ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonHovered.wav"),
+        ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonPressed.wav")
+#else
+        ResourceLoader::load<sf::Texture>(get_raw_expert_button_hovered()),
+        ResourceLoader::load<sf::Texture>(get_raw_expert_button_n_hovered()),
+        ResourceLoader::load<sf::Texture>(get_raw_expert_button_down()),
+        ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_hovered()),
+        ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_pressed())
+#endif // __S_RELEASE__
+    )));
+
+    buttons.push_back(std::unique_ptr<Button>(new PlayOfflineReturnButton(
+        *this,
+        Button::Enabled::LEFT,
+        sf::Vector2f(745.f, 550.f),
+        sf::Vector2f(1.f, 1.f),
+#ifndef __S_RELEASE__
+        ResourceLoader::load<sf::Texture>("assets/textures/ReturnHovered.png"),
+        ResourceLoader::load<sf::Texture>("assets/textures/ReturnNHovered.png"),
+        ResourceLoader::load<sf::Texture>("assets/textures/ReturnDown.png"),
+        ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonHovered.wav"),
+        ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonPressed.wav")
+#else
+        ResourceLoader::load<sf::Texture>(get_raw_return_hovered()),
+        ResourceLoader::load<sf::Texture>(get_raw_return_n_hovered()),
+        ResourceLoader::load<sf::Texture>(get_raw_return_down()),
+        ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_hovered()),
+        ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_pressed())
+#endif // __S_RELEASE__
+    )));
+    ////////////
 }
 
 MainMenu::~MainMenu()
@@ -342,13 +458,22 @@ void MainMenu::process_inputs()
 
         CreditsReturnButton* crb = dynamic_cast<CreditsReturnButton*>(buttons[i].get());
 
+        BeginnerButton*          bb   = dynamic_cast<BeginnerButton*>(buttons[i].get());
+        AverageButton*           ab   = dynamic_cast<AverageButton*>(buttons[i].get());
+        ExpertButton*            eb   = dynamic_cast<ExpertButton*>(buttons[i].get());
+        PlayOfflineReturnButton* porb = dynamic_cast<PlayOfflineReturnButton*>(buttons[i].get());
+
         if(show_credits) {
 
             if(crb) buttons[i]->process_inputs();
 
+        }else if(show_difficulty_levels) {
+
+            if(bb || ab || eb || porb) buttons[i]->process_inputs();
+
         }else {
 
-            if(!crb) buttons[i]->process_inputs();
+            if(!crb && !bb && !ab && !eb && !porb) buttons[i]->process_inputs();
 
         }
 
@@ -361,13 +486,22 @@ void MainMenu::update(float delta)
 
         CreditsReturnButton* crb = dynamic_cast<CreditsReturnButton*>(buttons[i].get());
 
+        BeginnerButton*          bb   = dynamic_cast<BeginnerButton*>(buttons[i].get());
+        AverageButton*           ab   = dynamic_cast<AverageButton*>(buttons[i].get());
+        ExpertButton*            eb   = dynamic_cast<ExpertButton*>(buttons[i].get());
+        PlayOfflineReturnButton* porb = dynamic_cast<PlayOfflineReturnButton*>(buttons[i].get());
+
         if(show_credits) {
 
             if(crb) buttons[i]->update(delta);
 
+        }else if(show_difficulty_levels) {
+
+            if(bb || ab || eb || porb) buttons[i]->update(delta);
+
         }else {
 
-            if(!crb) buttons[i]->update(delta);
+            if(!crb && !bb && !ab && !eb && !porb) buttons[i]->update(delta);
 
         }
 
@@ -380,13 +514,7 @@ void MainMenu::draw()
 {
     MinesweeperGame::window->draw(background_sprite);
 
-    if(!show_credits) {
-
-        MinesweeperGame::window->draw(title_sprite);
-
-        draw_flags();
-
-    }else {
+    if(show_credits) {
 
         for(int i = 0; i < 20; ++i) {
 
@@ -397,23 +525,103 @@ void MainMenu::draw()
 
         for(auto& credits_pair : credits_texts) MinesweeperGame::window->draw(credits_pair.second);
 
+    }else {
+
+        MinesweeperGame::window->draw(title_sprite);
+
+        draw_flags();
+
+        if(show_difficulty_levels) draw_records();
+
     }
 
     for(size_t i = 0; i < buttons.size(); ++i) {
 
         CreditsReturnButton* crb = dynamic_cast<CreditsReturnButton*>(buttons[i].get());
 
+        BeginnerButton*          bb   = dynamic_cast<BeginnerButton*>(buttons[i].get());
+        AverageButton*           ab   = dynamic_cast<AverageButton*>(buttons[i].get());
+        ExpertButton*            eb   = dynamic_cast<ExpertButton*>(buttons[i].get());
+        PlayOfflineReturnButton* porb = dynamic_cast<PlayOfflineReturnButton*>(buttons[i].get());
+
         if(show_credits) {
 
             if(crb) MinesweeperGame::window->draw(*buttons[i]);
 
+        }else if(show_difficulty_levels) {
+
+            if(bb || ab || eb || porb) MinesweeperGame::window->draw(*buttons[i]);
+
         }else {
 
-            if(!crb) MinesweeperGame::window->draw(*buttons[i]);
+            if(!crb && !bb && !ab && !eb && !porb) MinesweeperGame::window->draw(*buttons[i]);
 
         }
 
     }
+}
+
+void MainMenu::load_records()
+{
+    std::ifstream save_file(
+#ifdef __DEBUG__
+        std::string("bin/Debug/") + SAVE_FILE_NAME,
+#else
+        SAVE_FILE_NAME,
+#endif // __DEBUG__
+        std::ios_base::in | std::ios_base::binary
+    );
+
+    if(save_file.is_open()) {
+
+        std::string encrypted_content;
+
+        {
+            std::string line;
+
+            while(std::getline(save_file, line)) encrypted_content += (line + '\n');
+        }
+
+        save_file.close();
+
+        AES aes(SAVE_FILE_KEY);
+
+        std::string records_str = aes.decrypt(encrypted_content.substr(912, 16));
+
+        std::string value = records_str.substr(records_str.find('B', 3) + 1, 3);
+        std::copy(value.rbegin(), value.rend(), record_values[0].rbegin());
+
+        value = records_str.substr(records_str.find('A', 3) + 1, 3);
+        std::copy(value.rbegin(), value.rend(), record_values[1].rbegin());
+
+        value = records_str.substr(records_str.find('E', 3) + 1, 3);
+        std::copy(value.rbegin(), value.rend(), record_values[2].rbegin());
+
+        for(std::string& s : record_values) {
+
+            size_t pos = s.find_first_not_of('0');
+
+            if(pos != 0) {
+
+                std::string blank_spaces;
+
+                for(size_t i = 0; i < pos; ++i) blank_spaces += ' ';
+
+                s.replace(0, pos, blank_spaces);
+
+            }
+
+        }
+
+    }else {
+
+        record_values.fill("NaN");
+
+    }
+
+    SceneManager::shared_data["BEG_R"] = record_values[0];
+    SceneManager::shared_data["AVE_R"] = record_values[1];
+    SceneManager::shared_data["EXP_R"] = record_values[2];
 }
 
 void MainMenu::draw_flags()
@@ -439,4 +647,97 @@ void MainMenu::draw_flags()
     p2_flag_sprite.setPosition(539.f, 207.f);
     MinesweeperGame::window->draw(p2_flag_sprite);
     //// Red
+}
+
+void MainMenu::draw_records()
+{
+    //// Letters
+    record_texts.setOutlineColor(sf::Color::Black);
+    record_texts.setOutlineThickness(2.f);
+    record_texts.setCharacterSize(36);
+
+    record_texts.setFillColor(sf::Color(132, 0, 255));
+    record_texts.setString('D');
+    record_texts.setPosition(315.f, 150.f);
+    MinesweeperGame::window->draw(record_texts);
+
+    record_texts.setString('R');
+    record_texts.setPosition(315.f, 200.f);
+    MinesweeperGame::window->draw(record_texts);
+
+    record_texts.setFillColor(sf::Color(12, 255, 0));
+    record_texts.setString('B');
+    record_texts.setPosition(365.f, 150.f);
+    MinesweeperGame::window->draw(record_texts);
+
+    record_texts.setFillColor(sf::Color(255, 240, 0));
+    record_texts.setString('A');
+    record_texts.setPosition(415.f, 150.f);
+    MinesweeperGame::window->draw(record_texts);
+
+    record_texts.setFillColor(sf::Color(255, 0, 0));
+    record_texts.setString('E');
+    record_texts.setPosition(465.f, 150.f);
+    MinesweeperGame::window->draw(record_texts);
+    //// Letters
+
+    //// Squares
+    {
+        sf::RectangleShape shape(sf::Vector2f(45.f, 45.f));
+
+        shape.setFillColor(sf::Color::Black);
+
+        shape.setPosition(350.f, 200.f);
+        MinesweeperGame::window->draw(shape);
+
+        shape.setPosition(400.f, 200.f);
+        MinesweeperGame::window->draw(shape);
+
+        shape.setPosition(450.f, 200.f);
+        MinesweeperGame::window->draw(shape);
+    }
+    //// Squares
+
+    //// Values
+    record_texts.setOutlineThickness(0.f);
+    record_texts.setCharacterSize(30);
+
+    record_texts.setFillColor(sf::Color(255, 0, 0, 80));
+    record_texts.setString("000");
+
+    record_texts.setPosition(352.f, 203.f);
+    MinesweeperGame::window->draw(record_texts);
+
+    record_texts.setPosition(402.f, 203.f);
+    MinesweeperGame::window->draw(record_texts);
+
+    record_texts.setPosition(452.f, 203.f);
+    MinesweeperGame::window->draw(record_texts);
+
+    record_texts.setFillColor(sf::Color::Red);
+
+    if(record_values[0] != "NaN") {
+
+        record_texts.setString(record_values[0]);
+        record_texts.setPosition(352.f, 203.f);
+        MinesweeperGame::window->draw(record_texts);
+
+    }
+
+    if(record_values[1] != "NaN") {
+
+        record_texts.setString(record_values[1]);
+        record_texts.setPosition(402.f, 203.f);
+        MinesweeperGame::window->draw(record_texts);
+
+    }
+
+    if(record_values[2] != "NaN") {
+
+        record_texts.setString(record_values[2]);
+        record_texts.setPosition(452.f, 203.f);
+        MinesweeperGame::window->draw(record_texts);
+
+    }
+    //// Values
 }

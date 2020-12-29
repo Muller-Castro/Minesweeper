@@ -27,6 +27,7 @@
 #include <vector>
 #include <memory>
 #include <string>
+#include <array>
 #include <map>
 #ifdef __S_RELEASE__
 #include <utility>
@@ -57,13 +58,17 @@ namespace Minesweeper {
     private:
         friend class CreditsButton;
         friend class CreditsReturnButton;
+        friend class PlayOfflineButton;
+        friend class PlayOfflineReturnButton;
 
         bool show_credits;
+        bool show_difficulty_levels;
 
         AnimationPlayer animations;
 
 #ifdef __S_RELEASE__
-        std::pair<std::string, std::string> font_data;
+        std::pair<std::string, std::string> credits_font_data;
+        std::pair<std::string, std::string> record_font_data;
 #endif // __S_RELEASE__
 
         std::shared_ptr<sf::Texture> background_texture;
@@ -72,7 +77,8 @@ namespace Minesweeper {
         std::shared_ptr<sf::Texture> p2_flag_texture;
         std::shared_ptr<sf::Texture> bomb_texture;
 
-        std::shared_ptr<sf::Font> font;
+        std::shared_ptr<sf::Font> credits_font;
+        std::shared_ptr<sf::Font> record_font;
 
         std::shared_ptr<MusicStream> soundtrack;
 
@@ -82,11 +88,18 @@ namespace Minesweeper {
         sf::Sprite p2_flag_sprite;
         sf::Sprite bomb_sprite;
 
+        sf::Text record_texts; // this will draw more than one text
+
+        std::array<std::string, 3> record_values;
+
         std::map<std::string, sf::Text> credits_texts;
 
         std::vector<std::unique_ptr<Button>> buttons;
 
+        void load_records();
+
         void draw_flags();
+        void draw_records();
     };
 
 }

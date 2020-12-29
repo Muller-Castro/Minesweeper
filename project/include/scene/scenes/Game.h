@@ -24,18 +24,94 @@
 #ifndef GAME_H
 #define GAME_H
 
+#include <vector>
+#include <memory>
+#include <utility>
+#include <string>
+#include <unordered_set>
+#include <unordered_map>
+
+#include <SFML/Graphics/Texture.hpp>
+#include <SFML/Graphics/Sprite.hpp>
+#include <SFML/Graphics/RectangleShape.hpp>
+#include <SFML/Audio/SoundBuffer.hpp>
+#include <SFML/Audio/Sound.hpp>
+#include <SFML/Graphics/Font.hpp>
+#include <SFML/Graphics/Text.hpp>
+#include <SFML/System/Clock.hpp>
+
 #include "scene/Scene.h"
+#include "components/Button.h"
+#include "components/buttons/GridButton.h"
+#include "io/MusicStream.h"
 
 namespace Minesweeper {
 
     class Game final : public Scene
     {
     public:
+        Game();
         ~Game() noexcept override;
 
         void process_inputs()    override;
         void update(float delta) override;
         void draw()              override;
+
+    private:
+        friend class RestartButton;
+        friend class GridButton;
+
+        bool is_first_click;
+        bool finished;
+
+        int grid_width;
+        int grid_height;
+        int max_bombs;
+
+        int flag_counter;
+
+#ifdef __S_RELEASE__
+        std::pair<std::string, std::string> counter_font_data;
+#endif // __S_RELEASE__
+
+        std::vector<std::unique_ptr<Button>> buttons;
+        std::vector<std::vector<std::unique_ptr<GridButton>>> grid;
+
+        std::unordered_map<std::string, std::shared_ptr<sf::Texture>>     cached_grid_button_textures;
+        std::unordered_map<std::string, std::shared_ptr<sf::SoundBuffer>> cached_grid_button_sounds;
+
+        std::shared_ptr<sf::Texture> panel_texture;
+        std::shared_ptr<sf::Texture> counter_panel_texture;
+
+        std::shared_ptr<sf::SoundBuffer> clapping_sound;
+        std::shared_ptr<sf::SoundBuffer> oooh_sound;
+
+        std::shared_ptr<sf::Font> counter_font;
+
+        std::shared_ptr<MusicStream> soundtrack;
+
+        sf::Clock timer;
+
+        sf::Sprite panel_sprite;
+        sf::Sprite counter_panel_sprite;
+
+        sf::Sound sound;
+
+        sf::Text counter_text;
+
+        sf::RectangleShape grid_outline;
+
+        void build_initial_grid();
+        void build_grid(sf::Vector2i first_disabled_cell_position);
+        std::unordered_set<sf::Vector2i> create_bomb_positions(const sf::Vector2i& first_disabled_cell_position) const;
+        unsigned parse_adjacent_cells(int x, int y, const std::unordered_set<sf::Vector2i>& bomb_positions) const noexcept;
+
+        void restart();
+
+        void save_record() const;
+        void generate_encrypted_file(std::array<std::string, 3>&& record_values) const;
+
+        void draw_counters();
     };
 
 }

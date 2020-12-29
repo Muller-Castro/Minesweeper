@@ -23,12 +23,14 @@
 
 #include "components/buttons/PlayOfflineButton.h"
 
+#include "scene/scenes/MainMenu.h"
 #include "scene/SceneManager.h"
 
 using namespace Minesweeper;
 
-PlayOfflineButton::PlayOfflineButton(const sf::Vector2f& position_, const sf::Vector2f& scale_, const std::shared_ptr<sf::Texture>& hovered, const std::shared_ptr<sf::Texture>& non_hovered, const std::shared_ptr<sf::Texture>& down, const std::shared_ptr<sf::SoundBuffer>& hovered_sfx, const std::shared_ptr<sf::SoundBuffer>& pressed_sfx) :
-    Button(position_, scale_, hovered, non_hovered, down, hovered_sfx, pressed_sfx)
+PlayOfflineButton::PlayOfflineButton(MainMenu& mm_ref_, Enabled enabled_, const sf::Vector2f& position_, const sf::Vector2f& scale_, const std::shared_ptr<sf::Texture>& hovered, const std::shared_ptr<sf::Texture>& non_hovered, const std::shared_ptr<sf::Texture>& down, const std::shared_ptr<sf::SoundBuffer>& hovered_sfx, const std::shared_ptr<sf::SoundBuffer>& pressed_sfx) :
+    Button(enabled_, position_, scale_, hovered, non_hovered, down, hovered_sfx, pressed_sfx),
+    mm_ref(mm_ref_)
 {
     //
 }
@@ -45,5 +47,9 @@ void PlayOfflineButton::on_button_down()
 
 void PlayOfflineButton::on_button_pressed()
 {
-    SceneManager::change_scene_to(SceneManager::Scenes::GAME);
+    SceneManager::call_deferred([&]() {
+
+        mm_ref.get().show_difficulty_levels = true;
+
+    });
 }

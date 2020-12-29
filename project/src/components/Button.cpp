@@ -34,15 +34,17 @@
 
 using namespace Minesweeper;
 
-Button::Button(const sf::Vector2f& position_, const sf::Vector2f& scale_, const std::shared_ptr<sf::Texture>& hovered, const std::shared_ptr<sf::Texture>& non_hovered, const std::shared_ptr<sf::Texture>& down, const std::shared_ptr<sf::SoundBuffer>& hovered_sfx, const std::shared_ptr<sf::SoundBuffer>& pressed_sfx) :
+sf::Sound Button::sound;
+
+Button::Button(Enabled enabled_, const sf::Vector2f& position_, const sf::Vector2f& scale_, const std::shared_ptr<sf::Texture>& hovered, const std::shared_ptr<sf::Texture>& non_hovered, const std::shared_ptr<sf::Texture>& down, const std::shared_ptr<sf::SoundBuffer>& hovered_sfx, const std::shared_ptr<sf::SoundBuffer>& pressed_sfx) :
     position(position_), scale(scale_),
     state(States::NONE),
-    current_texture(Button::N_HOVERED),
     bounding_box(),
-    textures(),
-    sound_buffers(),
     sprite(),
-    sound()
+    current_texture(Button::N_HOVERED),
+    enabled(enabled_),
+    textures(),
+    sound_buffers()
 {
     textures[Button::HOVERED]   = hovered;
     textures[Button::N_HOVERED] = non_hovered;
@@ -51,7 +53,7 @@ Button::Button(const sf::Vector2f& position_, const sf::Vector2f& scale_, const 
     sound_buffers[Button::HOVERED_SFX] = {hovered_sfx, false};
     sound_buffers[Button::PRESSED_SFX] = {pressed_sfx, false};
 
-    sound.setVolume(20.f);
+    Button::sound.setVolume(20.f);
 
     sprite.setTexture(*textures[current_texture]);
 
@@ -61,6 +63,8 @@ Button::Button(const sf::Vector2f& position_, const sf::Vector2f& scale_, const 
     current_texture_size.y *= scale.y;
 
     sprite.setOrigin(current_texture_size.x / 2, current_texture_size.y / 2);
+    sprite.setPosition(position);
+    sprite.setScale(scale);
 }
 
 void Button::process_inputs()
@@ -83,8 +87,8 @@ void Button::update(float d)
         if(state != States::PRESSED) {
             sf::Vector2f new_position = position;
 
-            new_position.x -= current_texture_size.x / 2;
-            new_position.y -= current_texture_size.y / 2;
+            new_position.x -= current_texture_size.x * scale.x / 2;
+            new_position.y -= current_texture_size.y * scale.y / 2;
 
             bounding_box = sf::FloatRect(new_position, sf::Vector2f(current_texture_size.x, current_texture_size.y));
         }
@@ -120,18 +124,45 @@ void Button::draw(sf::RenderTarget& target, sf::RenderStates states) const
 #endif // __DEBUG__
 }
 
+void Button::set_current_texture(unsigned char texture)
+{
+    current_texture = texture;
+    sprite.setTexture(*textures[current_texture], true);
+}
+
 void Button::set_state() noexcept
 {
     sf::Vector2i mouse_position = sf::Mouse::getPosition(*MinesweeperGame::window);
 
     bool mouse_entered = bounding_box.contains(sf::Vector2f(mouse_position.x, mouse_position.y));
 
-    if(MinesweeperGame::window->hasFocus() && mouse_entered && Input::is_pressed<Input::Mouse>(sf::Mouse::Left)) {
+    const bool LEFT_BUTTON_PRESSED   = Input::is_pressed<Input::Mouse>(sf::Mouse::Left);
+    const bool MIDDLE_BUTTON_PRESSED = Input::is_pressed<Input::Mouse>(sf::Mouse::Middle);
+    const bool RIGHT_BUTTON_PRESSED  = Input::is_pressed<Input::Mouse>(sf::Mouse::Right);
+
+    bool mouse_button_pressed = false;
+
+    switch(enabled) {
+
+        case Enabled::LEFT:         { mouse_button_pressed = LEFT_BUTTON_PRESSED;                                                   } break;
+        case Enabled::MIDDLE:       { mouse_button_pressed = MIDDLE_BUTTON_PRESSED;                                                 } break;
+        case Enabled::RIGHT:        { mouse_button_pressed = RIGHT_BUTTON_PRESSED;                                                  } break;
+        case Enabled::LEFT_RIGHT:   { mouse_button_pressed = LEFT_BUTTON_PRESSED  || RIGHT_BUTTON_PRESSED;                          } break;
+        case Enabled::LEFT_MIDDLE:  { mouse_button_pressed = LEFT_BUTTON_PRESSED  || MIDDLE_BUTTON_PRESSED;                         } break;
+        case Enabled::RIGHT_MIDDLE: { mouse_button_pressed = RIGHT_BUTTON_PRESSED || MIDDLE_BUTTON_PRESSED;                         } break;
+        case Enabled::ALL:          { mouse_button_pressed = LEFT_BUTTON_PRESSED  || MIDDLE_BUTTON_PRESSED || RIGHT_BUTTON_PRESSED; } break;
+
+        case Enabled::NONE:
+        default: break;
+
+    }
+
+    if(MinesweeperGame::window->hasFocus() && mouse_entered && mouse_button_pressed) {
 
         state = States::PRESSED;
 
     }
-    else if(MinesweeperGame::window->hasFocus() && mouse_entered && !Input::is_pressed<Input::Mouse>(sf::Mouse::Left)) {
+    else if(MinesweeperGame::window->hasFocus() && mouse_entered && !mouse_button_pressed) {
 
         if(state == States::PRESSED) {
 
@@ -139,15 +170,15 @@ void Button::set_state() noexcept
 
             if(sound_buffers[Button::PRESSED_SFX].first && !sound_buffers[Button::PRESSED_SFX].second) {
 
-                sound.stop();
+                Button::sound.stop();
 
-                float past_volume = sound.getVolume();
+                float past_volume = Button::sound.getVolume();
 
-                sound.setVolume(100.f);
-                sound.setBuffer(*sound_buffers[Button::PRESSED_SFX].first);
-                sound.play();
+                Button::sound.setVolume(100.f);
+                Button::sound.setBuffer(*sound_buffers[Button::PRESSED_SFX].first);
+                Button::sound.play();
 
-                sound.setVolume(past_volume);
+                Button::sound.setVolume(past_volume);
 
 //                sound_buffers[Button::PRESSED_SFX].second = true;
 
@@ -160,10 +191,12 @@ void Button::set_state() noexcept
 
             if(sound_buffers[Button::HOVERED_SFX].first && !sound_buffers[Button::HOVERED_SFX].second) {
 
-                if(sound.getStatus() != sf::Sound::Playing) {
+                if(Button::sound.getStatus() != sf::Sound::Playing) {
 
-                    sound.setBuffer(*sound_buffers[Button::HOVERED_SFX].first);
-                    sound.play();
+//                    Button::sound.stop();
+                    Button::sound.setVolume(20.f);
+                    Button::sound.setBuffer(*sound_buffers[Button::HOVERED_SFX].first);
+                    Button::sound.play();
 
                 }
 
@@ -188,12 +221,7 @@ void Button::dispatch_actions()
 
         case States::NONE: {
 
-            if(current_texture != N_HOVERED) {
-
-                current_texture = N_HOVERED;
-                sprite.setTexture(*textures[current_texture], true);
-
-            }
+            if(current_texture != N_HOVERED) set_current_texture(N_HOVERED);
 
             on_button_up();
 
@@ -201,12 +229,7 @@ void Button::dispatch_actions()
 
         case States::HOVERED: {
 
-            if(current_texture != HOVERED) {
-
-                current_texture = HOVERED;
-                sprite.setTexture(*textures[current_texture], true);
-
-            }
+            if(current_texture != HOVERED) set_current_texture(HOVERED);
 
             on_button_up();
 
@@ -214,12 +237,7 @@ void Button::dispatch_actions()
 
         case States::PRESSED: {
 
-            if(current_texture != DOWN) {
-
-                current_texture = DOWN;
-                sprite.setTexture(*textures[current_texture], true);
-
-            }
+            if(current_texture != DOWN) set_current_texture(DOWN);
 
             on_button_down();
 
@@ -227,12 +245,7 @@ void Button::dispatch_actions()
 
         case States::RELEASED: {
 
-            if(current_texture != N_HOVERED) {
-
-                current_texture = N_HOVERED;
-                sprite.setTexture(*textures[current_texture], true);
-
-            }
+            if(current_texture != N_HOVERED) set_current_texture(N_HOVERED);
 
             on_button_up();
             on_button_pressed();
