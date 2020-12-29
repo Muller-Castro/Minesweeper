@@ -273,14 +273,12 @@ MainMenu::MainMenu() :
         ResourceLoader::load<sf::Texture>("assets/textures/PlayOnlineHovered.png"),
         ResourceLoader::load<sf::Texture>("assets/textures/PlayOnlineNHovered.png"),
         ResourceLoader::load<sf::Texture>("assets/textures/PlayOnlineDown.png"),
-        ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonHovered.wav"),
-        ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonPressed.wav")
+        ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonHovered.wav")
 #else
         ResourceLoader::load<sf::Texture>(get_raw_play_online_hovered()),
         ResourceLoader::load<sf::Texture>(get_raw_play_online_n_hovered()),
         ResourceLoader::load<sf::Texture>(get_raw_play_online_down()),
-        ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_hovered()),
-        ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_pressed())
+        ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_hovered())
 #endif // __S_RELEASE__
     )));
 
