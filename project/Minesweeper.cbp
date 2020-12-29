@@ -75,6 +75,7 @@
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
+			<Add option="-std=c++17" />
 			<Add option="-m64" />
 			<Add option='-isystem &quot;..\thirdparty\SFML-2.5.1\include&quot;' />
 			<Add option='-isystem &quot;..\thirdparty\tweeny-3.1.1\include&quot;' />
@@ -82,6 +83,8 @@
 			<Add directory="include" />
 		</Compiler>
 		<Linker>
+			<Add option="-static-libstdc++" />
+			<Add option="-static-libgcc" />
 			<Add option="-m64" />
 			<Add directory="../thirdparty/SFML-2.5.1/lib" />
 		</Linker>
