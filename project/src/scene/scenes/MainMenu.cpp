@@ -588,16 +588,30 @@ void MainMenu::load_records()
 
         std::string records_str = aes.decrypt(encrypted_content.substr(912, 16));
 
-        auto pred = [](char c) { return c != '0'; };
-
         std::string value = records_str.substr(records_str.find('B', 3) + 1, 3);
-        std::copy_if(value.rbegin(), value.rend(), record_values[0].rbegin(), pred);
+        std::copy(value.rbegin(), value.rend(), record_values[0].rbegin());
 
         value = records_str.substr(records_str.find('A', 3) + 1, 3);
-        std::copy_if(value.rbegin(), value.rend(), record_values[1].rbegin(), pred);
+        std::copy(value.rbegin(), value.rend(), record_values[1].rbegin());
 
         value = records_str.substr(records_str.find('E', 3) + 1, 3);
-        std::copy_if(value.rbegin(), value.rend(), record_values[2].rbegin(), pred);
+        std::copy(value.rbegin(), value.rend(), record_values[2].rbegin());
+
+        for(std::string& s : record_values) {
+
+            size_t pos = s.find_first_not_of('0');
+
+            if(pos != 0) {
+
+                std::string blank_spaces;
+
+                for(size_t i = 0; i < pos; ++i) blank_spaces += ' ';
+
+                s.replace(0, pos, blank_spaces);
+
+            }
+
+        }
 
     }else {
 
