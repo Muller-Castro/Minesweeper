@@ -147,6 +147,9 @@
 		<Unit filename="include/assets/CreditsNHovered.h">
 			<Option target="Static Release" />
 		</Unit>
+		<Unit filename="include/assets/CreditsPanelFRG.h">
+			<Option target="Static Release" />
+		</Unit>
 		<Unit filename="include/assets/CursorSFX.h">
 			<Option target="Static Release" />
 		</Unit>
@@ -205,6 +208,9 @@
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="include/assets/Icon8.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/LobbyBGFRG.h">
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="include/assets/MainMenuBG.h">
@@ -329,6 +335,7 @@
 		<Unit filename="include/scene/Scene.h" />
 		<Unit filename="include/scene/SceneManager.h" />
 		<Unit filename="include/scene/scenes/Game.h" />
+		<Unit filename="include/scene/scenes/Lobby.h" />
 		<Unit filename="include/scene/scenes/MainMenu.h" />
 		<Unit filename="include/scene/scenes/SplashScreen.h" />
 		<Unit filename="include/scene/scenes/TestZone.h">
@@ -396,6 +403,9 @@
 		<Unit filename="src/assets/CreditsNHovered.cpp">
 			<Option target="Static Release" />
 		</Unit>
+		<Unit filename="src/assets/CreditsPanelFRG.cpp">
+			<Option target="Static Release" />
+		</Unit>
 		<Unit filename="src/assets/CursorSFX.cpp">
 			<Option target="Static Release" />
 		</Unit>
@@ -454,6 +464,9 @@
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="src/assets/Icon8.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/LobbyBGFRG.cpp">
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="src/assets/MainMenuBG.cpp">
@@ -574,6 +587,7 @@
 		<Unit filename="src/scene/Scene.cpp" />
 		<Unit filename="src/scene/SceneManager.cpp" />
 		<Unit filename="src/scene/scenes/Game.cpp" />
+		<Unit filename="src/scene/scenes/Lobby.cpp" />
 		<Unit filename="src/scene/scenes/MainMenu.cpp" />
 		<Unit filename="src/scene/scenes/SplashScreen.cpp" />
 		<Unit filename="src/scene/scenes/TestZone.cpp" />
