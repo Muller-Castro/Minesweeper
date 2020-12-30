@@ -88,6 +88,7 @@ using namespace Minesweeper;
 MainMenu::MainMenu() :
     show_credits(),
     show_difficulty_levels(),
+    in_time(),
 
     animations(
 
@@ -524,13 +525,11 @@ void MainMenu::draw()
     if(show_credits) {
 
         // Panels
-        static sf::Clock c;
-
-        credits_panel_shader->setUniform("in_time", c.getElapsedTime().asSeconds() + 5.f);
+        credits_panel_shader->setUniform("in_time", in_time.getElapsedTime().asSeconds() + 5.f);
         credits_panel_shape.setPosition(0.f, 30.f);
         MinesweeperGame::window->draw(credits_panel_shape, credits_panel_shader.get());
 
-        credits_panel_shader->setUniform("in_time", c.getElapsedTime().asSeconds());
+        credits_panel_shader->setUniform("in_time", in_time.getElapsedTime().asSeconds());
         credits_panel_shape.setPosition(0.f, 105.f);
         MinesweeperGame::window->draw(credits_panel_shape, credits_panel_shader.get());
         // Panels

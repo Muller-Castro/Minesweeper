@@ -33,6 +33,7 @@
 #include <utility>
 #endif // __S_RELEASE__
 
+#include <SFML/System/Clock.hpp>
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/Graphics/Font.hpp>
 #include <SFML/Graphics/Sprite.hpp>
@@ -65,6 +66,8 @@ namespace Minesweeper {
 
         bool show_credits;
         bool show_difficulty_levels;
+
+        sf::Clock in_time;
 
         AnimationPlayer animations;
 
