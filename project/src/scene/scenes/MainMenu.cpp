@@ -51,6 +51,7 @@
 #include "assets/P1Flag.h"
 #include "assets/P2Flag.h"
 #include "assets/BombSpriteSheet.h"
+#include "assets/CreditsPanelFRG.h"
 #include "assets/MainMenuSoundtrack.h"
 #include "assets/INET.h"
 #include "assets/Digital7Mono.h"
@@ -152,6 +153,8 @@ MainMenu::MainMenu() :
     p1_flag_sprite(),
     p2_flag_sprite(),
     bomb_sprite(),
+    credits_panel_shader(),
+    credits_panel_shape(),
     record_texts(),
     record_values(),
     credits_texts{
@@ -168,19 +171,23 @@ MainMenu::MainMenu() :
     animations.play();
 
 #ifndef __S_RELEASE__
-    background_texture = ResourceLoader::load<sf::Texture>("assets/textures/MainMenuBG.png");
-    title_texture      = ResourceLoader::load<sf::Texture>("assets/textures/Title.png");
-    p1_flag_texture    = ResourceLoader::load<sf::Texture>("assets/textures/P1Flag.png");
-    p2_flag_texture    = ResourceLoader::load<sf::Texture>("assets/textures/P2Flag.png");
-    bomb_texture       = ResourceLoader::load<sf::Texture>("assets/textures/BombSpriteSheet.png");
-    soundtrack         = ResourceLoader::load<MusicStream>("assets/musics/MainMenuSoundtrack.ogg");
+    background_texture   = ResourceLoader::load<sf::Texture>("assets/textures/MainMenuBG.png");
+    title_texture        = ResourceLoader::load<sf::Texture>("assets/textures/Title.png");
+    p1_flag_texture      = ResourceLoader::load<sf::Texture>("assets/textures/P1Flag.png");
+    p2_flag_texture      = ResourceLoader::load<sf::Texture>("assets/textures/P2Flag.png");
+    bomb_texture         = ResourceLoader::load<sf::Texture>("assets/textures/BombSpriteSheet.png");
+    credits_panel_shader = ResourceLoader::load<sf::Shader>("assets/shaders/CreditsPanel.frg");
+    soundtrack           = ResourceLoader::load<MusicStream>("assets/musics/MainMenuSoundtrack.ogg");
 #else
-    background_texture = ResourceLoader::load<sf::Texture>(get_raw_main_menu_bg());
-    title_texture      = ResourceLoader::load<sf::Texture>(get_raw_title());
-    p1_flag_texture    = ResourceLoader::load<sf::Texture>(get_raw_p1_flag());
-    p2_flag_texture    = ResourceLoader::load<sf::Texture>(get_raw_p2_flag());
-    bomb_texture       = ResourceLoader::load<sf::Texture>(get_raw_bomb_sprite_sheet());
-    soundtrack         = ResourceLoader::load<MusicStream>(get_raw_main_menu_soundtrack());
+    background_texture   = ResourceLoader::load<sf::Texture>(get_raw_main_menu_bg());
+    title_texture        = ResourceLoader::load<sf::Texture>(get_raw_title());
+    p1_flag_texture      = ResourceLoader::load<sf::Texture>(get_raw_p1_flag());
+    p2_flag_texture      = ResourceLoader::load<sf::Texture>(get_raw_p2_flag());
+    bomb_texture         = ResourceLoader::load<sf::Texture>(get_raw_bomb_sprite_sheet());
+    credits_panel_shader = ResourceLoader::load<sf::Shader>({});
+    soundtrack           = ResourceLoader::load<MusicStream>(get_raw_main_menu_soundtrack());
+
+    credits_panel_shader->loadFromMemory(get_raw_credits_panel_frg().second, sf::Shader::Fragment);
 #endif // __S_RELEASE__
 
     background_sprite.setTexture(*background_texture);
@@ -196,7 +203,9 @@ MainMenu::MainMenu() :
     title_sprite.setPosition(117.f, 18.f);
 
     p2_flag_sprite.setScale(-1.f, 1.f);
-    bomb_sprite.setScale(0.5f, 0.5f);
+    bomb_sprite.setScale(0.25f, 0.25f);
+
+    credits_panel_shape.setSize(sf::Vector2f(800.f, 43.f));
 
 #ifndef __S_RELEASE__
     credits_font = ResourceLoader::load<sf::Font>("assets/fonts/INET.ttf");
@@ -218,28 +227,28 @@ MainMenu::MainMenu() :
 
     }
 
-    credits_texts["ROLES"].setPosition(35.f, 15.f);
+    credits_texts["ROLES"].setPosition(35.f, 35.f);
     credits_texts["ROLES"].setString(
 
-        "Project Management, Programming and Idealization:\n\n"
+        "Project Management, Programming and Idealization:\n\n\n"
         "Art and soundtracks:"
 
     );
     credits_texts["ROLES"].setCharacterSize(24);
     credits_texts["ROLES"].setFillColor(sf::Color(153, 153, 153));
 
-    credits_texts["NAMES"].setPosition(260.f, 12.f);
+    credits_texts["NAMES"].setPosition(260.f, 30.f);
     credits_texts["NAMES"].setString(
 
-        "                                    Muller Castro\n\n"
-        "Matheus Aguilera"
+        "                                    Muller Castro\n\n\n"
+        "Muller Castro (shaders) and Matheus Aguilera"
     );
     credits_texts["NAMES"].setCharacterSize(26);
     credits_texts["NAMES"].setFillColor(sf::Color(255, 204, 0));
 
     credits_texts["LICENSE"].setCharacterSize(21);
     credits_texts["LICENSE"].setFillColor(sf::Color(255, 255, 255));
-    credits_texts["LICENSE"].setPosition(35.f, 140.f);
+    credits_texts["LICENSE"].setPosition(35.f, 175.f);
     credits_texts["LICENSE"].setString(
 
         "Copyright (c) 2020 Muller Castro\n\n"
@@ -514,9 +523,21 @@ void MainMenu::draw()
 
     if(show_credits) {
 
-        for(int i = 0; i < 20; ++i) {
+        // Panels
+        static sf::Clock c;
 
-            bomb_sprite.setPosition(40.f * i + 4.f, 105.f);
+        credits_panel_shader->setUniform("in_time", c.getElapsedTime().asSeconds() + 5.f);
+        credits_panel_shape.setPosition(0.f, 30.f);
+        MinesweeperGame::window->draw(credits_panel_shape, credits_panel_shader.get());
+
+        credits_panel_shader->setUniform("in_time", c.getElapsedTime().asSeconds());
+        credits_panel_shape.setPosition(0.f, 105.f);
+        MinesweeperGame::window->draw(credits_panel_shape, credits_panel_shader.get());
+        // Panels
+
+        for(int i = 0; i < 40; ++i) {
+
+            bomb_sprite.setPosition(20.f * i + 2.f, 157.f);
             MinesweeperGame::window->draw(bomb_sprite);
 
         }
