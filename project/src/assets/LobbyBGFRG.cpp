@@ -32,14 +32,13 @@ std::pair<std::string, std::string> Minesweeper::get_raw_lobby_bg_frg()
         "uniform float     in_width;\n"
         "uniform float     in_time;\n"
         "\n"
-        "float rand(in vec2 co) {\n"
-        "	\n"
+        "float rand(in vec2 co)\n"
+        "{\n"
         "	return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);\n"
-        "	\n"
         "}\n"
         "\n"
-        "void main() {\n"
-        "	\n"
+        "void main()\n"
+        "{\n"
         "    float angle = in_time;\n"
         "	\n"
         "    vec2 red_offset = vec2(cos(angle), sin(angle));\n"
@@ -62,9 +61,7 @@ std::pair<std::string, std::string> Minesweeper::get_raw_lobby_bg_frg()
         "		1.0\n"
         "		\n"
         "	);\n"
-        "	\n"
         "}\n"
 
     ));
 }
-
