@@ -80,6 +80,7 @@ namespace Minesweeper {
         std::shared_ptr<sf::Texture> title_texture;
         std::shared_ptr<sf::Texture> p1_flag_texture;
         std::shared_ptr<sf::Texture> p2_flag_texture;
+        std::shared_ptr<sf::Texture> record_grid_texture;
         std::shared_ptr<sf::Texture> bomb_texture;
 
         std::shared_ptr<sf::Font> credits_font;
@@ -91,9 +92,11 @@ namespace Minesweeper {
         sf::Sprite title_sprite;
         sf::Sprite p1_flag_sprite;
         sf::Sprite p2_flag_sprite;
+        sf::Sprite record_grid_sprite;
         sf::Sprite bomb_sprite;
 
         std::shared_ptr<sf::Shader> credits_panel_shader;
+        std::shared_ptr<sf::Shader> record_grid_shader;
 
         sf::RectangleShape credits_panel_shape;
 

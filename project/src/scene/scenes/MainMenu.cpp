@@ -50,8 +50,10 @@
 #include "assets/Title.h"
 #include "assets/P1Flag.h"
 #include "assets/P2Flag.h"
+#include "assets/RecordGrid.h"
 #include "assets/BombSpriteSheet.h"
 #include "assets/CreditsPanelFRG.h"
+#include "assets/RecordGridFRG.h"
 #include "assets/MainMenuSoundtrack.h"
 #include "assets/INET.h"
 #include "assets/Digital7Mono.h"
@@ -145,6 +147,7 @@ MainMenu::MainMenu() :
     title_texture(),
     p1_flag_texture(),
     p2_flag_texture(),
+    record_grid_texture(),
     bomb_texture(),
     credits_font(),
     record_font(),
@@ -153,8 +156,10 @@ MainMenu::MainMenu() :
     title_sprite(),
     p1_flag_sprite(),
     p2_flag_sprite(),
+    record_grid_sprite(),
     bomb_sprite(),
     credits_panel_shader(),
+    record_grid_shader(),
     credits_panel_shape(),
     record_texts(),
     record_values(),
@@ -176,19 +181,24 @@ MainMenu::MainMenu() :
     title_texture        = ResourceLoader::load<sf::Texture>("assets/textures/Title.png");
     p1_flag_texture      = ResourceLoader::load<sf::Texture>("assets/textures/P1Flag.png");
     p2_flag_texture      = ResourceLoader::load<sf::Texture>("assets/textures/P2Flag.png");
+    record_grid_texture  = ResourceLoader::load<sf::Texture>("assets/textures/RecordGrid.png");
     bomb_texture         = ResourceLoader::load<sf::Texture>("assets/textures/BombSpriteSheet.png");
     credits_panel_shader = ResourceLoader::load<sf::Shader>("assets/shaders/CreditsPanel.frg");
+    record_grid_shader   = ResourceLoader::load<sf::Shader>("assets/shaders/RecordGrid.frg");
     soundtrack           = ResourceLoader::load<MusicStream>("assets/musics/MainMenuSoundtrack.ogg");
 #else
     background_texture   = ResourceLoader::load<sf::Texture>(get_raw_main_menu_bg());
     title_texture        = ResourceLoader::load<sf::Texture>(get_raw_title());
     p1_flag_texture      = ResourceLoader::load<sf::Texture>(get_raw_p1_flag());
     p2_flag_texture      = ResourceLoader::load<sf::Texture>(get_raw_p2_flag());
+    record_grid_texture  = ResourceLoader::load<sf::Texture>(get_raw_record_grid());
     bomb_texture         = ResourceLoader::load<sf::Texture>(get_raw_bomb_sprite_sheet());
-    credits_panel_shader = ResourceLoader::load<sf::Shader>({});
+    credits_panel_shader = ResourceLoader::load<sf::Shader>({"CreditsPanelFRG", ""});
+    record_grid_shader   = ResourceLoader::load<sf::Shader>({"RecordGridFRG"  , ""});
     soundtrack           = ResourceLoader::load<MusicStream>(get_raw_main_menu_soundtrack());
 
     credits_panel_shader->loadFromMemory(get_raw_credits_panel_frg().second, sf::Shader::Fragment);
+    record_grid_shader->loadFromMemory(get_raw_record_grid_frg().second, sf::Shader::Fragment);
 #endif // __S_RELEASE__
 
     background_sprite.setTexture(*background_texture);
@@ -196,6 +206,8 @@ MainMenu::MainMenu() :
     p1_flag_sprite.setTexture(*p1_flag_texture);
     p2_flag_sprite.setTexture(*p2_flag_texture);
     bomb_sprite.setTexture(*bomb_texture);
+
+    record_grid_shader->setUniform("in_texture", sf::Shader::CurrentTexture);
 
     soundtrack->music.setLoop(true);
     soundtrack->music.play();
@@ -217,6 +229,9 @@ MainMenu::MainMenu() :
 #endif // __S_RELEASE__
 
     load_records();
+
+    record_grid_sprite.setTexture(*record_grid_texture);
+    record_grid_sprite.setPosition(sf::Vector2f(295.f, 145.f));
 
     record_texts.setFont(*record_font);
 
@@ -380,14 +395,12 @@ MainMenu::MainMenu() :
         ResourceLoader::load<sf::Texture>("assets/textures/BeginnerButtonHovered.png"),
         ResourceLoader::load<sf::Texture>("assets/textures/BeginnerButtonNHovered.png"),
         ResourceLoader::load<sf::Texture>("assets/textures/BeginnerButtonDown.png"),
-        ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonHovered.wav"),
-        ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonPressed.wav")
+        ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonHovered.wav")
 #else
         ResourceLoader::load<sf::Texture>(get_raw_beginner_button_hovered()),
         ResourceLoader::load<sf::Texture>(get_raw_beginner_button_n_hovered()),
         ResourceLoader::load<sf::Texture>(get_raw_beginner_button_down()),
-        ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_hovered()),
-        ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_pressed())
+        ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_hovered())
 #endif // __S_RELEASE__
     )));
 
@@ -399,14 +412,12 @@ MainMenu::MainMenu() :
         ResourceLoader::load<sf::Texture>("assets/textures/AverageButtonHovered.png"),
         ResourceLoader::load<sf::Texture>("assets/textures/AverageButtonNHovered.png"),
         ResourceLoader::load<sf::Texture>("assets/textures/AverageButtonDown.png"),
-        ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonHovered.wav"),
-        ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonPressed.wav")
+        ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonHovered.wav")
 #else
         ResourceLoader::load<sf::Texture>(get_raw_average_button_hovered()),
         ResourceLoader::load<sf::Texture>(get_raw_average_button_n_hovered()),
         ResourceLoader::load<sf::Texture>(get_raw_average_button_down()),
-        ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_hovered()),
-        ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_pressed())
+        ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_hovered())
 #endif // __S_RELEASE__
     )));
 
@@ -418,14 +429,12 @@ MainMenu::MainMenu() :
         ResourceLoader::load<sf::Texture>("assets/textures/ExpertButtonHovered.png"),
         ResourceLoader::load<sf::Texture>("assets/textures/ExpertButtonNHovered.png"),
         ResourceLoader::load<sf::Texture>("assets/textures/ExpertButtonDown.png"),
-        ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonHovered.wav"),
-        ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonPressed.wav")
+        ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonHovered.wav")
 #else
         ResourceLoader::load<sf::Texture>(get_raw_expert_button_hovered()),
         ResourceLoader::load<sf::Texture>(get_raw_expert_button_n_hovered()),
         ResourceLoader::load<sf::Texture>(get_raw_expert_button_down()),
-        ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_hovered()),
-        ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_pressed())
+        ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_hovered())
 #endif // __S_RELEASE__
     )));
 
@@ -669,6 +678,11 @@ void MainMenu::draw_flags()
 
 void MainMenu::draw_records()
 {
+    //// Grid
+    record_grid_shader->setUniform("in_time", in_time.getElapsedTime().asSeconds());
+    MinesweeperGame::window->draw(record_grid_sprite, record_grid_shader.get());
+    //// Grid
+
     //// Letters
     record_texts.setOutlineColor(sf::Color::Black);
     record_texts.setOutlineThickness(2.f);
