@@ -53,6 +53,7 @@ TextEdit::TextEdit() :
     caret_blink_timer(),
     caret(),
     font(),
+    unfocused_text(),
     text(),
     bounding_box(),
     typing_sfx(),
@@ -61,7 +62,7 @@ TextEdit::TextEdit() :
     //
 }
 
-TextEdit::TextEdit(const sf::Vector2f& position, const sf::Vector2f& scale, const sf::Vector2f& bb_size, const std::shared_ptr<sf::Font>& font_, unsigned char_size, const sf::Color& color, size_t chars_limit_, const std::shared_ptr<sf::SoundBuffer>& typing_sfx_, TextEdit* neighbor_, float caret_height, const sf::Color& caret_color, float caret_blink_speed_, bool is_focused_) :
+TextEdit::TextEdit(const sf::Vector2f& position, const sf::Vector2f& scale, const sf::Vector2f& bb_size, const std::shared_ptr<sf::Font>& font_, unsigned char_size, const sf::Color& color, size_t chars_limit_, const std::string& unfocused_text_str, const std::shared_ptr<sf::SoundBuffer>& typing_sfx_, TextEdit* neighbor_, float caret_height, const sf::Color& caret_color, float caret_blink_speed_, bool is_focused_) :
     caught_hover(),
     is_focused(is_focused_),
     caret_blink_speed(caret_blink_speed_),
@@ -70,11 +71,16 @@ TextEdit::TextEdit(const sf::Vector2f& position, const sf::Vector2f& scale, cons
     caret_blink_timer(),
     caret(sf::Vector2f(1.f, caret_height)),
     font(font_),
+    unfocused_text(unfocused_text_str, *font, char_size),
     text("", *font, char_size),
     bounding_box(position.x, position.y, bb_size.x, bb_size.y),
     typing_sfx(typing_sfx_),
     neighbor(neighbor_ ? *neighbor_ : *this)
 {
+    unfocused_text.setPosition(position);
+    unfocused_text.setScale(scale);
+    unfocused_text.setFillColor(sf::Color(153, 153, 153, 200));
+
     text.setPosition(position);
     text.setScale(scale);
     text.setFillColor(color);
@@ -100,7 +106,15 @@ void TextEdit::update(float delta)
 
 void TextEdit::draw()
 {
-    MinesweeperGame::window->draw(text);
+    if(!text.getString().isEmpty()) {
+
+        MinesweeperGame::window->draw(text);
+
+    }else if(!is_focused){
+
+        MinesweeperGame::window->draw(unfocused_text);
+
+    }
 
     MinesweeperGame::window->draw(caret);
 
