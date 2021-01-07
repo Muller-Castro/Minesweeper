@@ -95,6 +95,18 @@
 		<Unit filename="include/Input.h" />
 		<Unit filename="include/Input.hpp" />
 		<Unit filename="include/MinesweeperGame.h" />
+		<Unit filename="include/assets/AllFieldsOKButtonDown.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/AllFieldsOKButtonHovered.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/AllFieldsOKButtonNHovered.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/AllFieldsPanel.h">
+			<Option target="Static Release" />
+		</Unit>
 		<Unit filename="include/assets/Arial.h">
 			<Option target="Static Release" />
 		</Unit>
@@ -133,6 +145,15 @@
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="include/assets/Clapping.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/ClearButtonDown.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/ClearButtonHovered.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/ClearButtonNHovered.h">
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="include/assets/CounterPanel.h">
@@ -183,6 +204,15 @@
 		<Unit filename="include/assets/GridButtonUp.h">
 			<Option target="Static Release" />
 		</Unit>
+		<Unit filename="include/assets/HostButtonDown.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/HostButtonHovered.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/HostButtonNHovered.h">
+			<Option target="Static Release" />
+		</Unit>
 		<Unit filename="include/assets/INET.h">
 			<Option target="Static Release" />
 		</Unit>
@@ -210,7 +240,19 @@
 		<Unit filename="include/assets/Icon8.h">
 			<Option target="Static Release" />
 		</Unit>
+		<Unit filename="include/assets/JoinButtonDown.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/JoinButtonHovered.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/JoinButtonNHovered.h">
+			<Option target="Static Release" />
+		</Unit>
 		<Unit filename="include/assets/LobbyBGFRG.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/LobbyRegistrationPanel.h">
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="include/assets/MainMenuBG.h">
@@ -285,6 +327,12 @@
 		<Unit filename="include/assets/QuitNHovered.h">
 			<Option target="Static Release" />
 		</Unit>
+		<Unit filename="include/assets/RecordGrid.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/RecordGridFRG.h">
+			<Option target="Static Release" />
+		</Unit>
 		<Unit filename="include/assets/RestartButtonDown.h">
 			<Option target="Static Release" />
 		</Unit>
@@ -309,16 +357,26 @@
 		<Unit filename="include/assets/Title.h">
 			<Option target="Static Release" />
 		</Unit>
+		<Unit filename="include/assets/Typing.h">
+			<Option target="Static Release" />
+		</Unit>
 		<Unit filename="include/assets/Universe.h">
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="include/components/Button.h" />
+		<Unit filename="include/components/Panel.h" />
+		<Unit filename="include/components/TextEdit.h" />
+		<Unit filename="include/components/buttons/AllFieldsOKButton.h" />
 		<Unit filename="include/components/buttons/AverageButton.h" />
 		<Unit filename="include/components/buttons/BeginnerButton.h" />
+		<Unit filename="include/components/buttons/ClearButton.h" />
 		<Unit filename="include/components/buttons/CreditsButton.h" />
 		<Unit filename="include/components/buttons/CreditsReturnButton.h" />
 		<Unit filename="include/components/buttons/ExpertButton.h" />
 		<Unit filename="include/components/buttons/GridButton.h" />
+		<Unit filename="include/components/buttons/HostButton.h" />
+		<Unit filename="include/components/buttons/JoinButton.h" />
+		<Unit filename="include/components/buttons/LobbyReturnButton.h" />
 		<Unit filename="include/components/buttons/MainMenuButton.h" />
 		<Unit filename="include/components/buttons/PlayOfflineButton.h" />
 		<Unit filename="include/components/buttons/PlayOfflineReturnButton.h" />
@@ -351,6 +409,18 @@
 		<Unit filename="src/Input.cpp" />
 		<Unit filename="src/Main.cpp" />
 		<Unit filename="src/MinesweeperGame.cpp" />
+		<Unit filename="src/assets/AllFieldsOKButtonDown.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/AllFieldsOKButtonHovered.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/AllFieldsOKButtonNHovered.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/AllFieldsPanel.cpp">
+			<Option target="Static Release" />
+		</Unit>
 		<Unit filename="src/assets/Arial.cpp">
 			<Option target="Static Release" />
 		</Unit>
@@ -389,6 +459,15 @@
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="src/assets/Clapping.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/ClearButtonDown.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/ClearButtonHovered.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/ClearButtonNHovered.cpp">
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="src/assets/CounterPanel.cpp">
@@ -439,6 +518,15 @@
 		<Unit filename="src/assets/GridButtonUp.cpp">
 			<Option target="Static Release" />
 		</Unit>
+		<Unit filename="src/assets/HostButtonDown.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/HostButtonHovered.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/HostButtonNHovered.cpp">
+			<Option target="Static Release" />
+		</Unit>
 		<Unit filename="src/assets/INET.cpp">
 			<Option target="Static Release" />
 		</Unit>
@@ -466,7 +554,19 @@
 		<Unit filename="src/assets/Icon8.cpp">
 			<Option target="Static Release" />
 		</Unit>
+		<Unit filename="src/assets/JoinButtonDown.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/JoinButtonHovered.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/JoinButtonNHovered.cpp">
+			<Option target="Static Release" />
+		</Unit>
 		<Unit filename="src/assets/LobbyBGFRG.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/LobbyRegistrationPanel.cpp">
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="src/assets/MainMenuBG.cpp">
@@ -541,6 +641,12 @@
 		<Unit filename="src/assets/QuitNHovered.cpp">
 			<Option target="Static Release" />
 		</Unit>
+		<Unit filename="src/assets/RecordGrid.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/RecordGridFRG.cpp">
+			<Option target="Static Release" />
+		</Unit>
 		<Unit filename="src/assets/RestartButtonDown.cpp">
 			<Option target="Static Release" />
 		</Unit>
@@ -565,16 +671,26 @@
 		<Unit filename="src/assets/Title.cpp">
 			<Option target="Static Release" />
 		</Unit>
+		<Unit filename="src/assets/Typing.cpp">
+			<Option target="Static Release" />
+		</Unit>
 		<Unit filename="src/assets/Universe.cpp">
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="src/components/Button.cpp" />
+		<Unit filename="src/components/Panel.cpp" />
+		<Unit filename="src/components/TextEdit.cpp" />
+		<Unit filename="src/components/buttons/AllFieldsOKButton.cpp" />
 		<Unit filename="src/components/buttons/AverageButton.cpp" />
 		<Unit filename="src/components/buttons/BeginnerButton.cpp" />
+		<Unit filename="src/components/buttons/ClearButton.cpp" />
 		<Unit filename="src/components/buttons/CreditsButton.cpp" />
 		<Unit filename="src/components/buttons/CreditsReturnButton.cpp" />
 		<Unit filename="src/components/buttons/ExpertButton.cpp" />
 		<Unit filename="src/components/buttons/GridButton.cpp" />
+		<Unit filename="src/components/buttons/HostButton.cpp" />
+		<Unit filename="src/components/buttons/JoinButton.cpp" />
+		<Unit filename="src/components/buttons/LobbyReturnButton.cpp" />
 		<Unit filename="src/components/buttons/MainMenuButton.cpp" />
 		<Unit filename="src/components/buttons/PlayOfflineButton.cpp" />
 		<Unit filename="src/components/buttons/PlayOfflineReturnButton.cpp" />
