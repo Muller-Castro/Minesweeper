@@ -24,6 +24,7 @@
 #ifndef TEXT_EDIT_H
 #define TEXT_EDIT_H
 
+#include <string>
 #include <memory>
 #include <functional>
 
@@ -41,12 +42,14 @@ namespace Minesweeper {
     class TextEdit
     {
     public:
-        TextEdit(); // '= default' is triggering a warning (-Weffc++)
+        TextEdit();
         TextEdit(const sf::Vector2f& position, const sf::Vector2f& scale, const sf::Vector2f& bb_size, const std::shared_ptr<sf::Font>& font_, unsigned char_size, const sf::Color& color, size_t chars_limit_, const std::string& unfocused_text_str, const std::shared_ptr<sf::SoundBuffer>& typing_sfx_, TextEdit* neighbor_, float caret_height, const sf::Color& caret_color = sf::Color::Black, float caret_blink_speed_ = 0.65f, bool is_focused_ = false);
 
         void process_inputs();
         void update(float delta);
         void draw();
+
+        std::string get_text_str() const noexcept { return text.getString(); }
 
     private:
         friend class Input;
