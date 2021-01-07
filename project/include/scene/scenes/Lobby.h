@@ -24,7 +24,21 @@
 #ifndef LOBBY_H
 #define LOBBY_H
 
+#include <memory>
+#include <map>
+#include <unordered_map>
+#include <vector>
+
+#include <SFML/System/Clock.hpp>
+#include <SFML/Graphics/Texture.hpp>
+#include <SFML/Graphics/Sprite.hpp>
+#include <SFML/Graphics/Shader.hpp>
+
 #include "scene/Scene.h"
+#include "components/buttons/LobbyReturnButton.h"
+#include "components/TextEdit.h"
+#include "components/Button.h"
+#include "components/Panel.h"
 
 namespace Minesweeper {
 
@@ -37,6 +51,43 @@ namespace Minesweeper {
         void process_inputs()    override;
         void update(float delta) override;
         void draw()              override;
+
+    private:
+        friend class HostButton;
+        friend class JoinButton;
+
+        enum class States : unsigned char
+        {
+            REGISTRATION,
+            CONNECTING, // JOIN
+            WAITING
+        };
+
+        States current_state;
+
+        LobbyReturnButton return_button;
+
+        sf::Clock in_time;
+
+#ifdef __S_RELEASE__
+        std::pair<std::string, std::string> text_edit_font_data;
+#endif // __S_RELEASE__
+
+        std::vector<TextEdit> text_edits;
+
+        std::unordered_map<States, std::vector<std::unique_ptr<Button>>> buttons;
+
+        std::map<std::string, Panel> panels;
+
+        std::shared_ptr<sf::Texture> background_texture;
+        std::shared_ptr<sf::Texture> lobby_registration_panel_texture;
+
+        sf::Sprite background_sprite;
+        sf::Sprite lobby_registration_panel_sprite;
+
+        std::shared_ptr<sf::Shader> background_shader;
+
+        bool evaluate_text_edits();
     };
 
 }
