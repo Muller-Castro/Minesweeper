@@ -57,12 +57,13 @@ TextEdit::TextEdit() :
     text(),
     bounding_box(),
     typing_sfx(),
-    neighbor(*this)
+    neighbor(*this),
+    char_filter()
 {
     //
 }
 
-TextEdit::TextEdit(const sf::Vector2f& position, const sf::Vector2f& scale, const sf::Vector2f& bb_size, const std::shared_ptr<sf::Font>& font_, unsigned char_size, const sf::Color& color, size_t chars_limit_, const std::string& unfocused_text_str, const std::shared_ptr<sf::SoundBuffer>& typing_sfx_, TextEdit* neighbor_, float caret_height, const sf::Color& caret_color, float caret_blink_speed_, bool is_focused_) :
+TextEdit::TextEdit(const sf::Vector2f& position, const sf::Vector2f& scale, const sf::Vector2f& bb_size, const std::shared_ptr<sf::Font>& font_, unsigned char_size, const sf::Color& color, size_t chars_limit_, const std::string& unfocused_text_str, const std::shared_ptr<sf::SoundBuffer>& typing_sfx_, TextEdit* neighbor_, const std::function<bool(char)>& char_filter_, float caret_height, const sf::Color& caret_color, float caret_blink_speed_, bool is_focused_) :
     caught_hover(),
     is_focused(is_focused_),
     caret_blink_speed(caret_blink_speed_),
@@ -75,7 +76,8 @@ TextEdit::TextEdit(const sf::Vector2f& position, const sf::Vector2f& scale, cons
     text("", *font, char_size),
     bounding_box(position.x, position.y, bb_size.x, bb_size.y),
     typing_sfx(typing_sfx_),
-    neighbor(neighbor_ ? *neighbor_ : *this)
+    neighbor(neighbor_ ? *neighbor_ : *this),
+    char_filter(char_filter_ ? char_filter_ : [](char) { return true; })
 {
     unfocused_text.setPosition(position);
     unfocused_text.setScale(scale);
@@ -230,11 +232,11 @@ void TextEdit::type_text()
                 {
                     std::string buffer;
 
-                    std::for_each(clipboard_str.cbegin(), clipboard_str.cend(), [&buffer](char c) {
+                    std::for_each(clipboard_str.cbegin(), clipboard_str.cend(), [&buffer, this](char c) {
 
                         unsigned unicode = static_cast<unsigned>(c);
 
-                        if((unicode > 31) && (unicode < 127)) buffer += c;
+                        if(((unicode > 31) && (unicode < 127)) && char_filter(c)) buffer += c;
 
                     });
 
@@ -378,7 +380,7 @@ void TextEdit::type_text()
 
                 }
 
-            }else if(text_str.length() < chars_limit) {
+            }else if((text_str.length() < chars_limit) && char_filter(TextEdit::ascii_char)) {
 
 //                TextEdit::sound.stop();
                 TextEdit::sound.setBuffer(*typing_sfx);
