@@ -54,6 +54,8 @@
 #include "assets/JoinButtonNHovered.h"
 #include "assets/JoinButtonDown.h"
 #include "assets/AllFieldsPanel.h"
+#include "assets/InvalidPortPanel.h"
+#include "assets/InvalidIPPortPanel.h"
 #include "assets/AllFieldsOKButtonNHovered.h"
 #include "assets/AllFieldsOKButtonHovered.h"
 #include "assets/AllFieldsOKButtonDown.h"
@@ -359,9 +361,9 @@ Lobby::Lobby() :
         sf::Vector2f(105.f, 189.f),
         sf::Vector2f(1.f, 1.f),
 #ifndef __S_RELEASE__
-        ResourceLoader::load<sf::Texture>("assets/textures/InvalidIPPort.png"),
+        ResourceLoader::load<sf::Texture>("assets/textures/InvalidIPPortPanel.png"),
 #else
-        //
+        ResourceLoader::load<sf::Texture>(get_raw_invalid_ip_port_panel()),
 #endif // __S_RELEASE__
         {
             std::make_shared<AllFieldsOKButton>(
@@ -393,9 +395,9 @@ Lobby::Lobby() :
         sf::Vector2f(105.f, 189.f),
         sf::Vector2f(1.f, 1.f),
 #ifndef __S_RELEASE__
-        ResourceLoader::load<sf::Texture>("assets/textures/InvalidPort.png"),
+        ResourceLoader::load<sf::Texture>("assets/textures/InvalidPortPanel.png"),
 #else
-        //
+        ResourceLoader::load<sf::Texture>(get_raw_invalid_port_panel()),
 #endif // __S_RELEASE__
         {
             std::make_shared<AllFieldsOKButton>(
