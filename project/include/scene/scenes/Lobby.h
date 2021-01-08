@@ -88,6 +88,8 @@ namespace Minesweeper {
         std::shared_ptr<sf::Shader> background_shader;
 
         bool evaluate_text_edits();
+        bool evaluate_port();
+        bool evaluate_ip_port();
     };
 
 }

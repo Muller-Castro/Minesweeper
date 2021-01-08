@@ -23,6 +23,8 @@
 
 #include "scene/scenes/Lobby.h"
 
+#include <regex>
+
 #include <SFML/Graphics/RenderWindow.hpp>
 
 #include "io/ResourceLoader.h"
@@ -139,6 +141,7 @@ Lobby::Lobby() :
         ResourceLoader::load<sf::SoundBuffer>(get_raw_typing()),
 #endif // __S_RELEASE__
         &text_edits[1],
+        {},
         20.f
 
     );
@@ -163,6 +166,15 @@ Lobby::Lobby() :
         ResourceLoader::load<sf::SoundBuffer>(get_raw_typing()),
 #endif // __S_RELEASE__
         &text_edits[2],
+
+        [](char c) {
+
+            unsigned unicode = static_cast<unsigned>(c);
+
+            return ((unicode > 47) && (unicode < 59)) || unicode == 46;
+
+        },
+
         20.f
 
     );
@@ -187,6 +199,7 @@ Lobby::Lobby() :
         ResourceLoader::load<sf::SoundBuffer>(get_raw_typing()),
 #endif // __S_RELEASE__
         &text_edits[0],
+        {},
         20.f
 
     );
@@ -315,6 +328,74 @@ Lobby::Lobby() :
         ResourceLoader::load<sf::Texture>("assets/textures/AllFieldsPanel.png"),
 #else
         ResourceLoader::load<sf::Texture>(get_raw_all_fields_panel()),
+#endif // __S_RELEASE__
+        {
+            std::make_shared<AllFieldsOKButton>(
+
+                Button::Enabled::LEFT,
+                sf::Vector2f(406.f, 303.f),
+                sf::Vector2f(1.f, 1.f),
+#ifndef __S_RELEASE__
+                ResourceLoader::load<sf::Texture>("assets/textures/AllFieldsOKButtonHovered.png"),
+                ResourceLoader::load<sf::Texture>("assets/textures/AllFieldsOKButtonNHovered.png"),
+                ResourceLoader::load<sf::Texture>("assets/textures/AllFieldsOKButtonDown.png"),
+                ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonHovered.wav"),
+                ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonPressed.wav")
+#else
+                ResourceLoader::load<sf::Texture>(get_raw_all_fields_ok_button_hovered()),
+                ResourceLoader::load<sf::Texture>(get_raw_all_fields_ok_button_n_hovered()),
+                ResourceLoader::load<sf::Texture>(get_raw_all_fields_ok_button_down()),
+                ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_hovered()),
+                ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_pressed())
+#endif // __S_RELEASE__
+
+            )
+        }
+
+    );
+
+    panels["I_IPPORT"] = Panel(
+
+        sf::Vector2f(105.f, 189.f),
+        sf::Vector2f(1.f, 1.f),
+#ifndef __S_RELEASE__
+        ResourceLoader::load<sf::Texture>("assets/textures/InvalidIPPort.png"),
+#else
+        //
+#endif // __S_RELEASE__
+        {
+            std::make_shared<AllFieldsOKButton>(
+
+                Button::Enabled::LEFT,
+                sf::Vector2f(406.f, 303.f),
+                sf::Vector2f(1.f, 1.f),
+#ifndef __S_RELEASE__
+                ResourceLoader::load<sf::Texture>("assets/textures/AllFieldsOKButtonHovered.png"),
+                ResourceLoader::load<sf::Texture>("assets/textures/AllFieldsOKButtonNHovered.png"),
+                ResourceLoader::load<sf::Texture>("assets/textures/AllFieldsOKButtonDown.png"),
+                ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonHovered.wav"),
+                ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonPressed.wav")
+#else
+                ResourceLoader::load<sf::Texture>(get_raw_all_fields_ok_button_hovered()),
+                ResourceLoader::load<sf::Texture>(get_raw_all_fields_ok_button_n_hovered()),
+                ResourceLoader::load<sf::Texture>(get_raw_all_fields_ok_button_down()),
+                ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_hovered()),
+                ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_pressed())
+#endif // __S_RELEASE__
+
+            )
+        }
+
+    );
+
+    panels["I_PORT"] = Panel(
+
+        sf::Vector2f(105.f, 189.f),
+        sf::Vector2f(1.f, 1.f),
+#ifndef __S_RELEASE__
+        ResourceLoader::load<sf::Texture>("assets/textures/InvalidPort.png"),
+#else
+        //
 #endif // __S_RELEASE__
         {
             std::make_shared<AllFieldsOKButton>(
@@ -488,6 +569,40 @@ bool Lobby::evaluate_text_edits()
             return false;
 
         }
+
+    }
+
+    return true;
+}
+
+bool Lobby::evaluate_port()
+{
+    if(!std::regex_match(text_edits[1].get_text_str(), std::regex("^[0-9]+$"))) {
+
+        SceneManager::call_deferred([&]() {
+
+            panels["I_PORT"].set_active(true);
+
+        });
+
+        return false;
+
+    }
+
+    return true;
+}
+
+bool Lobby::evaluate_ip_port()
+{
+    if(!std::regex_match(text_edits[1].get_text_str(), std::regex("^[0-9]+..[0-9]+..[0-9]+..[0-9]+:[0-9]+$"))) {
+
+        SceneManager::call_deferred([&]() {
+
+            panels["I_IPPORT"].set_active(true);
+
+        });
+
+        return false;
 
     }
 
