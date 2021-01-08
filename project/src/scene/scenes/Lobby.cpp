@@ -132,7 +132,7 @@ Lobby::Lobby() :
         16,
         sf::Color::Black,
         15,
-        "REQUIRED",
+        "e.g. Defuser@123",
 #ifndef __S_RELEASE__
         ResourceLoader::load<sf::SoundBuffer>("assets/sounds/Typing.wav"),
 #else
@@ -155,8 +155,8 @@ Lobby::Lobby() :
 #endif // __S_RELEASE__
         16,
         sf::Color::Black,
-        15,
-        "REQUIRED",
+        21,
+        "e.g. 123.456.789.222:12345",
 #ifndef __S_RELEASE__
         ResourceLoader::load<sf::SoundBuffer>("assets/sounds/Typing.wav"),
 #else
@@ -180,7 +180,7 @@ Lobby::Lobby() :
         16,
         sf::Color::Black,
         15,
-        "REQUIRED",
+        "e.g. repeewsenim#789",
 #ifndef __S_RELEASE__
         ResourceLoader::load<sf::SoundBuffer>("assets/sounds/Typing.wav"),
 #else
