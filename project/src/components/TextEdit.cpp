@@ -110,7 +110,7 @@ void TextEdit::draw()
 
         MinesweeperGame::window->draw(text);
 
-    }else if(!is_focused){
+    }else {
 
         MinesweeperGame::window->draw(unfocused_text);
 
