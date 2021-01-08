@@ -46,5 +46,13 @@ void HostButton::on_button_down()
 
 void HostButton::on_button_pressed()
 {
-    if(lobby_ref.get().evaluate_text_edits()) lobby_ref.get().current_state = Lobby::States::WAITING;
+    if(lobby_ref.get().evaluate_text_edits()) {
+
+        if(lobby_ref.get().evaluate_port()) {
+
+            lobby_ref.get().current_state = Lobby::States::WAITING;
+
+        }
+
+    }
 }
