@@ -24,7 +24,11 @@
 #ifndef MINESWEEPER_GAME_H
 #define MINESWEEPER_GAME_H
 
+#include <chrono>
 #include <string>
+
+#include <SFML/Network/TcpSocket.hpp>
+#include <SFML/Network/UdpSocket.hpp>
 
 namespace sf { // Forward declarations
 
@@ -38,6 +42,14 @@ namespace Minesweeper {
     class MinesweeperGame
     {
     public:
+        static std::chrono::milliseconds::rep ping;
+        static std::chrono::milliseconds::rep max_ping;
+
+        static sf::TcpSocket tcp_socket;
+        static sf::UdpSocket udp_socket;
+
+        static std::string public_ip_address;
+
         static sf::RenderWindow* window;
 
         static int run() noexcept;

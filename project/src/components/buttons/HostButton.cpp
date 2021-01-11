@@ -23,6 +23,10 @@
 
 #include "components/buttons/HostButton.h"
 
+#include <string>
+
+#include "scene/SceneManager.h"
+
 #include "scene/scenes/Lobby.h"
 
 using namespace Minesweeper;
@@ -50,7 +54,29 @@ void HostButton::on_button_pressed()
 
         if(lobby_ref.get().evaluate_port()) {
 
-            lobby_ref.get().current_state = Lobby::States::WAITING;
+            lobby_ref.get().listener = std::unique_ptr<sf::TcpListener>(new sf::TcpListener());
+
+            if(lobby_ref.get().listener->listen(std::stoul(lobby_ref.get().text_edits[1].get_text_str())) != sf::Socket::Done) {
+
+                SceneManager::call_deferred([&]() {
+
+                    lobby_ref.get().panels["F_2_HOST"].set_active(true);
+
+                });
+
+                lobby_ref.get().listener.reset();
+
+            }else {
+
+                SceneManager::call_deferred([&]() {
+
+                    lobby_ref.get().current_state = Lobby::States::WAITING;
+
+                });
+
+                lobby_ref.get().listener->setBlocking(false);
+
+            }
 
         }
 

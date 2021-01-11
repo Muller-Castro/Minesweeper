@@ -1,5 +1,5 @@
 /****************************************************************************************/
-/* LobbyReturnButton.h                                                                  */
+/* LobbyAverageButton.h                                                                 */
 /****************************************************************************************/
 /* Copyright (c) 2020 Muller Castro.                                                    */
 /*                                                                                      */
@@ -21,8 +21,8 @@
 /* OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                                        */
 /****************************************************************************************/
 
-#ifndef LOBBY_RETURN_BUTTON_H
-#define LOBBY_RETURN_BUTTON_H
+#ifndef LOBBY_AVERAGE_BUTTON_H
+#define LOBBY_AVERAGE_BUTTON_H
 
 #include <functional>
 
@@ -32,11 +32,14 @@ namespace Minesweeper {
 
     class Lobby;
 
-    class LobbyReturnButton final : public Button
+    class LobbyAverageButton final : public Button
     {
     public:
-        LobbyReturnButton(Lobby& lobby_ref_, Enabled enabled_, const sf::Vector2f& position_, const sf::Vector2f& scale_, const std::shared_ptr<sf::Texture>& hovered, const std::shared_ptr<sf::Texture>& non_hovered, const std::shared_ptr<sf::Texture>& down, const std::shared_ptr<sf::SoundBuffer>& hovered_sfx = {}, const std::shared_ptr<sf::SoundBuffer>& pressed_sfx = {});
-        ~LobbyReturnButton() override {}
+        LobbyAverageButton(Lobby& lobby_ref_, Enabled enabled_, const sf::Vector2f& position_, const sf::Vector2f& scale_, const std::shared_ptr<sf::Texture>& hovered, const std::shared_ptr<sf::Texture>& non_hovered, const std::shared_ptr<sf::Texture>& down, const std::shared_ptr<sf::SoundBuffer>& hovered_sfx = {}, const std::shared_ptr<sf::SoundBuffer>& pressed_sfx = {});
+        ~LobbyAverageButton() override {}
+
+        void process_inputs() override;
+        void update(float d)  override;
 
     protected:
         void on_button_up()      override;
@@ -49,4 +52,4 @@ namespace Minesweeper {
 
 }
 
-#endif // LOBBY_RETURN_BUTTON_H
+#endif // LOBBY_AVERAGE_BUTTON_H

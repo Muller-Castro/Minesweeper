@@ -24,11 +24,13 @@
 #include "components/buttons/LobbyReturnButton.h"
 
 #include "scene/SceneManager.h"
+#include "scene/scenes/Lobby.h"
 
 using namespace Minesweeper;
 
-LobbyReturnButton::LobbyReturnButton(Enabled enabled_, const sf::Vector2f& position_, const sf::Vector2f& scale_, const std::shared_ptr<sf::Texture>& hovered, const std::shared_ptr<sf::Texture>& non_hovered, const std::shared_ptr<sf::Texture>& down, const std::shared_ptr<sf::SoundBuffer>& hovered_sfx, const std::shared_ptr<sf::SoundBuffer>& pressed_sfx) :
-    Button(enabled_, position_, scale_, hovered, non_hovered, down, hovered_sfx, pressed_sfx)
+LobbyReturnButton::LobbyReturnButton(Lobby& lobby_ref_, Enabled enabled_, const sf::Vector2f& position_, const sf::Vector2f& scale_, const std::shared_ptr<sf::Texture>& hovered, const std::shared_ptr<sf::Texture>& non_hovered, const std::shared_ptr<sf::Texture>& down, const std::shared_ptr<sf::SoundBuffer>& hovered_sfx, const std::shared_ptr<sf::SoundBuffer>& pressed_sfx) :
+    Button(enabled_, position_, scale_, hovered, non_hovered, down, hovered_sfx, pressed_sfx),
+    lobby_ref(lobby_ref_)
 {
     //
 }
@@ -45,5 +47,34 @@ void LobbyReturnButton::on_button_down()
 
 void LobbyReturnButton::on_button_pressed()
 {
-    SceneManager::change_scene_to(SceneManager::Scenes::MAIN_MENU);
+    switch(lobby_ref.get().current_state) {
+
+        case Lobby::States::REGISTRATION: {
+
+            SceneManager::change_scene_to(SceneManager::Scenes::MAIN_MENU);
+
+        } break;
+
+        case Lobby::States::CONNECTING: {
+
+            //
+
+        } break;
+
+        case Lobby::States::WAITING: {
+
+            lobby_ref.get().current_state = Lobby::States::REGISTRATION;
+
+            if(lobby_ref.get().listener) {
+
+                lobby_ref.get().listener->close();
+                lobby_ref.get().listener.reset();
+
+            }
+
+        } break;
+
+        default: break;
+
+    }
 }

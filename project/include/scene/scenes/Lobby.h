@@ -33,6 +33,7 @@
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Shader.hpp>
+#include <SFML/Network/TcpListener.hpp>
 
 #include "scene/Scene.h"
 #include "components/buttons/LobbyReturnButton.h"
@@ -52,7 +53,10 @@ namespace Minesweeper {
         void update(float delta) override;
         void draw()              override;
 
+        sf::Socket::Status get_connection_status() const noexcept { return connection_status; }
+
     private:
+        friend class LobbyReturnButton;
         friend class HostButton;
         friend class JoinButton;
 
@@ -69,6 +73,8 @@ namespace Minesweeper {
 
         sf::Clock in_time;
 
+        sf::Socket::Status connection_status;
+
 #ifdef __S_RELEASE__
         std::pair<std::string, std::string> text_edit_font_data;
 #endif // __S_RELEASE__
@@ -81,15 +87,31 @@ namespace Minesweeper {
 
         std::shared_ptr<sf::Texture> background_texture;
         std::shared_ptr<sf::Texture> lobby_registration_panel_texture;
+        std::shared_ptr<sf::Texture> select_difficulty_panel_texture;
+        std::shared_ptr<sf::Texture> select_duration_panel_texture;
+        std::shared_ptr<sf::Texture> p1_panel;
+        std::shared_ptr<sf::Texture> p2_panel;
 
         sf::Sprite background_sprite;
         sf::Sprite lobby_registration_panel_sprite;
+        sf::Sprite select_panels;
+        sf::Sprite match_panels;
+
+        sf::Text players_info_text;
 
         std::shared_ptr<sf::Shader> background_shader;
+
+        std::unique_ptr<sf::TcpListener> listener;
 
         bool evaluate_text_edits();
         bool evaluate_port();
         bool evaluate_ip_port();
+
+        void update_waiting();
+        void update_ping();
+        void draw_waiting();
+        void draw_players_info();
+        void draw_inactivation_rects();
     };
 
 }

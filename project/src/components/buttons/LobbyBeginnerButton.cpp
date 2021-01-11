@@ -1,5 +1,5 @@
 /****************************************************************************************/
-/* LobbyReturnButton.h                                                                  */
+/* LobbyBeginnerButton.cpp                                                              */
 /****************************************************************************************/
 /* Copyright (c) 2020 Muller Castro.                                                    */
 /*                                                                                      */
@@ -21,32 +21,40 @@
 /* OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                                        */
 /****************************************************************************************/
 
-#ifndef LOBBY_RETURN_BUTTON_H
-#define LOBBY_RETURN_BUTTON_H
+#include "components/buttons/LobbyBeginnerButton.h"
 
-#include <functional>
+#include "scene/scenes/Lobby.h"
 
-#include "components/Button.h"
+using namespace Minesweeper;
 
-namespace Minesweeper {
-
-    class Lobby;
-
-    class LobbyReturnButton final : public Button
-    {
-    public:
-        LobbyReturnButton(Lobby& lobby_ref_, Enabled enabled_, const sf::Vector2f& position_, const sf::Vector2f& scale_, const std::shared_ptr<sf::Texture>& hovered, const std::shared_ptr<sf::Texture>& non_hovered, const std::shared_ptr<sf::Texture>& down, const std::shared_ptr<sf::SoundBuffer>& hovered_sfx = {}, const std::shared_ptr<sf::SoundBuffer>& pressed_sfx = {});
-        ~LobbyReturnButton() override {}
-
-    protected:
-        void on_button_up()      override;
-        void on_button_down()    override;
-        void on_button_pressed() override;
-
-    private:
-        std::reference_wrapper<Lobby> lobby_ref;
-    };
-
+LobbyBeginnerButton::LobbyBeginnerButton(Lobby& lobby_ref_, Enabled enabled_, const sf::Vector2f& position_, const sf::Vector2f& scale_, const std::shared_ptr<sf::Texture>& hovered, const std::shared_ptr<sf::Texture>& non_hovered, const std::shared_ptr<sf::Texture>& down, const std::shared_ptr<sf::SoundBuffer>& hovered_sfx, const std::shared_ptr<sf::SoundBuffer>& pressed_sfx) :
+    Button(enabled_, position_, scale_, hovered, non_hovered, down, hovered_sfx, pressed_sfx),
+    lobby_ref(lobby_ref_)
+{
+    //
 }
 
-#endif // LOBBY_RETURN_BUTTON_H
+void LobbyBeginnerButton::process_inputs()
+{
+    if(lobby_ref.get().get_connection_status() == sf::Socket::Done) Button::process_inputs();
+}
+
+void LobbyBeginnerButton::update(float d)
+{
+    if(lobby_ref.get().get_connection_status() == sf::Socket::Done) Button::update(d);
+}
+
+void LobbyBeginnerButton::on_button_up()
+{
+    //
+}
+
+void LobbyBeginnerButton::on_button_down()
+{
+    //
+}
+
+void LobbyBeginnerButton::on_button_pressed()
+{
+    //
+}
