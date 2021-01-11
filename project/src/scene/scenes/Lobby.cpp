@@ -944,6 +944,20 @@ void Lobby::draw_players_info()
         MinesweeperGame::window->draw(players_info_text);
     }
     //// P1
+
+    //// P2
+    if(connection_status != sf::Socket::Done) {
+
+        players_info_text.setString("Waiting...");
+        players_info_text.setPosition(sf::Vector2f(531.f, 246.f));
+        MinesweeperGame::window->draw(players_info_text);
+
+    }else {
+
+        //
+
+    }
+    //// P2
 }
 
 void Lobby::draw_inactivation_rects()
