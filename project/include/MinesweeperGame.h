@@ -39,16 +39,37 @@ namespace sf { // Forward declarations
 
 namespace Minesweeper {
 
+    struct PeerInfo
+    {
+        using PingDuration = std::chrono::milliseconds;
+
+        PingDuration::rep ping;
+        PingDuration::rep max_ping;
+
+        std::string name;
+        std::string public_ip_address;
+        std::string port;
+
+        PeerInfo() : ping(), max_ping(), name(), public_ip_address(), port() {}
+
+        void clear() noexcept
+        {
+            ping = max_ping = 0;
+
+            if(!name.empty())              name.clear();
+            if(!public_ip_address.empty()) public_ip_address.clear();
+            if(!port.empty())              port.clear();
+        }
+    };
+
     class MinesweeperGame
     {
     public:
-        static std::chrono::milliseconds::rep ping;
-        static std::chrono::milliseconds::rep max_ping;
+        static PeerInfo peer_info;
+        static PeerInfo new_peer_info;
 
         static sf::TcpSocket tcp_socket;
         static sf::UdpSocket udp_socket;
-
-        static std::string public_ip_address;
 
         static sf::RenderWindow* window;
 

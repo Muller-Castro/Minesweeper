@@ -25,8 +25,8 @@
 
 #include <string>
 
+#include "MinesweeperGame.h"
 #include "scene/SceneManager.h"
-
 #include "scene/scenes/Lobby.h"
 
 using namespace Minesweeper;
@@ -73,6 +73,9 @@ void HostButton::on_button_pressed()
                     lobby_ref.get().current_state = Lobby::States::WAITING;
 
                 });
+
+                MinesweeperGame::peer_info.name = lobby_ref.get().text_edits[0].get_text_str();
+                MinesweeperGame::peer_info.port = lobby_ref.get().text_edits[1].get_text_str();
 
                 lobby_ref.get().listener->setBlocking(false);
 

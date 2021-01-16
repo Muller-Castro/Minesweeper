@@ -1,5 +1,5 @@
 /****************************************************************************************/
-/* LobbyReturnButton.cpp                                                                */
+/* ConnectionCancelButton.h                                                             */
 /****************************************************************************************/
 /* Copyright (c) 2020 Muller Castro.                                                    */
 /*                                                                                      */
@@ -21,63 +21,32 @@
 /* OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                                        */
 /****************************************************************************************/
 
-#include "components/buttons/LobbyReturnButton.h"
+#ifndef CONNECTION_CANCEL_BUTTON_H
+#define CONNECTION_CANCEL_BUTTON_H
 
-#include "MinesweeperGame.h"
-#include "scene/SceneManager.h"
-#include "scene/scenes/Lobby.h"
+#include <functional>
 
-using namespace Minesweeper;
+#include "components/Button.h"
 
-LobbyReturnButton::LobbyReturnButton(Lobby& lobby_ref_, Enabled enabled_, const sf::Vector2f& position_, const sf::Vector2f& scale_, const std::shared_ptr<sf::Texture>& hovered, const std::shared_ptr<sf::Texture>& non_hovered, const std::shared_ptr<sf::Texture>& down, const std::shared_ptr<sf::SoundBuffer>& hovered_sfx, const std::shared_ptr<sf::SoundBuffer>& pressed_sfx) :
-    Button(enabled_, position_, scale_, hovered, non_hovered, down, hovered_sfx, pressed_sfx),
-    lobby_ref(lobby_ref_)
-{
-    //
+namespace Minesweeper {
+
+    class Lobby;
+
+    class ConnectionCancelButton final : public Button
+    {
+    public:
+        ConnectionCancelButton(Lobby& lobby_ref_, Enabled enabled_, const sf::Vector2f& position_, const sf::Vector2f& scale_, const std::shared_ptr<sf::Texture>& hovered, const std::shared_ptr<sf::Texture>& non_hovered, const std::shared_ptr<sf::Texture>& down, const std::shared_ptr<sf::SoundBuffer>& hovered_sfx = {}, const std::shared_ptr<sf::SoundBuffer>& pressed_sfx = {});
+        ~ConnectionCancelButton() override {}
+
+    protected:
+        void on_button_up()      override;
+        void on_button_down()    override;
+        void on_button_pressed() override;
+
+    private:
+        std::reference_wrapper<Lobby> lobby_ref;
+    };
+
 }
 
-void LobbyReturnButton::on_button_up()
-{
-    //
-}
-
-void LobbyReturnButton::on_button_down()
-{
-    //
-}
-
-void LobbyReturnButton::on_button_pressed()
-{
-    switch(lobby_ref.get().current_state) {
-
-        case Lobby::States::REGISTRATION: {
-
-            SceneManager::change_scene_to(SceneManager::Scenes::MAIN_MENU);
-
-        } break;
-
-        case Lobby::States::CONNECTING: {
-
-            //
-
-        } break;
-
-        case Lobby::States::WAITING: {
-
-            lobby_ref.get().current_state = Lobby::States::REGISTRATION;
-
-            if(lobby_ref.get().listener) {
-
-                lobby_ref.get().listener->close();
-                lobby_ref.get().listener.reset();
-
-            }
-
-            MinesweeperGame::tcp_socket.disconnect();
-
-        } break;
-
-        default: break;
-
-    }
-}
+#endif // CONNECTION_CANCEL_BUTTON_H

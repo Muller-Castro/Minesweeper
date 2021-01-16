@@ -50,6 +50,9 @@ namespace Minesweeper {
         void draw();
 
         std::string get_text_str() const noexcept { return text.getString(); }
+#ifndef __S_RELEASE__
+        void set_text_str(const std::string& s) { return text.setString(s); }
+#endif // __S_RELEASE__
 
     private:
         friend class Input;

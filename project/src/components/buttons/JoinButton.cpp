@@ -52,6 +52,8 @@ void JoinButton::on_button_pressed()
 
             lobby_ref.get().current_state = Lobby::States::CONNECTING;
 
+            lobby_ref.get().join_delay_timer.restart();
+
         }
 
     }

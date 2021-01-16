@@ -45,11 +45,10 @@
 
 using namespace Minesweeper;
 
-std::chrono::milliseconds::rep MinesweeperGame::ping;
-std::chrono::milliseconds::rep MinesweeperGame::max_ping;
+PeerInfo MinesweeperGame::peer_info;
+PeerInfo MinesweeperGame::new_peer_info;
 sf::TcpSocket MinesweeperGame::tcp_socket;
 sf::UdpSocket MinesweeperGame::udp_socket;
-std::string MinesweeperGame::public_ip_address;
 sf::RenderWindow* MinesweeperGame::window = nullptr;
 bool MinesweeperGame::is_running          = true;
 

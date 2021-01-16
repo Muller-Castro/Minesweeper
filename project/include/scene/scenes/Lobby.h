@@ -59,6 +59,7 @@ namespace Minesweeper {
         friend class LobbyReturnButton;
         friend class HostButton;
         friend class JoinButton;
+        friend class ConnectionCancelButton;
 
         enum class States : unsigned char
         {
@@ -67,11 +68,14 @@ namespace Minesweeper {
             WAITING
         };
 
+        static constexpr float JOIN_DELAY = 2.f;
+
         States current_state;
 
         LobbyReturnButton return_button;
 
         sf::Clock in_time;
+        sf::Clock join_delay_timer;
 
         sf::Socket::Status connection_status;
 
@@ -98,6 +102,7 @@ namespace Minesweeper {
         sf::Sprite match_panels;
 
         sf::Text players_info_text;
+        sf::Text connecting_text;
 
         std::shared_ptr<sf::Shader> background_shader;
 
@@ -107,10 +112,13 @@ namespace Minesweeper {
         bool evaluate_port();
         bool evaluate_ip_port();
 
+        void update_connecting();
         void update_waiting();
         void update_ping();
+        void draw_connecting();
         void draw_waiting();
         void draw_players_info();
+        void draw_player_info_text(const std::pair<std::string, sf::Vector2f>& name, const std::pair<std::string, sf::Vector2f>& ip, const std::pair<std::string, sf::Vector2f>& ping, const std::pair<std::string, sf::Vector2f>& max_ping);
         void draw_inactivation_rects();
     };
 
