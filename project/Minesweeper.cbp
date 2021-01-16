@@ -34,7 +34,6 @@
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
-					<Add option="-mwindows" />
 					<Add library="sfml-graphics" />
 					<Add library="sfml-window" />
 					<Add library="sfml-audio" />
@@ -376,6 +375,7 @@
 		<Unit filename="include/components/buttons/AverageButton.h" />
 		<Unit filename="include/components/buttons/BeginnerButton.h" />
 		<Unit filename="include/components/buttons/ClearButton.h" />
+		<Unit filename="include/components/buttons/ConnectionCancelButton.h" />
 		<Unit filename="include/components/buttons/CreditsButton.h" />
 		<Unit filename="include/components/buttons/CreditsReturnButton.h" />
 		<Unit filename="include/components/buttons/DurationAButton.h" />
@@ -703,6 +703,7 @@
 		<Unit filename="src/components/buttons/AverageButton.cpp" />
 		<Unit filename="src/components/buttons/BeginnerButton.cpp" />
 		<Unit filename="src/components/buttons/ClearButton.cpp" />
+		<Unit filename="src/components/buttons/ConnectionCancelButton.cpp" />
 		<Unit filename="src/components/buttons/CreditsButton.cpp" />
 		<Unit filename="src/components/buttons/CreditsReturnButton.cpp" />
 		<Unit filename="src/components/buttons/DurationAButton.cpp" />
