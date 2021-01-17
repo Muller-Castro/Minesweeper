@@ -24,6 +24,7 @@
 #include "components/buttons/LobbyBeginnerButton.h"
 
 #include "scene/scenes/Lobby.h"
+#include "scene/SceneManager.h"
 
 using namespace Minesweeper;
 
@@ -56,5 +57,5 @@ void LobbyBeginnerButton::on_button_down()
 
 void LobbyBeginnerButton::on_button_pressed()
 {
-    //
+    SceneManager::shared_data["DIFFICULTY"] = '0';
 }
