@@ -77,6 +77,10 @@ void HostButton::on_button_pressed()
                 MinesweeperGame::peer_info.name = lobby_ref.get().text_edits[0].get_text_str();
                 MinesweeperGame::peer_info.port = lobby_ref.get().text_edits[1].get_text_str();
 
+                lobby_ref.get().arrow[0].position = sf::Vector2f(195.f, 57.f);
+                lobby_ref.get().arrow[1].position = sf::Vector2f(265.f, 57.f);
+                lobby_ref.get().arrow[2].position = sf::Vector2f(230.f, 93.f);
+
                 lobby_ref.get().listener->setBlocking(false);
 
             }
