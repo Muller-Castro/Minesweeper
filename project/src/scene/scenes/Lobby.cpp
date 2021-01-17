@@ -58,15 +58,15 @@
 #include "assets/CancelButtonHovered.h"
 #include "assets/CancelButtonNHovered.h"
 #include "assets/CancelButtonDown.h"
-#include "assets/BeginnerButtonHovered.h"
-#include "assets/BeginnerButtonNHovered.h"
-#include "assets/BeginnerButtonDown.h"
-#include "assets/AverageButtonHovered.h"
-#include "assets/AverageButtonNHovered.h"
-#include "assets/AverageButtonDown.h"
-#include "assets/ExpertButtonHovered.h"
-#include "assets/ExpertButtonNHovered.h"
-#include "assets/ExpertButtonDown.h"
+#include "assets/SmallBeginnerButtonHovered.h"
+#include "assets/SmallBeginnerButtonNHovered.h"
+#include "assets/SmallBeginnerButtonDown.h"
+#include "assets/SmallAverageButtonHovered.h"
+#include "assets/SmallAverageButtonNHovered.h"
+#include "assets/SmallAverageButtonDown.h"
+#include "assets/SmallExpertButtonHovered.h"
+#include "assets/SmallExpertButtonNHovered.h"
+#include "assets/SmallExpertButtonDown.h"
 #include "assets/DurationAButtonHovered.h"
 #include "assets/DurationAButtonNHovered.h"
 #include "assets/DurationAButtonDown.h"
@@ -461,18 +461,18 @@ Lobby::Lobby() :
 
         *this,
         Button::Enabled::LEFT,
-        sf::Vector2f(92.f, 133.f),
-        sf::Vector2f(.5f, .5f),
+        sf::Vector2f(118.f, 140.f),
+        sf::Vector2f(1.f, 1.f),
 #ifndef __S_RELEASE__
-        ResourceLoader::load<sf::Texture>("assets/textures/BeginnerButtonHovered.png"),
-        ResourceLoader::load<sf::Texture>("assets/textures/BeginnerButtonNHovered.png"),
-        ResourceLoader::load<sf::Texture>("assets/textures/BeginnerButtonDown.png"),
+        ResourceLoader::load<sf::Texture>("assets/textures/SmallBeginnerButtonHovered.png"),
+        ResourceLoader::load<sf::Texture>("assets/textures/SmallBeginnerButtonNHovered.png"),
+        ResourceLoader::load<sf::Texture>("assets/textures/SmallBeginnerButtonDown.png"),
         ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonHovered.wav"),
         ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonPressed.wav")
 #else
-        ResourceLoader::load<sf::Texture>(get_raw_beginner_button_hovered()),
-        ResourceLoader::load<sf::Texture>(get_raw_beginner_button_n_hovered()),
-        ResourceLoader::load<sf::Texture>(get_raw_beginner_button_down()),
+        ResourceLoader::load<sf::Texture>(get_raw_small_beginner_button_hovered()),
+        ResourceLoader::load<sf::Texture>(get_raw_small_beginner_button_n_hovered()),
+        ResourceLoader::load<sf::Texture>(get_raw_small_beginner_button_down()),
         ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_hovered()),
         ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_pressed())
 #endif // __S_RELEASE__
@@ -483,18 +483,18 @@ Lobby::Lobby() :
 
         *this,
         Button::Enabled::LEFT,
-        sf::Vector2f(205.f, 133.f),
-        sf::Vector2f(.5f, .5f),
+        sf::Vector2f(230.f, 140.f),
+        sf::Vector2f(1.f, 1.f),
 #ifndef __S_RELEASE__
-        ResourceLoader::load<sf::Texture>("assets/textures/AverageButtonHovered.png"),
-        ResourceLoader::load<sf::Texture>("assets/textures/AverageButtonNHovered.png"),
-        ResourceLoader::load<sf::Texture>("assets/textures/AverageButtonDown.png"),
+        ResourceLoader::load<sf::Texture>("assets/textures/SmallAverageButtonHovered.png"),
+        ResourceLoader::load<sf::Texture>("assets/textures/SmallAverageButtonNHovered.png"),
+        ResourceLoader::load<sf::Texture>("assets/textures/SmallAverageButtonDown.png"),
         ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonHovered.wav"),
         ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonPressed.wav")
 #else
-        ResourceLoader::load<sf::Texture>(get_raw_average_button_hovered()),
-        ResourceLoader::load<sf::Texture>(get_raw_average_button_n_hovered()),
-        ResourceLoader::load<sf::Texture>(get_raw_average_button_down()),
+        ResourceLoader::load<sf::Texture>(get_raw_small_average_button_hovered()),
+        ResourceLoader::load<sf::Texture>(get_raw_small_average_button_n_hovered()),
+        ResourceLoader::load<sf::Texture>(get_raw_small_average_button_down()),
         ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_hovered()),
         ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_pressed())
 #endif // __S_RELEASE__
@@ -505,18 +505,18 @@ Lobby::Lobby() :
 
         *this,
         Button::Enabled::LEFT,
-        sf::Vector2f(318.f, 133.f),
-        sf::Vector2f(.5f, .5f),
+        sf::Vector2f(343.f, 140.f),
+        sf::Vector2f(1.f, 1.f),
 #ifndef __S_RELEASE__
-        ResourceLoader::load<sf::Texture>("assets/textures/ExpertButtonHovered.png"),
-        ResourceLoader::load<sf::Texture>("assets/textures/ExpertButtonNHovered.png"),
-        ResourceLoader::load<sf::Texture>("assets/textures/ExpertButtonDown.png"),
+        ResourceLoader::load<sf::Texture>("assets/textures/SmallExpertButtonHovered.png"),
+        ResourceLoader::load<sf::Texture>("assets/textures/SmallExpertButtonNHovered.png"),
+        ResourceLoader::load<sf::Texture>("assets/textures/SmallExpertButtonDown.png"),
         ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonHovered.wav"),
         ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonPressed.wav")
 #else
-        ResourceLoader::load<sf::Texture>(get_raw_expert_button_hovered()),
-        ResourceLoader::load<sf::Texture>(get_raw_expert_button_n_hovered()),
-        ResourceLoader::load<sf::Texture>(get_raw_expert_button_down()),
+        ResourceLoader::load<sf::Texture>(get_raw_small_expert_button_hovered()),
+        ResourceLoader::load<sf::Texture>(get_raw_small_expert_button_n_hovered()),
+        ResourceLoader::load<sf::Texture>(get_raw_small_expert_button_down()),
         ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_hovered()),
         ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_pressed())
 #endif // __S_RELEASE__
