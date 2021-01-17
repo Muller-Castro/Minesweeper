@@ -52,6 +52,10 @@ void JoinButton::on_button_pressed()
 
             lobby_ref.get().current_state = Lobby::States::CONNECTING;
 
+            lobby_ref.get().arrow[0].position = sf::Vector2f(535.f, 57.f);
+            lobby_ref.get().arrow[1].position = sf::Vector2f(605.f, 57.f);
+            lobby_ref.get().arrow[2].position = sf::Vector2f(570.f, 93.f);
+
             lobby_ref.get().join_delay_timer.restart();
 
         }
