@@ -30,6 +30,7 @@
 #include <vector>
 
 #include <SFML/System/Clock.hpp>
+#include <SFML/Graphics/VertexArray.hpp>
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Shader.hpp>
@@ -70,6 +71,9 @@ namespace Minesweeper {
         };
 
         static constexpr float JOIN_DELAY = 2.f;
+        static constexpr float PING_DELAY = 1.f;
+
+        float arrow_speed;
 
         States current_state;
 
@@ -77,11 +81,16 @@ namespace Minesweeper {
 
         sf::Clock in_time;
         sf::Clock join_delay_timer;
+        sf::Clock ping_delay_timer;
+
+        sf::VertexArray arrow;
 
         sf::Socket::Status connection_status;
 
 #ifdef __S_RELEASE__
         std::pair<std::string, std::string> text_edit_font_data;
+        std::pair<std::string, std::string> general_info_font_data;
+        std::pair<std::string, std::string> you_font_data;
 #endif // __S_RELEASE__
 
         std::vector<TextEdit> text_edits;
@@ -97,6 +106,9 @@ namespace Minesweeper {
         std::shared_ptr<sf::Texture> p1_panel;
         std::shared_ptr<sf::Texture> p2_panel;
 
+        std::shared_ptr<sf::Font> general_info_font;
+        std::shared_ptr<sf::Font> you_font;
+
         sf::Sprite background_sprite;
         sf::Sprite lobby_registration_panel_sprite;
         sf::Sprite select_panels;
@@ -104,6 +116,7 @@ namespace Minesweeper {
 
         sf::Text players_info_text;
         sf::Text connecting_text;
+        sf::Text you_text;
 
         std::shared_ptr<sf::Shader> background_shader;
 
@@ -115,9 +128,11 @@ namespace Minesweeper {
 
         void update_connecting();
         void update_waiting();
+        void update_you(float delta);
         void update_ping();
         void draw_connecting();
         void draw_waiting();
+        void draw_you();
         void draw_players_info();
         void draw_player_info_text(const std::pair<std::string, sf::Vector2f>& name, const std::pair<std::string, sf::Vector2f>& ip, const std::pair<std::string, sf::Vector2f>& ping, const std::pair<std::string, sf::Vector2f>& max_ping);
         void draw_inactivation_rects();
