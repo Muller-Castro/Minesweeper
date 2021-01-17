@@ -73,9 +73,9 @@ void GlobalConfigurations::process_inputs()
 void GlobalConfigurations::update(float delta)
 {
 #ifdef __S_RELEASE__
-        auto win_data = SimpleINIParser::load_ini_string(win_ini);
+    auto win_data = SimpleINIParser::load_ini_string(win_ini);
 #else
-        auto win_data = SimpleINIParser::load_ini_file("config/Window.ini");
+    auto win_data = SimpleINIParser::load_ini_file("config/Window.ini");
 #endif // __S_RELEASE__
 
     static sf::Clock fps_update_interval;
