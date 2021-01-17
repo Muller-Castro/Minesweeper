@@ -53,6 +53,7 @@ namespace Minesweeper {
         void update(float delta) override;
         void draw()              override;
 
+        bool is_listening() const noexcept { return static_cast<bool>(listener); }
         sf::Socket::Status get_connection_status() const noexcept { return connection_status; }
 
     private:

@@ -36,12 +36,12 @@ LobbyAverageButton::LobbyAverageButton(Lobby& lobby_ref_, Enabled enabled_, cons
 
 void LobbyAverageButton::process_inputs()
 {
-    if(lobby_ref.get().get_connection_status() == sf::Socket::Done) Button::process_inputs();
+    if(lobby_ref.get().is_listening() && (lobby_ref.get().get_connection_status() == sf::Socket::Done)) Button::process_inputs();
 }
 
 void LobbyAverageButton::update(float d)
 {
-    if(lobby_ref.get().get_connection_status() == sf::Socket::Done) Button::update(d);
+    if(lobby_ref.get().is_listening() && (lobby_ref.get().get_connection_status() == sf::Socket::Done)) Button::update(d);
 }
 
 void LobbyAverageButton::on_button_up()

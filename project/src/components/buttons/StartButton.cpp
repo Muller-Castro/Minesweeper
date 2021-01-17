@@ -37,12 +37,12 @@ StartButton::StartButton(Lobby& lobby_ref_, Enabled enabled_, const sf::Vector2f
 
 void StartButton::process_inputs()
 {
-    if(lobby_ref.get().get_connection_status() == sf::Socket::Done) Button::process_inputs();
+    if(lobby_ref.get().is_listening() && (lobby_ref.get().get_connection_status() == sf::Socket::Done)) Button::process_inputs();
 }
 
 void StartButton::update(float d)
 {
-    if(lobby_ref.get().get_connection_status() == sf::Socket::Done) Button::update(d);
+    if(lobby_ref.get().is_listening() && (lobby_ref.get().get_connection_status() == sf::Socket::Done)) Button::update(d);
 }
 
 void StartButton::on_button_up()

@@ -680,6 +680,40 @@ Lobby::Lobby() :
         }
 
     );
+
+    panels["M_DROP"] = Panel(
+
+        sf::Vector2f(105.f, 189.f),
+        sf::Vector2f(1.f, 1.f),
+#ifndef __S_RELEASE__
+        ResourceLoader::load<sf::Texture>("assets/textures/MatchDropPanel.png"),
+#else
+        //ResourceLoader::load<sf::Texture>(get_raw_invalid_port_panel()),
+#endif // __S_RELEASE__
+        {
+            std::make_shared<AllFieldsOKButton>(
+
+                Button::Enabled::LEFT,
+                sf::Vector2f(406.f, 303.f),
+                sf::Vector2f(1.f, 1.f),
+#ifndef __S_RELEASE__
+                ResourceLoader::load<sf::Texture>("assets/textures/AllFieldsOKButtonHovered.png"),
+                ResourceLoader::load<sf::Texture>("assets/textures/AllFieldsOKButtonNHovered.png"),
+                ResourceLoader::load<sf::Texture>("assets/textures/AllFieldsOKButtonDown.png"),
+                ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonHovered.wav"),
+                ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonPressed.wav")
+#else
+                ResourceLoader::load<sf::Texture>(get_raw_all_fields_ok_button_hovered()),
+                ResourceLoader::load<sf::Texture>(get_raw_all_fields_ok_button_n_hovered()),
+                ResourceLoader::load<sf::Texture>(get_raw_all_fields_ok_button_down()),
+                ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_hovered()),
+                ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_pressed())
+#endif // __S_RELEASE__
+
+            )
+        }
+
+    );
     /////////////// Panels
 }
 
@@ -814,7 +848,7 @@ void Lobby::draw()
 
             for(auto& button : buttons[States::WAITING]) MinesweeperGame::window->draw(*button);
 
-            if(connection_status != sf::Socket::Done) draw_inactivation_rects();
+            if(!listener || (connection_status != sf::Socket::Done)) draw_inactivation_rects();
 
             MinesweeperGame::window->draw(return_button);
 
@@ -910,7 +944,7 @@ void Lobby::update_connecting()
         std::string ip      = ip_port.substr(0, ip_port.find(':'));
         std::string port    = ip_port.substr(ip_port.find(':') + 1);
 
-        connection_status   = MinesweeperGame::tcp_socket.connect(ip, std::stoul(port));
+        connection_status   = MinesweeperGame::tcp_socket.connect(ip, std::stoul(port), sf::seconds(5.f));
 
         if(connection_status == sf::Socket::Done) {
 
@@ -1108,6 +1142,8 @@ void Lobby::update_waiting()
 
         connection_status = sf::Socket::NotReady;
 
+        panels["M_DROP"].set_active(true);
+
         MinesweeperGame::tcp_socket.disconnect();
 
     }
@@ -1206,10 +1242,21 @@ void Lobby::draw_waiting()
     MinesweeperGame::window->draw(select_panels);
     //////////////
 
+    /* to slightly bright the panels' textures */ {
+
+        sf::RectangleShape shape(sf::Vector2f(683.f, 212.f));
+
+        shape.setFillColor(sf::Color(0, 0, 0, 64));
+        shape.setPosition(sf::Vector2f(58.f, 160.f));
+
+        MinesweeperGame::window->draw(shape);
+
+    }
+
     match_panels.setTexture(*p1_panel);
     match_panels.setPosition(sf::Vector2f(58.f, 160.f));
     match_panels.setColor(sf::Color::White);
-    MinesweeperGame::window->draw(match_panels);
+    MinesweeperGame::window->draw(match_panels, sf::RenderStates(sf::BlendMode(sf::BlendMode::SrcAlpha, sf::BlendMode::One, sf::BlendMode::Subtract)));
 
     match_panels.setTexture(*p2_panel);
     match_panels.setPosition(sf::Vector2f(399.f, 160.f));
