@@ -35,6 +35,7 @@
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Shader.hpp>
 #include <SFML/Network/TcpListener.hpp>
+#include <SFML/Network/Packet.hpp>
 
 #include "scene/Scene.h"
 #include "components/buttons/LobbyReturnButton.h"
@@ -56,6 +57,9 @@ namespace Minesweeper {
 
         bool is_listening() const noexcept { return static_cast<bool>(listener); }
         sf::Socket::Status get_connection_status() const noexcept { return connection_status; }
+
+        void send(sf::Packet&);
+        sf::Packet receive(const std::string& label = std::string());
 
     private:
         friend class LobbyReturnButton;

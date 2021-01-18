@@ -32,7 +32,6 @@
 #endif // __RELEASE__
 
 #include <SFML/Graphics/RenderWindow.hpp>
-#include <SFML/Network/Packet.hpp>
 
 #include "io/ResourceLoader.h"
 #include "scene/SceneManager.h"
@@ -948,6 +947,30 @@ void Lobby::draw()
     }
 }
 
+void Lobby::send(sf::Packet& p)
+{
+    connection_status = MinesweeperGame::tcp_socket.send(p);
+}
+
+sf::Packet Lobby::receive(const std::string& label)
+{
+    sf::Packet result;
+
+    connection_status = MinesweeperGame::tcp_socket.receive(result);
+
+    if(!label.empty()) {
+
+        std::string received_data;
+
+        result >> received_data;
+
+        if(received_data.rfind(label, 0) != 0) throw std::runtime_error("The label doesn't match");
+
+    }
+
+    return result;
+}
+
 bool Lobby::evaluate_text_edits()
 {
     for(auto& text_edit : text_edits) {
@@ -1030,7 +1053,7 @@ void Lobby::update_connecting()
 
                 name_packet << MinesweeperGame::peer_info.name;
 
-                connection_status = MinesweeperGame::tcp_socket.send(name_packet);
+                send(name_packet);
 
 #ifdef __RELEASE__
                 std::cout << "[CLIENT] " << (connection_status == sf::Socket::Done ? "Succeeded to" : "Failed to") << " send name \"" << MinesweeperGame::peer_info.name << "\"" << std::endl;
@@ -1039,9 +1062,7 @@ void Lobby::update_connecting()
 
             // Receive name
             {
-                sf::Packet new_peer_name_packet;
-
-                connection_status = MinesweeperGame::tcp_socket.receive(new_peer_name_packet);
+                sf::Packet new_peer_name_packet = receive();
 
                 new_peer_name_packet >> MinesweeperGame::new_peer_info.name;
 
@@ -1056,7 +1077,7 @@ void Lobby::update_connecting()
 
                 ip_packet << MinesweeperGame::peer_info.public_ip_address;
 
-                connection_status = MinesweeperGame::tcp_socket.send(ip_packet);
+                send(ip_packet);
 
 #ifdef __RELEASE__
                 std::cout << "[CLIENT] " << (connection_status == sf::Socket::Done ? "Succeeded to" : "Failed to") << " send IP \"" << MinesweeperGame::peer_info.public_ip_address << "\"" << std::endl;
@@ -1065,9 +1086,7 @@ void Lobby::update_connecting()
 
             // Receive IP address
             {
-                sf::Packet new_peer_ip_packet;
-
-                connection_status = MinesweeperGame::tcp_socket.receive(new_peer_ip_packet);
+                sf::Packet new_peer_ip_packet = receive();
 
                 new_peer_ip_packet >> MinesweeperGame::new_peer_info.public_ip_address;
 
@@ -1082,7 +1101,7 @@ void Lobby::update_connecting()
 
                 port_packet << MinesweeperGame::peer_info.port;
 
-                connection_status = MinesweeperGame::tcp_socket.send(port_packet);
+                send(port_packet);
 
 #ifdef __RELEASE__
                 std::cout << "[CLIENT] " << (connection_status == sf::Socket::Done ? "Succeeded to" : "Failed to") << " send port \"" << MinesweeperGame::peer_info.port << "\"" << std::endl;
@@ -1091,9 +1110,7 @@ void Lobby::update_connecting()
 
             // Receive port
             {
-                sf::Packet new_peer_port_packet;
-
-                connection_status = MinesweeperGame::tcp_socket.receive(new_peer_port_packet);
+                sf::Packet new_peer_port_packet = receive();
 
                 new_peer_port_packet >> MinesweeperGame::new_peer_info.port;
 
@@ -1129,7 +1146,7 @@ void Lobby::update_waiting()
 
                 name_packet << MinesweeperGame::peer_info.name;
 
-                connection_status = MinesweeperGame::tcp_socket.send(name_packet);
+                send(name_packet);
 
 #ifdef __RELEASE__
                 std::cout << "[HOST] " << (connection_status == sf::Socket::Done ? "Succeeded to" : "Failed to") << " send name \"" << MinesweeperGame::peer_info.name << "\"" << std::endl;
@@ -1138,9 +1155,7 @@ void Lobby::update_waiting()
 
             // Receive name
             {
-                sf::Packet new_peer_name_packet;
-
-                connection_status = MinesweeperGame::tcp_socket.receive(new_peer_name_packet);
+                sf::Packet new_peer_name_packet = receive();
 
                 new_peer_name_packet >> MinesweeperGame::new_peer_info.name;
 
@@ -1155,7 +1170,7 @@ void Lobby::update_waiting()
 
                 ip_packet << MinesweeperGame::peer_info.public_ip_address;
 
-                connection_status = MinesweeperGame::tcp_socket.send(ip_packet);
+                send(ip_packet);
 
 #ifdef __RELEASE__
                 std::cout << "[HOST] " << (connection_status == sf::Socket::Done ? "Succeeded to" : "Failed to") << " send IP \"" << MinesweeperGame::peer_info.public_ip_address << "\"" << std::endl;
@@ -1164,9 +1179,7 @@ void Lobby::update_waiting()
 
             // Receive IP address
             {
-                sf::Packet new_peer_ip_packet;
-
-                connection_status = MinesweeperGame::tcp_socket.receive(new_peer_ip_packet);
+                sf::Packet new_peer_ip_packet = receive();
 
                 new_peer_ip_packet >> MinesweeperGame::new_peer_info.public_ip_address;
 
@@ -1182,7 +1195,7 @@ void Lobby::update_waiting()
 
                 port_packet << MinesweeperGame::peer_info.port;
 
-                connection_status = MinesweeperGame::tcp_socket.send(port_packet);
+                send(port_packet);
 
 #ifdef __RELEASE__
                 std::cout << "[HOST] " << (connection_status == sf::Socket::Done ? "Succeeded to" : "Failed to") << " send port \"" << MinesweeperGame::peer_info.port << "\"" << std::endl;
@@ -1191,9 +1204,7 @@ void Lobby::update_waiting()
 
             // Receive port
             {
-                sf::Packet new_peer_port_packet;
-
-                connection_status = MinesweeperGame::tcp_socket.receive(new_peer_port_packet);
+                sf::Packet new_peer_port_packet = receive();
 
                 new_peer_port_packet >> MinesweeperGame::new_peer_info.port;
 
@@ -1255,7 +1266,7 @@ void Lobby::update_ping()
 
         std::chrono::high_resolution_clock::time_point t1 = std::chrono::high_resolution_clock::now();
 
-        connection_status = MinesweeperGame::tcp_socket.send(ping_packet);
+        send(ping_packet);
 
         std::chrono::high_resolution_clock::time_point t2 = std::chrono::high_resolution_clock::now();
 
@@ -1278,14 +1289,12 @@ void Lobby::update_ping()
 
         max_ping_packet << MinesweeperGame::peer_info.max_ping;
 
-        connection_status = MinesweeperGame::tcp_socket.send(max_ping_packet);
+        send(max_ping_packet);
     }
 
     // Receive ping
     {
-        sf::Packet new_peer_ping_packet;
-
-        connection_status = MinesweeperGame::tcp_socket.receive(new_peer_ping_packet);
+        sf::Packet new_peer_ping_packet = receive();
 
         if(ping_delay_timer.getElapsedTime().asSeconds() >= Lobby::PING_DELAY) {
 
@@ -1296,9 +1305,7 @@ void Lobby::update_ping()
 
     // Receive max ping
     {
-        sf::Packet new_peer_max_ping_packet;
-
-        connection_status = MinesweeperGame::tcp_socket.receive(new_peer_max_ping_packet);
+        sf::Packet new_peer_max_ping_packet = receive();
 
         if(ping_delay_timer.getElapsedTime().asSeconds() >= Lobby::PING_DELAY) {
 
