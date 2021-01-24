@@ -30,6 +30,7 @@ using namespace Minesweeper;
 
 LobbyBeginnerButton::LobbyBeginnerButton(Lobby& lobby_ref_, Enabled enabled_, const sf::Vector2f& position_, const sf::Vector2f& scale_, const std::shared_ptr<sf::Texture>& hovered, const std::shared_ptr<sf::Texture>& non_hovered, const std::shared_ptr<sf::Texture>& down, const std::shared_ptr<sf::SoundBuffer>& hovered_sfx, const std::shared_ptr<sf::SoundBuffer>& pressed_sfx) :
     Button(enabled_, position_, scale_, hovered, non_hovered, down, hovered_sfx, pressed_sfx),
+    active(),
     lobby_ref(lobby_ref_)
 {
     //
@@ -37,12 +38,16 @@ LobbyBeginnerButton::LobbyBeginnerButton(Lobby& lobby_ref_, Enabled enabled_, co
 
 void LobbyBeginnerButton::process_inputs()
 {
-    if(lobby_ref.get().is_listening() && (lobby_ref.get().get_connection_status() == sf::Socket::Done)) Button::process_inputs();
+    if(lobby_ref.get().listener && (lobby_ref.get().connection_status == sf::Socket::Done)) Button::process_inputs();
 }
 
 void LobbyBeginnerButton::update(float d)
 {
-    if(lobby_ref.get().is_listening() && (lobby_ref.get().get_connection_status() == sf::Socket::Done)) Button::update(d);
+    if(lobby_ref.get().listener && (lobby_ref.get().connection_status == sf::Socket::Done)) Button::update(d);
+
+    if(lobby_ref.get().listener) lobby_ref.get().send('C', active ? "1" : "0");
+
+    sprite.setColor(active ? sf::Color(0, 255, 0) : sf::Color::White);
 }
 
 void LobbyBeginnerButton::on_button_up()
@@ -57,5 +62,12 @@ void LobbyBeginnerButton::on_button_down()
 
 void LobbyBeginnerButton::on_button_pressed()
 {
-    SceneManager::shared_data["DIFFICULTY"] = '0';
+    lobby_ref.get().change_difficulty(Lobby::Difficulties::BEGINNER, "1");
+}
+
+void LobbyBeginnerButton::set_active(bool b)
+{
+    active = b;
+
+    if(active) SceneManager::shared_data["DIFFICULTY"] = '0';
 }
