@@ -411,6 +411,33 @@
 		<Unit filename="include/assets/SelectDurationPanel.h">
 			<Option target="Static Release" />
 		</Unit>
+		<Unit filename="include/assets/SmallAverageButtonDown.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/SmallAverageButtonHovered.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/SmallAverageButtonNHovered.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/SmallBeginnerButtonDown.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/SmallBeginnerButtonHovered.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/SmallBeginnerButtonNHovered.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/SmallExpertButtonDown.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/SmallExpertButtonHovered.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/SmallExpertButtonNHovered.h">
+			<Option target="Static Release" />
+		</Unit>
 		<Unit filename="include/assets/SplashScreenSoundtrack.h">
 			<Option target="Static Release" />
 		</Unit>
@@ -800,6 +827,33 @@
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="src/assets/SelectDurationPanel.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/SmallAverageButtonDown.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/SmallAverageButtonHovered.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/SmallAverageButtonNHovered.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/SmallBeginnerButtonDown.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/SmallBeginnerButtonHovered.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/SmallBeginnerButtonNHovered.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/SmallExpertButtonDown.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/SmallExpertButtonHovered.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/SmallExpertButtonNHovered.cpp">
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="src/assets/SplashScreenSoundtrack.cpp">
