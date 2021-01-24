@@ -24,11 +24,13 @@
 #include "components/buttons/DurationAButton.h"
 
 #include "scene/scenes/Lobby.h"
+#include "scene/SceneManager.h"
 
 using namespace Minesweeper;
 
 DurationAButton::DurationAButton(Lobby& lobby_ref_, Enabled enabled_, const sf::Vector2f& position_, const sf::Vector2f& scale_, const std::shared_ptr<sf::Texture>& hovered, const std::shared_ptr<sf::Texture>& non_hovered, const std::shared_ptr<sf::Texture>& down, const std::shared_ptr<sf::SoundBuffer>& hovered_sfx, const std::shared_ptr<sf::SoundBuffer>& pressed_sfx) :
     Button(enabled_, position_, scale_, hovered, non_hovered, down, hovered_sfx, pressed_sfx),
+    active(),
     lobby_ref(lobby_ref_)
 {
     //
@@ -42,6 +44,10 @@ void DurationAButton::process_inputs()
 void DurationAButton::update(float d)
 {
     if(lobby_ref.get().listener && (lobby_ref.get().connection_status == sf::Socket::Done)) Button::update(d);
+
+    if(lobby_ref.get().listener) lobby_ref.get().send('F', active ? "1" : "0");
+
+    sprite.setColor(active ? sf::Color(0, 255, 0) : sf::Color::White);
 }
 
 void DurationAButton::on_button_up()
@@ -56,5 +62,12 @@ void DurationAButton::on_button_down()
 
 void DurationAButton::on_button_pressed()
 {
-    //
+    lobby_ref.get().change_duration(Lobby::Durations::SHORT, "1");
+}
+
+void DurationAButton::set_active(bool b)
+{
+    active = b;
+
+    if(active) SceneManager::shared_data["DURATION"] = 'S';
 }

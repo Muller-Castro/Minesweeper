@@ -41,12 +41,16 @@ namespace Minesweeper {
         void process_inputs() override;
         void update(float d)  override;
 
+        void set_active(bool);
+
     protected:
         void on_button_up()      override;
         void on_button_down()    override;
         void on_button_pressed() override;
 
     private:
+        bool active;
+
         std::reference_wrapper<Lobby> lobby_ref;
     };
 

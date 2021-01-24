@@ -62,6 +62,9 @@ namespace Minesweeper {
         friend class LobbyBeginnerButton;
         friend class LobbyAverageButton;
         friend class LobbyExpertButton;
+        friend class DurationAButton;
+        friend class DurationBButton;
+        friend class DurationCButton;
         friend class AverageButton;
         friend class ExpertButton;
         friend class Game;

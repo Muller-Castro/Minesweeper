@@ -972,6 +972,10 @@ void Lobby::receive_packages()
             if((idx = received_data.find('D')) != std::string::npos) change_difficulty(Difficulties::AVERAGE , retrieve_data<'D'>(idx, received_data));
             if((idx = received_data.find('E')) != std::string::npos) change_difficulty(Difficulties::EXPERT  , retrieve_data<'E'>(idx, received_data));
 
+            if((idx = received_data.find('F')) != std::string::npos) change_duration(Durations::SHORT , retrieve_data<'F'>(idx, received_data));
+            if((idx = received_data.find('G')) != std::string::npos) change_duration(Durations::NORMAL, retrieve_data<'G'>(idx, received_data));
+            if((idx = received_data.find('H')) != std::string::npos) change_duration(Durations::LONG  , retrieve_data<'H'>(idx, received_data));
+
         }
         //////////////////////////////////////////
 
@@ -1335,7 +1339,29 @@ void Lobby::change_difficulty(Difficulties d, const std::string& difficulty)
 
 void Lobby::change_duration(Durations d, const std::string& duration)
 {
-    //
+    DurationAButton* da = dynamic_cast<DurationAButton*>(buttons[States::WAITING][3].get());
+    DurationBButton* db = dynamic_cast<DurationBButton*>(buttons[States::WAITING][4].get());
+    DurationCButton* dc = dynamic_cast<DurationCButton*>(buttons[States::WAITING][5].get());
+
+    if((d == Durations::SHORT) && (duration == "1")) {
+
+        da->set_active(true);
+        db->set_active(false);
+        dc->set_active(false);
+
+    }else if((d == Durations::NORMAL) && (duration == "1")) {
+
+        da->set_active(false);
+        db->set_active(true);
+        dc->set_active(false);
+
+    }else if((d == Durations::LONG) && (duration == "1")) {
+
+        da->set_active(false);
+        db->set_active(false);
+        dc->set_active(true);
+
+    }
 }
 
 void Lobby::receive_ping(const std::string& ping_str) const
