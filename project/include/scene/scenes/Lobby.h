@@ -35,7 +35,6 @@
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Shader.hpp>
 #include <SFML/Network/TcpListener.hpp>
-#include <SFML/Network/Packet.hpp>
 
 #include "scene/Scene.h"
 #include "components/buttons/LobbyReturnButton.h"
