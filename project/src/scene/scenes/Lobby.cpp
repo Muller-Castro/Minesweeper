@@ -32,6 +32,7 @@
 #endif // __RELEASE__
 
 #include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/Network/Packet.hpp>
 
 #include "io/ResourceLoader.h"
 #include "scene/SceneManager.h"
