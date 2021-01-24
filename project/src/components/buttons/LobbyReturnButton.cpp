@@ -73,6 +73,9 @@ void LobbyReturnButton::on_button_pressed()
 
             }
 
+            lobby_ref.get().reset_config_buttons();
+
+            MinesweeperGame::tcp_socket.setBlocking(true);
             MinesweeperGame::tcp_socket.disconnect();
 
         } break;

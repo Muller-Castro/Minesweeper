@@ -36,12 +36,12 @@ DurationCButton::DurationCButton(Lobby& lobby_ref_, Enabled enabled_, const sf::
 
 void DurationCButton::process_inputs()
 {
-    if(lobby_ref.get().is_listening() && (lobby_ref.get().get_connection_status() == sf::Socket::Done)) Button::process_inputs();
+    if(lobby_ref.get().listener && (lobby_ref.get().connection_status == sf::Socket::Done)) Button::process_inputs();
 }
 
 void DurationCButton::update(float d)
 {
-    if(lobby_ref.get().is_listening() && (lobby_ref.get().get_connection_status() == sf::Socket::Done)) Button::update(d);
+    if(lobby_ref.get().listener && (lobby_ref.get().connection_status == sf::Socket::Done)) Button::update(d);
 }
 
 void DurationCButton::on_button_up()

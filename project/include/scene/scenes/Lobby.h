@@ -55,23 +55,38 @@ namespace Minesweeper {
         void update(float delta) override;
         void draw()              override;
 
-        bool is_listening() const noexcept { return static_cast<bool>(listener); }
-        sf::Socket::Status get_connection_status() const noexcept { return connection_status; }
-
-        void send(sf::Packet&);
-        sf::Packet receive(const std::string& label = std::string());
-
     private:
         friend class LobbyReturnButton;
         friend class HostButton;
         friend class JoinButton;
         friend class ConnectionCancelButton;
+        friend class LobbyBeginnerButton;
+        friend class LobbyAverageButton;
+        friend class LobbyExpertButton;
+        friend class DurationAButton;
+        friend class DurationBButton;
+        friend class DurationCButton;
+        friend class StartButton;
 
         enum class States : unsigned char
         {
             REGISTRATION,
             CONNECTING, // JOIN
             WAITING
+        };
+
+        enum class Difficulties : unsigned char
+        {
+            BEGINNER,
+            AVERAGE,
+            EXPERT
+        };
+
+        enum class Durations : unsigned char
+        {
+            SHORT,
+            NORMAL,
+            LONG
         };
 
         static constexpr float JOIN_DELAY = 2.f;
@@ -126,9 +141,36 @@ namespace Minesweeper {
 
         std::unique_ptr<sf::TcpListener> listener;
 
+        void receive_packages();
+        void send(char label, const std::string& data);
+
+        template<char c>
+        std::string retrieve_data(size_t idx, const std::string& data)
+        {
+            std::string result;
+
+            for(std::string::const_iterator cit = data.cbegin() + idx + 1; cit != data.cend(); ++cit) {
+
+                if(*cit == c) break;
+
+                result += *cit;
+
+            }
+
+            return result;
+        }
+
         bool evaluate_text_edits();
         bool evaluate_port();
         bool evaluate_ip_port();
+
+        void reset_config_buttons();
+        void change_difficulty(Difficulties d, const std::string& difficulty);
+        void change_duration(Durations d, const std::string& duration);
+        void receive_ping(const std::string& ping_str) const;
+        void receive_max_ping(const std::string& max_ping_str);
+        void send_ping();
+        void send_max_ping();
 
         void update_connecting();
         void update_waiting();

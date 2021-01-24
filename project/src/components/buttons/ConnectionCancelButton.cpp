@@ -51,5 +51,6 @@ void ConnectionCancelButton::on_button_pressed()
 
     lobby_ref.get().connection_status = sf::Socket::NotReady;
 
+    MinesweeperGame::tcp_socket.setBlocking(true);
     MinesweeperGame::tcp_socket.disconnect();
 }
