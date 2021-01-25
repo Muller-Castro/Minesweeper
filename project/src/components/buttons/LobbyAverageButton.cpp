@@ -25,6 +25,7 @@
 
 #include "scene/scenes/Lobby.h"
 #include "scene/SceneManager.h"
+#include "components/buttons/StartButton.h"
 
 using namespace Minesweeper;
 
@@ -63,6 +64,12 @@ void LobbyAverageButton::on_button_down()
 void LobbyAverageButton::on_button_pressed()
 {
     lobby_ref.get().change_difficulty(Lobby::Difficulties::AVERAGE, "1");
+
+    SceneManager::call_deferred([&]() {
+
+        dynamic_cast<StartButton&>(*lobby_ref.get().buttons[Lobby::States::WAITING][6]).play_counter();
+
+    });
 }
 
 void LobbyAverageButton::set_active(bool b)
