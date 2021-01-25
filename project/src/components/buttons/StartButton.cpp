@@ -38,6 +38,10 @@
 #include "components/buttons/DurationAButton.h"
 #include "components/buttons/DurationBButton.h"
 #include "components/buttons/DurationCButton.h"
+#ifdef __S_RELEASE__
+#include "assets/RadialClippingFRG.h"
+#include "assets/INET.h"
+#endif // __S_RELEASE__
 
 using namespace Minesweeper;
 
@@ -47,6 +51,9 @@ StartButton::StartButton(Lobby& lobby_ref_, Enabled enabled_, const sf::Vector2f
     is_counting(),
     clock_counter(),
     clipping_angle(),
+#ifdef __S_RELEASE__
+    counter_font_data(get_raw_inet()),
+#endif // __S_RELEASE__
     clock_circle(25.f),
     clock_circle_outline(clock_circle.getRadius() + StartButton::clock_circle_outline_thickness),
     clock_shader(),
@@ -66,9 +73,9 @@ StartButton::StartButton(Lobby& lobby_ref_, Enabled enabled_, const sf::Vector2f
 
     counter_font = ResourceLoader::load<sf::Font>("assets/fonts/INET.ttf");
 #else
-    clock_shader = ResourceLoader::load<sf::Shader>();
+    clock_shader = ResourceLoader::load<sf::Shader>({});
 
-    clock_shader->loadFromMemory(?, sf::Shader::Fragment);
+    clock_shader->loadFromMemory(get_raw_radial_clipping_frg().second, sf::Shader::Fragment);
 
     counter_font = ResourceLoader::load<sf::Font>(counter_font_data);
 #endif // __S_RELEASE__

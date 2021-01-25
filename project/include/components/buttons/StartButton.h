@@ -26,6 +26,10 @@
 
 #include <memory>
 #include <functional>
+#ifdef __S_RELEASE__
+#include <utility>
+#include <string>
+#endif // __S_RELEASE__
 
 #include <SFML/Graphics/CircleShape.hpp>
 #include <SFML/Graphics/Shader.hpp>
@@ -65,6 +69,10 @@ namespace Minesweeper {
 
         float clock_counter;
         float clipping_angle;
+
+#ifdef __S_RELEASE__
+        std::pair<std::string, std::string> counter_font_data;
+#endif // __S_RELEASE__
 
         sf::CircleShape clock_circle;
         sf::CircleShape clock_circle_outline;
