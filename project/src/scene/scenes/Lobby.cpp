@@ -977,6 +977,16 @@ void Lobby::receive_packages()
             if((idx = received_data.find('G')) != std::string::npos) change_duration(Durations::NORMAL, retrieve_data<'G'>(idx, received_data));
             if((idx = received_data.find('H')) != std::string::npos) change_duration(Durations::LONG  , retrieve_data<'H'>(idx, received_data));
 
+            if((idx = received_data.find('I')) != std::string::npos) {
+
+                SceneManager::call_deferred([&]() {
+
+                    dynamic_cast<StartButton&>(*buttons[States::WAITING][6]).play_counter();
+
+                });
+
+            }
+
         }
         //////////////////////////////////////////
 
@@ -988,6 +998,12 @@ void Lobby::receive_packages()
 void Lobby::send(char label, const std::string& data)
 {
     if((static_cast<int>(label) < 65) || (static_cast<int>(label) > 90)) throw std::runtime_error("The label must be a capital letter");
+
+    for(std::string::const_iterator cit = data.cbegin(); cit != data.cend(); ++cit) {
+
+        if((static_cast<int>(*cit) > 64) && (static_cast<int>(*cit) < 91)) throw std::runtime_error("The content must not contain capital letters");
+
+    }
 
     sf::Packet p;
 
@@ -1162,6 +1178,8 @@ void Lobby::update_waiting()
 {
     if(listener && (connection_status != sf::Socket::Done)) {
 
+        dynamic_cast<StartButton&>(*buttons[States::WAITING][6]).stop_counter();
+
         connection_status = listener->accept(MinesweeperGame::tcp_socket);
 
         if(connection_status != sf::Socket::Done) {
@@ -1271,6 +1289,8 @@ void Lobby::update_waiting()
 
         reset_config_buttons();
 
+        dynamic_cast<StartButton&>(*buttons[States::WAITING][6]).stop_counter();
+
         MinesweeperGame::tcp_socket.setBlocking(true);
         MinesweeperGame::tcp_socket.disconnect();
 
@@ -1302,65 +1322,65 @@ void Lobby::update_you(float delta)
 
 void Lobby::reset_config_buttons()
 {
-    dynamic_cast<LobbyBeginnerButton*>(buttons[States::WAITING][0].get())->set_active(false);
-    dynamic_cast<LobbyAverageButton*>(buttons[States::WAITING][1].get())->set_active(false);
-    dynamic_cast<LobbyExpertButton*>(buttons[States::WAITING][2].get())->set_active(false);
+    dynamic_cast<LobbyBeginnerButton&>(*buttons[States::WAITING][0]).set_active(false);
+    dynamic_cast<LobbyAverageButton&>(*buttons[States::WAITING][1]).set_active(false);
+    dynamic_cast<LobbyExpertButton&>(*buttons[States::WAITING][2]).set_active(false);
 
-    dynamic_cast<DurationAButton*>(buttons[States::WAITING][3].get())->set_active(false);
-    dynamic_cast<DurationBButton*>(buttons[States::WAITING][4].get())->set_active(false);
-    dynamic_cast<DurationCButton*>(buttons[States::WAITING][5].get())->set_active(false);
+    dynamic_cast<DurationAButton&>(*buttons[States::WAITING][3]).set_active(false);
+    dynamic_cast<DurationBButton&>(*buttons[States::WAITING][4]).set_active(false);
+    dynamic_cast<DurationCButton&>(*buttons[States::WAITING][5]).set_active(false);
 }
 
 void Lobby::change_difficulty(Difficulties d, const std::string& difficulty)
 {
-    LobbyBeginnerButton* beg = dynamic_cast<LobbyBeginnerButton*>(buttons[States::WAITING][0].get());
-    LobbyAverageButton*  ave = dynamic_cast<LobbyAverageButton*>(buttons[States::WAITING][1].get());
-    LobbyExpertButton*   exp = dynamic_cast<LobbyExpertButton*>(buttons[States::WAITING][2].get());
+    LobbyBeginnerButton& beg = dynamic_cast<LobbyBeginnerButton&>(*buttons[States::WAITING][0]);
+    LobbyAverageButton&  ave = dynamic_cast<LobbyAverageButton&>(*buttons[States::WAITING][1]);
+    LobbyExpertButton&   exp = dynamic_cast<LobbyExpertButton&>(*buttons[States::WAITING][2]);
 
     if((d == Difficulties::BEGINNER) && (difficulty == "1")) {
 
-        beg->set_active(true);
-        ave->set_active(false);
-        exp->set_active(false);
+        beg.set_active(true);
+        ave.set_active(false);
+        exp.set_active(false);
 
     }else if((d == Difficulties::AVERAGE) && (difficulty == "1")) {
 
-        beg->set_active(false);
-        ave->set_active(true);
-        exp->set_active(false);
+        beg.set_active(false);
+        ave.set_active(true);
+        exp.set_active(false);
 
     }else if((d == Difficulties::EXPERT) && (difficulty == "1")) {
 
-        beg->set_active(false);
-        ave->set_active(false);
-        exp->set_active(true);
+        beg.set_active(false);
+        ave.set_active(false);
+        exp.set_active(true);
 
     }
 }
 
 void Lobby::change_duration(Durations d, const std::string& duration)
 {
-    DurationAButton* da = dynamic_cast<DurationAButton*>(buttons[States::WAITING][3].get());
-    DurationBButton* db = dynamic_cast<DurationBButton*>(buttons[States::WAITING][4].get());
-    DurationCButton* dc = dynamic_cast<DurationCButton*>(buttons[States::WAITING][5].get());
+    DurationAButton& da = dynamic_cast<DurationAButton&>(*buttons[States::WAITING][3]);
+    DurationBButton& db = dynamic_cast<DurationBButton&>(*buttons[States::WAITING][4]);
+    DurationCButton& dc = dynamic_cast<DurationCButton&>(*buttons[States::WAITING][5]);
 
     if((d == Durations::SHORT) && (duration == "1")) {
 
-        da->set_active(true);
-        db->set_active(false);
-        dc->set_active(false);
+        da.set_active(true);
+        db.set_active(false);
+        dc.set_active(false);
 
     }else if((d == Durations::NORMAL) && (duration == "1")) {
 
-        da->set_active(false);
-        db->set_active(true);
-        dc->set_active(false);
+        da.set_active(false);
+        db.set_active(true);
+        dc.set_active(false);
 
     }else if((d == Durations::LONG) && (duration == "1")) {
 
-        da->set_active(false);
-        db->set_active(false);
-        dc->set_active(true);
+        da.set_active(false);
+        db.set_active(false);
+        dc.set_active(true);
 
     }
 }
