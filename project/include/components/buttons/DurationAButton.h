@@ -41,6 +41,7 @@ namespace Minesweeper {
         void process_inputs() override;
         void update(float d)  override;
 
+        bool is_active() const noexcept { return active; }
         void set_active(bool);
 
     protected:

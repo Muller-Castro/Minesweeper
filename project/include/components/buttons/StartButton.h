@@ -47,6 +47,8 @@ namespace Minesweeper {
         void on_button_pressed() override;
 
     private:
+        bool active;
+
         std::reference_wrapper<Lobby> lobby_ref;
     };
 

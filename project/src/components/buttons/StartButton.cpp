@@ -25,11 +25,18 @@
 
 #include "scene/SceneManager.h"
 #include "scene/scenes/Lobby.h"
+#include "components/buttons/LobbyBeginnerButton.h"
+#include "components/buttons/LobbyAverageButton.h"
+#include "components/buttons/LobbyExpertButton.h"
+#include "components/buttons/DurationAButton.h"
+#include "components/buttons/DurationBButton.h"
+#include "components/buttons/DurationCButton.h"
 
 using namespace Minesweeper;
 
 StartButton::StartButton(Lobby& lobby_ref_, Enabled enabled_, const sf::Vector2f& position_, const sf::Vector2f& scale_, const std::shared_ptr<sf::Texture>& hovered, const std::shared_ptr<sf::Texture>& non_hovered, const std::shared_ptr<sf::Texture>& down, const std::shared_ptr<sf::SoundBuffer>& hovered_sfx, const std::shared_ptr<sf::SoundBuffer>& pressed_sfx) :
     Button(enabled_, position_, scale_, hovered, non_hovered, down, hovered_sfx, pressed_sfx),
+    active(),
     lobby_ref(lobby_ref_)
 {
     //
@@ -37,12 +44,29 @@ StartButton::StartButton(Lobby& lobby_ref_, Enabled enabled_, const sf::Vector2f
 
 void StartButton::process_inputs()
 {
-    if(lobby_ref.get().listener && (lobby_ref.get().connection_status == sf::Socket::Done)) Button::process_inputs();
+    if(lobby_ref.get().listener && (lobby_ref.get().connection_status == sf::Socket::Done) && active) Button::process_inputs();
 }
 
 void StartButton::update(float d)
 {
-    if(lobby_ref.get().listener && (lobby_ref.get().connection_status == sf::Socket::Done)) Button::update(d);
+    {
+        bool x = false, y = false;
+
+        x |= dynamic_cast<LobbyBeginnerButton*>(lobby_ref.get().buttons[Lobby::States::WAITING][0].get())->is_active();
+        x |= dynamic_cast<LobbyAverageButton*>(lobby_ref.get().buttons[Lobby::States::WAITING][1].get())->is_active();
+        x |= dynamic_cast<LobbyExpertButton*>(lobby_ref.get().buttons[Lobby::States::WAITING][2].get())->is_active();
+
+        y |= dynamic_cast<DurationAButton*>(lobby_ref.get().buttons[Lobby::States::WAITING][3].get())->is_active();
+        y |= dynamic_cast<DurationBButton*>(lobby_ref.get().buttons[Lobby::States::WAITING][4].get())->is_active();
+        y |= dynamic_cast<DurationCButton*>(lobby_ref.get().buttons[Lobby::States::WAITING][5].get())->is_active();
+
+        active = (x && y);
+    }
+
+    if(lobby_ref.get().listener && (lobby_ref.get().connection_status == sf::Socket::Done) && active) Button::update(d);
+
+    if(!lobby_ref.get().listener || (lobby_ref.get().listener && active)) sprite.setColor(sf::Color::White);
+    else                                                                  sprite.setColor(sf::Color(51, 51, 51));
 }
 
 void StartButton::on_button_up()
