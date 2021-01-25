@@ -26,6 +26,7 @@
 #include "MinesweeperGame.h"
 #include "scene/SceneManager.h"
 #include "scene/scenes/Lobby.h"
+#include "components/buttons/StartButton.h"
 
 using namespace Minesweeper;
 
@@ -74,6 +75,8 @@ void LobbyReturnButton::on_button_pressed()
             }
 
             lobby_ref.get().reset_config_buttons();
+
+            dynamic_cast<StartButton&>(*lobby_ref.get().buttons[Lobby::States::WAITING][6]).stop_counter();
 
             MinesweeperGame::tcp_socket.setBlocking(true);
             MinesweeperGame::tcp_socket.disconnect();
