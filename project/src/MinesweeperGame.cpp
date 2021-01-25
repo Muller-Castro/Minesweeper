@@ -72,7 +72,7 @@ int MinesweeperGame::run() noexcept
 
         read_win_style_from_str(win_data["WINDOW"]["Style"], win_style);
 
-        sf::RenderWindow window(sf::VideoMode(win_width, win_height), win_title, win_style);
+        sf::RenderWindow window(sf::VideoMode(win_width, win_height), win_title, win_style, sf::ContextSettings(0, 0, 4));
 
         {
             sf::Image icon;
