@@ -381,6 +381,9 @@
 		<Unit filename="include/assets/QuitNHovered.h">
 			<Option target="Static Release" />
 		</Unit>
+		<Unit filename="include/assets/RadialClippingFRG.h">
+			<Option target="Static Release" />
+		</Unit>
 		<Unit filename="include/assets/RecordGrid.h">
 			<Option target="Static Release" />
 		</Unit>
@@ -797,6 +800,9 @@
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="src/assets/QuitNHovered.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/RadialClippingFRG.cpp">
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="src/assets/RecordGrid.cpp">
