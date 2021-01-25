@@ -23,8 +23,15 @@
 
 #include "components/buttons/StartButton.h"
 
+#include <string>
+#include <cmath>
+
+#include <SFML/Graphics/RenderWindow.hpp>
+
+#include "MinesweeperGame.h"
 #include "scene/SceneManager.h"
 #include "scene/scenes/Lobby.h"
+#include "io/ResourceLoader.h"
 #include "components/buttons/LobbyBeginnerButton.h"
 #include "components/buttons/LobbyAverageButton.h"
 #include "components/buttons/LobbyExpertButton.h"
@@ -37,14 +44,46 @@ using namespace Minesweeper;
 StartButton::StartButton(Lobby& lobby_ref_, Enabled enabled_, const sf::Vector2f& position_, const sf::Vector2f& scale_, const std::shared_ptr<sf::Texture>& hovered, const std::shared_ptr<sf::Texture>& non_hovered, const std::shared_ptr<sf::Texture>& down, const std::shared_ptr<sf::SoundBuffer>& hovered_sfx, const std::shared_ptr<sf::SoundBuffer>& pressed_sfx) :
     Button(enabled_, position_, scale_, hovered, non_hovered, down, hovered_sfx, pressed_sfx),
     active(),
+    is_counting(),
+    clock_counter(),
+    clipping_angle(),
+    clock_circle(25.f),
+    clock_circle_outline(clock_circle.getRadius() + StartButton::clock_circle_outline_thickness),
+    clock_shader(),
+    counter_font(),
+    counter_text(),
     lobby_ref(lobby_ref_)
 {
-    //
+    clock_circle.setPosition(sf::Vector2f(315.f, 376.f));
+
+    clock_circle.setTextureRect(sf::IntRect(-clock_circle.getRadius(), -clock_circle.getRadius(), clock_circle.getRadius() * 2, clock_circle.getRadius() * 2));
+
+    clock_circle_outline.setPosition(sf::Vector2f(clock_circle.getPosition().x - StartButton::clock_circle_outline_thickness, clock_circle.getPosition().y - StartButton::clock_circle_outline_thickness));
+    clock_circle_outline.setFillColor(sf::Color::Black);
+
+#ifndef __S_RELEASE__
+    clock_shader = ResourceLoader::load<sf::Shader>("assets/shaders/RadialClipping.frg");
+
+    counter_font = ResourceLoader::load<sf::Font>("assets/fonts/INET.ttf");
+#else
+    clock_shader = ResourceLoader::load<sf::Shader>();
+
+    clock_shader->loadFromMemory(?, sf::Shader::Fragment);
+
+    counter_font = ResourceLoader::load<sf::Font>(counter_font_data);
+#endif // __S_RELEASE__
+
+    clock_shader->setUniform("in_radius", clock_circle.getRadius());
+
+    counter_text.setFont(*counter_font);
+    counter_text.setCharacterSize(30);
+    counter_text.setOutlineThickness(2.f);
+    counter_text.setOutlineColor(sf::Color::Black);
 }
 
 void StartButton::process_inputs()
 {
-    if(lobby_ref.get().listener && (lobby_ref.get().connection_status == sf::Socket::Done) && active) Button::process_inputs();
+    if(lobby_ref.get().listener && (lobby_ref.get().connection_status == sf::Socket::Done) && active && !is_counting) Button::process_inputs();
 }
 
 void StartButton::update(float d)
@@ -52,21 +91,37 @@ void StartButton::update(float d)
     {
         bool x = false, y = false;
 
-        x |= dynamic_cast<LobbyBeginnerButton*>(lobby_ref.get().buttons[Lobby::States::WAITING][0].get())->is_active();
-        x |= dynamic_cast<LobbyAverageButton*>(lobby_ref.get().buttons[Lobby::States::WAITING][1].get())->is_active();
-        x |= dynamic_cast<LobbyExpertButton*>(lobby_ref.get().buttons[Lobby::States::WAITING][2].get())->is_active();
+        x |= dynamic_cast<LobbyBeginnerButton&>(*lobby_ref.get().buttons[Lobby::States::WAITING][0]).is_active();
+        x |= dynamic_cast<LobbyAverageButton&>(*lobby_ref.get().buttons[Lobby::States::WAITING][1]).is_active();
+        x |= dynamic_cast<LobbyExpertButton&>(*lobby_ref.get().buttons[Lobby::States::WAITING][2]).is_active();
 
-        y |= dynamic_cast<DurationAButton*>(lobby_ref.get().buttons[Lobby::States::WAITING][3].get())->is_active();
-        y |= dynamic_cast<DurationBButton*>(lobby_ref.get().buttons[Lobby::States::WAITING][4].get())->is_active();
-        y |= dynamic_cast<DurationCButton*>(lobby_ref.get().buttons[Lobby::States::WAITING][5].get())->is_active();
+        y |= dynamic_cast<DurationAButton&>(*lobby_ref.get().buttons[Lobby::States::WAITING][3]).is_active();
+        y |= dynamic_cast<DurationBButton&>(*lobby_ref.get().buttons[Lobby::States::WAITING][4]).is_active();
+        y |= dynamic_cast<DurationCButton&>(*lobby_ref.get().buttons[Lobby::States::WAITING][5]).is_active();
 
         active = (x && y);
     }
 
-    if(lobby_ref.get().listener && (lobby_ref.get().connection_status == sf::Socket::Done) && active) Button::update(d);
+    if(lobby_ref.get().listener && (lobby_ref.get().connection_status == sf::Socket::Done) && active && !is_counting) Button::update(d);
 
     if(!lobby_ref.get().listener || (lobby_ref.get().listener && active)) sprite.setColor(sf::Color::White);
     else                                                                  sprite.setColor(sf::Color(51, 51, 51));
+
+    update_counter(d);
+}
+
+void StartButton::draw(sf::RenderTarget& target, sf::RenderStates states) const
+{
+    Button::draw(target, states);
+
+    if(is_counting) {
+
+        MinesweeperGame::window->draw(clock_circle_outline);
+        MinesweeperGame::window->draw(clock_circle, clock_shader.get());
+
+        MinesweeperGame::window->draw(counter_text);
+
+    }
 }
 
 void StartButton::on_button_up()
@@ -82,4 +137,54 @@ void StartButton::on_button_down()
 void StartButton::on_button_pressed()
 {
     //
+}
+
+void StartButton::play_counter()
+{
+    if(!active) return;
+
+    is_counting    = true;
+
+    clock_counter  = StartButton::clock_start_time;
+
+    clipping_angle = -180.f;
+
+    lobby_ref.get().send('I', "1");
+}
+
+void StartButton::stop_counter()
+{
+    is_counting    = false;
+
+    clock_counter  = StartButton::clock_start_time;
+
+    clipping_angle = -180.f;
+}
+
+void StartButton::update_counter(float d)
+{
+    if(is_counting) {
+
+        counter_text.setString(std::to_string(static_cast<int>(std::ceil(clock_counter))));
+
+        sf::FloatRect bounds = counter_text.getLocalBounds();
+        counter_text.setPosition(sf::Vector2f(std::round(342.f - bounds.width / 2.f), 380.f));
+
+        clock_counter -= d;
+
+        if(clock_counter <= 0.f) {
+
+            is_counting   = false;
+
+            clock_counter = 0.f;
+
+        }
+
+        clock_shader->setUniform("in_angle", clipping_angle);
+
+        if(clipping_angle >= 180.f) clipping_angle = -180.f;
+
+        clipping_angle += (180.f * d );
+
+    }
 }

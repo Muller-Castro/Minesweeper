@@ -24,7 +24,13 @@
 #ifndef START_BUTTON_H
 #define START_BUTTON_H
 
+#include <memory>
 #include <functional>
+
+#include <SFML/Graphics/CircleShape.hpp>
+#include <SFML/Graphics/Shader.hpp>
+#include <SFML/Graphics/Font.hpp>
+#include <SFML/Graphics/Text.hpp>
 
 #include "components/Button.h"
 
@@ -40,6 +46,10 @@ namespace Minesweeper {
 
         void process_inputs() override;
         void update(float d)  override;
+        void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
+
+        void play_counter();
+        void stop_counter();
 
     protected:
         void on_button_up()      override;
@@ -47,9 +57,27 @@ namespace Minesweeper {
         void on_button_pressed() override;
 
     private:
+        static constexpr float clock_circle_outline_thickness = 2.f;
+        static constexpr float clock_start_time               = 5.f;
+
         bool active;
+        bool is_counting;
+
+        float clock_counter;
+        float clipping_angle;
+
+        sf::CircleShape clock_circle;
+        sf::CircleShape clock_circle_outline;
+
+        std::shared_ptr<sf::Shader> clock_shader;
+
+        std::shared_ptr<sf::Font> counter_font;
+
+        sf::Text counter_text;
 
         std::reference_wrapper<Lobby> lobby_ref;
+
+        void update_counter(float d);
     };
 
 }
