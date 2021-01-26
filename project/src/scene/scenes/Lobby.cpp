@@ -95,6 +95,8 @@
 #include "assets/FailedToHost.h"
 #include "assets/MatchDropPanel.h"
 #include "assets/INET.h"
+#include "assets/ClientArrived.h"
+#include "assets/LobbySoundtrack.h"
 #include "assets/LobbyBGFRG.h"
 #include "assets/Typing.h"
 #include "assets/HostButtonHovered.h"
@@ -171,6 +173,9 @@ Lobby::Lobby() :
     connecting_text(),
     you_text(),
     background_shader(),
+    sound(),
+    client_arrived_s_buffer(),
+    soundtrack(),
     listener()
 {
     if(MinesweeperGame::peer_info.public_ip_address.empty()) MinesweeperGame::peer_info.public_ip_address = sf::IpAddress::getPublicAddress().toString();
@@ -188,6 +193,8 @@ Lobby::Lobby() :
     p2_panel                         = ResourceLoader::load<sf::Texture>("assets/textures/P2LobbyPanel.png");
     general_info_font                = ResourceLoader::load<sf::Font>("assets/fonts/Arial.ttf");
     you_font                         = ResourceLoader::load<sf::Font>("assets/fonts/INET.ttf");
+    client_arrived_s_buffer          = ResourceLoader::load<sf::SoundBuffer>("assets/sounds/ClientArrived.wav");
+    soundtrack                       = ResourceLoader::load<MusicStream>("assets/musics/LobbySoundtrack.ogg");
 #else
     background_texture               = ResourceLoader::load<sf::Texture>(get_raw_main_menu_bg());
     lobby_registration_panel_texture = ResourceLoader::load<sf::Texture>(get_raw_lobby_registration_panel());
@@ -197,12 +204,20 @@ Lobby::Lobby() :
     p2_panel                         = ResourceLoader::load<sf::Texture>(get_raw_p2_lobby_panel());
     general_info_font                = ResourceLoader::load<sf::Font>(general_info_font_data);
     you_font                         = ResourceLoader::load<sf::Font>(you_font_data);
+    client_arrived_s_buffer          = ResourceLoader::load<sf::SoundBuffer>(get_raw_client_arrived());
+    soundtrack                       = ResourceLoader::load<MusicStream>(get_raw_lobby_soundtrack());
 #endif // __S_RELEASE__
 
     background_sprite.setTexture(*background_texture);
     lobby_registration_panel_sprite.setTexture(*lobby_registration_panel_texture);
 
     lobby_registration_panel_sprite.setPosition(sf::Vector2f(195.f, 123.f));
+
+    sound.setBuffer(*client_arrived_s_buffer);
+
+    soundtrack->music.setLoop(true);
+    soundtrack->music.play();
+    soundtrack->music.setVolume(40.f);
 
 #ifndef __S_RELEASE__
     background_shader = ResourceLoader::load<sf::Shader>("assets/shaders/LobbyBG.frg");
@@ -1169,6 +1184,8 @@ void Lobby::update_connecting()
             update_ping();
             ping_delay_timer.restart();
 
+            sound.play();
+
         }
 
     }
@@ -1272,6 +1289,8 @@ void Lobby::update_waiting()
 
             update_ping();
             ping_delay_timer.restart();
+
+            sound.play();
 
         }
 

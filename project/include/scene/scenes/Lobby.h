@@ -34,6 +34,8 @@
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Shader.hpp>
+#include <SFML/Audio/Sound.hpp>
+#include <SFML/Audio/SoundBuffer.hpp>
 #include <SFML/Network/TcpListener.hpp>
 
 #include "scene/Scene.h"
@@ -41,6 +43,7 @@
 #include "components/TextEdit.h"
 #include "components/Button.h"
 #include "components/Panel.h"
+#include "io/MusicStream.h"
 
 namespace Minesweeper {
 
@@ -137,6 +140,12 @@ namespace Minesweeper {
         sf::Text you_text;
 
         std::shared_ptr<sf::Shader> background_shader;
+
+        sf::Sound sound;
+
+        std::shared_ptr<sf::SoundBuffer> client_arrived_s_buffer;
+
+        std::shared_ptr<MusicStream> soundtrack;
 
         std::unique_ptr<sf::TcpListener> listener;
 
