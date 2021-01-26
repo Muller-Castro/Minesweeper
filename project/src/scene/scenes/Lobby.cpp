@@ -1625,7 +1625,7 @@ void Lobby::draw_player_info_text(const std::pair<std::string, sf::Vector2f>& na
 void Lobby::draw_inactivation_rects()
 {
     sf::RectangleShape shape(sf::Vector2f(338.f, 62.f));
-    shape.setFillColor(sf::Color(0, 0, 0, 180));
+    shape.setFillColor(sf::Color(0, 0, 0, 120));
 
     shape.setPosition(sf::Vector2f(61.f, 98.f));
     MinesweeperGame::window->draw(shape);
