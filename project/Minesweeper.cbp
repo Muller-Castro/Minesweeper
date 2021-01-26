@@ -165,6 +165,9 @@
 		<Unit filename="include/assets/ClearButtonNHovered.h">
 			<Option target="Static Release" />
 		</Unit>
+		<Unit filename="include/assets/ClientArrived.h">
+			<Option target="Static Release" />
+		</Unit>
 		<Unit filename="include/assets/CounterPanel.h">
 			<Option target="Static Release" />
 		</Unit>
@@ -298,6 +301,9 @@
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="include/assets/LobbyRegistrationPanel.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/LobbySoundtrack.h">
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="include/assets/MainMenuBG.h">
@@ -586,6 +592,9 @@
 		<Unit filename="src/assets/ClearButtonNHovered.cpp">
 			<Option target="Static Release" />
 		</Unit>
+		<Unit filename="src/assets/ClientArrived.cpp">
+			<Option target="Static Release" />
+		</Unit>
 		<Unit filename="src/assets/CounterPanel.cpp">
 			<Option target="Static Release" />
 		</Unit>
@@ -719,6 +728,9 @@
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="src/assets/LobbyRegistrationPanel.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/LobbySoundtrack.cpp">
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="src/assets/MainMenuBG.cpp">
