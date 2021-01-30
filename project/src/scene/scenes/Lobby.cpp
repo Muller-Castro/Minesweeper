@@ -94,6 +94,7 @@
 #include "assets/InvalidIPPortPanel.h"
 #include "assets/FailedToHost.h"
 #include "assets/MatchDropPanel.h"
+#include "assets/WrongPasswordPanel.h"
 #include "assets/INET.h"
 #include "assets/ClientArrived.h"
 #include "assets/LobbySoundtrack.h"
@@ -795,6 +796,40 @@ Lobby::Lobby() :
         }
 
     );
+
+    panels["W_PASS"] = Panel(
+
+        sf::Vector2f(105.f, 189.f),
+        sf::Vector2f(1.f, 1.f),
+#ifndef __S_RELEASE__
+        ResourceLoader::load<sf::Texture>("assets/textures/WrongPasswordPanel.png"),
+#else
+        ResourceLoader::load<sf::Texture>(get_raw_wrong_password_panel()),
+#endif // __S_RELEASE__
+        {
+            std::make_shared<AllFieldsOKButton>(
+
+                Button::Enabled::LEFT,
+                sf::Vector2f(406.f, 303.f),
+                sf::Vector2f(1.f, 1.f),
+#ifndef __S_RELEASE__
+                ResourceLoader::load<sf::Texture>("assets/textures/AllFieldsOKButtonHovered.png"),
+                ResourceLoader::load<sf::Texture>("assets/textures/AllFieldsOKButtonNHovered.png"),
+                ResourceLoader::load<sf::Texture>("assets/textures/AllFieldsOKButtonDown.png"),
+                ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonHovered.wav"),
+                ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonPressed.wav")
+#else
+                ResourceLoader::load<sf::Texture>(get_raw_all_fields_ok_button_hovered()),
+                ResourceLoader::load<sf::Texture>(get_raw_all_fields_ok_button_n_hovered()),
+                ResourceLoader::load<sf::Texture>(get_raw_all_fields_ok_button_down()),
+                ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_hovered()),
+                ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_pressed())
+#endif // __S_RELEASE__
+
+            )
+        }
+
+    );
     /////////////// Panels
 }
 
@@ -1094,6 +1129,48 @@ void Lobby::update_connecting()
 
         if(connection_status == sf::Socket::Done) {
 
+            // Send password
+            {
+                sf::Packet password;
+
+                password << text_edits[2].get_text_str();
+
+                connection_status = MinesweeperGame::tcp_socket.send(password);
+
+                password.clear();
+
+                connection_status = MinesweeperGame::tcp_socket.receive(password);
+
+                std::string password_str;
+
+                password >> password_str;
+
+                if(password_str != "1") {
+
+#ifdef __RELEASE__
+                    std::cout << "[CLIENT] The host DENIED the password." << std::endl;
+#endif // __RELEASE__
+
+                    current_state     = States::REGISTRATION;
+
+                    connection_status = sf::Socket::NotReady;
+
+                    panels["W_PASS"].set_active(true);
+
+                    MinesweeperGame::tcp_socket.disconnect();
+
+                    return;
+
+                }
+#ifdef __RELEASE__
+                else {
+
+                    std::cout << "[CLIENT] The host ACCEPTED the password." << std::endl;
+
+                }
+#endif // __RELEASE__
+            }
+
             current_state = States::WAITING;
 
             MinesweeperGame::peer_info.name = text_edits[0].get_text_str();
@@ -1204,6 +1281,45 @@ void Lobby::update_waiting()
             reset_config_buttons();
 
         }else {
+
+            // Receive Password
+            {
+                sf::Packet password;
+
+                connection_status = MinesweeperGame::tcp_socket.receive(password);
+
+                std::string password_str;
+
+                password >> password_str;
+
+                password.clear();
+
+                if(password_str != text_edits[2].get_text_str()) {
+
+#ifdef __RELEASE__
+                    std::cout << "[HOST] The client sent a WRONG password." << std::endl;
+#endif // __RELEASE__
+
+                    connection_status = sf::Socket::NotReady;
+
+                    password << "0";
+                    MinesweeperGame::tcp_socket.send(password);
+
+                    MinesweeperGame::tcp_socket.disconnect();
+
+                    return;
+
+                }else {
+
+#ifdef __RELEASE__
+                    std::cout << "[HOST] The client sent a CORRECT password." << std::endl;
+#endif // __RELEASE__
+
+                    password << "1";
+                    MinesweeperGame::tcp_socket.send(password);
+
+                }
+            }
 
             // Send name
             {
