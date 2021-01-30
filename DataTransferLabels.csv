@@ -1,10 +1,13 @@
 Label;Scene;Data
-A;Lobby;Ping
-B;Lobby;Max Ping
-C;Lobby;Beginner Button
-D;Lobby;Average Button
-E;Lobby;Expert Button
-F;Lobby;DurationA Button
-G;Lobby;DurationB Button
-H;Lobby;DurationC Button
-I;Lobby;Play Counter
+A;Lobby;Password
+B;Lobby;Name
+C;Lobby;IP
+D;Lobby;Ping
+E;Lobby;Max Ping
+F;Lobby;Beginner Button
+G;Lobby;Average Button
+H;Lobby;Expert Button
+I;Lobby;DurationA Button
+J;Lobby;DurationB Button
+K;Lobby;DurationC Button
+L;Lobby;Play Counter
