@@ -45,6 +45,10 @@
 
 using namespace Minesweeper;
 
+PeerInfo MinesweeperGame::peer_info;
+PeerInfo MinesweeperGame::new_peer_info;
+sf::TcpSocket MinesweeperGame::tcp_socket;
+sf::UdpSocket MinesweeperGame::udp_socket;
 sf::RenderWindow* MinesweeperGame::window = nullptr;
 bool MinesweeperGame::is_running          = true;
 
@@ -68,7 +72,7 @@ int MinesweeperGame::run() noexcept
 
         read_win_style_from_str(win_data["WINDOW"]["Style"], win_style);
 
-        sf::RenderWindow window(sf::VideoMode(win_width, win_height), win_title, win_style);
+        sf::RenderWindow window(sf::VideoMode(win_width, win_height), win_title, win_style, sf::ContextSettings(0, 0, 4));
 
         {
             sf::Image icon;
@@ -161,6 +165,9 @@ void MinesweeperGame::process()
             ResourceLoader::erase_unique_references();
 
         }
+
+        MinesweeperGame::udp_socket.unbind();
+        MinesweeperGame::tcp_socket.disconnect();
 
         ResourceLoader::resources.clear();
 

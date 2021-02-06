@@ -45,5 +45,5 @@ void PlayOnlineButton::on_button_down()
 
 void PlayOnlineButton::on_button_pressed()
 {
-    SceneManager::change_scene_to(SceneManager::Scenes::GAME);
+    SceneManager::change_scene_to(SceneManager::Scenes::LOBBY);
 }

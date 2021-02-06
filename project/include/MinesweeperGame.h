@@ -24,7 +24,11 @@
 #ifndef MINESWEEPER_GAME_H
 #define MINESWEEPER_GAME_H
 
+#include <chrono>
 #include <string>
+
+#include <SFML/Network/TcpSocket.hpp>
+#include <SFML/Network/UdpSocket.hpp>
 
 namespace sf { // Forward declarations
 
@@ -35,9 +39,38 @@ namespace sf { // Forward declarations
 
 namespace Minesweeper {
 
+    struct PeerInfo
+    {
+        using PingDuration = std::chrono::milliseconds;
+
+        PingDuration::rep ping;
+        PingDuration::rep max_ping;
+
+        std::string name;
+        std::string public_ip_address;
+        std::string port;
+
+        PeerInfo() : ping(), max_ping(), name(), public_ip_address(), port() {}
+
+        void clear() noexcept
+        {
+            ping = max_ping = 0;
+
+            if(!name.empty())              name.clear();
+            if(!public_ip_address.empty()) public_ip_address.clear();
+            if(!port.empty())              port.clear();
+        }
+    };
+
     class MinesweeperGame
     {
     public:
+        static PeerInfo peer_info;
+        static PeerInfo new_peer_info;
+
+        static sf::TcpSocket tcp_socket;
+        static sf::UdpSocket udp_socket;
+
         static sf::RenderWindow* window;
 
         static int run() noexcept;

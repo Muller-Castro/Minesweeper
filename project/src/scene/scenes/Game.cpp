@@ -227,8 +227,6 @@ Game::Game() :
     )));
 
     build_initial_grid();
-
-    timer.restart();
 }
 
 Game::~Game() noexcept
@@ -320,8 +318,6 @@ void Game::restart()
     grid.clear();
 
     build_initial_grid();
-
-    timer.restart();
 }
 
 void Game::save_record() const
@@ -432,7 +428,7 @@ void Game::draw_counters()
     // Flags
 
     // Timer
-    {
+    if(!is_first_click) {
 
         int timer_as_seconds = static_cast<int>(timer.getElapsedTime().asSeconds());
 
@@ -454,6 +450,7 @@ void Game::draw_counters()
         }
 
         MinesweeperGame::window->draw(counter_text);
+
     }
     // Timer
 }
@@ -602,6 +599,8 @@ void Game::build_grid(sf::Vector2i first_disabled_cell_position)
         }
 
     }
+
+    timer.restart();
 }
 
 std::unordered_set<sf::Vector2i> Game::create_bomb_positions(const sf::Vector2i& first_disabled_cell_position) const

@@ -32,6 +32,7 @@
 #endif // __DEBUG__
 #include "scene/scenes/SplashScreen.h"
 #include "scene/scenes/MainMenu.h"
+#include "scene/scenes/Lobby.h"
 #include "scene/scenes/Game.h"
 
 #include "io/ResourceLoader.h"
@@ -83,6 +84,16 @@ void SceneManager::force_scene_change(Scenes scene)
 
 #ifndef __S_RELEASE__
             GlobalConfigurations::current_scene_name = "MAIN MENU";
+#endif // __S_RELEASE__
+
+        } break;
+
+        case Scenes::LOBBY: {
+
+            SceneManager::current_scene.reset(new Lobby());
+
+#ifndef __S_RELEASE__
+            GlobalConfigurations::current_scene_name = "LOBBY";
 #endif // __S_RELEASE__
 
         } break;

@@ -33,10 +33,13 @@
 #include <utility>
 #endif // __S_RELEASE__
 
+#include <SFML/System/Clock.hpp>
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/Graphics/Font.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Text.hpp>
+#include <SFML/Graphics/Shader.hpp>
+#include <SFML/Graphics/RectangleShape.hpp>
 
 #include "scene/Scene.h"
 #include "components/Button.h"
@@ -64,6 +67,8 @@ namespace Minesweeper {
         bool show_credits;
         bool show_difficulty_levels;
 
+        sf::Clock in_time;
+
         AnimationPlayer animations;
 
 #ifdef __S_RELEASE__
@@ -75,6 +80,7 @@ namespace Minesweeper {
         std::shared_ptr<sf::Texture> title_texture;
         std::shared_ptr<sf::Texture> p1_flag_texture;
         std::shared_ptr<sf::Texture> p2_flag_texture;
+        std::shared_ptr<sf::Texture> record_grid_texture;
         std::shared_ptr<sf::Texture> bomb_texture;
 
         std::shared_ptr<sf::Font> credits_font;
@@ -86,7 +92,13 @@ namespace Minesweeper {
         sf::Sprite title_sprite;
         sf::Sprite p1_flag_sprite;
         sf::Sprite p2_flag_sprite;
+        sf::Sprite record_grid_sprite;
         sf::Sprite bomb_sprite;
+
+        std::shared_ptr<sf::Shader> credits_panel_shader;
+        std::shared_ptr<sf::Shader> record_grid_shader;
+
+        sf::RectangleShape credits_panel_shape;
 
         sf::Text record_texts; // this will draw more than one text
 

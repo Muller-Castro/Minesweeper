@@ -25,6 +25,8 @@
 
 #include <SFML/Window/Event.hpp>
 
+#include "components/TextEdit.h"
+
 using namespace Minesweeper;
 
 std::unordered_map<sf::Keyboard::Key, bool> Input::Key::pressed_inputs;
@@ -33,6 +35,9 @@ std::unordered_map<sf::Mouse::Button, bool> Input::Mouse::pressed_inputs;
 void Input::poll_events() noexcept
 {
     sf::Event event;
+
+    TextEdit::ascii_char = '\0';
+    TextEdit::command    = sf::Keyboard::Unknown;
 
     while(MinesweeperGame::window->pollEvent(event)) {
 
@@ -64,13 +69,39 @@ void Input::poll_events() noexcept
 
             case sf::Event::TextEntered: {
 
-                // TextEntered
+                if(
+                   ((/* Backspace */ event.text.unicode == 8) || (/* hor. tab */ event.text.unicode == 9)) ||
+                   ((event.text.unicode > 31) && (event.text.unicode < 128))
+                ) {
+
+                    TextEdit::ascii_char = static_cast<char>(event.text.unicode);
+
+                }
 
             } break;
 
             case sf::Event::KeyPressed: {
 
-                // KeyPressed
+                TextEdit::command = event.key.code;
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wswitch"
+#pragma GCC diagnostic ignored "-Wswitch-enum"
+                switch(event.key.code) {
+
+                    case sf::Keyboard::Delete: {} break;
+                    case sf::Keyboard::Home:   {} break;
+                    case sf::Keyboard::End:    {} break;
+                    case sf::Keyboard::Left:   {} break;
+                    case sf::Keyboard::Right:  {} break;
+
+                    case sf::Keyboard::C:
+                    case sf::Keyboard::V:      { if(!event.key.control) TextEdit::command = sf::Keyboard::Unknown; } break;
+
+                    default: { TextEdit::command = sf::Keyboard::Unknown; } break;
+
+                }
+#pragma GCC diagnostic pop
 
             } break;
 
