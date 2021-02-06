@@ -468,6 +468,9 @@
 		<Unit filename="include/assets/Universe.h">
 			<Option target="Static Release" />
 		</Unit>
+		<Unit filename="include/assets/WrongPasswordPanel.h">
+			<Option target="Static Release" />
+		</Unit>
 		<Unit filename="include/components/Button.h" />
 		<Unit filename="include/components/Panel.h" />
 		<Unit filename="include/components/TextEdit.h" />
@@ -893,6 +896,9 @@
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="src/assets/Universe.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/WrongPasswordPanel.cpp">
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="src/components/Button.cpp" />
