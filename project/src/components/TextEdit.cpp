@@ -47,6 +47,7 @@ sf::Sound TextEdit::sound;
 TextEdit::TextEdit() :
     caught_hover(),
     is_focused(),
+    uppercase(),
     caret_blink_speed(),
     caret_index(),
     chars_limit(),
@@ -63,9 +64,10 @@ TextEdit::TextEdit() :
     //
 }
 
-TextEdit::TextEdit(const sf::Vector2f& position, const sf::Vector2f& scale, const sf::Vector2f& bb_size, const std::shared_ptr<sf::Font>& font_, unsigned char_size, const sf::Color& color, size_t chars_limit_, const std::string& unfocused_text_str, const std::shared_ptr<sf::SoundBuffer>& typing_sfx_, TextEdit* neighbor_, const std::function<bool(char)>& char_filter_, float caret_height, const sf::Color& caret_color, float caret_blink_speed_, bool is_focused_) :
+TextEdit::TextEdit(const sf::Vector2f& position, const sf::Vector2f& scale, const sf::Vector2f& bb_size, const std::shared_ptr<sf::Font>& font_, unsigned char_size, const sf::Color& color, size_t chars_limit_, const std::string& unfocused_text_str, const std::shared_ptr<sf::SoundBuffer>& typing_sfx_, TextEdit* neighbor_, const std::function<bool(char)>& char_filter_, bool uppercase_, float caret_height, const sf::Color& caret_color, float caret_blink_speed_, bool is_focused_) :
     caught_hover(),
     is_focused(is_focused_),
+    uppercase(uppercase_),
     caret_blink_speed(caret_blink_speed_),
     caret_index(),
     chars_limit(chars_limit_),
@@ -240,7 +242,7 @@ void TextEdit::type_text()
 
                     });
 
-                    clipboard_str = buffer;
+                    clipboard_str = uppercase ? TextEdit::to_uppercase(buffer) : buffer;
                 }
 
                 sf::Vector2f caret_pos = caret.getPosition();
@@ -386,11 +388,15 @@ void TextEdit::type_text()
                 TextEdit::sound.setBuffer(*typing_sfx);
                 TextEdit::sound.play();
 
-                const sf::Glyph& glyph = font->getGlyph(static_cast<unsigned>(TextEdit::ascii_char), text.getCharacterSize(), false);
+                std::string ascii_str{TextEdit::ascii_char};
+
+                ascii_str = uppercase ? TextEdit::to_uppercase(ascii_str) : ascii_str;
+
+                const sf::Glyph& glyph = font->getGlyph(static_cast<unsigned>(ascii_str[0]), text.getCharacterSize(), false);
 
                 caret_pos.x += glyph.advance;
 
-                text_str.insert(caret_index, 1, TextEdit::ascii_char);
+                text_str.insert(caret_index, 1, ascii_str[0]);
 
                 ++caret_index;
 
@@ -450,3 +456,49 @@ void TextEdit::draw_bb() const
     }
 }
 #endif // __DEBUG__
+
+std::string TextEdit::to_uppercase(const std::string& s)
+{
+    std::string result;
+
+    for(std::string::const_iterator it = s.cbegin(); it != s.cend(); ++it) {
+
+        unsigned unicode = static_cast<unsigned>(*it);
+
+        if((unicode > 96) && (unicode < 123)) {
+
+            result += static_cast<std::string::value_type>(static_cast<int>(*it) - 32);
+
+        }else {
+
+            result += *it;
+
+        }
+
+    }
+
+    return result;
+}
+
+std::string TextEdit::to_lowercase(const std::string& s)
+{
+    std::string result;
+
+    for(std::string::const_iterator it = s.cbegin(); it != s.cend(); ++it) {
+
+        unsigned unicode = static_cast<unsigned>(*it);
+
+        if((unicode > 64) && (unicode < 91)) {
+
+            result += static_cast<std::string::value_type>(static_cast<int>(*it) + 32);
+
+        }else {
+
+            result += *it;
+
+        }
+
+    }
+
+    return result;
+}

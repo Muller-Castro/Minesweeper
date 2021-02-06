@@ -42,8 +42,11 @@ namespace Minesweeper {
     class TextEdit
     {
     public:
+        static std::string to_uppercase(const std::string&);
+        static std::string to_lowercase(const std::string&);
+
         TextEdit();
-        TextEdit(const sf::Vector2f& position, const sf::Vector2f& scale, const sf::Vector2f& bb_size, const std::shared_ptr<sf::Font>& font_, unsigned char_size, const sf::Color& color, size_t chars_limit_, const std::string& unfocused_text_str, const std::shared_ptr<sf::SoundBuffer>& typing_sfx_, TextEdit* neighbor_, const std::function<bool(char)>& char_filter_, float caret_height, const sf::Color& caret_color = sf::Color::Black, float caret_blink_speed_ = 0.65f, bool is_focused_ = false);
+        TextEdit(const sf::Vector2f& position, const sf::Vector2f& scale, const sf::Vector2f& bb_size, const std::shared_ptr<sf::Font>& font_, unsigned char_size, const sf::Color& color, size_t chars_limit_, const std::string& unfocused_text_str, const std::shared_ptr<sf::SoundBuffer>& typing_sfx_, TextEdit* neighbor_, const std::function<bool(char)>& char_filter_, bool uppercase_, float caret_height, const sf::Color& caret_color = sf::Color::Black, float caret_blink_speed_ = 0.65f, bool is_focused_ = false);
 
         void process_inputs();
         void update(float delta);
@@ -69,6 +72,8 @@ namespace Minesweeper {
         bool caught_hover;
 
         bool is_focused;
+
+        bool uppercase;
 
         float caret_blink_speed;
 
