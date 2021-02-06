@@ -175,6 +175,8 @@ namespace Minesweeper {
         void reset_config_buttons();
         void change_difficulty(Difficulties d, const std::string& difficulty);
         void change_duration(Durations d, const std::string& duration);
+        void receive_password(const std::string& password_str);
+        void receive_password_response(const std::string& response_str);
         void receive_ping(const std::string& ping_str) const;
         void receive_max_ping(const std::string& max_ping_str);
         void send_ping();

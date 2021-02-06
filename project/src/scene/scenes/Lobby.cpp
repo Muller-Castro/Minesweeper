@@ -263,7 +263,7 @@ Lobby::Lobby() :
         16,
         sf::Color::Black,
         13,
-        "e.g. Defuser@123",
+        "e.g. DEFUSER@123",
 #ifndef __S_RELEASE__
         ResourceLoader::load<sf::SoundBuffer>("assets/sounds/Typing.wav"),
 #else
@@ -271,6 +271,7 @@ Lobby::Lobby() :
 #endif // __S_RELEASE__
         &text_edits[1],
         {},
+        true,
         20.f
 
     );
@@ -304,6 +305,7 @@ Lobby::Lobby() :
 
         },
 
+        false,
         20.f
 
     );
@@ -321,7 +323,7 @@ Lobby::Lobby() :
         16,
         sf::Color::Black,
         15,
-        "e.g. repeewsenim#789",
+        "e.g. REPEEWSENIM#789",
 #ifndef __S_RELEASE__
         ResourceLoader::load<sf::SoundBuffer>("assets/sounds/Typing.wav"),
 #else
@@ -329,6 +331,7 @@ Lobby::Lobby() :
 #endif // __S_RELEASE__
         &text_edits[0],
         {},
+        true,
         20.f
 
     );
@@ -914,11 +917,11 @@ void Lobby::update(float delta)
 
             for(auto& button : buttons[States::CONNECTING]) button->update(delta);
 
+            receive_packages();
+
         } break;
 
         case States::WAITING: {
-
-            receive_packages();
 
             update_waiting();
             update_you(delta);
@@ -926,6 +929,8 @@ void Lobby::update(float delta)
             for(auto& button : buttons[States::WAITING]) button->update(delta);
 
             return_button.update(delta);
+
+            receive_packages();
 
         } break;
 
@@ -1014,20 +1019,29 @@ void Lobby::receive_packages()
         //////////////////////////////////////////
         size_t idx;
 
-        if((idx = received_data.find('A')) != std::string::npos) receive_ping(retrieve_data<'A'>(idx, received_data));
-        if((idx = received_data.find('B')) != std::string::npos) receive_max_ping(retrieve_data<'B'>(idx, received_data));
+        if((idx = received_data.find('A')) != std::string::npos) {
+
+            if(listener) receive_password(retrieve_data<'A'>(idx, received_data));
+            else         receive_password_response(retrieve_data<'A'>(idx, received_data));
+
+        }
+
+        if((idx = received_data.find('B')) != std::string::npos) MinesweeperGame::new_peer_info.name              = TextEdit::to_uppercase(retrieve_data<'B'>(idx, received_data));
+        if((idx = received_data.find('C')) != std::string::npos) MinesweeperGame::new_peer_info.public_ip_address = retrieve_data<'C'>(idx, received_data);
+        if((idx = received_data.find('D')) != std::string::npos) receive_ping(retrieve_data<'D'>(idx, received_data));
+        if((idx = received_data.find('E')) != std::string::npos) receive_max_ping(retrieve_data<'E'>(idx, received_data));
 
         if(!listener) {
 
-            if((idx = received_data.find('C')) != std::string::npos) change_difficulty(Difficulties::BEGINNER, retrieve_data<'C'>(idx, received_data));
-            if((idx = received_data.find('D')) != std::string::npos) change_difficulty(Difficulties::AVERAGE , retrieve_data<'D'>(idx, received_data));
-            if((idx = received_data.find('E')) != std::string::npos) change_difficulty(Difficulties::EXPERT  , retrieve_data<'E'>(idx, received_data));
+            if((idx = received_data.find('F')) != std::string::npos) change_difficulty(Difficulties::BEGINNER, retrieve_data<'F'>(idx, received_data));
+            if((idx = received_data.find('G')) != std::string::npos) change_difficulty(Difficulties::AVERAGE , retrieve_data<'G'>(idx, received_data));
+            if((idx = received_data.find('H')) != std::string::npos) change_difficulty(Difficulties::EXPERT  , retrieve_data<'H'>(idx, received_data));
 
-            if((idx = received_data.find('F')) != std::string::npos) change_duration(Durations::SHORT , retrieve_data<'F'>(idx, received_data));
-            if((idx = received_data.find('G')) != std::string::npos) change_duration(Durations::NORMAL, retrieve_data<'G'>(idx, received_data));
-            if((idx = received_data.find('H')) != std::string::npos) change_duration(Durations::LONG  , retrieve_data<'H'>(idx, received_data));
+            if((idx = received_data.find('I')) != std::string::npos) change_duration(Durations::SHORT , retrieve_data<'I'>(idx, received_data));
+            if((idx = received_data.find('J')) != std::string::npos) change_duration(Durations::NORMAL, retrieve_data<'J'>(idx, received_data));
+            if((idx = received_data.find('K')) != std::string::npos) change_duration(Durations::LONG  , retrieve_data<'K'>(idx, received_data));
 
-            if((idx = received_data.find('I')) != std::string::npos) {
+            if((idx = received_data.find('L')) != std::string::npos) {
 
                 SceneManager::call_deferred([&]() {
 
@@ -1119,7 +1133,7 @@ bool Lobby::evaluate_ip_port()
 
 void Lobby::update_connecting()
 {
-    if((join_delay_timer.getElapsedTime().asSeconds() >= Lobby::JOIN_DELAY) && (connection_status != sf::Socket::Error)) {
+    if((join_delay_timer.getElapsedTime().asSeconds() >= Lobby::JOIN_DELAY) && (connection_status != sf::Socket::Error) && (connection_status != sf::Socket::Done)) {
 
         std::string ip_port = text_edits[1].get_text_str();
         std::string ip      = ip_port.substr(0, ip_port.find(':'));
@@ -1127,143 +1141,7 @@ void Lobby::update_connecting()
 
         connection_status   = MinesweeperGame::tcp_socket.connect(ip, std::stoul(port), sf::seconds(3.f));
 
-        if(connection_status == sf::Socket::Done) {
-
-            // Send password
-            {
-                sf::Packet password;
-
-                password << text_edits[2].get_text_str();
-
-                connection_status = MinesweeperGame::tcp_socket.send(password);
-
-                password.clear();
-
-                connection_status = MinesweeperGame::tcp_socket.receive(password);
-
-                std::string password_str;
-
-                password >> password_str;
-
-                if(password_str != "1") {
-
-#ifdef __RELEASE__
-                    std::cout << "[CLIENT] The host DENIED the password." << std::endl;
-#endif // __RELEASE__
-
-                    current_state     = States::REGISTRATION;
-
-                    connection_status = sf::Socket::NotReady;
-
-                    panels["W_PASS"].set_active(true);
-
-                    MinesweeperGame::tcp_socket.disconnect();
-
-                    return;
-
-                }
-#ifdef __RELEASE__
-                else {
-
-                    std::cout << "[CLIENT] The host ACCEPTED the password." << std::endl;
-
-                }
-#endif // __RELEASE__
-            }
-
-            current_state = States::WAITING;
-
-            MinesweeperGame::peer_info.name = text_edits[0].get_text_str();
-            MinesweeperGame::peer_info.port = port;
-
-            ///////////////////////////////////
-            // Send name
-            {
-                sf::Packet name_packet;
-
-                name_packet << MinesweeperGame::peer_info.name;
-
-                connection_status = MinesweeperGame::tcp_socket.send(name_packet);
-
-#ifdef __RELEASE__
-                std::cout << "[CLIENT] " << (connection_status == sf::Socket::Done ? "Succeeded to" : "Failed to") << " send name \"" << MinesweeperGame::peer_info.name << "\"" << std::endl;
-#endif // __RELEASE__
-            }
-
-            // Receive name
-            {
-                sf::Packet new_peer_name_packet;
-
-                connection_status = MinesweeperGame::tcp_socket.receive(new_peer_name_packet);
-
-                new_peer_name_packet >> MinesweeperGame::new_peer_info.name;
-
-#ifdef __RELEASE__
-                std::cout << "[CLIENT] " << (connection_status == sf::Socket::Done ? "Succeeded to" : "Failed to") << " receive name \"" << MinesweeperGame::new_peer_info.name << "\"" << std::endl;
-#endif // __RELEASE__
-            }
-
-            // Send IP address
-            {
-                sf::Packet ip_packet;
-
-                ip_packet << MinesweeperGame::peer_info.public_ip_address;
-
-                connection_status = MinesweeperGame::tcp_socket.send(ip_packet);
-
-#ifdef __RELEASE__
-                std::cout << "[CLIENT] " << (connection_status == sf::Socket::Done ? "Succeeded to" : "Failed to") << " send IP \"" << MinesweeperGame::peer_info.public_ip_address << "\"" << std::endl;
-#endif // __RELEASE__
-            }
-
-            // Receive IP address
-            {
-                sf::Packet new_peer_ip_packet;
-
-                connection_status = MinesweeperGame::tcp_socket.receive(new_peer_ip_packet);
-
-                new_peer_ip_packet >> MinesweeperGame::new_peer_info.public_ip_address;
-
-#ifdef __RELEASE__
-                std::cout << "[CLIENT] " << (connection_status == sf::Socket::Done ? "Succeeded to" : "Failed to") << " receive IP \"" << MinesweeperGame::new_peer_info.public_ip_address << "\"" << std::endl;
-#endif // __RELEASE__
-            }
-
-            // Send port
-            {
-                sf::Packet port_packet;
-
-                port_packet << MinesweeperGame::peer_info.port;
-
-                connection_status = MinesweeperGame::tcp_socket.send(port_packet);
-
-#ifdef __RELEASE__
-                std::cout << "[CLIENT] " << (connection_status == sf::Socket::Done ? "Succeeded to" : "Failed to") << " send port \"" << MinesweeperGame::peer_info.port << "\"" << std::endl;
-#endif // __RELEASE__
-            }
-
-            // Receive port
-            {
-                sf::Packet new_peer_port_packet;
-
-                connection_status = MinesweeperGame::tcp_socket.receive(new_peer_port_packet);
-
-                new_peer_port_packet >> MinesweeperGame::new_peer_info.port;
-
-#ifdef __RELEASE__
-                std::cout << "[CLIENT] " << (connection_status == sf::Socket::Done ? "Succeeded to" : "Failed to") << " receive port \"" << MinesweeperGame::new_peer_info.port << "\"" << std::endl;
-#endif // __RELEASE__
-            }
-            ///////////////////////////////////
-
-            MinesweeperGame::tcp_socket.setBlocking(false);
-
-            update_ping();
-            ping_delay_timer.restart();
-
-            sound.play();
-
-        }
+        if(connection_status == sf::Socket::Done) send('A', TextEdit::to_lowercase(text_edits[2].get_text_str()));
 
     }
 }
@@ -1282,131 +1160,7 @@ void Lobby::update_waiting()
 
         }else {
 
-            // Receive Password
-            {
-                sf::Packet password;
-
-                connection_status = MinesweeperGame::tcp_socket.receive(password);
-
-                std::string password_str;
-
-                password >> password_str;
-
-                password.clear();
-
-                if(password_str != text_edits[2].get_text_str()) {
-
-#ifdef __RELEASE__
-                    std::cout << "[HOST] The client sent a WRONG password." << std::endl;
-#endif // __RELEASE__
-
-                    connection_status = sf::Socket::NotReady;
-
-                    password << "0";
-                    MinesweeperGame::tcp_socket.send(password);
-
-                    MinesweeperGame::tcp_socket.disconnect();
-
-                    return;
-
-                }else {
-
-#ifdef __RELEASE__
-                    std::cout << "[HOST] The client sent a CORRECT password." << std::endl;
-#endif // __RELEASE__
-
-                    password << "1";
-                    MinesweeperGame::tcp_socket.send(password);
-
-                }
-            }
-
-            // Send name
-            {
-                sf::Packet name_packet;
-
-                name_packet << MinesweeperGame::peer_info.name;
-
-                connection_status = MinesweeperGame::tcp_socket.send(name_packet);
-
-#ifdef __RELEASE__
-                std::cout << "[HOST] " << (connection_status == sf::Socket::Done ? "Succeeded to" : "Failed to") << " send name \"" << MinesweeperGame::peer_info.name << "\"" << std::endl;
-#endif // __RELEASE__
-            }
-
-            // Receive name
-            {
-                sf::Packet new_peer_name_packet;
-
-                connection_status = MinesweeperGame::tcp_socket.receive(new_peer_name_packet);
-
-                new_peer_name_packet >> MinesweeperGame::new_peer_info.name;
-
-#ifdef __RELEASE__
-                std::cout << "[HOST] " << (connection_status == sf::Socket::Done ? "Succeeded to" : "Failed to") << " receive name \"" << MinesweeperGame::new_peer_info.name << "\"" << std::endl;
-#endif // __RELEASE__
-            }
-
-            // Send IP address
-            {
-                sf::Packet ip_packet;
-
-                ip_packet << MinesweeperGame::peer_info.public_ip_address;
-
-                connection_status = MinesweeperGame::tcp_socket.send(ip_packet);
-
-#ifdef __RELEASE__
-                std::cout << "[HOST] " << (connection_status == sf::Socket::Done ? "Succeeded to" : "Failed to") << " send IP \"" << MinesweeperGame::peer_info.public_ip_address << "\"" << std::endl;
-#endif // __RELEASE__
-            }
-
-            // Receive IP address
-            {
-                sf::Packet new_peer_ip_packet;
-
-                connection_status = MinesweeperGame::tcp_socket.receive(new_peer_ip_packet);
-
-                new_peer_ip_packet >> MinesweeperGame::new_peer_info.public_ip_address;
-
-#ifdef __RELEASE__
-                std::cout << "[HOST] " << (connection_status == sf::Socket::Done ? "Succeeded to" : "Failed to") << " receive IP \"" << MinesweeperGame::new_peer_info.public_ip_address << "\"" << std::endl;
-#endif // __RELEASE__
-            }
-
-            ////////////////////
-            // Send port
-            {
-                sf::Packet port_packet;
-
-                port_packet << MinesweeperGame::peer_info.port;
-
-                connection_status = MinesweeperGame::tcp_socket.send(port_packet);
-
-#ifdef __RELEASE__
-                std::cout << "[HOST] " << (connection_status == sf::Socket::Done ? "Succeeded to" : "Failed to") << " send port \"" << MinesweeperGame::peer_info.port << "\"" << std::endl;
-#endif // __RELEASE__
-            }
-
-            // Receive port
-            {
-                sf::Packet new_peer_port_packet;
-
-                connection_status = MinesweeperGame::tcp_socket.receive(new_peer_port_packet);
-
-                new_peer_port_packet >> MinesweeperGame::new_peer_info.port;
-
-#ifdef __RELEASE__
-                std::cout << "[HOST] " << (connection_status == sf::Socket::Done ? "Succeeded to" : "Failed to") << " receive port \"" << MinesweeperGame::new_peer_info.port << "\"" << std::endl;
-#endif // __RELEASE__
-            }
-            ////////////////////
-
-            MinesweeperGame::tcp_socket.setBlocking(false);
-
-            update_ping();
-            ping_delay_timer.restart();
-
-            sound.play();
+            receive_packages(); // todo: check if it's better to just hide the player's info while the name of the new peer isn't already set
 
         }
 
@@ -1520,6 +1274,127 @@ void Lobby::change_duration(Durations d, const std::string& duration)
     }
 }
 
+void Lobby::receive_password(const std::string& password_str)
+{
+    if(TextEdit::to_uppercase(password_str) != text_edits[2].get_text_str()) {
+
+#ifdef __RELEASE__
+        std::cout << "[HOST] The client sent a WRONG password." << std::endl;
+#endif // __RELEASE__
+
+        connection_status = sf::Socket::NotReady;
+
+        send('A', "0");
+
+        MinesweeperGame::tcp_socket.disconnect();
+
+        return;
+
+    }else {
+
+#ifdef __RELEASE__
+        std::cout << "[HOST] The client sent a CORRECT password." << std::endl;
+#endif // __RELEASE__
+
+        send('A', "1");
+
+    }
+
+    MinesweeperGame::new_peer_info.port = text_edits[1].get_text_str();
+
+    // Send name
+    {
+        send('B', TextEdit::to_lowercase(MinesweeperGame::peer_info.name));
+
+#ifdef __RELEASE__
+        std::cout << "[HOST] " << (connection_status == sf::Socket::Done ? "Succeeded to" : "Failed to") << " send name \"" << MinesweeperGame::peer_info.name << "\"" << std::endl;
+#endif // __RELEASE__
+    }
+
+    // Send IP address
+    {
+        send('C', MinesweeperGame::peer_info.public_ip_address);
+
+#ifdef __RELEASE__
+        std::cout << "[HOST] " << (connection_status == sf::Socket::Done ? "Succeeded to" : "Failed to") << " send IP \"" << MinesweeperGame::peer_info.public_ip_address << "\"" << std::endl;
+#endif // __RELEASE__
+    }
+
+    MinesweeperGame::tcp_socket.setBlocking(false);
+
+    update_ping();
+    ping_delay_timer.restart();
+
+    sound.play();
+}
+
+void Lobby::receive_password_response(const std::string& response_str)
+{
+    if(response_str != "1") {
+
+#ifdef __RELEASE__
+        std::cout << "[CLIENT] The host DENIED the password." << std::endl;
+#endif // __RELEASE__
+
+        current_state     = States::REGISTRATION;
+
+        connection_status = sf::Socket::NotReady;
+
+        panels["W_PASS"].set_active(true);
+
+        MinesweeperGame::tcp_socket.disconnect();
+
+        return;
+
+    }
+#ifdef __RELEASE__
+    else {
+
+        std::cout << "[CLIENT] The host ACCEPTED the password." << std::endl;
+
+    }
+#endif // __RELEASE__
+
+    current_state = States::WAITING;
+
+    MinesweeperGame::peer_info.name = text_edits[0].get_text_str();
+
+    {
+        std::string ip_port = text_edits[1].get_text_str();
+        std::string port    = ip_port.substr(ip_port.find(':') + 1);
+
+        MinesweeperGame::peer_info.port     = port;
+        MinesweeperGame::new_peer_info.port = port;
+    }
+
+    ///////////////////////////////////
+    // Send name
+    {
+        send('B', TextEdit::to_lowercase(MinesweeperGame::peer_info.name));
+
+#ifdef __RELEASE__
+        std::cout << "[CLIENT] " << (connection_status == sf::Socket::Done ? "Succeeded to" : "Failed to") << " send name \"" << MinesweeperGame::peer_info.name << "\"" << std::endl;
+#endif // __RELEASE__
+    }
+
+    // Send IP address
+    {
+        send('C', MinesweeperGame::peer_info.public_ip_address);
+
+#ifdef __RELEASE__
+        std::cout << "[CLIENT] " << (connection_status == sf::Socket::Done ? "Succeeded to" : "Failed to") << " send IP \"" << MinesweeperGame::peer_info.public_ip_address << "\"" << std::endl;
+#endif // __RELEASE__
+    }
+    ///////////////////////////////////
+
+    MinesweeperGame::tcp_socket.setBlocking(false);
+
+    update_ping();
+    ping_delay_timer.restart();
+
+    sound.play();
+}
+
 void Lobby::receive_ping(const std::string& ping_str) const
 {
     if(ping_delay_timer.getElapsedTime().asSeconds() >= Lobby::PING_DELAY) {
@@ -1544,7 +1419,7 @@ void Lobby::send_ping()
 {
     std::chrono::high_resolution_clock::time_point t1 = std::chrono::high_resolution_clock::now();
 
-    send('A', std::to_string(MinesweeperGame::peer_info.ping));
+    send('D', std::to_string(MinesweeperGame::peer_info.ping));
 
     std::chrono::high_resolution_clock::time_point t2 = std::chrono::high_resolution_clock::now();
 
@@ -1563,7 +1438,7 @@ void Lobby::send_max_ping()
 
     }
 
-    send('B', std::to_string(MinesweeperGame::peer_info.max_ping));
+    send('E', std::to_string(MinesweeperGame::peer_info.max_ping));
 }
 
 void Lobby::update_ping()
