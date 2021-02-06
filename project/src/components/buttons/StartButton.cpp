@@ -95,7 +95,8 @@ void StartButton::process_inputs()
 
 void StartButton::update(float d)
 {
-    {
+    if(lobby_ref.get().listener) {
+
         bool x = false, y = false;
 
         x |= dynamic_cast<LobbyBeginnerButton&>(*lobby_ref.get().buttons[Lobby::States::WAITING][0]).is_active();
@@ -107,6 +108,7 @@ void StartButton::update(float d)
         y |= dynamic_cast<DurationCButton&>(*lobby_ref.get().buttons[Lobby::States::WAITING][5]).is_active();
 
         active = (x && y);
+
     }
 
     if(lobby_ref.get().listener && (lobby_ref.get().connection_status == sf::Socket::Done) && active && !is_counting) Button::update(d);
@@ -148,7 +150,7 @@ void StartButton::on_button_pressed()
 
 void StartButton::play_counter()
 {
-    if(!active) return;
+    if(lobby_ref.get().listener && !active) return;
 
     is_counting    = true;
 
@@ -156,7 +158,7 @@ void StartButton::play_counter()
 
     clipping_angle = -180.f;
 
-    lobby_ref.get().send('I', "1");
+    lobby_ref.get().send('L', "1");
 }
 
 void StartButton::stop_counter()

@@ -67,6 +67,8 @@ void LobbyReturnButton::on_button_pressed()
 
             lobby_ref.get().current_state = Lobby::States::REGISTRATION;
 
+            lobby_ref.get().connection_status = sf::Socket::NotReady;
+
             if(lobby_ref.get().listener) {
 
                 lobby_ref.get().listener->close();

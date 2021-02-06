@@ -46,7 +46,7 @@ void LobbyAverageButton::update(float d)
 {
     if(lobby_ref.get().listener && (lobby_ref.get().connection_status == sf::Socket::Done)) Button::update(d);
 
-    if(lobby_ref.get().listener) lobby_ref.get().send('D', active ? "1" : "0");
+    if(lobby_ref.get().listener) lobby_ref.get().send('G', active ? "1" : "0");
 
     sprite.setColor(active ? sf::Color(0, 255, 0) : sf::Color::White);
 }
