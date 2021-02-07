@@ -1421,7 +1421,11 @@ void Lobby::send_ping()
 {
     std::chrono::high_resolution_clock::time_point t1 = std::chrono::high_resolution_clock::now();
 
+    MinesweeperGame::tcp_socket.setBlocking(true);
+
     send('D', std::to_string(MinesweeperGame::peer_info.ping));
+
+    MinesweeperGame::tcp_socket.setBlocking(false);
 
     std::chrono::high_resolution_clock::time_point t2 = std::chrono::high_resolution_clock::now();
 
