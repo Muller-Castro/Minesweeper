@@ -231,7 +231,7 @@ Game::Game() :
 
 Game::~Game() noexcept
 {
-    //
+    MinesweeperGame::tcp_socket.disconnect();
 }
 
 void Game::process_inputs()
