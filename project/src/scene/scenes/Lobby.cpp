@@ -179,6 +179,8 @@ Lobby::Lobby() :
     soundtrack(),
     listener()
 {
+    MinesweeperGame::tcp_socket.setBlocking(true);
+
     if(MinesweeperGame::peer_info.public_ip_address.empty()) MinesweeperGame::peer_info.public_ip_address = sf::IpAddress::getPublicAddress().toString();
 
     arrow[0].color = sf::Color::Red;
