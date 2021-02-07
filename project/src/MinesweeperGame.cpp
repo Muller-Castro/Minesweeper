@@ -48,7 +48,6 @@ using namespace Minesweeper;
 PeerInfo MinesweeperGame::peer_info;
 PeerInfo MinesweeperGame::new_peer_info;
 sf::TcpSocket MinesweeperGame::tcp_socket;
-sf::UdpSocket MinesweeperGame::udp_socket;
 sf::RenderWindow* MinesweeperGame::window = nullptr;
 bool MinesweeperGame::is_running          = true;
 
@@ -166,7 +165,6 @@ void MinesweeperGame::process()
 
         }
 
-        MinesweeperGame::udp_socket.unbind();
         MinesweeperGame::tcp_socket.disconnect();
 
         ResourceLoader::resources.clear();

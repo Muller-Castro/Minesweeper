@@ -28,7 +28,6 @@
 #include <string>
 
 #include <SFML/Network/TcpSocket.hpp>
-#include <SFML/Network/UdpSocket.hpp>
 
 namespace sf { // Forward declarations
 
@@ -69,7 +68,6 @@ namespace Minesweeper {
         static PeerInfo new_peer_info;
 
         static sf::TcpSocket tcp_socket;
-        static sf::UdpSocket udp_socket;
 
         static sf::RenderWindow* window;
 
