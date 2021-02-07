@@ -1051,6 +1051,8 @@ void Lobby::receive_packages()
 
             }
 
+            if((idx = received_data.find('M')) != std::string::npos) SceneManager::change_scene_to(SceneManager::Scenes::GAME);
+
         }
         //////////////////////////////////////////
 
