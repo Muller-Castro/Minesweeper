@@ -145,7 +145,9 @@ void StartButton::on_button_down()
 
 void StartButton::on_button_pressed()
 {
-    //
+    SceneManager::change_scene_to(SceneManager::Scenes::GAME);
+
+    lobby_ref.get().send('M', "1");
 }
 
 void StartButton::play_counter()
