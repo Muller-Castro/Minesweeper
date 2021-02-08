@@ -192,7 +192,7 @@ Game::Game() :
     buttons.push_back(std::unique_ptr<Button>(new RestartButton(
         *this,
         Button::Enabled::LEFT,
-        sf::Vector2f(279.f, 60.f),
+        sf::Vector2f(259.f, 59.f),
         sf::Vector2f(1.f, 1.f),
 #ifndef __S_RELEASE__
         ResourceLoader::load<sf::Texture>("assets/textures/RestartButtonHovered.png"),
@@ -211,7 +211,7 @@ Game::Game() :
 
     buttons.push_back(std::unique_ptr<Button>(new MainMenuButton(
         Button::Enabled::LEFT,
-        sf::Vector2f(522.f, 60.f),
+        sf::Vector2f(543.f, 59.f),
         sf::Vector2f(1.f, 1.f),
 #ifndef __S_RELEASE__
         ResourceLoader::load<sf::Texture>("assets/textures/MainMenuButtonHovered.png"),
@@ -406,9 +406,9 @@ void Game::generate_encrypted_file(std::array<std::string, 3>&& record_values) c
 
 void Game::draw_counters()
 {
-    counter_panel_sprite.setPosition(sf::Vector2f(52.f, 34.f));
+    counter_panel_sprite.setPosition(sf::Vector2f(32.f, 34.f));
     MinesweeperGame::window->draw(counter_panel_sprite);
-    counter_panel_sprite.setPosition(sf::Vector2f(656.f, 34.f));
+    counter_panel_sprite.setPosition(sf::Vector2f(676.f, 34.f));
     MinesweeperGame::window->draw(counter_panel_sprite);
 
     float last_timer_x_position = counter_text.getPosition().x;
@@ -419,7 +419,7 @@ void Game::draw_counters()
         std::string flag_counter_str = std::to_string(flag_counter);
         size_t flag_counter_length   = flag_counter_str.length();
 
-        float x_pos = flag_counter_length == 3 ? 66.f : (flag_counter_length == 2) ? 88.f : 110.f;
+        float x_pos = flag_counter_length == 3 ? 46.f : (flag_counter_length == 2) ? 68.f : 90.f;
 
         counter_text.setPosition(x_pos, counter_text.getPosition().y);
         counter_text.setString(flag_counter_str);
@@ -437,7 +437,7 @@ void Game::draw_counters()
             std::string timer_str = std::to_string(timer_as_seconds);
             size_t timer_length   = timer_str.length();
 
-            float x_pos = timer_length == 3 ? 670.f : (timer_length == 2) ? 692.f : 714.f;
+            float x_pos = timer_length == 3 ? 690.f : (timer_length == 2) ? 712.f : 734.f;
 
             counter_text.setPosition(x_pos, counter_text.getPosition().y);
             counter_text.setString(timer_str);
