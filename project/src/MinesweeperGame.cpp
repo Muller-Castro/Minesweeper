@@ -98,6 +98,12 @@ int MinesweeperGame::run() noexcept
 
     }
 
+    MinesweeperGame::tcp_socket.disconnect();
+
+    ResourceLoader::resources.clear();
+
+    MinesweeperGame::window->close();
+
     return run_result;
 }
 
@@ -164,12 +170,6 @@ void MinesweeperGame::process()
             ResourceLoader::erase_unique_references();
 
         }
-
-        MinesweeperGame::tcp_socket.disconnect();
-
-        ResourceLoader::resources.clear();
-
-        MinesweeperGame::window->close();
 
     }catch(const std::exception& e) {
 
