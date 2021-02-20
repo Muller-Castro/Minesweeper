@@ -68,6 +68,8 @@ void HostButton::on_button_pressed()
 
             }else {
 
+                SceneManager::shared_data["H"] = "1";
+
                 SceneManager::call_deferred([&]() {
 
                     lobby_ref.get().current_state = Lobby::States::WAITING;

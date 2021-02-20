@@ -59,14 +59,18 @@ namespace Minesweeper {
         friend class MinesweeperGame;
         friend class MainMenu;
         friend class BeginnerButton;
+        friend class HostButton;
+        friend class JoinButton;
         friend class LobbyBeginnerButton;
         friend class LobbyAverageButton;
         friend class LobbyExpertButton;
+        friend class LobbyReturnButton;
         friend class DurationAButton;
         friend class DurationBButton;
         friend class DurationCButton;
         friend class AverageButton;
         friend class ExpertButton;
+        friend class ConnectionInfo;
         friend class Game;
 
         static std::unordered_map<std::string, std::string> shared_data;

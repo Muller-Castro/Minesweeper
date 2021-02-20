@@ -41,11 +41,24 @@
 #include <SFML/System/Clock.hpp>
 
 #include "scene/Scene.h"
+#include "scene/SceneManager.h"
 #include "components/Button.h"
 #include "components/buttons/GridButton.h"
 #include "io/MusicStream.h"
 
 namespace Minesweeper {
+
+    struct ConnectionInfo
+    {
+        const bool is_online, is_host;
+
+        ConnectionInfo() :
+            is_online(!SceneManager::shared_data["H"].empty()),
+            is_host(SceneManager::shared_data["H"] == "1")
+        {
+            //
+        }
+    };
 
     class Game final : public Scene
     {
