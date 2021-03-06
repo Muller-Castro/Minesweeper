@@ -290,7 +290,7 @@ MainMenu::MainMenu() :
     );
     credits_texts["LICENSE"].setOutlineColor(sf::Color::Black);
 
-    buttons.push_back(std::unique_ptr<Button>(new PlayOnlineButton(
+    buttons.push_back(std::make_unique<PlayOnlineButton>(
         Button::Enabled::LEFT,
         sf::Vector2f(397.f, 222.f),
         sf::Vector2f(1.f, 1.f),
@@ -305,9 +305,9 @@ MainMenu::MainMenu() :
         ResourceLoader::load<sf::Texture>(get_raw_play_online_down()),
         ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_hovered())
 #endif // __S_RELEASE__
-    )));
+    ));
 
-    buttons.push_back(std::unique_ptr<Button>(new PlayOfflineButton(
+    buttons.push_back(std::make_unique<PlayOfflineButton>(
         *this,
         Button::Enabled::LEFT,
         sf::Vector2f(397.f, 322.f),
@@ -325,9 +325,9 @@ MainMenu::MainMenu() :
         ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_hovered()),
         ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_pressed())
 #endif // __S_RELEASE__
-    )));
+    ));
 
-    buttons.push_back(std::unique_ptr<Button>(new CreditsButton(
+    buttons.push_back(std::make_unique<CreditsButton>(
         *this,
         Button::Enabled::LEFT,
         sf::Vector2f(397.f, 422.f),
@@ -345,9 +345,9 @@ MainMenu::MainMenu() :
         ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_hovered()),
         ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_pressed())
 #endif // __S_RELEASE__
-    )));
+    ));
 
-    buttons.push_back(std::unique_ptr<Button>(new QuitButton(
+    buttons.push_back(std::make_unique<QuitButton>(
         Button::Enabled::LEFT,
         sf::Vector2f(397.f, 522.f),
         sf::Vector2f(1.f, 1.f),
@@ -364,9 +364,9 @@ MainMenu::MainMenu() :
         ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_hovered()),
         ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_pressed())
 #endif // __S_RELEASE__
-    )));
+    ));
 
-    buttons.push_back(std::unique_ptr<Button>(new CreditsReturnButton(
+    buttons.push_back(std::make_unique<CreditsReturnButton>(
         *this,
         Button::Enabled::LEFT,
         sf::Vector2f(745.f, 550.f),
@@ -384,10 +384,10 @@ MainMenu::MainMenu() :
         ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_hovered()),
         ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_pressed())
 #endif // __S_RELEASE__
-    )));
+    ));
 
     ////////////
-    buttons.push_back(std::unique_ptr<Button>(new BeginnerButton(
+    buttons.push_back(std::make_unique<BeginnerButton>(
         Button::Enabled::LEFT,
         sf::Vector2f(397.f, 322.f),
         sf::Vector2f(1.f, 1.f),
@@ -402,9 +402,9 @@ MainMenu::MainMenu() :
         ResourceLoader::load<sf::Texture>(get_raw_beginner_button_down()),
         ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_hovered())
 #endif // __S_RELEASE__
-    )));
+    ));
 
-    buttons.push_back(std::unique_ptr<Button>(new AverageButton(
+    buttons.push_back(std::make_unique<AverageButton>(
         Button::Enabled::LEFT,
         sf::Vector2f(397.f, 422.f),
         sf::Vector2f(1.f, 1.f),
@@ -419,9 +419,9 @@ MainMenu::MainMenu() :
         ResourceLoader::load<sf::Texture>(get_raw_average_button_down()),
         ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_hovered())
 #endif // __S_RELEASE__
-    )));
+    ));
 
-    buttons.push_back(std::unique_ptr<Button>(new ExpertButton(
+    buttons.push_back(std::make_unique<ExpertButton>(
         Button::Enabled::LEFT,
         sf::Vector2f(397.f, 522.f),
         sf::Vector2f(1.f, 1.f),
@@ -436,9 +436,9 @@ MainMenu::MainMenu() :
         ResourceLoader::load<sf::Texture>(get_raw_expert_button_down()),
         ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_hovered())
 #endif // __S_RELEASE__
-    )));
+    ));
 
-    buttons.push_back(std::unique_ptr<Button>(new PlayOfflineReturnButton(
+    buttons.push_back(std::make_unique<PlayOfflineReturnButton>(
         *this,
         Button::Enabled::LEFT,
         sf::Vector2f(745.f, 550.f),
@@ -456,7 +456,7 @@ MainMenu::MainMenu() :
         ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_hovered()),
         ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_pressed())
 #endif // __S_RELEASE__
-    )));
+    ));
     ////////////
 }
 
