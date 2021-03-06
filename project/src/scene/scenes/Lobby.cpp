@@ -340,7 +340,7 @@ Lobby::Lobby() :
     /////////////// Text Edits
 
     /////////////// Clear buttons
-    buttons[States::REGISTRATION].push_back(std::unique_ptr<Button>(new ClearButton(
+    buttons[States::REGISTRATION].push_back(std::make_unique<ClearButton>(
 
         text_edits[0],
         Button::Enabled::LEFT,
@@ -360,9 +360,9 @@ Lobby::Lobby() :
         ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_pressed())
 #endif // __S_RELEASE__
 
-    )));
+    ));
 
-    buttons[States::REGISTRATION].push_back(std::unique_ptr<Button>(new ClearButton(
+    buttons[States::REGISTRATION].push_back(std::make_unique<ClearButton>(
 
         text_edits[1],
         Button::Enabled::LEFT,
@@ -382,9 +382,9 @@ Lobby::Lobby() :
         ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_pressed())
 #endif // __S_RELEASE__
 
-    )));
+    ));
 
-    buttons[States::REGISTRATION].push_back(std::unique_ptr<Button>(new ClearButton(
+    buttons[States::REGISTRATION].push_back(std::make_unique<ClearButton>(
 
         text_edits[2],
         Button::Enabled::LEFT,
@@ -404,11 +404,11 @@ Lobby::Lobby() :
         ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_pressed())
 #endif // __S_RELEASE__
 
-    )));
+    ));
     /////////////// Clear buttons
 
     /////////////// Registration Buttons
-    buttons[States::REGISTRATION].push_back(std::unique_ptr<Button>(new HostButton(
+    buttons[States::REGISTRATION].push_back(std::make_unique<HostButton>(
 
         *this,
         Button::Enabled::LEFT,
@@ -428,9 +428,9 @@ Lobby::Lobby() :
         ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_pressed())
 #endif // __S_RELEASE__
 
-    )));
+    ));
 
-    buttons[States::REGISTRATION].push_back(std::unique_ptr<Button>(new JoinButton(
+    buttons[States::REGISTRATION].push_back(std::make_unique<JoinButton>(
 
         *this,
         Button::Enabled::LEFT,
@@ -450,11 +450,11 @@ Lobby::Lobby() :
         ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_pressed())
 #endif // __S_RELEASE__
 
-    )));
+    ));
     /////////////// Registration Buttons
 
     /////////////// Connecting Buttons
-    buttons[States::CONNECTING].push_back(std::unique_ptr<Button>(new ConnectionCancelButton(
+    buttons[States::CONNECTING].push_back(std::make_unique<ConnectionCancelButton>(
 
         *this,
         Button::Enabled::LEFT,
@@ -474,11 +474,11 @@ Lobby::Lobby() :
         ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_pressed())
 #endif // __S_RELEASE__
 
-    )));
+    ));
     /////////////// Connecting Buttons
 
     /////////////// Waiting Buttons
-    buttons[States::WAITING].push_back(std::unique_ptr<Button>(new LobbyBeginnerButton(
+    buttons[States::WAITING].push_back(std::make_unique<LobbyBeginnerButton>(
 
         *this,
         Button::Enabled::LEFT,
@@ -498,9 +498,9 @@ Lobby::Lobby() :
         ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_pressed())
 #endif // __S_RELEASE__
 
-    )));
+    ));
 
-    buttons[States::WAITING].push_back(std::unique_ptr<Button>(new LobbyAverageButton(
+    buttons[States::WAITING].push_back(std::make_unique<LobbyAverageButton>(
 
         *this,
         Button::Enabled::LEFT,
@@ -520,9 +520,9 @@ Lobby::Lobby() :
         ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_pressed())
 #endif // __S_RELEASE__
 
-    )));
+    ));
 
-    buttons[States::WAITING].push_back(std::unique_ptr<Button>(new LobbyExpertButton(
+    buttons[States::WAITING].push_back(std::make_unique<LobbyExpertButton>(
 
         *this,
         Button::Enabled::LEFT,
@@ -542,9 +542,9 @@ Lobby::Lobby() :
         ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_pressed())
 #endif // __S_RELEASE__
 
-    )));
+    ));
 
-    buttons[States::WAITING].push_back(std::unique_ptr<Button>(new DurationAButton(
+    buttons[States::WAITING].push_back(std::make_unique<DurationAButton>(
 
         *this,
         Button::Enabled::LEFT,
@@ -564,9 +564,9 @@ Lobby::Lobby() :
         ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_pressed())
 #endif // __S_RELEASE__
 
-    )));
+    ));
 
-    buttons[States::WAITING].push_back(std::unique_ptr<Button>(new DurationBButton(
+    buttons[States::WAITING].push_back(std::make_unique<DurationBButton>(
 
         *this,
         Button::Enabled::LEFT,
@@ -586,9 +586,9 @@ Lobby::Lobby() :
         ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_pressed())
 #endif // __S_RELEASE__
 
-    )));
+    ));
 
-    buttons[States::WAITING].push_back(std::unique_ptr<Button>(new DurationCButton(
+    buttons[States::WAITING].push_back(std::make_unique<DurationCButton>(
 
         *this,
         Button::Enabled::LEFT,
@@ -608,9 +608,9 @@ Lobby::Lobby() :
         ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_pressed())
 #endif // __S_RELEASE__
 
-    )));
+    ));
 
-    buttons[States::WAITING].push_back(std::unique_ptr<Button>(new StartButton(
+    buttons[States::WAITING].push_back(std::make_unique<StartButton>(
 
         *this,
         Button::Enabled::LEFT,
@@ -628,7 +628,7 @@ Lobby::Lobby() :
         ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_hovered())
 #endif // __S_RELEASE__
 
-    )));
+    ));
     /////////////// Waiting Buttons
 
     /////////////// Panels
