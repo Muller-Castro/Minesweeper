@@ -171,7 +171,7 @@ void GridButton::on_button_up()
 
 void GridButton::on_button_down()
 {
-    //
+    if(game_ref.get().emoji) game_ref.get().emoji->set_face(Emoji::HUSHED);
 }
 
 void GridButton::on_button_pressed()
@@ -227,6 +227,8 @@ void GridButton::on_button_pressed()
             game_ref.get().sound.setBuffer(*game_ref.get().oooh_sound);
             game_ref.get().sound.setVolume(100.f);
             game_ref.get().sound.play();
+
+            if(game_ref.get().emoji) game_ref.get().emoji->set_face(Emoji::BANDAGE);
 
             game_ref.get().finished = true;
 
