@@ -91,6 +91,7 @@
 		<Unit filename="../thirdparty/Encryptions/Encryptions/AES.cpp" />
 		<Unit filename="../thirdparty/Encryptions/Encryptions/SymAlg.cpp" />
 		<Unit filename="../thirdparty/Encryptions/common/includes.cpp" />
+		<Unit filename="include/Emoji.h" />
 		<Unit filename="include/GlobalConfigurations.h" />
 		<Unit filename="include/Input.h" />
 		<Unit filename="include/Input.hpp" />
@@ -117,6 +118,9 @@
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="include/assets/AverageButtonNHovered.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/BandageFace.h">
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="include/assets/BeginnerButtonDown.h">
@@ -253,6 +257,9 @@
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="include/assets/HostButtonNHovered.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/HushedFace.h">
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="include/assets/INET.h">
@@ -447,6 +454,9 @@
 		<Unit filename="include/assets/SmallExpertButtonNHovered.h">
 			<Option target="Static Release" />
 		</Unit>
+		<Unit filename="include/assets/SmilingFace.h">
+			<Option target="Static Release" />
+		</Unit>
 		<Unit filename="include/assets/SplashScreenSoundtrack.h">
 			<Option target="Static Release" />
 		</Unit>
@@ -457,6 +467,9 @@
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="include/assets/StartButtonNHovered.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/SunglassesFace.h">
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="include/assets/Title.h">
@@ -521,6 +534,7 @@
 		<Unit filename="res/resource.rc">
 			<Option compilerVar="WINDRES" />
 		</Unit>
+		<Unit filename="src/Emoji.cpp" />
 		<Unit filename="src/GlobalConfigurations.cpp" />
 		<Unit filename="src/Input.cpp" />
 		<Unit filename="src/Main.cpp" />
@@ -547,6 +561,9 @@
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="src/assets/AverageButtonNHovered.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/BandageFace.cpp">
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="src/assets/BeginnerButtonDown.cpp">
@@ -683,6 +700,9 @@
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="src/assets/HostButtonNHovered.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/HushedFace.cpp">
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="src/assets/INET.cpp">
@@ -877,6 +897,9 @@
 		<Unit filename="src/assets/SmallExpertButtonNHovered.cpp">
 			<Option target="Static Release" />
 		</Unit>
+		<Unit filename="src/assets/SmilingFace.cpp">
+			<Option target="Static Release" />
+		</Unit>
 		<Unit filename="src/assets/SplashScreenSoundtrack.cpp">
 			<Option target="Static Release" />
 		</Unit>
@@ -887,6 +910,9 @@
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="src/assets/StartButtonNHovered.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/SunglassesFace.cpp">
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="src/assets/Title.cpp">
