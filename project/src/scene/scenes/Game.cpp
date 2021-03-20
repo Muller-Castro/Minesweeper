@@ -38,7 +38,6 @@
 #include "Encryptions/AES.h"
 #include "io/ResourceLoader.h"
 #include "tools/Vector2Hash.h"
-#include "scene/SceneManager.h"
 #include "MinesweeperGame.h"
 #ifdef __S_RELEASE__
 #include "assets/MainMenuButtonHovered.h"
@@ -85,9 +84,11 @@ Game::Game() :
     grid_height(),
     max_bombs(),
     flag_counter(),
+    conn_info(),
 #ifdef __S_RELEASE__
     counter_font_data(get_raw_digital7_mono()),
 #endif // __S_RELEASE__
+    emoji(),
     buttons(),
     grid(),
     cached_grid_button_textures(),
@@ -189,42 +190,52 @@ Game::Game() :
     soundtrack->music.play();
     soundtrack->music.setVolume(20.f);
 
-    buttons.push_back(std::unique_ptr<Button>(new RestartButton(
-        *this,
-        Button::Enabled::LEFT,
-        sf::Vector2f(259.f, 59.f),
-        sf::Vector2f(1.f, 1.f),
-#ifndef __S_RELEASE__
-        ResourceLoader::load<sf::Texture>("assets/textures/RestartButtonHovered.png"),
-        ResourceLoader::load<sf::Texture>("assets/textures/RestartButtonNHovered.png"),
-        ResourceLoader::load<sf::Texture>("assets/textures/RestartButtonDown.png"),
-        ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonHovered.wav"),
-        ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonPressed.wav")
-#else
-        ResourceLoader::load<sf::Texture>(get_raw_restart_button_hovered()),
-        ResourceLoader::load<sf::Texture>(get_raw_restart_button_n_hovered()),
-        ResourceLoader::load<sf::Texture>(get_raw_restart_button_down()),
-        ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_hovered()),
-        ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_pressed())
-#endif // __S_RELEASE__
-    )));
+    if(!conn_info.is_online) emoji = std::make_unique<Emoji>(sf::Vector2f(375.f, 33.f));
 
-    buttons.push_back(std::unique_ptr<Button>(new MainMenuButton(
-        Button::Enabled::LEFT,
-        sf::Vector2f(543.f, 59.f),
-        sf::Vector2f(1.f, 1.f),
+    if(!conn_info.is_online) {
+
+        buttons.push_back(std::make_unique<RestartButton>(
+            *this,
+            Button::Enabled::LEFT,
+            sf::Vector2f(259.f, 59.f),
+            sf::Vector2f(1.f, 1.f),
 #ifndef __S_RELEASE__
-        ResourceLoader::load<sf::Texture>("assets/textures/MainMenuButtonHovered.png"),
-        ResourceLoader::load<sf::Texture>("assets/textures/MainMenuButtonNHovered.png"),
-        ResourceLoader::load<sf::Texture>("assets/textures/MainMenuButtonDown.png"),
-        ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonHovered.wav")
+            ResourceLoader::load<sf::Texture>("assets/textures/RestartButtonHovered.png"),
+            ResourceLoader::load<sf::Texture>("assets/textures/RestartButtonNHovered.png"),
+            ResourceLoader::load<sf::Texture>("assets/textures/RestartButtonDown.png"),
+            ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonHovered.wav"),
+            ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonPressed.wav")
 #else
-        ResourceLoader::load<sf::Texture>(get_raw_main_menu_button_hovered_t()),
-        ResourceLoader::load<sf::Texture>(get_raw_main_menu_button_n_hovered_t()),
-        ResourceLoader::load<sf::Texture>(get_raw_main_menu_button_down_t()),
-        ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_hovered())
+            ResourceLoader::load<sf::Texture>(get_raw_restart_button_hovered()),
+            ResourceLoader::load<sf::Texture>(get_raw_restart_button_n_hovered()),
+            ResourceLoader::load<sf::Texture>(get_raw_restart_button_down()),
+            ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_hovered()),
+            ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_pressed())
 #endif // __S_RELEASE__
-    )));
+        ));
+
+    }
+
+    if(!conn_info.is_online) {
+
+        buttons.push_back(std::make_unique<MainMenuButton>(
+            Button::Enabled::LEFT,
+            sf::Vector2f(543.f, 59.f),
+            sf::Vector2f(1.f, 1.f),
+#ifndef __S_RELEASE__
+            ResourceLoader::load<sf::Texture>("assets/textures/MainMenuButtonHovered.png"),
+            ResourceLoader::load<sf::Texture>("assets/textures/MainMenuButtonNHovered.png"),
+            ResourceLoader::load<sf::Texture>("assets/textures/MainMenuButtonDown.png"),
+            ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonHovered.wav")
+#else
+            ResourceLoader::load<sf::Texture>(get_raw_main_menu_button_hovered_t()),
+            ResourceLoader::load<sf::Texture>(get_raw_main_menu_button_n_hovered_t()),
+            ResourceLoader::load<sf::Texture>(get_raw_main_menu_button_down_t()),
+            ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_hovered())
+#endif // __S_RELEASE__
+        ));
+
+    }
 
     build_initial_grid();
 }
@@ -236,6 +247,8 @@ Game::~Game() noexcept
 
 void Game::process_inputs()
 {
+    if(emoji) emoji->process_inputs();
+
     for(auto& button : buttons) button->process_inputs();
 
     if(!finished) {
@@ -251,6 +264,8 @@ void Game::process_inputs()
 
 void Game::update(float delta)
 {
+    if(emoji) emoji->update(delta);
+
     for(auto& button : buttons) button->update(delta);
 
     bool all_non_bombs_disabled = true;
@@ -288,6 +303,8 @@ void Game::update(float delta)
         sound.setVolume(100.f);
         sound.play();
 
+        if(emoji) emoji->set_face(Emoji::SUNGLASSES);
+
         finished = true;
 
     }
@@ -296,6 +313,8 @@ void Game::update(float delta)
 void Game::draw()
 {
     MinesweeperGame::window->draw(panel_sprite);
+
+    if(emoji) emoji->draw();
 
     draw_counters();
 
@@ -312,6 +331,8 @@ void Game::draw()
 
 void Game::restart()
 {
+    if(emoji) emoji->restart();
+
     is_first_click = true;
     finished       = false;
     flag_counter   = 0;
@@ -492,7 +513,7 @@ void Game::build_initial_grid()
 
         for(int x = 0; x < grid_width; ++x) {
 
-            grid[y][x] = std::unique_ptr<GridButton>(new GridButton(
+            grid[y][x] = std::make_unique<GridButton>(
                 *this,
                 GridButton::Types::NEUTRAL,
                 false,
@@ -504,14 +525,14 @@ void Game::build_initial_grid()
                 cached_grid_button_textures["GB_UP"],
                 cached_grid_button_textures["GB_UP"],
                 cached_grid_button_textures["EMP_CELL"],
-                {},
+                std::shared_ptr<sf::Texture>(),
                 cached_grid_button_textures["P1_FLAG"],
                 cached_grid_button_textures["P2_FLAG"],
                 cached_grid_button_textures["N_A_BOMB"],
                 cached_grid_button_sounds["FLAG_S"],
-                {},
+                std::shared_ptr<sf::SoundBuffer>(),
                 cached_grid_button_sounds["GB_PR"]
-            ));
+            );
 
         }
 
@@ -575,7 +596,7 @@ void Game::build_grid(sf::Vector2i first_disabled_cell_position)
 
             }
 
-            grid[y][x] = std::unique_ptr<GridButton>(new GridButton(
+            grid[y][x] = std::make_unique<GridButton>(
                 *this,
                 button_type,
                 (sf::Vector2i(x, y) == first_disabled_cell_position),
@@ -592,9 +613,9 @@ void Game::build_grid(sf::Vector2i first_disabled_cell_position)
                 cached_grid_button_textures["P2_FLAG"],
                 cached_grid_button_textures["N_A_BOMB"],
                 cached_grid_button_sounds["FLAG_S"],
-                {},
+                std::shared_ptr<sf::SoundBuffer>(),
                 is_bomb ? cached_grid_button_sounds["BOMB_E"] : cached_grid_button_sounds["GB_PR"]
-            ));
+            );
 
         }
 

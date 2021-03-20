@@ -45,6 +45,7 @@
 #include "components/Button.h"
 #include "components/buttons/GridButton.h"
 #include "io/MusicStream.h"
+#include "Emoji.h"
 
 namespace Minesweeper {
 
@@ -83,9 +84,13 @@ namespace Minesweeper {
 
         int flag_counter;
 
+        ConnectionInfo conn_info;
+
 #ifdef __S_RELEASE__
         std::pair<std::string, std::string> counter_font_data;
 #endif // __S_RELEASE__
+
+        std::unique_ptr<Emoji> emoji;
 
         std::vector<std::unique_ptr<Button>> buttons;
         std::vector<std::vector<std::unique_ptr<GridButton>>> grid;
