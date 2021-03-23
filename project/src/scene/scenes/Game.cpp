@@ -372,8 +372,6 @@ void Game::draw()
 
 void Game::restart()
 {
-    score = std::make_pair(0, 0);
-
     if(emoji) emoji->restart();
 
     is_first_click = true;
