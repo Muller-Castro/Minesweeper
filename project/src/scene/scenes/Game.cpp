@@ -478,7 +478,7 @@ void Game::draw_peer_infos()
 
         // Ping
         {
-            peer_info_text.setString("Ping: " + std::to_string(peer_info.ping) + "ms");
+            peer_info_text.setString("Ping: " + std::to_string(peer_info.ping > 999 ? 999 : peer_info.ping) + "ms");
             peer_info_text.setPosition(sf::Vector2f(144.f, 65.f));
 
             MinesweeperGame::window->draw(peer_info_text);
@@ -486,7 +486,7 @@ void Game::draw_peer_infos()
 
         // Max Ping
         {
-            peer_info_text.setString("Max: " + std::to_string(peer_info.max_ping) + "ms");
+            peer_info_text.setString("Max: " + std::to_string(peer_info.max_ping > 999 ? 999 : peer_info.max_ping) + "ms");
             peer_info_text.setPosition(sf::Vector2f(266.f, 65.f));
 
             MinesweeperGame::window->draw(peer_info_text);
@@ -508,7 +508,7 @@ void Game::draw_peer_infos()
 
         // Ping
         {
-            peer_info_text.setString("Ping: " + std::to_string(peer_info.ping) + "ms");
+            peer_info_text.setString("Ping: " + std::to_string(peer_info.ping > 999 ? 999 : peer_info.ping) + "ms");
             peer_info_text.setPosition(sf::Vector2f(448.f, 65.f));
 
             MinesweeperGame::window->draw(peer_info_text);
@@ -516,7 +516,7 @@ void Game::draw_peer_infos()
 
         // Max Ping
         {
-            peer_info_text.setString("Max: " + std::to_string(peer_info.max_ping) + "ms");
+            peer_info_text.setString("Max: " + std::to_string(peer_info.max_ping > 999 ? 999 : peer_info.max_ping) + "ms");
             peer_info_text.setPosition(sf::Vector2f(570.f, 65.f));
 
             MinesweeperGame::window->draw(peer_info_text);
