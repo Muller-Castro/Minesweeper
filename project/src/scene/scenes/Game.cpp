@@ -51,6 +51,7 @@
 #include "assets/CounterPanel.h"
 #include "assets/Clapping.h"
 #include "assets/Oooh.h"
+#include "assets/Arial.h"
 #include "assets/Digital7Mono.h"
 #include "assets/GameSoundtrack.h"
 #include "assets/Icon1.h"
@@ -71,6 +72,7 @@
 #include "assets/MainMenuButtonNHoveredT.h"
 #include "assets/MainMenuButtonHoveredT.h"
 #include "assets/MainMenuButtonDownT.h"
+#include "assets/OnlineGameMatchPanel.h"
 #endif // __S_RELEASE__
 #include "components/buttons/RestartButton.h"
 #include "components/buttons/MainMenuButton.h"
@@ -86,6 +88,7 @@ Game::Game() :
     flag_counter(),
     conn_info(),
 #ifdef __S_RELEASE__
+    peer_info_font_data(conn_info.is_online ? get_raw_arial() : decltype(peer_info_font_data){}),
     counter_font_data(get_raw_digital7_mono()),
 #endif // __S_RELEASE__
     emoji(),
@@ -95,14 +98,18 @@ Game::Game() :
     cached_grid_button_sounds(),
     panel_texture(),
     counter_panel_texture(),
+    online_match_panel_texture(),
     clapping_sound(),
     oooh_sound(),
+    peer_info_font(),
     counter_font(),
     soundtrack(),
     timer(),
     panel_sprite(),
     counter_panel_sprite(),
+    online_match_panel_sprite(),
     sound(),
+    peer_info_text(),
     counter_text(),
     grid_outline()
 {
@@ -111,9 +118,13 @@ Game::Game() :
 
     counter_panel_texture = ResourceLoader::load<sf::Texture>("assets/textures/CounterPanel.png");
 
+    if(conn_info.is_online) online_match_panel_texture = ResourceLoader::load<sf::Texture>("assets/textures/OnlineGameMatchPanel.png");
+
     clapping_sound        = ResourceLoader::load<sf::SoundBuffer>("assets/sounds/Clapping.wav");
 
     oooh_sound            = ResourceLoader::load<sf::SoundBuffer>("assets/sounds/Oooh.wav");
+
+    if(conn_info.is_online) peer_info_font = ResourceLoader::load<sf::Font>("assets/fonts/Arial.ttf");
 
     counter_font          = ResourceLoader::load<sf::Font>("assets/fonts/Digital7Mono.ttf");
 
@@ -145,9 +156,13 @@ Game::Game() :
 
     counter_panel_texture = ResourceLoader::load<sf::Texture>(get_raw_counter_panel());
 
+    if(conn_info.is_online) online_match_panel_texture = ResourceLoader::load<sf::Texture>(get_raw_online_game_match_panel());
+
     clapping_sound        = ResourceLoader::load<sf::SoundBuffer>(get_raw_clapping());
 
     oooh_sound            = ResourceLoader::load<sf::SoundBuffer>(get_raw_oooh());
+
+    if(conn_info.is_online) peer_info_font = ResourceLoader::load<sf::Font>(peer_info_font_data);
 
     counter_font          = ResourceLoader::load<sf::Font>(counter_font_data);
 
@@ -178,6 +193,24 @@ Game::Game() :
 
     panel_sprite.setTexture(*panel_texture);
     counter_panel_sprite.setTexture(*counter_panel_texture);
+
+    if(conn_info.is_online) {
+
+        online_match_panel_sprite.setTexture(*online_match_panel_texture);
+        online_match_panel_sprite.setPosition(sf::Vector2f(137.f, 24.f));
+
+    }
+
+    if(conn_info.is_online) {
+
+        peer_info_text.setFont(*peer_info_font);
+
+        peer_info_text.setOutlineColor(sf::Color::Black);
+        peer_info_text.setOutlineThickness(2.f);
+        peer_info_text.setCharacterSize(16);
+        peer_info_text.setFillColor(sf::Color::White);
+
+    }
 
     counter_text.setFont(*counter_font);
 //    counter_text.setOutlineColor(sf::Color::Black);
@@ -314,7 +347,11 @@ void Game::draw()
 {
     MinesweeperGame::window->draw(panel_sprite);
 
+    if(conn_info.is_online) MinesweeperGame::window->draw(online_match_panel_sprite);
+
     if(emoji) emoji->draw();
+
+    if(conn_info.is_online) draw_peer_infos();
 
     draw_counters();
 
@@ -423,6 +460,69 @@ void Game::generate_encrypted_file(std::array<std::string, 3>&& record_values) c
 
     output_file << content;
     output_file.close();
+}
+
+void Game::draw_peer_infos()
+{
+    // Left
+    {
+        const PeerInfo& peer_info = conn_info.is_host ? MinesweeperGame::peer_info : MinesweeperGame::new_peer_info;
+
+        // Name
+        {
+            peer_info_text.setString(peer_info.name);
+            peer_info_text.setPosition(sf::Vector2f(std::round(250.f - peer_info_text.getLocalBounds().width / 2.f), 32.f));
+
+            MinesweeperGame::window->draw(peer_info_text);
+        }
+
+        // Ping
+        {
+            peer_info_text.setString("Ping: " + std::to_string(peer_info.ping) + "ms");
+            peer_info_text.setPosition(sf::Vector2f(144.f, 65.f));
+
+            MinesweeperGame::window->draw(peer_info_text);
+        }
+
+        // Max Ping
+        {
+            peer_info_text.setString("Max: " + std::to_string(peer_info.max_ping) + "ms");
+            peer_info_text.setPosition(sf::Vector2f(266.f, 65.f));
+
+            MinesweeperGame::window->draw(peer_info_text);
+        }
+
+    }
+
+    // Right
+    {
+        const PeerInfo& peer_info = !conn_info.is_host ? MinesweeperGame::peer_info : MinesweeperGame::new_peer_info;
+
+        // Name
+        {
+            peer_info_text.setString(peer_info.name);
+            peer_info_text.setPosition(sf::Vector2f(std::round(554.f - peer_info_text.getLocalBounds().width / 2.f), 32.f));
+
+            MinesweeperGame::window->draw(peer_info_text);
+        }
+
+        // Ping
+        {
+            peer_info_text.setString("Ping: " + std::to_string(peer_info.ping) + "ms");
+            peer_info_text.setPosition(sf::Vector2f(448.f, 65.f));
+
+            MinesweeperGame::window->draw(peer_info_text);
+        }
+
+        // Max Ping
+        {
+            peer_info_text.setString("Max: " + std::to_string(peer_info.max_ping) + "ms");
+            peer_info_text.setPosition(sf::Vector2f(570.f, 65.f));
+
+            MinesweeperGame::window->draw(peer_info_text);
+        }
+
+    }
 }
 
 void Game::draw_counters()

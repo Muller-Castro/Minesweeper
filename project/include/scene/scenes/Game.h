@@ -87,6 +87,7 @@ namespace Minesweeper {
         ConnectionInfo conn_info;
 
 #ifdef __S_RELEASE__
+        std::pair<std::string, std::string> peer_info_font_data;
         std::pair<std::string, std::string> counter_font_data;
 #endif // __S_RELEASE__
 
@@ -100,10 +101,12 @@ namespace Minesweeper {
 
         std::shared_ptr<sf::Texture> panel_texture;
         std::shared_ptr<sf::Texture> counter_panel_texture;
+        std::shared_ptr<sf::Texture> online_match_panel_texture;
 
         std::shared_ptr<sf::SoundBuffer> clapping_sound;
         std::shared_ptr<sf::SoundBuffer> oooh_sound;
 
+        std::shared_ptr<sf::Font> peer_info_font;
         std::shared_ptr<sf::Font> counter_font;
 
         std::shared_ptr<MusicStream> soundtrack;
@@ -112,9 +115,11 @@ namespace Minesweeper {
 
         sf::Sprite panel_sprite;
         sf::Sprite counter_panel_sprite;
+        sf::Sprite online_match_panel_sprite;
 
         sf::Sound sound;
 
+        sf::Text peer_info_text;
         sf::Text counter_text;
 
         sf::RectangleShape grid_outline;
@@ -129,6 +134,7 @@ namespace Minesweeper {
         void save_record() const;
         void generate_encrypted_file(std::array<std::string, 3>&& record_values) const;
 
+        void draw_peer_infos();
         void draw_counters();
     };
 
