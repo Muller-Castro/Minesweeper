@@ -87,6 +87,7 @@ Game::Game() :
     max_bombs(),
     flag_counter(),
     conn_info(),
+    score(std::make_pair(0, 0)),
 #ifdef __S_RELEASE__
     peer_info_font_data(conn_info.is_online ? get_raw_arial() : decltype(peer_info_font_data){}),
     counter_font_data(get_raw_digital7_mono()),
@@ -205,10 +206,7 @@ Game::Game() :
 
         peer_info_text.setFont(*peer_info_font);
 
-        peer_info_text.setOutlineColor(sf::Color::Black);
         peer_info_text.setOutlineThickness(2.f);
-        peer_info_text.setCharacterSize(16);
-        peer_info_text.setFillColor(sf::Color::White);
 
     }
 
@@ -351,7 +349,13 @@ void Game::draw()
 
     if(emoji) emoji->draw();
 
-    if(conn_info.is_online) draw_peer_infos();
+    if(conn_info.is_online) {
+
+        draw_peer_infos();
+
+        draw_score();
+
+    }
 
     draw_counters();
 
@@ -368,6 +372,8 @@ void Game::draw()
 
 void Game::restart()
 {
+    score = std::make_pair(0, 0);
+
     if(emoji) emoji->restart();
 
     is_first_click = true;
@@ -464,6 +470,10 @@ void Game::generate_encrypted_file(std::array<std::string, 3>&& record_values) c
 
 void Game::draw_peer_infos()
 {
+    peer_info_text.setOutlineColor(sf::Color::Black);
+    peer_info_text.setCharacterSize(16);
+    peer_info_text.setFillColor(sf::Color::White);
+
     // Left
     {
         const PeerInfo& peer_info = conn_info.is_host ? MinesweeperGame::peer_info : MinesweeperGame::new_peer_info;
@@ -522,6 +532,29 @@ void Game::draw_peer_infos()
             MinesweeperGame::window->draw(peer_info_text);
         }
 
+    }
+}
+
+void Game::draw_score()
+{
+    peer_info_text.setOutlineColor(sf::Color(255, 153, 255));
+    peer_info_text.setCharacterSize(18);
+    peer_info_text.setFillColor(sf::Color::Black);
+
+    // Left
+    {
+        peer_info_text.setString(std::to_string(score.first));
+        peer_info_text.setPosition(sf::Vector2f(std::round(380.f - peer_info_text.getLocalBounds().width / 2.f), 40.f));
+
+        MinesweeperGame::window->draw(peer_info_text);
+    }
+
+    // Right
+    {
+        peer_info_text.setString(std::to_string(score.second));
+        peer_info_text.setPosition(sf::Vector2f(std::round(423.f - peer_info_text.getLocalBounds().width / 2.f), 40.f));
+
+        MinesweeperGame::window->draw(peer_info_text);
     }
 }
 

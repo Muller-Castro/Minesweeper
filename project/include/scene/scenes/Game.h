@@ -86,6 +86,8 @@ namespace Minesweeper {
 
         ConnectionInfo conn_info;
 
+        std::pair<unsigned short, unsigned short> score;
+
 #ifdef __S_RELEASE__
         std::pair<std::string, std::string> peer_info_font_data;
         std::pair<std::string, std::string> counter_font_data;
@@ -135,6 +137,7 @@ namespace Minesweeper {
         void generate_encrypted_file(std::array<std::string, 3>&& record_values) const;
 
         void draw_peer_infos();
+        void draw_score();
         void draw_counters();
     };
 
