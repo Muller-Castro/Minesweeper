@@ -352,6 +352,9 @@
 		<Unit filename="include/assets/NotABomb.h">
 			<Option target="Static Release" />
 		</Unit>
+		<Unit filename="include/assets/OnlineGameMatchPanel.h">
+			<Option target="Static Release" />
+		</Unit>
 		<Unit filename="include/assets/Oooh.h">
 			<Option target="Static Release" />
 		</Unit>
@@ -793,6 +796,9 @@
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="src/assets/NotABomb.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/OnlineGameMatchPanel.cpp">
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="src/assets/Oooh.cpp">
