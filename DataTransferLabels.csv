@@ -12,3 +12,5 @@ J;Lobby;DurationB Button
 K;Lobby;DurationC Button
 L;Lobby;Play Counter
 M;Lobby;Start
+A;Game;Ping
+B;Game;Max Ping
