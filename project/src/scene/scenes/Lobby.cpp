@@ -24,7 +24,6 @@
 #include "scene/scenes/Lobby.h"
 
 #include <regex>
-#include <chrono>
 #include <cmath>
 
 #ifdef __RELEASE__
@@ -148,7 +147,6 @@ Lobby::Lobby() :
 
     in_time(),
     join_delay_timer(),
-    ping_delay_timer(),
     arrow(sf::Triangles, 3),
 #ifdef __S_RELEASE__
     text_edit_font_data(get_raw_arial()),
@@ -1380,64 +1378,6 @@ void Lobby::receive_password_response(const std::string& response_str)
     ping_delay_timer.restart();
 
     sound.play();
-}
-
-void Lobby::receive_ping(const std::string& ping_str) const
-{
-    if(ping_delay_timer.getElapsedTime().asSeconds() >= Lobby::PING_DELAY) {
-
-        MinesweeperGame::new_peer_info.ping = std::stoi(ping_str);
-
-    }
-}
-
-void Lobby::receive_max_ping(const std::string& max_ping_str)
-{
-    if(ping_delay_timer.getElapsedTime().asSeconds() >= Lobby::PING_DELAY) {
-
-        MinesweeperGame::new_peer_info.max_ping = std::stoi(max_ping_str);
-
-        ping_delay_timer.restart();
-
-    }
-}
-
-void Lobby::send_ping()
-{
-    std::chrono::high_resolution_clock::time_point t1 = std::chrono::high_resolution_clock::now();
-
-    MinesweeperGame::tcp_socket.setBlocking(true);
-
-    send('D', std::to_string(MinesweeperGame::peer_info.ping));
-
-    MinesweeperGame::tcp_socket.setBlocking(false);
-
-    std::chrono::high_resolution_clock::time_point t2 = std::chrono::high_resolution_clock::now();
-
-    if(ping_delay_timer.getElapsedTime().asSeconds() >= Lobby::PING_DELAY) {
-
-        MinesweeperGame::peer_info.ping = std::chrono::duration_cast<PeerInfo::PingDuration>(t2 - t1).count();
-
-    }
-}
-
-void Lobby::send_max_ping()
-{
-    if(ping_delay_timer.getElapsedTime().asSeconds() >= Lobby::PING_DELAY) {
-
-        MinesweeperGame::peer_info.max_ping = MinesweeperGame::peer_info.ping > MinesweeperGame::peer_info.max_ping ? MinesweeperGame::peer_info.ping : MinesweeperGame::peer_info.max_ping;
-
-    }
-
-    send('E', std::to_string(MinesweeperGame::peer_info.max_ping));
-}
-
-void Lobby::update_ping()
-{
-    send_ping();
-    send_max_ping();
-
-//    if(ping_delay_timer.getElapsedTime().asSeconds() >= Lobby::PING_DELAY) ping_delay_timer.restart();
 }
 
 void Lobby::draw_connecting()

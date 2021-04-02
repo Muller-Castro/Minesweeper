@@ -27,13 +27,18 @@
 #include <string>
 
 #include <SFML/Network/Socket.hpp>
+#include <SFML/System/Clock.hpp>
 
 namespace Minesweeper {
 
     class Network
     {
     protected:
+        static constexpr float PING_DELAY = 1.f;
+
         sf::Socket::Status connection_status;
+
+        sf::Clock ping_delay_timer;
 
         Network();
 
@@ -58,6 +63,12 @@ namespace Minesweeper {
 
             return result;
         }
+
+        void receive_ping(const std::string& ping_str) const;
+        void receive_max_ping(const std::string& max_ping_str);
+        void send_ping();
+        void send_max_ping();
+        void update_ping();
     };
 
 }

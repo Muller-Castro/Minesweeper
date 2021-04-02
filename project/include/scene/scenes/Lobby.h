@@ -93,7 +93,6 @@ namespace Minesweeper {
         };
 
         static constexpr float JOIN_DELAY = 2.f;
-        static constexpr float PING_DELAY = 1.f;
 
         float arrow_speed;
 
@@ -103,7 +102,6 @@ namespace Minesweeper {
 
         sf::Clock in_time;
         sf::Clock join_delay_timer;
-        sf::Clock ping_delay_timer;
 
         sf::VertexArray arrow;
 
@@ -159,15 +157,10 @@ namespace Minesweeper {
         void change_duration(Durations d, const std::string& duration);
         void receive_password(const std::string& password_str);
         void receive_password_response(const std::string& response_str);
-        void receive_ping(const std::string& ping_str) const;
-        void receive_max_ping(const std::string& max_ping_str);
-        void send_ping();
-        void send_max_ping();
 
         void update_connecting();
         void update_waiting();
         void update_you(float delta);
-        void update_ping();
         void draw_connecting();
         void draw_waiting();
         void draw_you();
