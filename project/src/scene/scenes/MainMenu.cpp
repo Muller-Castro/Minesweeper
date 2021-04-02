@@ -460,7 +460,7 @@ MainMenu::MainMenu() :
     ////////////
 }
 
-MainMenu::~MainMenu()
+MainMenu::~MainMenu() noexcept
 {
     //
 }

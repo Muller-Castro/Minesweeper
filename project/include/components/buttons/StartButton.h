@@ -46,7 +46,7 @@ namespace Minesweeper {
     {
     public:
         StartButton(Lobby& lobby_ref_, Enabled enabled_, const sf::Vector2f& position_, const sf::Vector2f& scale_, const std::shared_ptr<sf::Texture>& hovered, const std::shared_ptr<sf::Texture>& non_hovered, const std::shared_ptr<sf::Texture>& down, const std::shared_ptr<sf::SoundBuffer>& hovered_sfx = {}, const std::shared_ptr<sf::SoundBuffer>& pressed_sfx = {});
-        ~StartButton() override {}
+        ~StartButton() noexcept override {}
 
         void process_inputs() override;
         void update(float d)  override;

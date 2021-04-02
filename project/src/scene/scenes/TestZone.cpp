@@ -30,7 +30,7 @@ TestZone::TestZone()
     //
 }
 
-TestZone::~TestZone()
+TestZone::~TestZone() noexcept
 {
     //
 }
