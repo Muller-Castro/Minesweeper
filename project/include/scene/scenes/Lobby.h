@@ -39,6 +39,7 @@
 #include <SFML/Network/TcpListener.hpp>
 
 #include "scene/Scene.h"
+#include "io/Network.h"
 #include "components/buttons/LobbyReturnButton.h"
 #include "components/TextEdit.h"
 #include "components/Button.h"
@@ -47,7 +48,7 @@
 
 namespace Minesweeper {
 
-    class Lobby final : public Scene
+    class Lobby final : public Scene, protected Network
     {
     public:
         Lobby();
@@ -106,8 +107,6 @@ namespace Minesweeper {
 
         sf::VertexArray arrow;
 
-        sf::Socket::Status connection_status;
-
 #ifdef __S_RELEASE__
         std::pair<std::string, std::string> text_edit_font_data;
         std::pair<std::string, std::string> general_info_font_data;
@@ -149,24 +148,7 @@ namespace Minesweeper {
 
         std::unique_ptr<sf::TcpListener> listener;
 
-        void receive_packages();
-        void send(char label, const std::string& data);
-
-        template<char c>
-        std::string retrieve_data(size_t idx, const std::string& data)
-        {
-            std::string result;
-
-            for(std::string::const_iterator cit = data.cbegin() + idx + 1; cit != data.cend(); ++cit) {
-
-                if(*cit == c) break;
-
-                result += *cit;
-
-            }
-
-            return result;
-        }
+        void receive_packages() override;
 
         bool evaluate_text_edits();
         bool evaluate_port();

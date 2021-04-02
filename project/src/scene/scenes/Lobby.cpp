@@ -122,6 +122,7 @@
 using namespace Minesweeper;
 
 Lobby::Lobby() :
+    Network(),
     arrow_speed(20.f),
     current_state(States::REGISTRATION),
 
@@ -149,7 +150,6 @@ Lobby::Lobby() :
     join_delay_timer(),
     ping_delay_timer(),
     arrow(sf::Triangles, 3),
-    connection_status(sf::Socket::NotReady),
 #ifdef __S_RELEASE__
     text_edit_font_data(get_raw_arial()),
     general_info_font_data(get_raw_arial()),
@@ -1061,23 +1061,6 @@ void Lobby::receive_packages()
         p.clear();
 
     }
-}
-
-void Lobby::send(char label, const std::string& data)
-{
-    if((static_cast<int>(label) < 65) || (static_cast<int>(label) > 90)) throw std::runtime_error("The label must be a capital letter");
-
-    for(std::string::const_iterator cit = data.cbegin(); cit != data.cend(); ++cit) {
-
-        if((static_cast<int>(*cit) > 64) && (static_cast<int>(*cit) < 91)) throw std::runtime_error("The content must not contain capital letters");
-
-    }
-
-    sf::Packet p;
-
-    p << (label + data + label);
-
-    connection_status = MinesweeperGame::tcp_socket.send(p);
 }
 
 bool Lobby::evaluate_text_edits()
