@@ -516,6 +516,7 @@
 		<Unit filename="include/components/buttons/RestartButton.h" />
 		<Unit filename="include/components/buttons/StartButton.h" />
 		<Unit filename="include/io/MusicStream.h" />
+		<Unit filename="include/io/Network.h" />
 		<Unit filename="include/io/ResourceLoader.h" />
 		<Unit filename="include/io/ResourceLoader.hpp" />
 		<Unit filename="include/io/SimpleINIParser.h" />
@@ -962,6 +963,7 @@
 		<Unit filename="src/components/buttons/RestartButton.cpp" />
 		<Unit filename="src/components/buttons/StartButton.cpp" />
 		<Unit filename="src/io/MusicStream.cpp" />
+		<Unit filename="src/io/Network.cpp" />
 		<Unit filename="src/io/ResourceLoader.cpp" />
 		<Unit filename="src/io/SimpleINIParser.cpp" />
 		<Unit filename="src/scene/Scene.cpp" />
