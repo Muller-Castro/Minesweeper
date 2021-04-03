@@ -274,6 +274,8 @@ Game::Game() :
 Game::~Game() noexcept
 {
     MinesweeperGame::tcp_socket.disconnect();
+
+    SceneManager::shared_data["H"].clear();
 }
 
 void Game::process_inputs()
