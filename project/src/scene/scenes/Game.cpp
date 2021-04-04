@@ -56,6 +56,7 @@
 #include "assets/CounterPanel.h"
 #include "assets/Clapping.h"
 #include "assets/Oooh.h"
+#include "assets/Chicken.h"
 #include "assets/Arial.h"
 #include "assets/Digital7Mono.h"
 #include "assets/GameSoundtrack.h"
@@ -110,6 +111,7 @@ Game::Game() :
     online_match_panel_texture(),
     clapping_sound(),
     oooh_sound(),
+    chicken_sound(),
     peer_info_font(),
     counter_font(),
     soundtrack(),
@@ -133,7 +135,13 @@ Game::Game() :
 
     oooh_sound            = ResourceLoader::load<sf::SoundBuffer>("assets/sounds/Oooh.wav");
 
-    if(conn_info.is_online) peer_info_font = ResourceLoader::load<sf::Font>("assets/fonts/Arial.ttf");
+    if(conn_info.is_online) {
+
+        chicken_sound  = ResourceLoader::load<sf::SoundBuffer>("assets/sounds/Chicken.wav");
+
+        peer_info_font = ResourceLoader::load<sf::Font>("assets/fonts/Arial.ttf");
+
+    }
 
     counter_font          = ResourceLoader::load<sf::Font>("assets/fonts/Digital7Mono.ttf");
 
@@ -171,7 +179,13 @@ Game::Game() :
 
     oooh_sound            = ResourceLoader::load<sf::SoundBuffer>(get_raw_oooh());
 
-    if(conn_info.is_online) peer_info_font = ResourceLoader::load<sf::Font>(peer_info_font_data);
+    if(conn_info.is_online) {
+
+        chicken_sound  = ResourceLoader::load<sf::SoundBuffer>(get_raw_chicken());
+
+        peer_info_font = ResourceLoader::load<sf::Font>(peer_info_font_data);
+
+    }
 
     counter_font          = ResourceLoader::load<sf::Font>(counter_font_data);
 
@@ -307,7 +321,13 @@ Game::Game() :
 
         update_ping();
 
-        if(connection_status != sf::Socket::Done) panels["C_OUT"].set_active(true);
+        if(connection_status != sf::Socket::Done) {
+
+            if(!panels["C_OUT"].activated()) play_sound(chicken_sound);
+
+            panels["C_OUT"].set_active(true);
+
+        }
 
     }
 }
@@ -354,7 +374,13 @@ void Game::update(float delta)
 
         update_ping();
 
-        if(connection_status != sf::Socket::Done) panels["C_OUT"].set_active(true);
+        if(connection_status != sf::Socket::Done) {
+
+            if(!panels["C_OUT"].activated()) play_sound(chicken_sound);
+
+            panels["C_OUT"].set_active(true);
+
+        }
 
         for(auto& panel : panels) {
 
@@ -416,10 +442,7 @@ void Game::update(float delta)
 
         }
 
-        sound.stop();
-        sound.setBuffer(*clapping_sound);
-        sound.setVolume(100.f);
-        sound.play();
+        play_sound(clapping_sound);
 
         if(emoji) emoji->set_face(Emoji::SUNGLASSES);
 
@@ -482,6 +505,14 @@ void Game::receive_packages()
         p.clear();
 
     }
+}
+
+void Game::play_sound(const std::shared_ptr<sf::SoundBuffer>& sound_buffer, float volume)
+{
+    sound.stop();
+    sound.setBuffer(*sound_buffer);
+    sound.setVolume(volume);
+    sound.play();
 }
 
 void Game::restart()

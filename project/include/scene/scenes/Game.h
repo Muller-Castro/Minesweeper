@@ -112,6 +112,7 @@ namespace Minesweeper {
 
         std::shared_ptr<sf::SoundBuffer> clapping_sound;
         std::shared_ptr<sf::SoundBuffer> oooh_sound;
+        std::shared_ptr<sf::SoundBuffer> chicken_sound;
 
         std::shared_ptr<sf::Font> peer_info_font;
         std::shared_ptr<sf::Font> counter_font;
@@ -132,6 +133,8 @@ namespace Minesweeper {
         sf::RectangleShape grid_outline;
 
         void receive_packages() override;
+
+        void play_sound(const std::shared_ptr<sf::SoundBuffer>& sound_buffer, float volume = 100.f);
 
         void build_initial_grid();
         void build_grid(sf::Vector2i first_disabled_cell_position);
