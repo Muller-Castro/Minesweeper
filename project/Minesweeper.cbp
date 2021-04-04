@@ -157,6 +157,9 @@
 		<Unit filename="include/assets/CancelButtonNHovered.h">
 			<Option target="Static Release" />
 		</Unit>
+		<Unit filename="include/assets/ChickenedOutPanel.h">
+			<Option target="Static Release" />
+		</Unit>
 		<Unit filename="include/assets/Clapping.h">
 			<Option target="Static Release" />
 		</Unit>
@@ -493,6 +496,7 @@
 		<Unit filename="include/components/buttons/AllFieldsOKButton.h" />
 		<Unit filename="include/components/buttons/AverageButton.h" />
 		<Unit filename="include/components/buttons/BeginnerButton.h" />
+		<Unit filename="include/components/buttons/ChickenedOutOKButton.h" />
 		<Unit filename="include/components/buttons/ClearButton.h" />
 		<Unit filename="include/components/buttons/ConnectionCancelButton.h" />
 		<Unit filename="include/components/buttons/CreditsButton.h" />
@@ -602,6 +606,9 @@
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="src/assets/CancelButtonNHovered.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/ChickenedOutPanel.cpp">
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="src/assets/Clapping.cpp">
@@ -940,6 +947,7 @@
 		<Unit filename="src/components/buttons/AllFieldsOKButton.cpp" />
 		<Unit filename="src/components/buttons/AverageButton.cpp" />
 		<Unit filename="src/components/buttons/BeginnerButton.cpp" />
+		<Unit filename="src/components/buttons/ChickenedOutOKButton.cpp" />
 		<Unit filename="src/components/buttons/ClearButton.cpp" />
 		<Unit filename="src/components/buttons/ConnectionCancelButton.cpp" />
 		<Unit filename="src/components/buttons/CreditsButton.cpp" />
