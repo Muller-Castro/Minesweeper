@@ -28,6 +28,7 @@
 #include <memory>
 #include <utility>
 #include <string>
+#include <map>
 #include <unordered_set>
 #include <unordered_map>
 
@@ -41,9 +42,11 @@
 #include <SFML/System/Clock.hpp>
 
 #include "scene/Scene.h"
+#include "io/Network.h"
 #include "scene/SceneManager.h"
 #include "components/Button.h"
 #include "components/buttons/GridButton.h"
+#include "components/Panel.h"
 #include "io/MusicStream.h"
 #include "Emoji.h"
 
@@ -61,7 +64,7 @@ namespace Minesweeper {
         }
     };
 
-    class Game final : public Scene
+    class Game final : public Scene, protected Network
     {
     public:
         Game();
@@ -87,6 +90,8 @@ namespace Minesweeper {
         ConnectionInfo conn_info;
 
         std::pair<unsigned short, unsigned short> score;
+
+        std::map<std::string, Panel> panels;
 
 #ifdef __S_RELEASE__
         std::pair<std::string, std::string> peer_info_font_data;
@@ -126,6 +131,8 @@ namespace Minesweeper {
 
         sf::RectangleShape grid_outline;
 
+        void receive_packages() override;
+
         void build_initial_grid();
         void build_grid(sf::Vector2i first_disabled_cell_position);
         std::unordered_set<sf::Vector2i> create_bomb_positions(const sf::Vector2i& first_disabled_cell_position) const;
@@ -139,6 +146,7 @@ namespace Minesweeper {
         void draw_peer_infos();
         void draw_score();
         void draw_counters();
+        void draw_panel();
     };
 
 }

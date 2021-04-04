@@ -33,6 +33,7 @@
 #include <array>
 
 #include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/Network/Packet.hpp>
 
 #include "tools/EncryptionKey.h"
 #include "Encryptions/AES.h"
@@ -42,6 +43,10 @@
 #ifdef __S_RELEASE__
 #include "assets/MainMenuButtonHovered.h"
 #include "assets/MainMenuButtonPressed.h"
+#include "assets/ChickenedOutPanel.h"
+#include "assets/AllFieldsOKButtonNHovered.h"
+#include "assets/AllFieldsOKButtonHovered.h"
+#include "assets/AllFieldsOKButtonDown.h"
 #include "assets/BombExplosion.h"
 #include "assets/FlagSet.h"
 #include "assets/EmptyCell.h"
@@ -76,10 +81,12 @@
 #endif // __S_RELEASE__
 #include "components/buttons/RestartButton.h"
 #include "components/buttons/MainMenuButton.h"
+#include "components/buttons/ChickenedOutOKButton.h"
 
 using namespace Minesweeper;
 
 Game::Game() :
+    Network('A', 'B'),
     is_first_click(true),
     finished(),
     grid_width(),
@@ -88,6 +95,7 @@ Game::Game() :
     flag_counter(),
     conn_info(),
     score(std::make_pair(0, 0)),
+    panels(),
 #ifdef __S_RELEASE__
     peer_info_font_data(conn_info.is_online ? get_raw_arial() : decltype(peer_info_font_data){}),
     counter_font_data(get_raw_digital7_mono()),
@@ -200,12 +208,7 @@ Game::Game() :
         online_match_panel_sprite.setTexture(*online_match_panel_texture);
         online_match_panel_sprite.setPosition(sf::Vector2f(137.f, 24.f));
 
-    }
-
-    if(conn_info.is_online) {
-
         peer_info_text.setFont(*peer_info_font);
-
         peer_info_text.setOutlineThickness(2.f);
 
     }
@@ -221,9 +224,9 @@ Game::Game() :
     soundtrack->music.play();
     soundtrack->music.setVolume(20.f);
 
-    if(!conn_info.is_online) emoji = std::make_unique<Emoji>(sf::Vector2f(375.f, 33.f));
-
     if(!conn_info.is_online) {
+
+        emoji = std::make_unique<Emoji>(sf::Vector2f(375.f, 33.f));
 
         buttons.push_back(std::make_unique<RestartButton>(
             *this,
@@ -245,10 +248,6 @@ Game::Game() :
 #endif // __S_RELEASE__
         ));
 
-    }
-
-    if(!conn_info.is_online) {
-
         buttons.push_back(std::make_unique<MainMenuButton>(
             Button::Enabled::LEFT,
             sf::Vector2f(543.f, 59.f),
@@ -266,9 +265,51 @@ Game::Game() :
 #endif // __S_RELEASE__
         ));
 
+    }else {
+
+        panels["C_OUT"] = Panel(
+
+            sf::Vector2f(105.f, 189.f),
+            sf::Vector2f(1.f, 1.f),
+#ifndef __S_RELEASE__
+            ResourceLoader::load<sf::Texture>("assets/textures/ChickenedOutPanel.png"),
+#else
+            ResourceLoader::load<sf::Texture>(get_raw_chickened_out_panel()),
+#endif // __S_RELEASE__
+            {
+                std::make_shared<ChickenedOutOKButton>(
+
+                    Button::Enabled::LEFT,
+                    sf::Vector2f(401.f, 312.f),
+                    sf::Vector2f(1.f, 1.f),
+#ifndef __S_RELEASE__
+                    ResourceLoader::load<sf::Texture>("assets/textures/AllFieldsOKButtonHovered.png"),
+                    ResourceLoader::load<sf::Texture>("assets/textures/AllFieldsOKButtonNHovered.png"),
+                    ResourceLoader::load<sf::Texture>("assets/textures/AllFieldsOKButtonDown.png"),
+                    ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonHovered.wav")
+#else
+                    ResourceLoader::load<sf::Texture>(get_raw_all_fields_ok_button_hovered()),
+                    ResourceLoader::load<sf::Texture>(get_raw_all_fields_ok_button_n_hovered()),
+                    ResourceLoader::load<sf::Texture>(get_raw_all_fields_ok_button_down()),
+                    ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_hovered())
+#endif // __S_RELEASE__
+
+                )
+            }
+
+        );
+
     }
 
     build_initial_grid();
+
+    if(conn_info.is_online) {
+
+        update_ping();
+
+        if(connection_status != sf::Socket::Done) panels["C_OUT"].set_active(true);
+
+    }
 }
 
 Game::~Game() noexcept
@@ -280,6 +321,18 @@ Game::~Game() noexcept
 
 void Game::process_inputs()
 {
+    if(conn_info.is_online) {
+
+        for(auto& panel : panels) {
+
+            panel.second.process_inputs();
+
+            if(panel.second.activated()) return;
+
+        }
+
+    }
+
     if(emoji) emoji->process_inputs();
 
     for(auto& button : buttons) button->process_inputs();
@@ -297,6 +350,38 @@ void Game::process_inputs()
 
 void Game::update(float delta)
 {
+    if(conn_info.is_online) {
+
+        update_ping();
+
+        if(connection_status != sf::Socket::Done) panels["C_OUT"].set_active(true);
+
+        for(auto& panel : panels) {
+
+            panel.second.update(delta);
+
+            if(panel.second.activated()) {
+
+                // Just to keep animations playing while the panel is displayed
+                for(std::vector<std::unique_ptr<GridButton>>& row : grid) {
+
+                    for(auto& grid_button : row) {
+
+                        grid_button->animations.update(delta);
+
+                    }
+
+                }
+                // Just to keep animations playing while the panel is displayed
+
+                return;
+
+            }
+
+        }
+
+    }
+
     if(emoji) emoji->update(delta);
 
     for(auto& button : buttons) button->update(delta);
@@ -319,7 +404,7 @@ void Game::update(float delta)
 
     if(all_non_bombs_disabled && !finished) {
 
-        save_record();
+        if(!conn_info.is_online) save_record();
 
         for(std::vector<std::unique_ptr<GridButton>>& row : grid) {
 
@@ -341,6 +426,8 @@ void Game::update(float delta)
         finished = true;
 
     }
+
+    if(conn_info.is_online) receive_packages();
 }
 
 void Game::draw()
@@ -368,6 +455,31 @@ void Game::draw()
     for(std::vector<std::unique_ptr<GridButton>>& row : grid) {
 
         for(auto& grid_button : row) MinesweeperGame::window->draw(*grid_button);
+
+    }
+
+    if(conn_info.is_online) draw_panel();
+}
+
+void Game::receive_packages()
+{
+    sf::Packet p;
+
+    while(MinesweeperGame::tcp_socket.receive(p) == sf::Socket::Done) {
+
+        std::string received_data;
+
+        p >> received_data;
+
+        //////////////////////////////////////////
+        size_t idx;
+
+        if((idx = received_data.find('A')) != std::string::npos) receive_ping(retrieve_data<'A'>(idx, received_data));
+        if((idx = received_data.find('B')) != std::string::npos) receive_max_ping(retrieve_data<'B'>(idx, received_data));
+
+        //////////////////////////////////////////
+
+        p.clear();
 
     }
 }
@@ -607,6 +719,31 @@ void Game::draw_counters()
 
     }
     // Timer
+}
+
+void Game::draw_panel()
+{
+    for(auto& panel : panels) {
+
+        bool should_break = false;
+
+        if(panel.second.activated()) {
+
+            sf::RectangleShape shape(sf::Vector2f(800.f, 600.f));
+
+            shape.setFillColor(sf::Color(0, 0, 0, 200));
+
+            MinesweeperGame::window->draw(shape);
+
+            should_break = true;
+
+        }
+
+        panel.second.draw();
+
+        if(should_break) break;
+
+    }
 }
 
 void Game::build_initial_grid()
