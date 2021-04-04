@@ -36,11 +36,14 @@ namespace Minesweeper {
     protected:
         static constexpr float PING_DELAY = 1.f;
 
+        const char ping_label;
+        const char max_ping_label;
+
         sf::Socket::Status connection_status;
 
         sf::Clock ping_delay_timer;
 
-        Network();
+        Network(char ping_label_, char max_ping_label_);
 
         virtual ~Network() noexcept {}
 
@@ -66,9 +69,11 @@ namespace Minesweeper {
 
         void receive_ping(const std::string& ping_str) const;
         void receive_max_ping(const std::string& max_ping_str);
+        void update_ping();
+
+    private:
         void send_ping();
         void send_max_ping();
-        void update_ping();
     };
 
 }

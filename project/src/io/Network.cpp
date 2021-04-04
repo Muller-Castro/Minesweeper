@@ -32,7 +32,9 @@
 
 using namespace Minesweeper;
 
-Network::Network() :
+Network::Network(char ping_label_, char max_ping_label_) :
+    ping_label(ping_label_),
+    max_ping_label(max_ping_label_),
     connection_status(sf::Socket::NotReady),
     ping_delay_timer()
 {
@@ -82,7 +84,7 @@ void Network::send_ping()
 
     MinesweeperGame::tcp_socket.setBlocking(true);
 
-    send('D', std::to_string(MinesweeperGame::peer_info.ping));
+    send(ping_label, std::to_string(MinesweeperGame::peer_info.ping));
 
     MinesweeperGame::tcp_socket.setBlocking(false);
 
@@ -103,7 +105,7 @@ void Network::send_max_ping()
 
     }
 
-    send('E', std::to_string(MinesweeperGame::peer_info.max_ping));
+    send(max_ping_label, std::to_string(MinesweeperGame::peer_info.max_ping));
 }
 
 void Network::update_ping()
