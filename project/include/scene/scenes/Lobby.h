@@ -167,6 +167,7 @@ namespace Minesweeper {
         void draw_players_info();
         void draw_player_info_text(const std::pair<std::string, sf::Vector2f>& name, const std::pair<std::string, sf::Vector2f>& ip, const std::pair<std::string, sf::Vector2f>& ping, const std::pair<std::string, sf::Vector2f>& max_ping);
         void draw_inactivation_rects();
+        void draw_panel();
     };
 
 }

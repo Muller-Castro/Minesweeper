@@ -121,7 +121,7 @@
 using namespace Minesweeper;
 
 Lobby::Lobby() :
-    Network(),
+    Network('D', 'E'),
     arrow_speed(20.f),
     current_state(States::REGISTRATION),
 
@@ -983,27 +983,7 @@ void Lobby::draw()
 
     }
 
-    for(auto& panel : panels) {
-
-        bool should_break = false;
-
-        if(panel.second.activated()) {
-
-            sf::RectangleShape shape(sf::Vector2f(800.f, 600.f));
-
-            shape.setFillColor(sf::Color(0, 0, 0, 200));
-
-            MinesweeperGame::window->draw(shape);
-
-            should_break = true;
-
-        }
-
-        panel.second.draw();
-
-        if(should_break) break;
-
-    }
+    draw_panel();
 }
 
 void Lobby::receive_packages()
@@ -1577,4 +1557,29 @@ void Lobby::draw_inactivation_rects()
     shape.setPosition(sf::Vector2f(61.f, 372.f));
     shape.setSize(sf::Vector2f(679.f, 57.f));
     MinesweeperGame::window->draw(shape);
+}
+
+void Lobby::draw_panel()
+{
+    for(auto& panel : panels) {
+
+        bool should_break = false;
+
+        if(panel.second.activated()) {
+
+            sf::RectangleShape shape(sf::Vector2f(800.f, 600.f));
+
+            shape.setFillColor(sf::Color(0, 0, 0, 200));
+
+            MinesweeperGame::window->draw(shape);
+
+            should_break = true;
+
+        }
+
+        panel.second.draw();
+
+        if(should_break) break;
+
+    }
 }
