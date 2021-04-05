@@ -29,6 +29,10 @@
 
 #include <SFML/Graphics/RenderWindow.hpp>
 
+#ifndef __S_RELEASE__
+#include "GlobalConfigurations.h"
+#endif // __S_RELEASE__
+
 #include "tools/Vector2Hash.h"
 #include "scene/SceneManager.h"
 #include "scene/scenes/Game.h"
@@ -153,15 +157,15 @@ void GridButton::draw(sf::RenderTarget& target, sf::RenderStates states) const
         target.draw(p1_flag_sprite, states);
 
     }
-#ifndef __DEBUG__
+#ifdef __S_RELEASE__
     else if(disabled) {
-#endif // __DEBUG__
+#else
+    else if(disabled || GlobalConfigurations::show_grid_button_icons) {
+#endif // __S_RELEASE__
 
         target.draw(icon_sprite, states);
 
-#ifndef __DEBUG__
     }
-#endif // __DEBUG__
 }
 
 void GridButton::on_button_up()

@@ -40,6 +40,10 @@ namespace Minesweeper {
         static bool show_bb;
 #endif // __DEBUG__
 
+#ifndef __S_RELEASE__
+        static bool show_grid_button_icons;
+#endif // __S_RELEASE__
+
         static void process_inputs();
         static void update(float);
         static void draw();
