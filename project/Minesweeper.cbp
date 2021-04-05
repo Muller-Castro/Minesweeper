@@ -157,6 +157,9 @@
 		<Unit filename="include/assets/CancelButtonNHovered.h">
 			<Option target="Static Release" />
 		</Unit>
+		<Unit filename="include/assets/Chicken.h">
+			<Option target="Static Release" />
+		</Unit>
 		<Unit filename="include/assets/ChickenedOutPanel.h">
 			<Option target="Static Release" />
 		</Unit>
@@ -606,6 +609,9 @@
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="src/assets/CancelButtonNHovered.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/Chicken.cpp">
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="src/assets/ChickenedOutPanel.cpp">
