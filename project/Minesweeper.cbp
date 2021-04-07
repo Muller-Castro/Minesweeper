@@ -91,6 +91,8 @@
 		<Unit filename="../thirdparty/Encryptions/Encryptions/AES.cpp" />
 		<Unit filename="../thirdparty/Encryptions/Encryptions/SymAlg.cpp" />
 		<Unit filename="../thirdparty/Encryptions/common/includes.cpp" />
+		<Unit filename="../thirdparty/json11/json11.cpp" />
+		<Unit filename="../thirdparty/json11/json11.hpp" />
 		<Unit filename="include/Emoji.h" />
 		<Unit filename="include/GlobalConfigurations.h" />
 		<Unit filename="include/Input.h" />
