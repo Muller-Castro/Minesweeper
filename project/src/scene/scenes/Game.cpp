@@ -35,6 +35,7 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Network/Packet.hpp>
 
+#include "../../../../thirdparty/json11/json11.hpp"
 #include "tools/EncryptionKey.h"
 #include "Encryptions/AES.h"
 #include "io/ResourceLoader.h"
@@ -852,6 +853,8 @@ void Game::build_grid(sf::Vector2i first_disabled_cell_position)
     float grid_x = 800 / 2 - grid_width * 10 + 10;
     float grid_y = (92 + 508 / 2) - grid_height * 10 + 10;
 
+    json11::Json::object data;
+
     for(int y = 0; y < grid_height; ++y) {
 
         for(int x = 0; x < grid_width; ++x) {
@@ -860,7 +863,7 @@ void Game::build_grid(sf::Vector2i first_disabled_cell_position)
 
             GridButton::Types button_type = GridButton::Types::BOMB;
 
-            std::shared_ptr<sf::Texture> icon_texture;
+            std::pair<unsigned, std::shared_ptr<sf::Texture>> icon_data;
 
             if(!is_bomb) {
 
@@ -874,16 +877,18 @@ void Game::build_grid(sf::Vector2i first_disabled_cell_position)
 
                     button_type  = GridButton::Types::NUMBER;
 
+                    icon_data.first = adjacent_bomb_count;
+
                     switch(adjacent_bomb_count) {
 
-                        case 1: { icon_texture = cached_grid_button_textures["ICON_1"]; } break;
-                        case 2: { icon_texture = cached_grid_button_textures["ICON_2"]; } break;
-                        case 3: { icon_texture = cached_grid_button_textures["ICON_3"]; } break;
-                        case 4: { icon_texture = cached_grid_button_textures["ICON_4"]; } break;
-                        case 5: { icon_texture = cached_grid_button_textures["ICON_5"]; } break;
-                        case 6: { icon_texture = cached_grid_button_textures["ICON_6"]; } break;
-                        case 7: { icon_texture = cached_grid_button_textures["ICON_7"]; } break;
-                        case 8: { icon_texture = cached_grid_button_textures["ICON_8"]; } break;
+                        case 1: { icon_data.second = cached_grid_button_textures["ICON_1"]; } break;
+                        case 2: { icon_data.second = cached_grid_button_textures["ICON_2"]; } break;
+                        case 3: { icon_data.second = cached_grid_button_textures["ICON_3"]; } break;
+                        case 4: { icon_data.second = cached_grid_button_textures["ICON_4"]; } break;
+                        case 5: { icon_data.second = cached_grid_button_textures["ICON_5"]; } break;
+                        case 6: { icon_data.second = cached_grid_button_textures["ICON_6"]; } break;
+                        case 7: { icon_data.second = cached_grid_button_textures["ICON_7"]; } break;
+                        case 8: { icon_data.second = cached_grid_button_textures["ICON_8"]; } break;
 
                         default: { throw std::runtime_error("Adjacent bombs > 8 ... This shouldn't be possible..."); };
 
@@ -893,23 +898,54 @@ void Game::build_grid(sf::Vector2i first_disabled_cell_position)
 
             }else {
 
-                icon_texture = cached_grid_button_textures["M_BOMB_SS"];
+                icon_data.first  = 0;
+                icon_data.second = cached_grid_button_textures["M_BOMB_SS"];
+
+            }
+
+            const bool is_first_disabled_cell = (sf::Vector2i(x, y) == first_disabled_cell_position);
+
+            const sf::Vector2f position(x * 20.f + grid_x, y * 20.f + grid_y);
+
+            if(conn_info.is_online) {
+
+                data.try_emplace(std::to_string(y) + "_" + std::to_string(x), json11::Json::object({
+
+                        {"bty", [=](){
+
+                            switch(button_type) {
+
+                                case GridButton::Types::NEUTRAL: return "nt";
+                                case GridButton::Types::NUMBER:  return "nr";
+                                case GridButton::Types::BOMB:    return "bb";
+                                default:                         throw std::runtime_error("Invalid button type");
+
+                            }
+
+                        }()},
+                        {"dis" , static_cast<int>(is_first_disabled_cell)},
+                        {"fl"  , static_cast<int>(grid[y][x]->flagged)},
+                        {"pos" , json11::Json::array{position.x, position.y}},
+                        {"itex", static_cast<int>(icon_data.first)}
+
+                   })
+               );
 
             }
 
             grid[y][x] = std::make_unique<GridButton>(
                 *this,
                 button_type,
-                (sf::Vector2i(x, y) == first_disabled_cell_position),
+                is_first_disabled_cell,
                 grid[y][x]->flagged,
                 sf::Vector2i(x, y),
                 Button::Enabled::LEFT,
-                sf::Vector2f(x * 20.f + grid_x, y * 20.f + grid_y),
+                position,
                 sf::Vector2f(1.f, 1.f),
                 cached_grid_button_textures["GB_UP"],
                 cached_grid_button_textures["GB_UP"],
                 cached_grid_button_textures["EMP_CELL"],
-                icon_texture,
+                icon_data.second,
                 cached_grid_button_textures["P1_FLAG"],
                 cached_grid_button_textures["P2_FLAG"],
                 cached_grid_button_textures["N_A_BOMB"],
@@ -919,6 +955,18 @@ void Game::build_grid(sf::Vector2i first_disabled_cell_position)
             );
 
         }
+
+    }
+
+    if(conn_info.is_online) {
+
+        std::string j_dump = json11::Json(data).dump();
+
+        j_dump.erase(std::remove(j_dump.begin(), j_dump.end(), ' '), j_dump.end());
+
+//        std::cout << j_dump << std::endl;
+
+        send('C', j_dump);
 
     }
 
