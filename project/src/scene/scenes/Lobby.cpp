@@ -1098,7 +1098,14 @@ bool Lobby::evaluate_ip_port()
 
 void Lobby::update_connecting()
 {
-    if((join_delay_timer.getElapsedTime().asSeconds() >= Lobby::JOIN_DELAY) && (connection_status != sf::Socket::Error) && (connection_status != sf::Socket::Done)) {
+    if(
+
+#ifdef __S_RELEASE__
+        (join_delay_timer.getElapsedTime().asSeconds() >= Lobby::JOIN_DELAY) &&
+#endif // __S_RELEASE__
+       (connection_status != sf::Socket::Error) && (connection_status != sf::Socket::Done)
+
+    ) {
 
         std::string ip_port = text_edits[1].get_text_str();
         std::string ip      = ip_port.substr(0, ip_port.find(':'));
