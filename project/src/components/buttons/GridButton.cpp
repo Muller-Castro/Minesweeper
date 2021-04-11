@@ -40,10 +40,11 @@
 
 using namespace Minesweeper;
 
-GridButton::GridButton(Game& game, Types type_, bool disabled_, bool flagged_, const sf::Vector2i& cell_position_, Enabled enabled_, const sf::Vector2f& position_, const sf::Vector2f& scale_, const std::shared_ptr<sf::Texture>& hovered, const std::shared_ptr<sf::Texture>& non_hovered, const std::shared_ptr<sf::Texture>& down, const std::shared_ptr<sf::Texture>& icon, const std::shared_ptr<sf::Texture>& p1_flag, const std::shared_ptr<sf::Texture>& p2_flag, const std::shared_ptr<sf::Texture>& not_a_bomb_texture_, const std::shared_ptr<sf::SoundBuffer>& flag_sound_, const std::shared_ptr<sf::SoundBuffer>& hovered_sfx, const std::shared_ptr<sf::SoundBuffer>& pressed_sfx) :
+GridButton::GridButton(Game& game, Types type_, bool disabled_, bool flagged_, bool is_blue_flag_, const sf::Vector2i& cell_position_, Enabled enabled_, const sf::Vector2f& position_, const sf::Vector2f& scale_, const std::shared_ptr<sf::Texture>& hovered, const std::shared_ptr<sf::Texture>& non_hovered, const std::shared_ptr<sf::Texture>& down, const std::shared_ptr<sf::Texture>& icon, const std::shared_ptr<sf::Texture>& p1_flag, const std::shared_ptr<sf::Texture>& p2_flag, const std::shared_ptr<sf::Texture>& not_a_bomb_texture_, const std::shared_ptr<sf::SoundBuffer>& flag_sound_, const std::shared_ptr<sf::SoundBuffer>& hovered_sfx, const std::shared_ptr<sf::SoundBuffer>& pressed_sfx) :
     Button(enabled_, position_, scale_, hovered, non_hovered, down, hovered_sfx, pressed_sfx),
     disabled(disabled_),
     flagged(flagged_),
+    is_blue_flag(is_blue_flag_),
     type(),
     game_ref(game),
     icon_texture(),
@@ -154,7 +155,7 @@ void GridButton::draw(sf::RenderTarget& target, sf::RenderStates states) const
 
     if(flagged) {
 
-        target.draw(p1_flag_sprite, states);
+        target.draw(is_blue_flag ? p1_flag_sprite : p2_flag_sprite, states);
 
     }
 #ifdef __S_RELEASE__
@@ -316,19 +317,40 @@ void GridButton::check_flag_input()
 
     if(MinesweeperGame::window->hasFocus() && mouse_entered && Input::is_just_pressed<Input::Mouse>(sf::Mouse::Right) && !Input::is_pressed<Input::Mouse>(sf::Mouse::Left)) {
 
+        if(game_ref.get().conn_info.is_online) {
+
+            if(game_ref.get().conn_info.is_host) {
+
+                if(!is_blue_flag) return;
+
+            }else {
+
+                if(is_blue_flag) return;
+
+            }
+
+            set_flag(!flagged, game_ref.get().conn_info.is_host);
+
+            game_ref.get().send('C', std::to_string(cell_position.y) + "_" + std::to_string(cell_position.x));
+
+        }else {
+
+            set_flag(!flagged, is_blue_flag);
+
+        }
+
         Button::sound.setBuffer(*flag_sound);
         Button::sound.setVolume(20.f);
         Button::sound.stop();
         Button::sound.play();
 
-        set_flag(!flagged);
-
     }
 }
 
-void GridButton::set_flag(bool b)
+void GridButton::set_flag(bool b, bool is_blue_flag_)
 {
-    flagged = b;
+    flagged      = b;
+    is_blue_flag = is_blue_flag_;
 
     animations.stop();
 
