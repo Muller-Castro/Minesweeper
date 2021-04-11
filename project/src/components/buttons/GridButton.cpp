@@ -356,13 +356,51 @@ void GridButton::set_flag(bool b, bool is_blue_flag_)
 
     if(flagged) {
 
-        if(game_ref.get().flag_counter > 0) --game_ref.get().flag_counter;
+        if(game_ref.get().flag_counter > 0) {
+
+            if(game_ref.get().conn_info.is_online) {
+
+                if(
+
+                   ( game_ref.get().conn_info.is_host &&  is_blue_flag) ||
+                   (!game_ref.get().conn_info.is_host && !is_blue_flag)
+
+                ) {
+
+                    --game_ref.get().flag_counter;
+
+                }
+
+            }else {
+
+                --game_ref.get().flag_counter;
+
+            }
+
+        }
 
         animations.play("WAVING_FLAG");
 
     }else {
 
-        ++game_ref.get().flag_counter;
+        if(game_ref.get().conn_info.is_online) {
+
+            if(
+
+               ( game_ref.get().conn_info.is_host &&  is_blue_flag) ||
+               (!game_ref.get().conn_info.is_host && !is_blue_flag)
+
+            ) {
+
+                ++game_ref.get().flag_counter;
+
+            }
+
+        }else {
+
+            ++game_ref.get().flag_counter;
+
+        }
 
     }
 }
