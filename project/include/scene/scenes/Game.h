@@ -134,6 +134,8 @@ namespace Minesweeper {
 
         void receive_packages() override;
 
+        void setup_grid(const std::string& grid_data);
+
         void play_sound(const std::shared_ptr<sf::SoundBuffer>& sound_buffer, float volume = 100.f);
 
         void build_initial_grid();

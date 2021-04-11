@@ -500,12 +500,97 @@ void Game::receive_packages()
 
         if((idx = received_data.find('A')) != std::string::npos) receive_ping(retrieve_data<'A'>(idx, received_data));
         if((idx = received_data.find('B')) != std::string::npos) receive_max_ping(retrieve_data<'B'>(idx, received_data));
+        if((idx = received_data.find('C')) != std::string::npos) setup_grid(retrieve_data<'C'>(idx, received_data));
 
         //////////////////////////////////////////
 
         p.clear();
 
     }
+}
+
+void Game::setup_grid(const std::string& grid_data)
+{
+//    std::cout << grid_data << std::endl;
+
+    is_first_click = false;
+
+    std::string err_msg;
+
+    json11::Json json = json11::Json::parse(grid_data, err_msg);
+
+    if(!err_msg.empty()) throw std::runtime_error(err_msg);
+
+    const auto& items = json.object_items();
+
+    for(const auto& item : items) {
+
+        unsigned y = 0, x = 0;
+
+        GridButton::Types button_type = GridButton::Types::NEUTRAL;
+
+        std::shared_ptr<sf::Texture> icon_texture;
+
+        const std::string         bty  = item.second["bty"].string_value();
+        const bool                dis  = static_cast<bool>(item.second["dis"].int_value());
+        const bool                fl   = static_cast<bool>(item.second["fl"] .int_value());
+        const int                 itex = item.second["itex"].int_value();
+        const json11::Json::array pos  = item.second["pos"].array_items();
+
+        {
+            size_t underscore_idx = item.first.find('_');
+
+            if(underscore_idx == std::string::npos) throw std::runtime_error("Invalid JSON key");
+
+            y = std::stoul(item.first.substr(0, underscore_idx));
+            x = std::stoul(item.first.substr(underscore_idx + 1));
+        }
+
+        if(bty == "nr")      button_type = GridButton::Types::NUMBER;
+        else if(bty == "bb") button_type = GridButton::Types::BOMB;
+
+        switch(itex) {
+
+            case 0: {} break;
+            case 1: { icon_texture = cached_grid_button_textures["ICON_1"];    } break;
+            case 2: { icon_texture = cached_grid_button_textures["ICON_2"];    } break;
+            case 3: { icon_texture = cached_grid_button_textures["ICON_3"];    } break;
+            case 4: { icon_texture = cached_grid_button_textures["ICON_4"];    } break;
+            case 5: { icon_texture = cached_grid_button_textures["ICON_5"];    } break;
+            case 6: { icon_texture = cached_grid_button_textures["ICON_6"];    } break;
+            case 7: { icon_texture = cached_grid_button_textures["ICON_7"];    } break;
+            case 8: { icon_texture = cached_grid_button_textures["ICON_8"];    } break;
+            case 9: { icon_texture = cached_grid_button_textures["M_BOMB_SS"]; } break;
+
+            default: { throw std::runtime_error("Invalid itex"); };
+
+        }
+
+        grid[y][x] = std::make_unique<GridButton>(
+            *this,
+            button_type,
+            dis,
+            fl,
+            sf::Vector2i(x, y),
+            Button::Enabled::LEFT,
+            sf::Vector2f(pos[0].int_value(), pos[1].int_value()),
+            sf::Vector2f(1.f, 1.f),
+            cached_grid_button_textures["GB_UP"],
+            cached_grid_button_textures["GB_UP"],
+            cached_grid_button_textures["EMP_CELL"],
+            icon_texture,
+            cached_grid_button_textures["P1_FLAG"],
+            cached_grid_button_textures["P2_FLAG"],
+            cached_grid_button_textures["N_A_BOMB"],
+            cached_grid_button_sounds["FLAG_S"],
+            std::shared_ptr<sf::SoundBuffer>(),
+            (itex == 9) ? cached_grid_button_sounds["BOMB_E"] : cached_grid_button_sounds["GB_PR"]
+        );
+
+    }
+
+    timer.restart();
+
 }
 
 void Game::play_sound(const std::shared_ptr<sf::SoundBuffer>& sound_buffer, float volume)
@@ -865,17 +950,21 @@ void Game::build_grid(sf::Vector2i first_disabled_cell_position)
 
             std::pair<unsigned, std::shared_ptr<sf::Texture>> icon_data;
 
+            icon_data.first = 9;
+
             if(!is_bomb) {
 
                 unsigned adjacent_bomb_count = parse_adjacent_cells(x, y, bomb_positions);
 
                 if(!adjacent_bomb_count) {
 
-                    button_type  = GridButton::Types::NEUTRAL;
+                    button_type     = GridButton::Types::NEUTRAL;
+
+                    icon_data.first = 0;
 
                 }else {
 
-                    button_type  = GridButton::Types::NUMBER;
+                    button_type     = GridButton::Types::NUMBER;
 
                     icon_data.first = adjacent_bomb_count;
 
@@ -898,7 +987,6 @@ void Game::build_grid(sf::Vector2i first_disabled_cell_position)
 
             }else {
 
-                icon_data.first  = 0;
                 icon_data.second = cached_grid_button_textures["M_BOMB_SS"];
 
             }
