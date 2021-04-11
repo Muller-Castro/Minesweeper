@@ -152,6 +152,7 @@ void StartButton::on_button_pressed()
 
 void StartButton::play_counter()
 {
+#ifdef __S_RELEASE__
     if(lobby_ref.get().listener && !active) return;
 
     is_counting    = true;
@@ -161,6 +162,7 @@ void StartButton::play_counter()
     clipping_angle = -180.f;
 
     lobby_ref.get().send('L', "1");
+#endif // __S_RELEASE__
 }
 
 void StartButton::stop_counter()
