@@ -31,6 +31,7 @@
 #include <algorithm>
 #include <iomanip>
 #include <array>
+#include <regex>
 
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Network/Packet.hpp>
@@ -437,7 +438,7 @@ void Game::update(float delta)
 
             for(auto& grid_button : row) {
 
-                if(grid_button->type == GridButton::Types::BOMB) grid_button->set_flag(true);
+                if(grid_button->type == GridButton::Types::BOMB) grid_button->set_flag(true, grid_button->is_blue_flag);
 
             }
 
@@ -500,7 +501,8 @@ void Game::receive_packages()
 
         if((idx = received_data.find('A')) != std::string::npos) receive_ping(retrieve_data<'A'>(idx, received_data));
         if((idx = received_data.find('B')) != std::string::npos) receive_max_ping(retrieve_data<'B'>(idx, received_data));
-        if((idx = received_data.find('C')) != std::string::npos) setup_grid(retrieve_data<'C'>(idx, received_data));
+        if((idx = received_data.find('C')) != std::string::npos) receive_flag(retrieve_data<'C'>(idx, received_data));
+        if((idx = received_data.find('D')) != std::string::npos) setup_grid(retrieve_data<'D'>(idx, received_data));
 
         //////////////////////////////////////////
 
@@ -509,9 +511,27 @@ void Game::receive_packages()
     }
 }
 
+void Game::receive_flag(const std::string& cell_pos)
+{
+//    std::cout << cell_pos << std::endl;
+
+    if(!std::regex_match(cell_pos, std::regex("^[0-9]+_[0-9]+$"))) return;
+
+    size_t underscore_idx = cell_pos.find('_');
+
+    if(underscore_idx == std::string::npos) throw std::runtime_error("Invalid cell position");
+
+    unsigned y = std::stoul(cell_pos.substr(0, underscore_idx));
+    unsigned x = std::stoul(cell_pos.substr(underscore_idx + 1));
+
+    grid[y][x]->set_flag(!grid[y][x]->flagged, !conn_info.is_host);
+}
+
 void Game::setup_grid(const std::string& grid_data)
 {
 //    std::cout << grid_data << std::endl;
+
+    if(grid_data.find('{') == std::string::npos) return;
 
     is_first_click = false;
 
@@ -532,8 +552,9 @@ void Game::setup_grid(const std::string& grid_data)
         std::shared_ptr<sf::Texture> icon_texture;
 
         const std::string         bty  = item.second["bty"].string_value();
-        const bool                dis  = static_cast<bool>(item.second["dis"].int_value());
-        const bool                fl   = static_cast<bool>(item.second["fl"] .int_value());
+        const bool                dis  = static_cast<bool>(item.second["dis"] .int_value());
+        const bool                fl   = static_cast<bool>(item.second["fl"]  .int_value());
+        const bool                b_fl = static_cast<bool>(item.second["b_fl"].int_value());
         const int                 itex = item.second["itex"].int_value();
         const json11::Json::array pos  = item.second["pos"].array_items();
 
@@ -571,6 +592,7 @@ void Game::setup_grid(const std::string& grid_data)
             button_type,
             dis,
             fl,
+            b_fl,
             sf::Vector2i(x, y),
             Button::Enabled::LEFT,
             sf::Vector2f(pos[0].int_value(), pos[1].int_value()),
@@ -905,6 +927,7 @@ void Game::build_initial_grid()
                 GridButton::Types::NEUTRAL,
                 false,
                 false,
+                conn_info.is_online ? conn_info.is_host : true,
                 sf::Vector2i(x, y),
                 Button::Enabled::LEFT,
                 sf::Vector2f(x * 20.f + grid_x, y * 20.f + grid_y),
@@ -1013,6 +1036,7 @@ void Game::build_grid(sf::Vector2i first_disabled_cell_position)
                         }()},
                         {"dis" , static_cast<int>(is_first_disabled_cell)},
                         {"fl"  , static_cast<int>(grid[y][x]->flagged)},
+                        {"b_fl", static_cast<int>(grid[y][x]->is_blue_flag)},
                         {"pos" , json11::Json::array{position.x, position.y}},
                         {"itex", static_cast<int>(icon_data.first)}
 
@@ -1026,6 +1050,7 @@ void Game::build_grid(sf::Vector2i first_disabled_cell_position)
                 button_type,
                 is_first_disabled_cell,
                 grid[y][x]->flagged,
+                grid[y][x]->is_blue_flag,
                 sf::Vector2i(x, y),
                 Button::Enabled::LEFT,
                 position,
@@ -1054,7 +1079,7 @@ void Game::build_grid(sf::Vector2i first_disabled_cell_position)
 
 //        std::cout << j_dump << std::endl;
 
-        send('C', j_dump);
+        send('D', j_dump);
 
     }
 
