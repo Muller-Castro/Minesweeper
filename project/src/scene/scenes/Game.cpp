@@ -1036,7 +1036,7 @@ void Game::build_grid(sf::Vector2i first_disabled_cell_position)
                         }()},
                         {"dis" , static_cast<int>(is_first_disabled_cell)},
                         {"fl"  , static_cast<int>(grid[y][x]->flagged)},
-                        {"b_fl", static_cast<int>(grid[y][x]->is_blue_flag)},
+                        {"b_fl", static_cast<int>(!grid[y][x]->is_blue_flag)},
                         {"pos" , json11::Json::array{position.x, position.y}},
                         {"itex", static_cast<int>(icon_data.first)}
 
