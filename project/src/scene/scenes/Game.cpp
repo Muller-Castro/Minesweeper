@@ -1079,7 +1079,7 @@ void Game::build_grid(sf::Vector2i first_disabled_cell_position)
 
 //        std::cout << j_dump << std::endl;
 
-        send('D', j_dump);
+        send(true, 'D', j_dump);
 
     }
 
