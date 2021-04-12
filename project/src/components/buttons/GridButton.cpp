@@ -331,7 +331,7 @@ void GridButton::check_flag_input()
 
             set_flag(!flagged, game_ref.get().conn_info.is_host);
 
-            game_ref.get().send('C', std::to_string(cell_position.y) + "_" + std::to_string(cell_position.x));
+            game_ref.get().send(true, 'C', std::to_string(cell_position.y) + "_" + std::to_string(cell_position.x));
 
         }else {
 
