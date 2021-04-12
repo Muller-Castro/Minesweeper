@@ -503,7 +503,7 @@ void Game::receive_packages()
         if((idx = received_data.find('B')) != std::string::npos) receive_max_ping(retrieve_data<'B'>(idx, received_data));
         if((idx = received_data.find('C')) != std::string::npos) receive_flag(retrieve_data<'C'>(idx, received_data));
         if((idx = received_data.find('D')) != std::string::npos) setup_grid(retrieve_data<'D'>(idx, received_data));
-
+        if((idx = received_data.find('E')) != std::string::npos) receive_grid_button_press(retrieve_data<'E'>(idx, received_data));
         //////////////////////////////////////////
 
         p.clear();
@@ -612,6 +612,23 @@ void Game::setup_grid(const std::string& grid_data)
     }
 
     timer.restart();
+
+}
+
+void Game::receive_grid_button_press(const std::string& cell_pos)
+{
+//    std::cout << cell_pos << std::endl;
+
+    if(!std::regex_match(cell_pos, std::regex("^[0-9]+_[0-9]+$"))) return;
+
+    size_t underscore_idx = cell_pos.find('_');
+
+    if(underscore_idx == std::string::npos) throw std::runtime_error("Invalid cell position");
+
+    unsigned y = std::stoul(cell_pos.substr(0, underscore_idx));
+    unsigned x = std::stoul(cell_pos.substr(underscore_idx + 1));
+
+    grid[y][x]->on_button_pressed();
 
 }
 

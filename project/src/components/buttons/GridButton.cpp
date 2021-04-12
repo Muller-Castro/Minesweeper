@@ -243,6 +243,8 @@ void GridButton::on_button_pressed()
 
         if(type == Types::NEUTRAL) find_and_disable();
 
+        if(game_ref.get().conn_info.is_online) game_ref.get().send(true, 'E', std::to_string(cell_position.y) + "_" + std::to_string(cell_position.x));
+
     }
 }
 

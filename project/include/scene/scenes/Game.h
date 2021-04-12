@@ -138,6 +138,8 @@ namespace Minesweeper {
 
         void setup_grid(const std::string& grid_data);
 
+        void receive_grid_button_press(const std::string& cell_pos);
+
         void play_sound(const std::shared_ptr<sf::SoundBuffer>& sound_buffer, float volume = 100.f);
 
         void build_initial_grid();
