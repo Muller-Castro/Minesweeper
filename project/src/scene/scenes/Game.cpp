@@ -517,14 +517,11 @@ void Game::receive_flag(const std::string& cell_pos)
 
     if(!std::regex_match(cell_pos, std::regex("^[0-9]+_[0-9]+$"))) return;
 
-    size_t underscore_idx = cell_pos.find('_');
+    GridButton& button = get_grid_button(cell_pos);
 
-    if(underscore_idx == std::string::npos) throw std::runtime_error("Invalid cell position");
+    bool flag_flip = !button.flagged;
 
-    unsigned y = std::stoul(cell_pos.substr(0, underscore_idx));
-    unsigned x = std::stoul(cell_pos.substr(underscore_idx + 1));
-
-    grid[y][x]->set_flag(!grid[y][x]->flagged, !conn_info.is_host);
+    button.set_flag(flag_flip, flag_flip ? !conn_info.is_host : conn_info.is_host);
 }
 
 void Game::setup_grid(const std::string& grid_data)
@@ -621,6 +618,14 @@ void Game::receive_grid_button_press(const std::string& cell_pos)
 
     if(!std::regex_match(cell_pos, std::regex("^[0-9]+_[0-9]+$"))) return;
 
+    GridButton& button = get_grid_button(cell_pos);
+
+    button.on_button_pressed();
+
+}
+
+GridButton& Game::get_grid_button(const std::string& cell_pos)
+{
     size_t underscore_idx = cell_pos.find('_');
 
     if(underscore_idx == std::string::npos) throw std::runtime_error("Invalid cell position");
@@ -628,8 +633,7 @@ void Game::receive_grid_button_press(const std::string& cell_pos)
     unsigned y = std::stoul(cell_pos.substr(0, underscore_idx));
     unsigned x = std::stoul(cell_pos.substr(underscore_idx + 1));
 
-    grid[y][x]->on_button_pressed();
-
+    return *grid[y][x];
 }
 
 void Game::play_sound(const std::shared_ptr<sf::SoundBuffer>& sound_buffer, float volume)
