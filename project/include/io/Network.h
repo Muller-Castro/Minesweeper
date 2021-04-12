@@ -50,6 +50,7 @@ namespace Minesweeper {
         virtual void receive_packages() = 0;
 
         void send(char label, const std::string& data);
+        void send(bool blocking, char label, const std::string& data);
 
         template<char c>
         std::string retrieve_data(size_t idx, const std::string& data)

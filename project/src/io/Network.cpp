@@ -58,6 +58,17 @@ void Network::send(char label, const std::string& data)
     connection_status = MinesweeperGame::tcp_socket.send(p);
 }
 
+void Network::send(bool blocking, char label, const std::string& data)
+{
+    bool is_blocking = MinesweeperGame::tcp_socket.isBlocking();
+
+    MinesweeperGame::tcp_socket.setBlocking(blocking);
+
+    send(label, data);
+
+    MinesweeperGame::tcp_socket.setBlocking(is_blocking);
+}
+
 void Network::receive_ping(const std::string& ping_str) const
 {
     if(ping_delay_timer.getElapsedTime().asSeconds() >= Network::PING_DELAY) {
