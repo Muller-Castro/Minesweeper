@@ -194,58 +194,63 @@ void GridButton::on_button_pressed()
 
     }else {
 
-        if(type == Types::BOMB) {
+        evaluate_button();
 
-            pressed_color = sf::Color::Red;
+        if(game_ref.get().conn_info.is_online) game_ref.get().send(true, 'E', std::to_string(cell_position.y) + "_" + std::to_string(cell_position.x));
 
-            for(size_t y = 0; y < game_ref.get().grid.size(); ++y) {
+    }
+}
 
-                for(size_t x = 0; x < game_ref.get().grid[y].size(); ++x) {
+void GridButton::evaluate_button()
+{
+    if(type == Types::BOMB) {
 
-                    GridButton* grid_button = game_ref.get().grid[y][x].get();
+        pressed_color = sf::Color::Red;
 
-                    if(cell_position == grid_button->cell_position) continue;
+        for(size_t y = 0; y < game_ref.get().grid.size(); ++y) {
 
-                    if(grid_button->type == Types::BOMB && !grid_button->flagged) {
+            for(size_t x = 0; x < game_ref.get().grid[y].size(); ++x) {
 
-                        grid_button->disable();
+                GridButton* grid_button = game_ref.get().grid[y][x].get();
 
-                    }else if(grid_button->type != Types::BOMB && grid_button->flagged) {
+                if(cell_position == grid_button->cell_position) continue;
 
-                        grid_button->flagged = false;
-                        grid_button->disable();
+                if(grid_button->type == Types::BOMB && !grid_button->flagged) {
 
-                        // Recycling the "IGNITED_BOMB" animation
-                        grid_button->icon_sprite.setTexture(*not_a_bomb_texture);
-                        grid_button->icon_sprite.setOrigin(8.f, 8.f);
-                        grid_button->add_bomb_animation();
-                        grid_button->animations.play("IGNITED_BOMB");
-                        // Recycling the "IGNITED_BOMB" animation
+                    grid_button->disable();
 
-                    }
+                }else if(grid_button->type != Types::BOMB && grid_button->flagged) {
+
+                    grid_button->flagged = false;
+                    grid_button->disable();
+
+                    // Recycling the "IGNITED_BOMB" animation
+                    grid_button->icon_sprite.setTexture(*not_a_bomb_texture);
+                    grid_button->icon_sprite.setOrigin(8.f, 8.f);
+                    grid_button->add_bomb_animation();
+                    grid_button->animations.play("IGNITED_BOMB");
+                    // Recycling the "IGNITED_BOMB" animation
 
                 }
 
             }
 
-            game_ref.get().sound.stop();
-            game_ref.get().sound.setBuffer(*game_ref.get().oooh_sound);
-            game_ref.get().sound.setVolume(100.f);
-            game_ref.get().sound.play();
-
-            if(game_ref.get().emoji) game_ref.get().emoji->set_face(Emoji::BANDAGE);
-
-            game_ref.get().finished = true;
-
         }
 
-        disable();
+        game_ref.get().sound.stop();
+        game_ref.get().sound.setBuffer(*game_ref.get().oooh_sound);
+        game_ref.get().sound.setVolume(100.f);
+        game_ref.get().sound.play();
 
-        if(type == Types::NEUTRAL) find_and_disable();
+        if(game_ref.get().emoji) game_ref.get().emoji->set_face(Emoji::BANDAGE);
 
-        if(game_ref.get().conn_info.is_online) game_ref.get().send(true, 'E', std::to_string(cell_position.y) + "_" + std::to_string(cell_position.x));
+        game_ref.get().finished = true;
 
     }
+
+    disable();
+
+    if(type == Types::NEUTRAL) find_and_disable();
 }
 
 void GridButton::add_bomb_animation()

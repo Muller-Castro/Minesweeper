@@ -85,6 +85,7 @@ namespace Minesweeper {
 
         AnimationPlayer animations;
 
+        void evaluate_button();
         void add_bomb_animation(); // since this is going to be used twice...
         void change_button_type(Types new_type, const std::shared_ptr<sf::Texture>& new_icon_texture);
         void check_flag_input();
