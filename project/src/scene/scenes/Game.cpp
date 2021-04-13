@@ -620,7 +620,7 @@ void Game::receive_grid_button_press(const std::string& cell_pos)
 
     GridButton& button = get_grid_button(cell_pos);
 
-    button.on_button_pressed();
+    button.evaluate_button();
 
 }
 
