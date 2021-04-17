@@ -181,7 +181,13 @@ void GridButton::on_button_down()
 
 void GridButton::on_button_pressed()
 {
-    if(game_ref.get().conn_info.is_online) game_ref.get().last_button_pressed = cell_position;
+    if(game_ref.get().conn_info.is_online) {
+
+        game_ref.get().is_your_turn = false;
+
+        game_ref.get().last_button_pressed = cell_position;
+
+    }
 
     if(game_ref.get().is_first_click) {
 
@@ -337,6 +343,8 @@ void GridButton::check_flag_input()
                 if(is_blue_flag) return;
 
             }
+
+            game_ref.get().is_your_turn = false;
 
             game_ref.get().last_button_pressed = cell_position;
 
