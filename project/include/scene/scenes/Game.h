@@ -121,6 +121,8 @@ namespace Minesweeper {
 
         sf::Clock timer;
 
+        sf::Vector2i last_button_pressed;
+
         sf::Sprite panel_sprite;
         sf::Sprite counter_panel_sprite;
         sf::Sprite online_match_panel_sprite;

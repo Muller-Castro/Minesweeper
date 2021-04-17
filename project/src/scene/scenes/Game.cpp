@@ -118,6 +118,7 @@ Game::Game() :
     counter_font(),
     soundtrack(),
     timer(),
+    last_button_pressed(-1, 0),
     panel_sprite(),
     counter_panel_sprite(),
     online_match_panel_sprite(),
@@ -414,6 +415,14 @@ void Game::update(float delta)
 
     for(auto& button : buttons) button->update(delta);
 
+    if(conn_info.is_online && (last_button_pressed.x != -1)) {
+
+        GridButton& last_button_pressed_ref = *grid[last_button_pressed.y][last_button_pressed.x];
+
+        if(!((last_button_pressed_ref.disabled) && (last_button_pressed_ref.type == GridButton::Types::BOMB))) last_button_pressed_ref.sprite.setColor(sf::Color(9, 255, 15));
+
+    }
+
     bool all_non_bombs_disabled = true;
 
     for(std::vector<std::unique_ptr<GridButton>>& row : grid) {
@@ -421,6 +430,13 @@ void Game::update(float delta)
         for(auto& grid_button : row) {
 
             grid_button->update(delta);
+
+            if(conn_info.is_online && (grid_button->cell_position != last_button_pressed)) {
+
+                if(grid_button->disabled) grid_button->sprite.setColor(grid_button->pressed_color);
+                else                      grid_button->sprite.setColor(sf::Color::White);
+
+            }
 
             if(finished) continue;
 
@@ -519,6 +535,8 @@ void Game::receive_flag(const std::string& cell_pos)
 
     GridButton& button = get_grid_button(cell_pos);
 
+    last_button_pressed = button.cell_position;
+
     bool flag_flip = !button.flagged;
 
     button.set_flag(flag_flip, flag_flip ? !conn_info.is_host : conn_info.is_host);
@@ -566,6 +584,8 @@ void Game::setup_grid(const std::string& grid_data)
 
         if(bty == "nr")      button_type = GridButton::Types::NUMBER;
         else if(bty == "bb") button_type = GridButton::Types::BOMB;
+
+        if(dis) last_button_pressed = sf::Vector2i(x, y);
 
         switch(itex) {
 
@@ -619,6 +639,8 @@ void Game::receive_grid_button_press(const std::string& cell_pos)
     if(!std::regex_match(cell_pos, std::regex("^[0-9]+_[0-9]+$"))) return;
 
     GridButton& button = get_grid_button(cell_pos);
+
+    last_button_pressed = button.cell_position;
 
     button.evaluate_button();
 
