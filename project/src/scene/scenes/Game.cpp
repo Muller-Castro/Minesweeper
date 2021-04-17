@@ -91,6 +91,7 @@ using namespace Minesweeper;
 Game::Game() :
     Network('A', 'B'),
     is_first_click(true),
+    is_your_turn(),
     finished(),
     grid_width(),
     grid_height(),
@@ -127,6 +128,8 @@ Game::Game() :
     counter_text(),
     grid_outline()
 {
+    is_your_turn = conn_info.is_online ? conn_info.is_host : true;
+
 #ifndef __S_RELEASE__
     panel_texture         = ResourceLoader::load<sf::Texture>("assets/textures/GamePanel.png");
 
@@ -354,6 +357,8 @@ void Game::process_inputs()
 
         }
 
+        if(!is_your_turn) return;
+
     }
 
     if(emoji) emoji->process_inputs();
@@ -533,6 +538,8 @@ void Game::receive_flag(const std::string& cell_pos)
 
     if(!std::regex_match(cell_pos, std::regex("^[0-9]+_[0-9]+$"))) return;
 
+    is_your_turn = true;
+
     GridButton& button = get_grid_button(cell_pos);
 
     last_button_pressed = button.cell_position;
@@ -549,6 +556,8 @@ void Game::setup_grid(const std::string& grid_data)
     if(grid_data.find('{') == std::string::npos) return;
 
     is_first_click = false;
+
+    is_your_turn = true;
 
     std::string err_msg;
 
@@ -638,6 +647,8 @@ void Game::receive_grid_button_press(const std::string& cell_pos)
 
     if(!std::regex_match(cell_pos, std::regex("^[0-9]+_[0-9]+$"))) return;
 
+    is_your_turn = true;
+
     GridButton& button = get_grid_button(cell_pos);
 
     last_button_pressed = button.cell_position;
@@ -675,7 +686,13 @@ void Game::restart()
     flag_counter   = 0;
     grid.clear();
 
-    if(conn_info.is_online) last_button_pressed = sf::Vector2i(-1, 0);
+    if(conn_info.is_online) {
+
+        is_your_turn = conn_info.is_host;
+
+        last_button_pressed = sf::Vector2i(-1, 0);
+
+    }
 
     build_initial_grid();
 }
