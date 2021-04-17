@@ -675,6 +675,8 @@ void Game::restart()
     flag_counter   = 0;
     grid.clear();
 
+    if(conn_info.is_online) last_button_pressed = sf::Vector2i(-1, 0);
+
     build_initial_grid();
 }
 
