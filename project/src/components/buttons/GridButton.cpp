@@ -181,6 +181,8 @@ void GridButton::on_button_down()
 
 void GridButton::on_button_pressed()
 {
+    if(game_ref.get().conn_info.is_online) game_ref.get().last_button_pressed = cell_position;
+
     if(game_ref.get().is_first_click) {
 
         sprite.setColor(pressed_color);
@@ -205,7 +207,7 @@ void GridButton::evaluate_button()
 {
     if(type == Types::BOMB) {
 
-        pressed_color = sf::Color::Red;
+        pressed_color = game_ref.get().conn_info.is_online ? sf::Color::Yellow : sf::Color::Red;
 
         for(size_t y = 0; y < game_ref.get().grid.size(); ++y) {
 
@@ -335,6 +337,8 @@ void GridButton::check_flag_input()
                 if(is_blue_flag) return;
 
             }
+
+            game_ref.get().last_button_pressed = cell_position;
 
             set_flag(!flagged, game_ref.get().conn_info.is_host);
 
