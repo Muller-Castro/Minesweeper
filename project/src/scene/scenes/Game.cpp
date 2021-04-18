@@ -60,6 +60,7 @@
 #include "assets/Oooh.h"
 #include "assets/Chicken.h"
 #include "assets/Arial.h"
+#include "assets/NeonNanoborg.h"
 #include "assets/Digital7Mono.h"
 #include "assets/GameSoundtrack.h"
 #include "assets/Icon1.h"
@@ -104,6 +105,7 @@ Game::Game() :
     panels(),
 #ifdef __S_RELEASE__
     peer_info_font_data(conn_info.is_online ? get_raw_arial() : decltype(peer_info_font_data){}),
+    counter_description_font_data(get_raw_neon_nanoborg()),
     counter_font_data(get_raw_digital7_mono()),
 #endif // __S_RELEASE__
     emoji(),
@@ -118,6 +120,7 @@ Game::Game() :
     oooh_sound(),
     chicken_sound(),
     peer_info_font(),
+    counter_description_font(),
     counter_font(),
     soundtrack(),
     timer(),
@@ -127,6 +130,7 @@ Game::Game() :
     online_match_panel_sprite(),
     sound(),
     peer_info_text(),
+    counter_description_text(),
     counter_text(),
     tip_text(),
     grid_outline()
@@ -152,9 +156,11 @@ Game::Game() :
 
     }
 
-    counter_font          = ResourceLoader::load<sf::Font>("assets/fonts/Digital7Mono.ttf");
+    counter_description_font = ResourceLoader::load<sf::Font>("assets/fonts/NeonNanoborg.otf");
 
-    soundtrack            = ResourceLoader::load<MusicStream>("assets/musics/GameSoundtrack.ogg");
+    counter_font             = ResourceLoader::load<sf::Font>("assets/fonts/Digital7Mono.ttf");
+
+    soundtrack               = ResourceLoader::load<MusicStream>("assets/musics/GameSoundtrack.ogg");
 
     cached_grid_button_textures["GB_UP"]     = ResourceLoader::load<sf::Texture>("assets/textures/GridButtonUp.png");
     cached_grid_button_textures["EMP_CELL"]  = ResourceLoader::load<sf::Texture>("assets/textures/EmptyCell.png");
@@ -203,9 +209,11 @@ Game::Game() :
 
     }
 
-    counter_font          = ResourceLoader::load<sf::Font>(counter_font_data);
+    counter_description_font = ResourceLoader::load<sf::Font>(counter_description_font_data);
 
-    soundtrack            = ResourceLoader::load<MusicStream>(get_raw_game_soundtrack());
+    counter_font             = ResourceLoader::load<sf::Font>(counter_font_data);
+
+    soundtrack               = ResourceLoader::load<MusicStream>(get_raw_game_soundtrack());
 
     cached_grid_button_textures["GB_UP"]     = ResourceLoader::load<sf::Texture>(get_raw_grid_button_up());
     cached_grid_button_textures["EMP_CELL"]  = ResourceLoader::load<sf::Texture>(get_raw_empty_cell());
@@ -257,12 +265,16 @@ Game::Game() :
 
     }
 
+    counter_description_text.setFont(*counter_description_font);
+    counter_description_text.setCharacterSize(29);
+    counter_description_text.setFillColor(sf::Color::Black);
+
     counter_text.setFont(*counter_font);
 //    counter_text.setOutlineColor(sf::Color::Black);
 //    counter_text.setOutlineThickness(3.f);
     counter_text.setCharacterSize(48);
     counter_text.setFillColor(sf::Color::Red);
-    counter_text.setPosition(sf::Vector2f(0.f, 27.f));
+    counter_text.setPosition(sf::Vector2f(0.f, 32.f));
 
     soundtrack->music.setLoop(true);
     soundtrack->music.play();
@@ -927,9 +939,17 @@ void Game::draw_score()
 
 void Game::draw_counters()
 {
-    counter_panel_sprite.setPosition(sf::Vector2f(32.f, 34.f));
+    counter_description_text.setString("FLAGS");
+    counter_description_text.setPosition(sf::Vector2f(52.f, 9.f));
+    MinesweeperGame::window->draw(counter_description_text);
+
+    counter_description_text.setString("TIMER");
+    counter_description_text.setPosition(sf::Vector2f(698.f, 9.f));
+    MinesweeperGame::window->draw(counter_description_text);
+
+    counter_panel_sprite.setPosition(sf::Vector2f(32.f, 39.f));
     MinesweeperGame::window->draw(counter_panel_sprite);
-    counter_panel_sprite.setPosition(sf::Vector2f(676.f, 34.f));
+    counter_panel_sprite.setPosition(sf::Vector2f(676.f, 39.f));
     MinesweeperGame::window->draw(counter_panel_sprite);
 
     float last_timer_x_position = counter_text.getPosition().x;

@@ -96,6 +96,7 @@ namespace Minesweeper {
 
 #ifdef __S_RELEASE__
         std::pair<std::string, std::string> peer_info_font_data;
+        std::pair<std::string, std::string> counter_description_font_data;
         std::pair<std::string, std::string> counter_font_data;
 #endif // __S_RELEASE__
 
@@ -116,6 +117,7 @@ namespace Minesweeper {
         std::shared_ptr<sf::SoundBuffer> chicken_sound;
 
         std::shared_ptr<sf::Font> peer_info_font;
+        std::shared_ptr<sf::Font> counter_description_font;
         std::shared_ptr<sf::Font> counter_font;
 
         std::shared_ptr<MusicStream> soundtrack;
@@ -131,6 +133,7 @@ namespace Minesweeper {
         sf::Sound sound;
 
         sf::Text peer_info_text;
+        sf::Text counter_description_text;
         sf::Text counter_text;
         sf::Text tip_text;
 
