@@ -132,6 +132,7 @@ namespace Minesweeper {
 
         sf::Text peer_info_text;
         sf::Text counter_text;
+        sf::Text tip_text;
 
         sf::RectangleShape grid_outline;
 
@@ -160,6 +161,7 @@ namespace Minesweeper {
         void draw_peer_infos();
         void draw_score();
         void draw_counters();
+        void draw_tip_text();
         void draw_panel();
     };
 

@@ -126,6 +126,7 @@ Game::Game() :
     sound(),
     peer_info_text(),
     counter_text(),
+    tip_text(),
     grid_outline()
 {
     is_your_turn = conn_info.is_online ? conn_info.is_host : true;
@@ -230,6 +231,13 @@ Game::Game() :
 
         peer_info_text.setFont(*peer_info_font);
         peer_info_text.setOutlineThickness(2.f);
+
+        tip_text.setFont(*peer_info_font);
+        tip_text.setFillColor(sf::Color::Yellow);
+        tip_text.setCharacterSize(16);
+        tip_text.setOutlineColor(sf::Color::Black);
+        tip_text.setOutlineThickness(3.f);
+        tip_text.setStyle(sf::Text::Bold);
 
     }
 
@@ -469,6 +477,30 @@ void Game::update(float delta)
 
         if(emoji) emoji->set_face(Emoji::SUNGLASSES);
 
+        if(conn_info.is_online) {
+
+            tip_text.setPosition(sf::Vector2f(290.f, 0.f)); // y position deferred to the drawing step
+
+            std::string player;
+
+            if(conn_info.is_host) {
+
+                // The player who made the last move has already passed the turn at this point, so look at the flipped turn
+                if(!is_your_turn) player = "P1";
+                else              player = "P2";
+
+            }else {
+
+                // The player who made the last move has already passed the turn at this point, so look at the flipped turn
+                if(!is_your_turn) player = "P2";
+                else              player = "P1";
+
+            }
+
+            tip_text.setString(player + " revealed the last square!");
+
+        }
+
         finished = true;
 
     }
@@ -504,7 +536,13 @@ void Game::draw()
 
     }
 
-    if(conn_info.is_online) draw_panel();
+    if(conn_info.is_online) {
+
+        draw_tip_text();
+
+        draw_panel();
+
+    }
 }
 
 void Game::receive_packages()
@@ -538,8 +576,6 @@ void Game::receive_flag(const std::string& cell_pos)
 
     if(!std::regex_match(cell_pos, std::regex("^[0-9]+_[0-9]+$"))) return;
 
-    is_your_turn = true;
-
     GridButton& button = get_grid_button(cell_pos);
 
     last_button_pressed = button.cell_position;
@@ -547,6 +583,8 @@ void Game::receive_flag(const std::string& cell_pos)
     bool flag_flip = !button.flagged;
 
     button.set_flag(flag_flip, flag_flip ? !conn_info.is_host : conn_info.is_host);
+
+    is_your_turn = true;
 }
 
 void Game::setup_grid(const std::string& grid_data)
@@ -556,8 +594,6 @@ void Game::setup_grid(const std::string& grid_data)
     if(grid_data.find('{') == std::string::npos) return;
 
     is_first_click = false;
-
-    is_your_turn = true;
 
     std::string err_msg;
 
@@ -639,6 +675,8 @@ void Game::setup_grid(const std::string& grid_data)
 
     timer.restart();
 
+    is_your_turn = true;
+
 }
 
 void Game::receive_grid_button_press(const std::string& cell_pos)
@@ -647,13 +685,13 @@ void Game::receive_grid_button_press(const std::string& cell_pos)
 
     if(!std::regex_match(cell_pos, std::regex("^[0-9]+_[0-9]+$"))) return;
 
-    is_your_turn = true;
-
     GridButton& button = get_grid_button(cell_pos);
 
     last_button_pressed = button.cell_position;
 
     button.evaluate_button();
+
+    is_your_turn = true;
 
 }
 
@@ -922,6 +960,66 @@ void Game::draw_counters()
     // Timer
 }
 
+void Game::draw_tip_text()
+{
+    std::string difficulty = SceneManager::shared_data["DIFFICULTY"];
+
+    float text_y = 0.f;
+
+    if(difficulty == "0") {
+
+        text_y = 156.f;
+
+    }else if((difficulty == "1") || (difficulty == "2")) {
+
+        text_y = 105.f;
+
+    }
+
+    tip_text.setPosition(sf::Vector2f(tip_text.getPosition().x, text_y));
+
+    if(!finished) {
+
+        tip_text.setPosition(sf::Vector2f(is_your_turn ? 365.f : 300.f, tip_text.getPosition().y));
+
+        tip_text.setString(is_your_turn ? "Your turn!" : "Your opponent is playing ...");
+
+    }
+
+    MinesweeperGame::window->draw(tip_text);
+
+    if(is_your_turn || finished) return;
+
+    sf::Vector2f dark_rect_pos;
+    sf::Vector2f dark_rect_size;
+
+    sf::RectangleShape dark_rect;
+
+    dark_rect.setFillColor(sf::Color(0, 0, 0, 90));
+
+    if(difficulty == "0") {
+
+        dark_rect_pos  = sf::Vector2f(239.f, 185.f);
+        dark_rect_size = sf::Vector2f(320.f, 320.f);
+
+    }else if(difficulty == "1") {
+
+        dark_rect_pos  = sf::Vector2f(240.f, 135.f);
+        dark_rect_size = sf::Vector2f(320.f, 460.f);
+
+    }else if(difficulty == "2") {
+
+        dark_rect_pos  = sf::Vector2f(20.f, 135.f);
+        dark_rect_size = sf::Vector2f(760.f, 460.f);
+
+    }
+
+    dark_rect.setPosition(dark_rect_pos);
+    dark_rect.setSize(dark_rect_size);
+
+    MinesweeperGame::window->draw(dark_rect);
+}
+
 void Game::draw_panel()
 {
     for(auto& panel : panels) {
@@ -976,6 +1074,8 @@ void Game::build_initial_grid()
     float grid_x = 800 / 2 - grid_width * 10 + 10;
     float grid_y = (92 + 508 / 2) - grid_height * 10 + 10;
 
+    if(conn_info.is_online && ((difficulty_level == "1") || (difficulty_level == "2"))) grid_y += 19.f;
+
     grid.resize(grid_height);
 
     for(int y = 0; y < grid_height; ++y) {
@@ -1022,6 +1122,10 @@ void Game::build_grid(sf::Vector2i first_disabled_cell_position)
     // When you are done fixing the window resize, change these calculations from constant to dynamic
     float grid_x = 800 / 2 - grid_width * 10 + 10;
     float grid_y = (92 + 508 / 2) - grid_height * 10 + 10;
+
+    std::string difficulty_level = SceneManager::shared_data["DIFFICULTY"];
+
+    if(conn_info.is_online && ((difficulty_level == "1") || (difficulty_level == "2"))) grid_y += 19.f;
 
     json11::Json::object data;
 
