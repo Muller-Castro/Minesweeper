@@ -87,6 +87,7 @@ namespace Minesweeper {
 
         void evaluate_button();
         void add_bomb_animation(); // since this is going to be used twice...
+        void add_missed_flag_animation();
         void change_button_type(Types new_type, const std::shared_ptr<sf::Texture>& new_icon_texture);
         void check_flag_input();
         void set_flag(bool b, bool is_blue_flag_);

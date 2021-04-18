@@ -244,12 +244,34 @@ void GridButton::evaluate_button()
                     grid_button->flagged = false;
                     grid_button->disable();
 
-                    // Recycling the "IGNITED_BOMB" animation
-                    grid_button->icon_sprite.setTexture(*not_a_bomb_texture);
+                    const std::shared_ptr<sf::Texture>* missed_flag_tex = nullptr;
+
+                    if(game_ref.get().conn_info.is_online) {
+
+                        missed_flag_tex = grid_button->is_blue_flag ? &game_ref.get().cached_grid_button_textures["N_A_BOMB_P1"] : &game_ref.get().cached_grid_button_textures["N_A_BOMB_P2"];
+
+                    }else {
+
+                        missed_flag_tex = &not_a_bomb_texture;
+
+                    }
+
+                    grid_button->icon_sprite.setTexture(*(*missed_flag_tex));
                     grid_button->icon_sprite.setOrigin(8.f, 8.f);
-                    grid_button->add_bomb_animation();
-                    grid_button->animations.play("IGNITED_BOMB");
-                    // Recycling the "IGNITED_BOMB" animation
+
+                    if(game_ref.get().conn_info.is_online) {
+
+                        grid_button->add_missed_flag_animation();
+                        grid_button->animations.play("MISSED_FLAG");
+
+                    }else {
+
+                        // Recycling the "IGNITED_BOMB" animation
+                        grid_button->add_bomb_animation();
+                        grid_button->animations.play("IGNITED_BOMB");
+                        // Recycling the "IGNITED_BOMB" animation
+
+                    }
 
                 }
 
@@ -324,6 +346,28 @@ void GridButton::add_bomb_animation()
         }
 
     );
+}
+
+void GridButton::add_missed_flag_animation()
+{
+    animations.add_animations({
+
+        Animation("MISSED_FLAG", 0.25f, {
+
+            KeyFrame(0.f, [&]() {
+
+                icon_sprite.setTextureRect(sf::IntRect(0, 0, 16, 16));
+
+            }),
+            KeyFrame(0.125f, [&]() {
+
+                icon_sprite.setTextureRect(sf::IntRect(16, 0, 16, 16));
+
+            })
+
+        })
+
+    });
 }
 
 void GridButton::change_button_type(Types new_type, const std::shared_ptr<sf::Texture>& new_icon_texture)
