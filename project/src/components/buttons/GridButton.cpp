@@ -181,15 +181,15 @@ void GridButton::on_button_down()
 
 void GridButton::on_button_pressed()
 {
-    if(game_ref.get().conn_info.is_online) {
-
-        game_ref.get().is_your_turn = false;
-
-        game_ref.get().last_button_pressed = cell_position;
-
-    }
-
     if(game_ref.get().is_first_click) {
+
+        if(game_ref.get().conn_info.is_online) {
+
+            game_ref.get().last_button_pressed = cell_position;
+
+            game_ref.get().is_your_turn = false;
+
+        }
 
         sprite.setColor(pressed_color);
         set_current_texture(DOWN);
@@ -204,7 +204,19 @@ void GridButton::on_button_pressed()
 
         evaluate_button();
 
-        if(game_ref.get().conn_info.is_online) game_ref.get().send(true, 'E', std::to_string(cell_position.y) + "_" + std::to_string(cell_position.x));
+        if(game_ref.get().conn_info.is_online) {
+
+            game_ref.get().last_button_pressed = cell_position;
+
+            game_ref.get().send(true, 'E', std::to_string(cell_position.y) + "_" + std::to_string(cell_position.x));
+
+            SceneManager::call_deferred([&]() {
+
+                game_ref.get().is_your_turn = false;
+
+            });
+
+        }
 
     }
 }
@@ -253,6 +265,28 @@ void GridButton::evaluate_button()
         if(game_ref.get().emoji) game_ref.get().emoji->set_face(Emoji::BANDAGE);
 
         game_ref.get().finished = true;
+
+        if(game_ref.get().conn_info.is_online) {
+
+            game_ref.get().tip_text.setPosition(sf::Vector2f(300.f, 0.f)); // y position deferred to the drawing step
+
+            std::string player;
+
+            if(game_ref.get().conn_info.is_host) {
+
+                if(game_ref.get().is_your_turn) player = "P1";
+                else                            player = "P2";
+
+            }else {
+
+                if(game_ref.get().is_your_turn) player = "P2";
+                else                            player = "P1";
+
+            }
+
+            game_ref.get().tip_text.setString(player + " stepped on the bomb!");
+
+        }
 
     }
 
