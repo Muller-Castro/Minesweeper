@@ -74,6 +74,8 @@
 #include "assets/MiniP1Flag.h"
 #include "assets/MiniP2Flag.h"
 #include "assets/NotABomb.h"
+#include "assets/NotABombP1.h"
+#include "assets/NotABombP2.h"
 #include "assets/RestartButtonNHovered.h"
 #include "assets/RestartButtonHovered.h"
 #include "assets/RestartButtonDown.h"
@@ -161,6 +163,13 @@ Game::Game() :
     cached_grid_button_textures["P2_FLAG"]   = ResourceLoader::load<sf::Texture>("assets/textures/MiniP2Flag.png");
     cached_grid_button_textures["N_A_BOMB"]  = ResourceLoader::load<sf::Texture>("assets/textures/NotABomb.png");
 
+    if(conn_info.is_online) {
+
+        cached_grid_button_textures["N_A_BOMB_P1"] = ResourceLoader::load<sf::Texture>("assets/textures/NotABombP1.png");
+        cached_grid_button_textures["N_A_BOMB_P2"] = ResourceLoader::load<sf::Texture>("assets/textures/NotABombP2.png");
+
+    }
+
     cached_grid_button_textures["ICON_1"]    = ResourceLoader::load<sf::Texture>("assets/textures/Icon1.png");
     cached_grid_button_textures["ICON_2"]    = ResourceLoader::load<sf::Texture>("assets/textures/Icon2.png");
     cached_grid_button_textures["ICON_3"]    = ResourceLoader::load<sf::Texture>("assets/textures/Icon3.png");
@@ -204,6 +213,13 @@ Game::Game() :
     cached_grid_button_textures["P1_FLAG"]   = ResourceLoader::load<sf::Texture>(get_raw_mini_p1_flag());
     cached_grid_button_textures["P2_FLAG"]   = ResourceLoader::load<sf::Texture>(get_raw_mini_p2_flag());
     cached_grid_button_textures["N_A_BOMB"]  = ResourceLoader::load<sf::Texture>(get_raw_not_a_bomb());
+
+    if(conn_info.is_online) {
+
+        cached_grid_button_textures["N_A_BOMB_P1"] = ResourceLoader::load<sf::Texture>(get_raw_not_a_bomb_p1());
+        cached_grid_button_textures["N_A_BOMB_P2"] = ResourceLoader::load<sf::Texture>(get_raw_not_a_bomb_p2());
+
+    }
 
     cached_grid_button_textures["ICON_1"]    = ResourceLoader::load<sf::Texture>(get_raw_icon1());
     cached_grid_button_textures["ICON_2"]    = ResourceLoader::load<sf::Texture>(get_raw_icon2());
