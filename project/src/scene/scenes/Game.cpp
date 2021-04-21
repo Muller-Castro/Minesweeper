@@ -468,11 +468,15 @@ void Game::update(float delta)
     bool all_non_bombs_disabled = true;
     bool only_flags_left        = conn_info.is_online;
 
+    GridButton* pressed_button  = nullptr;
+
     for(std::vector<std::unique_ptr<GridButton>>& row : grid) {
 
         for(auto& grid_button : row) {
 
             grid_button->update(delta);
+
+            if(conn_info.is_online && (grid_button->state == Button::States::PRESSED)) pressed_button = &(*grid_button);
 
             if(conn_info.is_online && (grid_button->cell_position != last_button_pressed)) {
 
@@ -562,6 +566,8 @@ void Game::update(float delta)
             if(duration <= 0) {
 
                 duration = 0;
+
+                if(pressed_button) pressed_button->state = Button::States::NONE;
 
                 is_your_turn = false;
 
