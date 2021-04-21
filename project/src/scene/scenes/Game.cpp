@@ -466,6 +466,7 @@ void Game::update(float delta)
     }
 
     bool all_non_bombs_disabled = true;
+    bool only_flags_left        = conn_info.is_online;
 
     for(std::vector<std::unique_ptr<GridButton>>& row : grid) {
 
@@ -484,11 +485,13 @@ void Game::update(float delta)
 
             if((grid_button->type != GridButton::Types::BOMB) && (!grid_button->disabled)) all_non_bombs_disabled = false;
 
+            if(conn_info.is_online && !grid_button->disabled && !grid_button->flagged)     only_flags_left        = false;
+
         }
 
     }
 
-    if(all_non_bombs_disabled && !finished) {
+    if((all_non_bombs_disabled || only_flags_left) && !finished) {
 
         if(!conn_info.is_online) save_record();
 
@@ -508,25 +511,35 @@ void Game::update(float delta)
 
         if(conn_info.is_online) {
 
-            tip_text.setPosition(sf::Vector2f(290.f, 0.f)); // y position deferred to the drawing step
+            if(all_non_bombs_disabled) {
 
-            std::string player;
+                tip_text.setPosition(sf::Vector2f(290.f, 0.f)); // y position deferred to the drawing step
 
-            if(conn_info.is_host) {
+                std::string player;
 
-                // The player who made the last move has already passed the turn at this point, so look at the flipped turn
-                if(!is_your_turn) player = "P1";
-                else              player = "P2";
+                if(conn_info.is_host) {
 
-            }else {
+                    // The player who made the last move has already passed the turn at this point, so look at the flipped turn
+                    if(!is_your_turn) player = "P1";
+                    else              player = "P2";
 
-                // The player who made the last move has already passed the turn at this point, so look at the flipped turn
-                if(!is_your_turn) player = "P2";
-                else              player = "P1";
+                }else {
+
+                    // The player who made the last move has already passed the turn at this point, so look at the flipped turn
+                    if(!is_your_turn) player = "P2";
+                    else              player = "P1";
+
+                }
+
+                tip_text.setString(player + " revealed the last square!");
+
+            }else if(only_flags_left) {
+
+                tip_text.setPosition(sf::Vector2f(340.f, 0.f)); // y position deferred to the drawing step
+
+                tip_text.setString("Only flags left!");
 
             }
-
-            tip_text.setString(player + " revealed the last square!");
 
         }
 
