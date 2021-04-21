@@ -82,6 +82,8 @@ namespace Minesweeper {
         bool is_your_turn;
         bool finished;
 
+        int duration;
+
         int grid_width;
         int grid_height;
         int max_bombs;
@@ -146,6 +148,8 @@ namespace Minesweeper {
         void setup_grid(const std::string& grid_data);
 
         void receive_grid_button_press(const std::string& cell_pos);
+
+        void receive_turn_time_out(const std::string&);
 
         GridButton& get_grid_button(const std::string& cell_pos);
 

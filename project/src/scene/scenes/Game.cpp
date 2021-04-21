@@ -96,6 +96,7 @@ Game::Game() :
     is_first_click(true),
     is_your_turn(),
     finished(),
+    duration(),
     grid_width(),
     grid_height(),
     max_bombs(),
@@ -533,7 +534,33 @@ void Game::update(float delta)
 
     }
 
-    if(conn_info.is_online) receive_packages();
+    if(conn_info.is_online) {
+
+        if(is_your_turn) {
+
+            std::string duration_str = SceneManager::shared_data["DURATION"];
+
+            if     (duration_str == "S") duration = 5;
+            else if(duration_str == "N") duration = 10;
+            else if(duration_str == "L") duration = 15;
+
+            duration -= static_cast<int>(timer.getElapsedTime().asSeconds());
+
+            if(duration <= 0) {
+
+                duration = 0;
+
+                is_your_turn = false;
+
+                send(true, 'F', "ttimeout");
+
+            }
+
+        }
+
+        receive_packages();
+
+    }
 }
 
 void Game::draw()
@@ -591,6 +618,7 @@ void Game::receive_packages()
         if((idx = received_data.find('C')) != std::string::npos) receive_flag(retrieve_data<'C'>(idx, received_data));
         if((idx = received_data.find('D')) != std::string::npos) setup_grid(retrieve_data<'D'>(idx, received_data));
         if((idx = received_data.find('E')) != std::string::npos) receive_grid_button_press(retrieve_data<'E'>(idx, received_data));
+        if((idx = received_data.find('F')) != std::string::npos) receive_turn_time_out(retrieve_data<'F'>(idx, received_data));
         //////////////////////////////////////////
 
         p.clear();
@@ -612,7 +640,13 @@ void Game::receive_flag(const std::string& cell_pos)
 
     button.set_flag(flag_flip, flag_flip ? !conn_info.is_host : conn_info.is_host);
 
-    is_your_turn = true;
+    SceneManager::call_deferred([&]() {
+
+        is_your_turn = true;
+
+        timer.restart();
+
+    });
 }
 
 void Game::setup_grid(const std::string& grid_data)
@@ -701,10 +735,13 @@ void Game::setup_grid(const std::string& grid_data)
 
     }
 
-    timer.restart();
+    SceneManager::call_deferred([&]() {
 
-    is_your_turn = true;
+        is_your_turn = true;
 
+        timer.restart();
+
+    });
 }
 
 void Game::receive_grid_button_press(const std::string& cell_pos)
@@ -719,8 +756,26 @@ void Game::receive_grid_button_press(const std::string& cell_pos)
 
     button.evaluate_button();
 
-    is_your_turn = true;
+    SceneManager::call_deferred([&]() {
 
+        is_your_turn = true;
+
+        timer.restart();
+
+    });
+}
+
+void Game::receive_turn_time_out(const std::string& s)
+{
+    if(s != "ttimeout") return;
+
+    SceneManager::call_deferred([&]() {
+
+        is_your_turn = true;
+
+        timer.restart();
+
+    });
 }
 
 GridButton& Game::get_grid_button(const std::string& cell_pos)
@@ -969,9 +1024,9 @@ void Game::draw_counters()
     // Flags
 
     // Timer
-    if(!is_first_click) {
+    if((conn_info.is_online && is_your_turn) || (!conn_info.is_online && !is_first_click)) {
 
-        int timer_as_seconds = static_cast<int>(timer.getElapsedTime().asSeconds());
+        int timer_as_seconds = conn_info.is_online ? duration : static_cast<int>(timer.getElapsedTime().asSeconds());
 
         if(!finished && timer_as_seconds <= 999) {
 
@@ -1285,7 +1340,7 @@ void Game::build_grid(sf::Vector2i first_disabled_cell_position)
 
     }
 
-    timer.restart();
+    if(!conn_info.is_online) timer.restart();
 }
 
 std::unordered_set<sf::Vector2i> Game::create_bomb_positions(const sf::Vector2i& first_disabled_cell_position) const
