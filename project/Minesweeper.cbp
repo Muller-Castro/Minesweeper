@@ -492,6 +492,9 @@
 		<Unit filename="include/assets/Title.h">
 			<Option target="Static Release" />
 		</Unit>
+		<Unit filename="include/assets/TurnTimeOut.h">
+			<Option target="Static Release" />
+		</Unit>
 		<Unit filename="include/assets/Typing.h">
 			<Option target="Static Release" />
 		</Unit>
@@ -499,6 +502,9 @@
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="include/assets/WrongPasswordPanel.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/YourTurn.h">
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="include/components/Button.h" />
@@ -952,6 +958,9 @@
 		<Unit filename="src/assets/Title.cpp">
 			<Option target="Static Release" />
 		</Unit>
+		<Unit filename="src/assets/TurnTimeOut.cpp">
+			<Option target="Static Release" />
+		</Unit>
 		<Unit filename="src/assets/Typing.cpp">
 			<Option target="Static Release" />
 		</Unit>
@@ -959,6 +968,9 @@
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="src/assets/WrongPasswordPanel.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/YourTurn.cpp">
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="src/components/Button.cpp" />
