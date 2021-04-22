@@ -59,6 +59,7 @@
 #include "assets/Clapping.h"
 #include "assets/Oooh.h"
 #include "assets/Chicken.h"
+#include "assets/TurnTimeOut.h"
 #include "assets/Arial.h"
 #include "assets/NeonNanoborg.h"
 #include "assets/Digital7Mono.h"
@@ -120,6 +121,7 @@ Game::Game() :
     clapping_sound(),
     oooh_sound(),
     chicken_sound(),
+    turn_time_out_sound(),
     peer_info_font(),
     counter_description_font(),
     counter_font(),
@@ -151,9 +153,11 @@ Game::Game() :
 
     if(conn_info.is_online) {
 
-        chicken_sound  = ResourceLoader::load<sf::SoundBuffer>("assets/sounds/Chicken.wav");
+        chicken_sound       = ResourceLoader::load<sf::SoundBuffer>("assets/sounds/Chicken.wav");
 
-        peer_info_font = ResourceLoader::load<sf::Font>("assets/fonts/Arial.ttf");
+        turn_time_out_sound = ResourceLoader::load<sf::SoundBuffer>("assets/sounds/TurnTimeOut.wav");
+
+        peer_info_font      = ResourceLoader::load<sf::Font>("assets/fonts/Arial.ttf");
 
     }
 
@@ -204,9 +208,11 @@ Game::Game() :
 
     if(conn_info.is_online) {
 
-        chicken_sound  = ResourceLoader::load<sf::SoundBuffer>(get_raw_chicken());
+        chicken_sound       = ResourceLoader::load<sf::SoundBuffer>(get_raw_chicken());
 
-        peer_info_font = ResourceLoader::load<sf::Font>(peer_info_font_data);
+        turn_time_out_sound = ResourceLoader::load<sf::SoundBuffer>(get_raw_turn_time_out());
+
+        peer_info_font      = ResourceLoader::load<sf::Font>(peer_info_font_data);
 
     }
 
@@ -553,7 +559,7 @@ void Game::update(float delta)
 
     if(conn_info.is_online) {
 
-        if(is_your_turn) {
+        if(is_your_turn && !finished) {
 
             std::string duration_str = SceneManager::shared_data["DURATION"];
 
@@ -570,6 +576,8 @@ void Game::update(float delta)
                 if(pressed_button) pressed_button->state = Button::States::NONE;
 
                 is_your_turn = false;
+
+                play_sound(turn_time_out_sound);
 
                 send(true, 'F', "ttimeout");
 

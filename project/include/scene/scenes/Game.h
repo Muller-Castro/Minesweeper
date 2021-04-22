@@ -117,6 +117,7 @@ namespace Minesweeper {
         std::shared_ptr<sf::SoundBuffer> clapping_sound;
         std::shared_ptr<sf::SoundBuffer> oooh_sound;
         std::shared_ptr<sf::SoundBuffer> chicken_sound;
+        std::shared_ptr<sf::SoundBuffer> turn_time_out_sound;
 
         std::shared_ptr<sf::Font> peer_info_font;
         std::shared_ptr<sf::Font> counter_description_font;
