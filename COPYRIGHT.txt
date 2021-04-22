@@ -337,6 +337,7 @@ bo-tto hidamari  (BGM)
 Outer Space      (BGM)
 Hyoshigi         (SFX)
 Ticket Gate Beep (SFX)
+Onmtp-Surprise04 (SFX)
 
 --------------------------------------OtoLogic------------------------------------
 
