@@ -59,6 +59,7 @@
 #include "assets/Clapping.h"
 #include "assets/Oooh.h"
 #include "assets/Chicken.h"
+#include "assets/YourTurn.h"
 #include "assets/TurnTimeOut.h"
 #include "assets/Arial.h"
 #include "assets/NeonNanoborg.h"
@@ -121,6 +122,7 @@ Game::Game() :
     clapping_sound(),
     oooh_sound(),
     chicken_sound(),
+    your_turn_sound(),
     turn_time_out_sound(),
     peer_info_font(),
     counter_description_font(),
@@ -154,6 +156,8 @@ Game::Game() :
     if(conn_info.is_online) {
 
         chicken_sound       = ResourceLoader::load<sf::SoundBuffer>("assets/sounds/Chicken.wav");
+
+        your_turn_sound     = ResourceLoader::load<sf::SoundBuffer>("assets/sounds/YourTurn.wav");
 
         turn_time_out_sound = ResourceLoader::load<sf::SoundBuffer>("assets/sounds/TurnTimeOut.wav");
 
@@ -209,6 +213,8 @@ Game::Game() :
     if(conn_info.is_online) {
 
         chicken_sound       = ResourceLoader::load<sf::SoundBuffer>(get_raw_chicken());
+
+        your_turn_sound     = ResourceLoader::load<sf::SoundBuffer>(get_raw_your_turn());
 
         turn_time_out_sound = ResourceLoader::load<sf::SoundBuffer>(get_raw_turn_time_out());
 
@@ -671,6 +677,8 @@ void Game::receive_flag(const std::string& cell_pos)
 
         is_your_turn = true;
 
+        if(sound.getStatus() != sf::Sound::Playing) play_sound(your_turn_sound);
+
         timer.restart();
 
     });
@@ -766,6 +774,8 @@ void Game::setup_grid(const std::string& grid_data)
 
         is_your_turn = true;
 
+        if(sound.getStatus() != sf::Sound::Playing) play_sound(your_turn_sound);
+
         timer.restart();
 
     });
@@ -783,9 +793,13 @@ void Game::receive_grid_button_press(const std::string& cell_pos)
 
     button.evaluate_button();
 
+    if(finished) play_sound(cached_grid_button_sounds["BOMB_E"], 20.f);
+
     SceneManager::call_deferred([&]() {
 
         is_your_turn = true;
+
+        if(sound.getStatus() != sf::Sound::Playing) play_sound(your_turn_sound);
 
         timer.restart();
 
@@ -799,6 +813,8 @@ void Game::receive_turn_time_out(const std::string& s)
     SceneManager::call_deferred([&]() {
 
         is_your_turn = true;
+
+        if(sound.getStatus() != sf::Sound::Playing) play_sound(your_turn_sound);
 
         timer.restart();
 
