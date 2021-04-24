@@ -61,6 +61,7 @@
 #include "assets/Chicken.h"
 #include "assets/YourTurn.h"
 #include "assets/TurnTimeOut.h"
+#include "assets/OnlineGameFinished.h"
 #include "assets/Arial.h"
 #include "assets/NeonNanoborg.h"
 #include "assets/Digital7Mono.h"
@@ -124,6 +125,7 @@ Game::Game() :
     chicken_sound(),
     your_turn_sound(),
     turn_time_out_sound(),
+    online_game_finished_sound(),
     peer_info_font(),
     counter_description_font(),
     counter_font(),
@@ -155,13 +157,15 @@ Game::Game() :
 
     if(conn_info.is_online) {
 
-        chicken_sound       = ResourceLoader::load<sf::SoundBuffer>("assets/sounds/Chicken.wav");
+        chicken_sound              = ResourceLoader::load<sf::SoundBuffer>("assets/sounds/Chicken.wav");
 
-        your_turn_sound     = ResourceLoader::load<sf::SoundBuffer>("assets/sounds/YourTurn.wav");
+        your_turn_sound            = ResourceLoader::load<sf::SoundBuffer>("assets/sounds/YourTurn.wav");
 
-        turn_time_out_sound = ResourceLoader::load<sf::SoundBuffer>("assets/sounds/TurnTimeOut.wav");
+        turn_time_out_sound        = ResourceLoader::load<sf::SoundBuffer>("assets/sounds/TurnTimeOut.wav");
 
-        peer_info_font      = ResourceLoader::load<sf::Font>("assets/fonts/Arial.ttf");
+        online_game_finished_sound = ResourceLoader::load<sf::SoundBuffer>("assets/sounds/OnlineGameFinished.wav");
+
+        peer_info_font             = ResourceLoader::load<sf::Font>("assets/fonts/Arial.ttf");
 
     }
 
@@ -212,13 +216,15 @@ Game::Game() :
 
     if(conn_info.is_online) {
 
-        chicken_sound       = ResourceLoader::load<sf::SoundBuffer>(get_raw_chicken());
+        chicken_sound              = ResourceLoader::load<sf::SoundBuffer>(get_raw_chicken());
 
-        your_turn_sound     = ResourceLoader::load<sf::SoundBuffer>(get_raw_your_turn());
+        your_turn_sound            = ResourceLoader::load<sf::SoundBuffer>(get_raw_your_turn());
 
-        turn_time_out_sound = ResourceLoader::load<sf::SoundBuffer>(get_raw_turn_time_out());
+        turn_time_out_sound        = ResourceLoader::load<sf::SoundBuffer>(get_raw_turn_time_out());
 
-        peer_info_font      = ResourceLoader::load<sf::Font>(peer_info_font_data);
+        online_game_finished_sound = ResourceLoader::load<sf::SoundBuffer>(get_raw_online_game_finished());
+
+        peer_info_font             = ResourceLoader::load<sf::Font>(peer_info_font_data);
 
     }
 
@@ -521,7 +527,7 @@ void Game::update(float delta)
 
         }
 
-        play_sound(clapping_sound);
+        play_sound(conn_info.is_online ? online_game_finished_sound : clapping_sound);
 
         if(emoji) emoji->set_face(Emoji::SUNGLASSES);
 
