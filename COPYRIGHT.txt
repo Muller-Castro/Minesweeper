@@ -339,6 +339,7 @@ Hyoshigi         (SFX)
 Ticket Gate Beep (SFX)
 Onmtp-Pop03      (SFX)
 Onmtp-Surprise04 (SFX)
+Chime-Announce03 (SFX)
 
 --------------------------------------OtoLogic------------------------------------
 
