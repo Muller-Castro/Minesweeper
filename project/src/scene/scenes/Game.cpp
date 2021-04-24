@@ -521,7 +521,19 @@ void Game::update(float delta)
 
             for(auto& grid_button : row) {
 
-                if(grid_button->type == GridButton::Types::BOMB) grid_button->set_flag(true, grid_button->is_blue_flag);
+                if(grid_button->type == GridButton::Types::BOMB) {
+
+                    if(conn_info.is_online && !grid_button->flagged) {
+
+                        sf::Sprite& flag_sprite = grid_button->is_blue_flag ? grid_button->p1_flag_sprite : grid_button->p2_flag_sprite;
+
+                        flag_sprite.setColor(sf::Color(0, 0, 0));
+
+                    }
+
+                    grid_button->set_flag(true, grid_button->is_blue_flag);
+
+                }
 
             }
 
