@@ -30,9 +30,11 @@
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 
+#include "GameLogic.h"
+
 namespace Minesweeper {
 
-    class Emoji
+    class Emoji final : public DrawableGameLogic
     {
     public:
         static constexpr unsigned char SMILING    = 0;
@@ -43,9 +45,9 @@ namespace Minesweeper {
 
         Emoji(const sf::Vector2f& position);
 
-        void process_inputs();
-        void update(float delta);
-        void draw();
+        void process_inputs()    override;
+        void update(float delta) override;
+        void draw()              override;
 
         void set_face(unsigned char face_type_);
 

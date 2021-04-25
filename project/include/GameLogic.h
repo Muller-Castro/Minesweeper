@@ -1,5 +1,5 @@
 /****************************************************************************************/
-/* Panel.h                                                                              */
+/* GameLogic.h                                                                          */
 /****************************************************************************************/
 /* Copyright (c) 2020 Muller Castro.                                                    */
 /*                                                                                      */
@@ -21,46 +21,26 @@
 /* OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                                        */
 /****************************************************************************************/
 
-#ifndef PANEL_H
-#define PANEL_H
-
-#include <memory>
-#include <vector>
-
-#include <SFML/Graphics/Texture.hpp>
-#include <SFML/Graphics/Sprite.hpp>
-
-#include "GameLogic.h"
-#include "components/Button.h"
+#ifndef GAME_LOGIC_H
+#define GAME_LOGIC_H
 
 namespace Minesweeper {
 
-    class Panel : public DrawableGameLogic
+    class GameLogic
     {
     public:
-        Panel();
-        Panel(const sf::Vector2f& position, const sf::Vector2f& scale, const std::shared_ptr<sf::Texture>& background_texture_, std::vector<std::shared_ptr<Button>>&& buttons_, bool is_active_ = false);
+        virtual ~GameLogic() noexcept {}
 
-        void process_inputs()    override;
-        void update(float delta) override;
-        void draw()              override;
+        virtual void process_inputs()    = 0;
+        virtual void update(float delta) = 0;
+    };
 
-        void move_panel(const sf::Vector2f& offset);
-
-        void set_active(bool b) noexcept { is_active = b; }
-
-        bool activated() const noexcept { return is_active; }
-
-    private:
-        bool is_active;
-
-        std::shared_ptr<sf::Texture> background_texture;
-
-        sf::Sprite background_sprite;
-
-        std::vector<std::shared_ptr<Button>> buttons;
+    class DrawableGameLogic : public GameLogic
+    {
+    public:
+        virtual void draw() = 0;
     };
 
 }
 
-#endif // PANEL_H
+#endif // GAME_LOGIC_H
