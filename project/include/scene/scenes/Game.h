@@ -128,6 +128,7 @@ namespace Minesweeper {
         std::shared_ptr<MusicStream> soundtrack;
 
         sf::Clock timer;
+        sf::Clock flash_timer;
 
         sf::Vector2i last_button_pressed;
 
@@ -172,6 +173,7 @@ namespace Minesweeper {
         void draw_score();
         void draw_counters();
         void draw_tip_text();
+        void draw_flashing_rect();
         void draw_panel();
     };
 

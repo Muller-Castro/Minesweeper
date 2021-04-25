@@ -131,6 +131,7 @@ Game::Game() :
     counter_font(),
     soundtrack(),
     timer(),
+    flash_timer(),
     last_button_pressed(-1, 0),
     panel_sprite(),
     counter_panel_sprite(),
@@ -579,6 +580,8 @@ void Game::update(float delta)
 
         finished = true;
 
+        flash_timer.restart();
+
     }
 
     if(conn_info.is_online) {
@@ -645,6 +648,8 @@ void Game::draw()
     if(conn_info.is_online) {
 
         draw_tip_text();
+
+        if(finished && (flash_timer.getElapsedTime().asSeconds() <= 1.f)) draw_flashing_rect();
 
         draw_panel();
 
@@ -1170,6 +1175,40 @@ void Game::draw_tip_text()
     dark_rect.setSize(dark_rect_size);
 
     MinesweeperGame::window->draw(dark_rect);
+}
+
+void Game::draw_flashing_rect()
+{
+    std::string difficulty = SceneManager::shared_data["DIFFICULTY"];
+
+    sf::Vector2f rect_pos;
+    sf::Vector2f rect_size;
+
+    sf::RectangleShape rect;
+
+    rect.setFillColor((flash_timer.getElapsedTime().asMilliseconds() / 4) % 2 == 0 ? sf::Color(255, 255, 255, 0) : sf::Color(255, 255, 255, 64));
+
+    if(difficulty == "0") {
+
+        rect_pos  = sf::Vector2f(239.f, 185.f);
+        rect_size = sf::Vector2f(320.f, 320.f);
+
+    }else if(difficulty == "1") {
+
+        rect_pos  = sf::Vector2f(240.f, 135.f);
+        rect_size = sf::Vector2f(320.f, 460.f);
+
+    }else if(difficulty == "2") {
+
+        rect_pos  = sf::Vector2f(20.f, 135.f);
+        rect_size = sf::Vector2f(760.f, 460.f);
+
+    }
+
+    rect.setPosition(rect_pos);
+    rect.setSize(rect_size);
+
+    MinesweeperGame::window->draw(rect);
 }
 
 void Game::draw_panel()
