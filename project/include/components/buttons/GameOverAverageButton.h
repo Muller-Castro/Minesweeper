@@ -1,5 +1,5 @@
 /****************************************************************************************/
-/* Panel.cpp                                                                            */
+/* GameOverAverageButton.h                                                              */
 /****************************************************************************************/
 /* Copyright (c) 2020 Muller Castro.                                                    */
 /*                                                                                      */
@@ -21,85 +21,39 @@
 /* OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                                        */
 /****************************************************************************************/
 
-#include "components/Panel.h"
+#ifndef GAME_OVER_AVERAGE_BUTTON_H
+#define GAME_OVER_AVERAGE_BUTTON_H
 
-#include <SFML/Graphics/RectangleShape.hpp>
-#include <SFML/Graphics/RenderWindow.hpp>
+#include <functional>
 
-#include "MinesweeperGame.h"
+#include "components/Button.h"
 
-using namespace Minesweeper;
+namespace Minesweeper {
 
-Panel::Panel() :
-    is_active(),
-    background_texture(),
-    background_sprite(),
-    buttons()
-{
-    //
+    class GameOverPanel;
+
+    class GameOverAverageButton final : public Button
+    {
+    public:
+        GameOverAverageButton(GameOverPanel& go_panel_ref_, Enabled enabled_, const sf::Vector2f& position_, const sf::Vector2f& scale_, const std::shared_ptr<sf::Texture>& hovered, const std::shared_ptr<sf::Texture>& non_hovered, const std::shared_ptr<sf::Texture>& down, const std::shared_ptr<sf::SoundBuffer>& hovered_sfx = {}, const std::shared_ptr<sf::SoundBuffer>& pressed_sfx = {});
+        ~GameOverAverageButton() noexcept override {}
+
+        void process_inputs() override;
+        void update(float)    override;
+
+    protected:
+        void on_button_up()      override;
+        void on_button_down()    override;
+        void on_button_pressed() override;
+
+    private:
+        friend class Game;
+
+        std::reference_wrapper<GameOverPanel> go_panel_ref;
+
+        void evaluate_button();
+    };
+
 }
 
-Panel::Panel(const sf::Vector2f& position, const sf::Vector2f& scale, const std::shared_ptr<sf::Texture>& background_texture_, std::vector<std::shared_ptr<Button>>&& buttons_, bool is_active_) :
-    is_active(is_active_),
-    background_texture(background_texture_),
-    background_sprite(),
-    buttons(std::move(buttons_))
-{
-    background_sprite.setPosition(position);
-    background_sprite.setScale(scale);
-
-    background_sprite.setTexture(*background_texture);
-}
-
-void Panel::process_inputs()
-{
-    if(is_active) {
-
-        for(auto& button : buttons) {
-
-            button->process_inputs();
-
-            if(button->get_state() == Button::States::RELEASED) is_active = false;
-
-        }
-
-    }
-}
-
-void Panel::update(float delta)
-{
-    if(is_active) {
-
-        for(auto& button : buttons) button->update(delta);
-
-    }
-}
-
-void Panel::draw()
-{
-    if(is_active) {
-
-        sf::RectangleShape shape(sf::Vector2f(800.f, 600.f));
-
-        shape.setFillColor(sf::Color(0, 0, 0, 200));
-
-        MinesweeperGame::window->draw(shape);
-
-        MinesweeperGame::window->draw(background_sprite);
-
-        for(auto& button : buttons) MinesweeperGame::window->draw(*button);
-
-    }
-}
-
-void Panel::move_panel(const sf::Vector2f& offset)
-{
-    background_sprite.move(offset);
-
-    for(auto& button : buttons) {
-
-        button->position.x += offset.x;
-        button->position.y += offset.y;
-
-    }
-}
+#endif // GAME_OVER_AVERAGE_BUTTON_H

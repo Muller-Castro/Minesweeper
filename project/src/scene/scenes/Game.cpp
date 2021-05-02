@@ -91,6 +91,13 @@
 #include "components/buttons/RestartButton.h"
 #include "components/buttons/MainMenuButton.h"
 #include "components/buttons/ChickenedOutOKButton.h"
+#include "components/panels/GameOverPanel.h"
+#include "components/buttons/GameOverBeginnerButton.h"
+#include "components/buttons/GameOverAverageButton.h"
+#include "components/buttons/GameOverExpertButton.h"
+#include "components/buttons/GameOverDurationAButton.h"
+#include "components/buttons/GameOverDurationBButton.h"
+#include "components/buttons/GameOverDurationCButton.h"
 
 using namespace Minesweeper;
 
@@ -343,7 +350,9 @@ Game::Game() :
 
     }else {
 
-        panels["C_OUT"] = Panel(
+        panels["$G_OVER"] = std::make_unique<GameOverPanel>(*this);
+
+        panels["C_OUT"]   = std::make_unique<Panel>(
 
             sf::Vector2f(105.f, 189.f),
             sf::Vector2f(1.f, 1.f),
@@ -352,7 +361,7 @@ Game::Game() :
 #else
             ResourceLoader::load<sf::Texture>(get_raw_chickened_out_panel()),
 #endif // __S_RELEASE__
-            {
+            std::vector<std::shared_ptr<Button>>{
                 std::make_shared<ChickenedOutOKButton>(
 
                     Button::Enabled::LEFT,
@@ -385,9 +394,9 @@ Game::Game() :
 
         if(connection_status != sf::Socket::Done) {
 
-            if(!panels["C_OUT"].activated()) play_sound(chicken_sound);
+            if(!panels["C_OUT"]->activated()) play_sound(chicken_sound);
 
-            panels["C_OUT"].set_active(true);
+            panels["C_OUT"]->set_active(true);
 
         }
 
@@ -405,15 +414,17 @@ void Game::process_inputs()
 {
     if(conn_info.is_online) {
 
+        bool should_return = false;
+
         for(auto& panel : panels) {
 
-            panel.second.process_inputs();
+            panel.second->process_inputs();
 
-            if(panel.second.activated()) return;
+            if(panel.second->activated()) should_return = true;
 
         }
 
-        if(!is_your_turn) return;
+        if(should_return || !is_your_turn) return;
 
     }
 
@@ -440,35 +451,37 @@ void Game::update(float delta)
 
         if(connection_status != sf::Socket::Done) {
 
-            if(!panels["C_OUT"].activated()) play_sound(chicken_sound);
+            if(!panels["C_OUT"]->activated()) play_sound(chicken_sound);
 
-            panels["C_OUT"].set_active(true);
+            panels["C_OUT"]->set_active(true);
 
         }
 
+        bool should_return = false;
+
         for(auto& panel : panels) {
 
-            panel.second.update(delta);
+            panel.second->update(delta);
 
-            if(panel.second.activated()) {
+            if(panel.second->activated()) should_return = true;
 
-                // Just to keep animations playing while the panel is displayed
-                for(std::vector<std::unique_ptr<GridButton>>& row : grid) {
+        }
 
-                    for(auto& grid_button : row) {
+        // Just to keep animations playing while the panel is displayed
+        for(std::vector<std::unique_ptr<GridButton>>& row : grid) {
 
-                        grid_button->animations.update(delta);
+            for(auto& grid_button : row) {
 
-                    }
-
-                }
-                // Just to keep animations playing while the panel is displayed
-
-                return;
+                grid_button->animations.update(delta);
 
             }
 
         }
+        // Just to keep animations playing while the panel is displayed
+
+        receive_packages();
+
+        if(should_return) return;
 
     }
 
@@ -580,6 +593,8 @@ void Game::update(float delta)
 
         finished = true;
 
+        panels["$G_OVER"]->set_active(true);
+
         flash_timer.restart();
 
     }
@@ -675,6 +690,8 @@ void Game::receive_packages()
         if((idx = received_data.find('D')) != std::string::npos) setup_grid(retrieve_data<'D'>(idx, received_data));
         if((idx = received_data.find('E')) != std::string::npos) receive_grid_button_press(retrieve_data<'E'>(idx, received_data));
         if((idx = received_data.find('F')) != std::string::npos) receive_turn_time_out(retrieve_data<'F'>(idx, received_data));
+        if((idx = received_data.find('G')) != std::string::npos) receive_new_difficulty(retrieve_data<'G'>(idx, received_data));
+        if((idx = received_data.find('H')) != std::string::npos) receive_new_duration(retrieve_data<'H'>(idx, received_data));
         //////////////////////////////////////////
 
         p.clear();
@@ -842,6 +859,24 @@ void Game::receive_turn_time_out(const std::string& s)
         timer.restart();
 
     });
+}
+
+void Game::receive_new_difficulty(const std::string& level)
+{
+    if(!std::regex_match(level, std::regex("^lvl[0-2]$"))) return;
+
+    if(level == "lvl0")      dynamic_cast<GameOverBeginnerButton&>(*panels["$G_OVER"]->get_buttons()[0]).evaluate_button();
+    else if(level == "lvl1") dynamic_cast<GameOverAverageButton&>(*panels["$G_OVER"]->get_buttons()[1]).evaluate_button();
+    else if(level == "lvl2") dynamic_cast<GameOverExpertButton&>(*panels["$G_OVER"]->get_buttons()[2]).evaluate_button();
+}
+
+void Game::receive_new_duration(const std::string& duration_str)
+{
+    if(!std::regex_match(duration_str, std::regex("^dur[0-2]$"))) return;
+
+    if(duration_str == "dur0")      dynamic_cast<GameOverDurationAButton&>(*panels["$G_OVER"]->get_buttons()[3]).evaluate_button();
+    else if(duration_str == "dur1") dynamic_cast<GameOverDurationBButton&>(*panels["$G_OVER"]->get_buttons()[4]).evaluate_button();
+    else if(duration_str == "dur2") dynamic_cast<GameOverDurationCButton&>(*panels["$G_OVER"]->get_buttons()[5]).evaluate_button();
 }
 
 GridButton& Game::get_grid_button(const std::string& cell_pos)
@@ -1215,23 +1250,7 @@ void Game::draw_panel()
 {
     for(auto& panel : panels) {
 
-        bool should_break = false;
-
-        if(panel.second.activated()) {
-
-            sf::RectangleShape shape(sf::Vector2f(800.f, 600.f));
-
-            shape.setFillColor(sf::Color(0, 0, 0, 200));
-
-            MinesweeperGame::window->draw(shape);
-
-            should_break = true;
-
-        }
-
-        panel.second.draw();
-
-        if(should_break) break;
+        panel.second->draw();
 
     }
 }

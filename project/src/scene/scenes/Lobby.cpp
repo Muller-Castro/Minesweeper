@@ -1570,23 +1570,7 @@ void Lobby::draw_panel()
 {
     for(auto& panel : panels) {
 
-        bool should_break = false;
-
-        if(panel.second.activated()) {
-
-            sf::RectangleShape shape(sf::Vector2f(800.f, 600.f));
-
-            shape.setFillColor(sf::Color(0, 0, 0, 200));
-
-            MinesweeperGame::window->draw(shape);
-
-            should_break = true;
-
-        }
-
         panel.second.draw();
-
-        if(should_break) break;
 
     }
 }

@@ -1,5 +1,5 @@
 /****************************************************************************************/
-/* Panel.cpp                                                                            */
+/* GameOverAverageButton.cpp                                                            */
 /****************************************************************************************/
 /* Copyright (c) 2020 Muller Castro.                                                    */
 /*                                                                                      */
@@ -21,85 +21,58 @@
 /* OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                                        */
 /****************************************************************************************/
 
-#include "components/Panel.h"
+#include "components/buttons/GameOverAverageButton.h"
 
-#include <SFML/Graphics/RectangleShape.hpp>
-#include <SFML/Graphics/RenderWindow.hpp>
-
-#include "MinesweeperGame.h"
+#include "components/panels/GameOverPanel.h"
+#include "scene/SceneManager.h"
+#include "scene/scenes/Game.h"
 
 using namespace Minesweeper;
 
-Panel::Panel() :
-    is_active(),
-    background_texture(),
-    background_sprite(),
-    buttons()
+GameOverAverageButton::GameOverAverageButton(GameOverPanel& go_panel_ref_, Enabled enabled_, const sf::Vector2f& position_, const sf::Vector2f& scale_, const std::shared_ptr<sf::Texture>& hovered, const std::shared_ptr<sf::Texture>& non_hovered, const std::shared_ptr<sf::Texture>& down, const std::shared_ptr<sf::SoundBuffer>& hovered_sfx, const std::shared_ptr<sf::SoundBuffer>& pressed_sfx) :
+    Button(enabled_, position_, scale_, hovered, non_hovered, down, hovered_sfx, pressed_sfx),
+    go_panel_ref(go_panel_ref_)
 {
     //
 }
 
-Panel::Panel(const sf::Vector2f& position, const sf::Vector2f& scale, const std::shared_ptr<sf::Texture>& background_texture_, std::vector<std::shared_ptr<Button>>&& buttons_, bool is_active_) :
-    is_active(is_active_),
-    background_texture(background_texture_),
-    background_sprite(),
-    buttons(std::move(buttons_))
+void GameOverAverageButton::process_inputs()
 {
-    background_sprite.setPosition(position);
-    background_sprite.setScale(scale);
-
-    background_sprite.setTexture(*background_texture);
+    if(go_panel_ref.get().game_ref.get().conn_info.is_host) Button::process_inputs();
 }
 
-void Panel::process_inputs()
+void GameOverAverageButton::update(float delta)
 {
-    if(is_active) {
+    const bool is_host = go_panel_ref.get().game_ref.get().conn_info.is_host;
 
-        for(auto& button : buttons) {
+    if(SceneManager::shared_data["DIFFICULTY"] == "1") sprite.setColor(sf::Color(0, is_host ? 255 : 120, 0));
+    else                                               sprite.setColor(is_host ? sf::Color::White : sf::Color(120, 120, 120));
 
-            button->process_inputs();
-
-            if(button->get_state() == Button::States::RELEASED) is_active = false;
-
-        }
-
-    }
+    Button::update(delta);
 }
 
-void Panel::update(float delta)
+void GameOverAverageButton::on_button_up()
 {
-    if(is_active) {
-
-        for(auto& button : buttons) button->update(delta);
-
-    }
+    //
 }
 
-void Panel::draw()
+void GameOverAverageButton::on_button_down()
 {
-    if(is_active) {
-
-        sf::RectangleShape shape(sf::Vector2f(800.f, 600.f));
-
-        shape.setFillColor(sf::Color(0, 0, 0, 200));
-
-        MinesweeperGame::window->draw(shape);
-
-        MinesweeperGame::window->draw(background_sprite);
-
-        for(auto& button : buttons) MinesweeperGame::window->draw(*button);
-
-    }
+    //
 }
 
-void Panel::move_panel(const sf::Vector2f& offset)
+void GameOverAverageButton::on_button_pressed()
 {
-    background_sprite.move(offset);
+    evaluate_button();
 
-    for(auto& button : buttons) {
+    go_panel_ref.get().game_ref.get().send(true, 'G', "lvl1");
+}
 
-        button->position.x += offset.x;
-        button->position.y += offset.y;
+void GameOverAverageButton::evaluate_button()
+{
+    const bool is_host = go_panel_ref.get().game_ref.get().conn_info.is_host;
 
-    }
+    sprite.setColor(sf::Color(0, is_host ? 255 : 120, 0));
+
+    SceneManager::shared_data["DIFFICULTY"] = '1';
 }

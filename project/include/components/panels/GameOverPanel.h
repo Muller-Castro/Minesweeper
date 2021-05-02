@@ -1,5 +1,5 @@
 /****************************************************************************************/
-/* SceneManager.h                                                                       */
+/* GameOverPanel.h                                                                      */
 /****************************************************************************************/
 /* Copyright (c) 2020 Muller Castro.                                                    */
 /*                                                                                      */
@@ -21,57 +21,31 @@
 /* OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                                        */
 /****************************************************************************************/
 
-#ifndef SCENE_MANAGER_H
-#define SCENE_MANAGER_H
+#ifndef GAME_OVER_PANEL_H
+#define GAME_OVER_PANEL_H
 
-#include <unordered_map>
-#include <string>
-#include <memory>
 #include <functional>
-#include <queue>
 
-#include "scene/Scene.h"
+#include <SFML/System/Clock.hpp>
+
+#include "components/Panel.h"
 
 namespace Minesweeper {
 
-    class SceneManager
+    class Game;
+
+    class GameOverPanel final : public Panel
     {
     public:
-        enum class Scenes : unsigned char
-        {
-            UNDEFINED,
-#ifdef __DEBUG__
-            TEST_ZONE,
-#endif // __DEBUG__
-            SPLASH_SCREEN,
-            MAIN_MENU,
-            LOBBY,
-            GAME
-        };
+        GameOverPanel(Game&);
 
-        static void change_scene_to(Scenes scene);
-        static void restart_scene();
+        void process_inputs() override;
+        void update(float)    override;
+        void draw()           override;
 
-        template<typename Fn>
-        static void call_deferred(Fn fn) { SceneManager::deferred_processes.push(fn); }
+        void set_active(bool b) noexcept override;
 
     private:
-        friend class MinesweeperGame;
-        friend class MainMenu;
-        friend class BeginnerButton;
-        friend class HostButton;
-        friend class JoinButton;
-        friend class LobbyBeginnerButton;
-        friend class LobbyAverageButton;
-        friend class LobbyExpertButton;
-        friend class LobbyReturnButton;
-        friend class DurationAButton;
-        friend class DurationBButton;
-        friend class DurationCButton;
-        friend class AverageButton;
-        friend class ExpertButton;
-        friend class ConnectionInfo;
-        friend class Game;
         friend class GameOverBeginnerButton;
         friend class GameOverAverageButton;
         friend class GameOverExpertButton;
@@ -79,22 +53,11 @@ namespace Minesweeper {
         friend class GameOverDurationBButton;
         friend class GameOverDurationCButton;
 
-        static std::unordered_map<std::string, std::string> shared_data;
+        sf::Clock timer;
 
-        static std::unique_ptr<Scene> current_scene;
-        static Scenes current_scene_enum;
-
-        static std::queue<std::function<void(void)>> deferred_processes;
-
-        static void process_inputs();
-        static void update(float);
-        static void draw();
-
-        static void force_scene_change(Scenes scene);
-
-        static void run_deferred();
+        std::reference_wrapper<Game> game_ref;
     };
 
 }
 
-#endif // SCENE_MANAGER_H
+#endif // GAME_OVER_PANEL_H

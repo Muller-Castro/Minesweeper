@@ -77,6 +77,13 @@ namespace Minesweeper {
     private:
         friend class RestartButton;
         friend class GridButton;
+        friend class GameOverPanel;
+        friend class GameOverBeginnerButton;
+        friend class GameOverAverageButton;
+        friend class GameOverExpertButton;
+        friend class GameOverDurationAButton;
+        friend class GameOverDurationBButton;
+        friend class GameOverDurationCButton;
 
         bool is_first_click;
         bool is_your_turn;
@@ -94,7 +101,7 @@ namespace Minesweeper {
 
         std::pair<unsigned short, unsigned short> score;
 
-        std::map<std::string, Panel> panels;
+        std::map<std::string, std::unique_ptr<Panel>> panels;
 
 #ifdef __S_RELEASE__
         std::pair<std::string, std::string> peer_info_font_data;
@@ -154,6 +161,10 @@ namespace Minesweeper {
         void receive_grid_button_press(const std::string& cell_pos);
 
         void receive_turn_time_out(const std::string&);
+
+        void receive_new_difficulty(const std::string& level);
+
+        void receive_new_duration(const std::string& duration_str);
 
         GridButton& get_grid_button(const std::string& cell_pos);
 

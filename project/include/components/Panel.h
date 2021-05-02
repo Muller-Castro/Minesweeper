@@ -47,11 +47,14 @@ namespace Minesweeper {
 
         void move_panel(const sf::Vector2f& offset);
 
-        void set_active(bool b) noexcept { is_active = b; }
+        virtual void set_active(bool b) noexcept { is_active = b; }
 
         bool activated() const noexcept { return is_active; }
 
-    private:
+        std::vector<std::shared_ptr<Button>>& get_buttons() noexcept             { return buttons; };
+        const std::vector<std::shared_ptr<Button>>& get_buttons() const noexcept { return buttons; };
+
+    protected:
         bool is_active;
 
         std::shared_ptr<sf::Texture> background_texture;
