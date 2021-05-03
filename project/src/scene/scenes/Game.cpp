@@ -593,7 +593,7 @@ void Game::update(float delta)
 
         finished = true;
 
-        panels["$G_OVER"]->set_active(true);
+        if(conn_info.is_online) panels["$G_OVER"]->set_active(true);
 
         flash_timer.restart();
 

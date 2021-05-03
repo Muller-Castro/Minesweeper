@@ -288,11 +288,11 @@ void GridButton::evaluate_button()
 
         game_ref.get().finished = true;
 
-        game_ref.get().panels["$G_OVER"]->set_active(true);
-
         game_ref.get().flash_timer.restart();
 
         if(game_ref.get().conn_info.is_online) {
+
+            game_ref.get().panels["$G_OVER"]->set_active(true);
 
             game_ref.get().tip_text.setPosition(sf::Vector2f(300.f, 0.f)); // y position deferred to the drawing step
 
