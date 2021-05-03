@@ -26,6 +26,29 @@
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 
+#ifdef __S_RELEASE__
+#include "assets/GameOverPanelBG.h"
+#include "assets/BeginnerButtonNHovered.h"
+#include "assets/BeginnerButtonHovered.h"
+#include "assets/BeginnerButtonDown.h"
+#include "assets/AverageButtonNHovered.h"
+#include "assets/AverageButtonHovered.h"
+#include "assets/AverageButtonDown.h"
+#include "assets/ExpertButtonNHovered.h"
+#include "assets/ExpertButtonHovered.h"
+#include "assets/ExpertButtonDown.h"
+#include "assets/DurationAButtonNHovered.h"
+#include "assets/DurationAButtonHovered.h"
+#include "assets/DurationAButtonDown.h"
+#include "assets/DurationBButtonNHovered.h"
+#include "assets/DurationBButtonHovered.h"
+#include "assets/DurationBButtonDown.h"
+#include "assets/DurationCButtonNHovered.h"
+#include "assets/DurationCButtonHovered.h"
+#include "assets/DurationCButtonDown.h"
+#include "assets/MainMenuButtonHovered.h"
+#include "assets/MainMenuButtonPressed.h"
+#endif // __S_RELEASE__
 #include "MinesweeperGame.h"
 #include "io/ResourceLoader.h"
 #include "components/buttons/GameOverBeginnerButton.h"
@@ -45,7 +68,7 @@ GameOverPanel::GameOverPanel(Game& game) :
 #ifndef __S_RELEASE__
         ResourceLoader::load<sf::Texture>("assets/textures/GameOverPanel.png"),
 #else
-        ResourceLoader::load<sf::Texture>(get_raw_?()),
+        ResourceLoader::load<sf::Texture>(get_raw_game_over_panel_bg()),
 #endif // __S_RELEASE__
         {
             std::make_shared<GameOverBeginnerButton>(
@@ -61,9 +84,9 @@ GameOverPanel::GameOverPanel(Game& game) :
                 ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonHovered.wav"),
                 ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonPressed.wav")
 #else
-                ResourceLoader::load<sf::Texture>(get_raw_all_fields_ok_button_hovered()),
-                ResourceLoader::load<sf::Texture>(get_raw_all_fields_ok_button_n_hovered()),
-                ResourceLoader::load<sf::Texture>(get_raw_all_fields_ok_button_down()),
+                ResourceLoader::load<sf::Texture>(get_raw_beginner_button_hovered()),
+                ResourceLoader::load<sf::Texture>(get_raw_beginner_button_n_hovered()),
+                ResourceLoader::load<sf::Texture>(get_raw_beginner_button_down()),
                 ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_hovered()),
                 ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_pressed())
 #endif // __S_RELEASE__
@@ -83,9 +106,9 @@ GameOverPanel::GameOverPanel(Game& game) :
                 ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonHovered.wav"),
                 ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonPressed.wav")
 #else
-                ResourceLoader::load<sf::Texture>(get_raw_all_fields_ok_button_hovered()),
-                ResourceLoader::load<sf::Texture>(get_raw_all_fields_ok_button_n_hovered()),
-                ResourceLoader::load<sf::Texture>(get_raw_all_fields_ok_button_down()),
+                ResourceLoader::load<sf::Texture>(get_raw_average_button_hovered()),
+                ResourceLoader::load<sf::Texture>(get_raw_average_button_n_hovered()),
+                ResourceLoader::load<sf::Texture>(get_raw_average_button_down()),
                 ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_hovered()),
                 ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_pressed())
 #endif // __S_RELEASE__
@@ -105,9 +128,9 @@ GameOverPanel::GameOverPanel(Game& game) :
                 ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonHovered.wav"),
                 ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonPressed.wav")
 #else
-                ResourceLoader::load<sf::Texture>(get_raw_all_fields_ok_button_hovered()),
-                ResourceLoader::load<sf::Texture>(get_raw_all_fields_ok_button_n_hovered()),
-                ResourceLoader::load<sf::Texture>(get_raw_all_fields_ok_button_down()),
+                ResourceLoader::load<sf::Texture>(get_raw_expert_button_hovered()),
+                ResourceLoader::load<sf::Texture>(get_raw_expert_button_n_hovered()),
+                ResourceLoader::load<sf::Texture>(get_raw_expert_button_down()),
                 ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_hovered()),
                 ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_pressed())
 #endif // __S_RELEASE__
@@ -127,9 +150,9 @@ GameOverPanel::GameOverPanel(Game& game) :
                 ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonHovered.wav"),
                 ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonPressed.wav")
 #else
-                ResourceLoader::load<sf::Texture>(get_raw_all_fields_ok_button_hovered()),
-                ResourceLoader::load<sf::Texture>(get_raw_all_fields_ok_button_n_hovered()),
-                ResourceLoader::load<sf::Texture>(get_raw_all_fields_ok_button_down()),
+                ResourceLoader::load<sf::Texture>(get_raw_duration_a_button_hovered()),
+                ResourceLoader::load<sf::Texture>(get_raw_duration_a_button_n_hovered()),
+                ResourceLoader::load<sf::Texture>(get_raw_duration_a_button_down()),
                 ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_hovered()),
                 ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_pressed())
 #endif // __S_RELEASE__
@@ -149,9 +172,9 @@ GameOverPanel::GameOverPanel(Game& game) :
                 ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonHovered.wav"),
                 ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonPressed.wav")
 #else
-                ResourceLoader::load<sf::Texture>(get_raw_all_fields_ok_button_hovered()),
-                ResourceLoader::load<sf::Texture>(get_raw_all_fields_ok_button_n_hovered()),
-                ResourceLoader::load<sf::Texture>(get_raw_all_fields_ok_button_down()),
+                ResourceLoader::load<sf::Texture>(get_raw_duration_b_button_hovered()),
+                ResourceLoader::load<sf::Texture>(get_raw_duration_b_button_n_hovered()),
+                ResourceLoader::load<sf::Texture>(get_raw_duration_b_button_down()),
                 ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_hovered()),
                 ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_pressed())
 #endif // __S_RELEASE__
@@ -171,9 +194,9 @@ GameOverPanel::GameOverPanel(Game& game) :
                 ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonHovered.wav"),
                 ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonPressed.wav")
 #else
-                ResourceLoader::load<sf::Texture>(get_raw_all_fields_ok_button_hovered()),
-                ResourceLoader::load<sf::Texture>(get_raw_all_fields_ok_button_n_hovered()),
-                ResourceLoader::load<sf::Texture>(get_raw_all_fields_ok_button_down()),
+                ResourceLoader::load<sf::Texture>(get_raw_duration_c_button_hovered()),
+                ResourceLoader::load<sf::Texture>(get_raw_duration_c_button_n_hovered()),
+                ResourceLoader::load<sf::Texture>(get_raw_duration_c_button_down()),
                 ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_hovered()),
                 ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_pressed())
 #endif // __S_RELEASE__
