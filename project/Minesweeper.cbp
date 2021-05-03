@@ -94,6 +94,7 @@
 		<Unit filename="../thirdparty/json11/json11.cpp" />
 		<Unit filename="../thirdparty/json11/json11.hpp" />
 		<Unit filename="include/Emoji.h" />
+		<Unit filename="include/GameLogic.h" />
 		<Unit filename="include/GlobalConfigurations.h" />
 		<Unit filename="include/Input.h" />
 		<Unit filename="include/Input.hpp" />
@@ -244,6 +245,9 @@
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="include/assets/FlagSet.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/GameOverPanelBG.h">
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="include/assets/GamePanel.h">
@@ -525,6 +529,12 @@
 		<Unit filename="include/components/buttons/DurationBButton.h" />
 		<Unit filename="include/components/buttons/DurationCButton.h" />
 		<Unit filename="include/components/buttons/ExpertButton.h" />
+		<Unit filename="include/components/buttons/GameOverAverageButton.h" />
+		<Unit filename="include/components/buttons/GameOverBeginnerButton.h" />
+		<Unit filename="include/components/buttons/GameOverDurationAButton.h" />
+		<Unit filename="include/components/buttons/GameOverDurationBButton.h" />
+		<Unit filename="include/components/buttons/GameOverDurationCButton.h" />
+		<Unit filename="include/components/buttons/GameOverExpertButton.h" />
 		<Unit filename="include/components/buttons/GridButton.h" />
 		<Unit filename="include/components/buttons/HostButton.h" />
 		<Unit filename="include/components/buttons/JoinButton.h" />
@@ -539,6 +549,7 @@
 		<Unit filename="include/components/buttons/QuitButton.h" />
 		<Unit filename="include/components/buttons/RestartButton.h" />
 		<Unit filename="include/components/buttons/StartButton.h" />
+		<Unit filename="include/components/panels/GameOverPanel.h" />
 		<Unit filename="include/io/MusicStream.h" />
 		<Unit filename="include/io/Network.h" />
 		<Unit filename="include/io/ResourceLoader.h" />
@@ -713,6 +724,9 @@
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="src/assets/FlagSet.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/GameOverPanelBG.cpp">
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="src/assets/GamePanel.cpp">
@@ -994,6 +1008,12 @@
 		<Unit filename="src/components/buttons/DurationBButton.cpp" />
 		<Unit filename="src/components/buttons/DurationCButton.cpp" />
 		<Unit filename="src/components/buttons/ExpertButton.cpp" />
+		<Unit filename="src/components/buttons/GameOverAverageButton.cpp" />
+		<Unit filename="src/components/buttons/GameOverBeginnerButton.cpp" />
+		<Unit filename="src/components/buttons/GameOverDurationAButton.cpp" />
+		<Unit filename="src/components/buttons/GameOverDurationBButton.cpp" />
+		<Unit filename="src/components/buttons/GameOverDurationCButton.cpp" />
+		<Unit filename="src/components/buttons/GameOverExpertButton.cpp" />
 		<Unit filename="src/components/buttons/GridButton.cpp" />
 		<Unit filename="src/components/buttons/HostButton.cpp" />
 		<Unit filename="src/components/buttons/JoinButton.cpp" />
@@ -1008,6 +1028,7 @@
 		<Unit filename="src/components/buttons/QuitButton.cpp" />
 		<Unit filename="src/components/buttons/RestartButton.cpp" />
 		<Unit filename="src/components/buttons/StartButton.cpp" />
+		<Unit filename="src/components/panels/GameOverPanel.cpp" />
 		<Unit filename="src/io/MusicStream.cpp" />
 		<Unit filename="src/io/Network.cpp" />
 		<Unit filename="src/io/ResourceLoader.cpp" />
