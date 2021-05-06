@@ -376,6 +376,15 @@
 		<Unit filename="include/assets/OnlineGameMatchPanel.h">
 			<Option target="Static Release" />
 		</Unit>
+		<Unit filename="include/assets/OnlineQuitButtonDown.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/OnlineQuitButtonHovered.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/OnlineQuitButtonNHovered.h">
+			<Option target="Static Release" />
+		</Unit>
 		<Unit filename="include/assets/Oooh.h">
 			<Option target="Static Release" />
 		</Unit>
@@ -434,6 +443,15 @@
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="include/assets/RestartButtonNHovered.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/RetryButtonDown.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/RetryButtonHovered.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/RetryButtonNHovered.h">
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="include/assets/ReturnDown.h">
@@ -508,6 +526,9 @@
 		<Unit filename="include/assets/Universe.h">
 			<Option target="Static Release" />
 		</Unit>
+		<Unit filename="include/assets/WaitingForOpponent.h">
+			<Option target="Static Release" />
+		</Unit>
 		<Unit filename="include/assets/WrongPasswordPanel.h">
 			<Option target="Static Release" />
 		</Unit>
@@ -543,11 +564,13 @@
 		<Unit filename="include/components/buttons/LobbyExpertButton.h" />
 		<Unit filename="include/components/buttons/LobbyReturnButton.h" />
 		<Unit filename="include/components/buttons/MainMenuButton.h" />
+		<Unit filename="include/components/buttons/OnlineQuitButton.h" />
 		<Unit filename="include/components/buttons/PlayOfflineButton.h" />
 		<Unit filename="include/components/buttons/PlayOfflineReturnButton.h" />
 		<Unit filename="include/components/buttons/PlayOnlineButton.h" />
 		<Unit filename="include/components/buttons/QuitButton.h" />
 		<Unit filename="include/components/buttons/RestartButton.h" />
+		<Unit filename="include/components/buttons/RetryButton.h" />
 		<Unit filename="include/components/buttons/StartButton.h" />
 		<Unit filename="include/components/panels/GameOverPanel.h" />
 		<Unit filename="include/io/MusicStream.h" />
@@ -855,6 +878,15 @@
 		<Unit filename="src/assets/OnlineGameMatchPanel.cpp">
 			<Option target="Static Release" />
 		</Unit>
+		<Unit filename="src/assets/OnlineQuitButtonDown.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/OnlineQuitButtonHovered.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/OnlineQuitButtonNHovered.cpp">
+			<Option target="Static Release" />
+		</Unit>
 		<Unit filename="src/assets/Oooh.cpp">
 			<Option target="Static Release" />
 		</Unit>
@@ -913,6 +945,15 @@
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="src/assets/RestartButtonNHovered.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/RetryButtonDown.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/RetryButtonHovered.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/RetryButtonNHovered.cpp">
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="src/assets/ReturnDown.cpp">
@@ -987,6 +1028,9 @@
 		<Unit filename="src/assets/Universe.cpp">
 			<Option target="Static Release" />
 		</Unit>
+		<Unit filename="src/assets/WaitingForOpponent.cpp">
+			<Option target="Static Release" />
+		</Unit>
 		<Unit filename="src/assets/WrongPasswordPanel.cpp">
 			<Option target="Static Release" />
 		</Unit>
@@ -1022,11 +1066,13 @@
 		<Unit filename="src/components/buttons/LobbyExpertButton.cpp" />
 		<Unit filename="src/components/buttons/LobbyReturnButton.cpp" />
 		<Unit filename="src/components/buttons/MainMenuButton.cpp" />
+		<Unit filename="src/components/buttons/OnlineQuitButton.cpp" />
 		<Unit filename="src/components/buttons/PlayOfflineButton.cpp" />
 		<Unit filename="src/components/buttons/PlayOfflineReturnButton.cpp" />
 		<Unit filename="src/components/buttons/PlayOnlineButton.cpp" />
 		<Unit filename="src/components/buttons/QuitButton.cpp" />
 		<Unit filename="src/components/buttons/RestartButton.cpp" />
+		<Unit filename="src/components/buttons/RetryButton.cpp" />
 		<Unit filename="src/components/buttons/StartButton.cpp" />
 		<Unit filename="src/components/panels/GameOverPanel.cpp" />
 		<Unit filename="src/io/MusicStream.cpp" />
