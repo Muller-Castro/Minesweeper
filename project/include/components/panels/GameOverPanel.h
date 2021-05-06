@@ -52,6 +52,10 @@ namespace Minesweeper {
         friend class GameOverDurationAButton;
         friend class GameOverDurationBButton;
         friend class GameOverDurationCButton;
+        friend class RetryButton;
+        friend class OnlineQuitButton;
+
+        bool should_block_inputs;
 
         sf::Clock timer;
 

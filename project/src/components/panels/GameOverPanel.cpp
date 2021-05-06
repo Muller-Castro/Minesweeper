@@ -57,6 +57,8 @@
 #include "components/buttons/GameOverDurationAButton.h"
 #include "components/buttons/GameOverDurationBButton.h"
 #include "components/buttons/GameOverDurationCButton.h"
+#include "components/buttons/RetryButton.h"
+#include "components/buttons/OnlineQuitButton.h"
 #include "scene/scenes/Game.h"
 
 using namespace Minesweeper;
@@ -201,10 +203,55 @@ GameOverPanel::GameOverPanel(Game& game) :
                 ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_pressed())
 #endif // __S_RELEASE__
 
+            ),
+
+            std::make_shared<RetryButton>(
+
+                *this,
+                Button::Enabled::LEFT,
+                sf::Vector2f(295.f, 524.f),
+                sf::Vector2f(1.f, 1.f),
+#ifndef __S_RELEASE__
+                ResourceLoader::load<sf::Texture>("assets/textures/RetryButtonHovered.png"),
+                ResourceLoader::load<sf::Texture>("assets/textures/RetryButtonNHovered.png"),
+                ResourceLoader::load<sf::Texture>("assets/textures/RetryButtonDown.png"),
+                ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonHovered.wav"),
+                ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonPressed.wav")
+#else
+                ResourceLoader::load<sf::Texture>(get_raw_?_button_hovered()),
+                ResourceLoader::load<sf::Texture>(get_raw_?_button_n_hovered()),
+                ResourceLoader::load<sf::Texture>(get_raw_?_button_down()),
+                ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_hovered()),
+                ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_pressed())
+#endif // __S_RELEASE__
+
+            ),
+
+            std::make_shared<OnlineQuitButton>(
+
+                *this,
+                Button::Enabled::LEFT,
+                sf::Vector2f(505.f, 524.f),
+                sf::Vector2f(1.f, 1.f),
+#ifndef __S_RELEASE__
+                ResourceLoader::load<sf::Texture>("assets/textures/OnlineQuitButtonHovered.png"),
+                ResourceLoader::load<sf::Texture>("assets/textures/OnlineQuitButtonNHovered.png"),
+                ResourceLoader::load<sf::Texture>("assets/textures/OnlineQuitButtonDown.png"),
+                ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonHovered.wav"),
+                ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonPressed.wav")
+#else
+                ResourceLoader::load<sf::Texture>(get_raw_?_button_hovered()),
+                ResourceLoader::load<sf::Texture>(get_raw_?_button_n_hovered()),
+                ResourceLoader::load<sf::Texture>(get_raw_?_button_down()),
+                ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_hovered()),
+                ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_pressed())
+#endif // __S_RELEASE__
+
             )
 
         }
     ),
+    should_block_inputs(),
     timer(),
     game_ref(game)
 {
