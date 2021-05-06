@@ -84,6 +84,7 @@ namespace Minesweeper {
         friend class GameOverDurationAButton;
         friend class GameOverDurationBButton;
         friend class GameOverDurationCButton;
+        friend class RetryButton;
 
         bool is_first_click;
         bool is_your_turn;
