@@ -38,15 +38,20 @@ GameOverDurationBButton::GameOverDurationBButton(GameOverPanel& go_panel_ref_, E
 
 void GameOverDurationBButton::process_inputs()
 {
-    if(go_panel_ref.get().game_ref.get().conn_info.is_host) Button::process_inputs();
+    const bool is_host = go_panel_ref.get().game_ref.get().conn_info.is_host;
+
+    if(is_host && !go_panel_ref.get().should_block_inputs) Button::process_inputs();
 }
 
 void GameOverDurationBButton::update(float delta)
 {
-    const bool is_host = go_panel_ref.get().game_ref.get().conn_info.is_host;
+    const bool is_host             = go_panel_ref.get().game_ref.get().conn_info.is_host;
+    const bool should_block_inputs = go_panel_ref.get().should_block_inputs;
 
-    if(SceneManager::shared_data["DURATION"] == "N") sprite.setColor(sf::Color(0, is_host ? 255 : 120, 0));
-    else                                             sprite.setColor(is_host ? sf::Color::White : sf::Color(120, 120, 120));
+    const bool n_blocked = is_host && !should_block_inputs;
+
+    if(SceneManager::shared_data["DURATION"] == "N") sprite.setColor(sf::Color(0, n_blocked ? 255 : 120, 0));
+    else                                             sprite.setColor(n_blocked ? sf::Color::White : sf::Color(120, 120, 120));
 
     Button::update(delta);
 }
