@@ -63,9 +63,15 @@ void RetryButton::on_button_pressed()
 {
     go_panel_ref.get().should_block_inputs = true;
 
+    state = Button::States::NONE;
+
     sprite.setTexture(*waiting_for_opponent_tex);
 
     sprite.setColor(sf::Color(102, 255, 102));
 
-    go_panel_ref.get().game_ref.get().send(true, 'I', "a2retry");
+    ++go_panel_ref.get().game_ref.get().retry_counter;
+
+    if(go_panel_ref.get().game_ref.get().retry_counter == 2) go_panel_ref.get().game_ref.get().restart();
+
+    go_panel_ref.get().game_ref.get().send(true, 'I', "r2retry");
 }

@@ -90,6 +90,8 @@ namespace Minesweeper {
         bool is_your_turn;
         bool finished;
 
+        unsigned char retry_counter;
+
         int duration;
 
         int grid_width;
@@ -166,6 +168,8 @@ namespace Minesweeper {
         void receive_new_difficulty(const std::string& level);
 
         void receive_new_duration(const std::string& duration_str);
+
+        void receive_request_to_retry(const std::string&);
 
         GridButton& get_grid_button(const std::string& cell_pos);
 

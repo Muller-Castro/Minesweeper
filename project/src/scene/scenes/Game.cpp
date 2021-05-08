@@ -98,6 +98,7 @@
 #include "components/buttons/GameOverDurationAButton.h"
 #include "components/buttons/GameOverDurationBButton.h"
 #include "components/buttons/GameOverDurationCButton.h"
+#include "components/buttons/RetryButton.h"
 
 using namespace Minesweeper;
 
@@ -106,6 +107,7 @@ Game::Game() :
     is_first_click(true),
     is_your_turn(),
     finished(),
+    retry_counter(),
     duration(),
     grid_width(),
     grid_height(),
@@ -692,6 +694,8 @@ void Game::receive_packages()
         if((idx = received_data.find('F')) != std::string::npos) receive_turn_time_out(retrieve_data<'F'>(idx, received_data));
         if((idx = received_data.find('G')) != std::string::npos) receive_new_difficulty(retrieve_data<'G'>(idx, received_data));
         if((idx = received_data.find('H')) != std::string::npos) receive_new_duration(retrieve_data<'H'>(idx, received_data));
+        if((idx = received_data.find('I')) != std::string::npos) receive_request_to_retry(retrieve_data<'I'>(idx, received_data));
+
         //////////////////////////////////////////
 
         p.clear();
@@ -879,6 +883,15 @@ void Game::receive_new_duration(const std::string& duration_str)
     else if(duration_str == "dur2") dynamic_cast<GameOverDurationCButton&>(*panels["$G_OVER"]->get_buttons()[5]).evaluate_button();
 }
 
+void Game::receive_request_to_retry(const std::string& retry_str)
+{
+    if(retry_str != "r2retry") return;
+
+    ++retry_counter;
+
+    if(retry_counter == 2) restart();
+}
+
 GridButton& Game::get_grid_button(const std::string& cell_pos)
 {
     size_t underscore_idx = cell_pos.find('_');
@@ -910,7 +923,29 @@ void Game::restart()
 
     if(conn_info.is_online) {
 
-        is_your_turn = conn_info.is_host;
+        is_your_turn  = conn_info.is_host;
+
+        retry_counter = 0;
+
+        duration      = 0;
+
+        {
+            GameOverPanel& go_ref = dynamic_cast<GameOverPanel&>(*panels["$G_OVER"]);
+
+            go_ref.should_block_inputs = false;
+
+            go_ref.set_active(false);
+
+            RetryButton& retry_ref = dynamic_cast<RetryButton&>(*go_ref.get_buttons()[6]);
+
+            retry_ref.set_current_texture(Button::N_HOVERED);
+
+            retry_ref.sprite.setColor(sf::Color::White);
+        }
+
+        timer.restart();
+
+        flash_timer.restart();
 
         last_button_pressed = sf::Vector2i(-1, 0);
 

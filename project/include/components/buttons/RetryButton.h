@@ -49,6 +49,8 @@ namespace Minesweeper {
         void on_button_pressed() override;
 
     private:
+        friend class Game;
+
         std::reference_wrapper<GameOverPanel> go_panel_ref;
 
         std::shared_ptr<sf::Texture> waiting_for_opponent_tex;

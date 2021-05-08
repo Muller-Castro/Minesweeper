@@ -46,6 +46,7 @@ namespace Minesweeper {
         void set_active(bool b) noexcept override;
 
     private:
+        friend class Game;
         friend class GameOverBeginnerButton;
         friend class GameOverAverageButton;
         friend class GameOverExpertButton;
