@@ -889,7 +889,15 @@ void Game::receive_request_to_retry(const std::string& retry_str)
 
     ++retry_counter;
 
-    if(retry_counter == 2) restart();
+    if(retry_counter == 2) {
+
+        SceneManager::call_deferred([&]() {
+
+            restart();
+
+        });
+
+    }
 }
 
 GridButton& Game::get_grid_button(const std::string& cell_pos)

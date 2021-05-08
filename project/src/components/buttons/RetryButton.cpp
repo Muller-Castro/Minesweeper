@@ -71,7 +71,15 @@ void RetryButton::on_button_pressed()
 
     ++go_panel_ref.get().game_ref.get().retry_counter;
 
-    if(go_panel_ref.get().game_ref.get().retry_counter == 2) go_panel_ref.get().game_ref.get().restart();
+    if(go_panel_ref.get().game_ref.get().retry_counter == 2) {
+
+        SceneManager::call_deferred([&]() {
+
+            go_panel_ref.get().game_ref.get().restart();
+
+        });
+
+    }
 
     go_panel_ref.get().game_ref.get().send(true, 'I', "r2retry");
 }
