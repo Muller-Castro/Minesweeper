@@ -477,6 +477,9 @@ void Game::update(float delta)
 
                 grid_button->animations.update(delta);
 
+                if(grid_button->disabled) grid_button->sprite.setColor(grid_button->pressed_color);
+                else                      grid_button->sprite.setColor(sf::Color::White);
+
             }
 
         }
