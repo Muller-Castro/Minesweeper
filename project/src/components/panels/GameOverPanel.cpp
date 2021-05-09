@@ -27,6 +27,7 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 
 #ifdef __S_RELEASE__
+#include "assets/Arial.h"
 #include "assets/GameOverPanelBG.h"
 #include "assets/BeginnerButtonNHovered.h"
 #include "assets/BeginnerButtonHovered.h"
@@ -215,7 +216,7 @@ GameOverPanel::GameOverPanel(Game& game) :
 
                 *this,
                 Button::Enabled::LEFT,
-                sf::Vector2f(295.f, 524.f),
+                sf::Vector2f(296.f, 524.f),
                 sf::Vector2f(1.f, 1.f),
 #ifndef __S_RELEASE__
                 ResourceLoader::load<sf::Texture>("assets/textures/RetryButtonHovered.png"),
@@ -237,7 +238,7 @@ GameOverPanel::GameOverPanel(Game& game) :
 
                 *this,
                 Button::Enabled::LEFT,
-                sf::Vector2f(505.f, 524.f),
+                sf::Vector2f(502.f, 524.f),
                 sf::Vector2f(1.f, 1.f),
 #ifndef __S_RELEASE__
                 ResourceLoader::load<sf::Texture>("assets/textures/OnlineQuitButtonHovered.png"),
@@ -259,9 +260,23 @@ GameOverPanel::GameOverPanel(Game& game) :
     ),
     should_block_inputs(),
     timer(),
-    game_ref(game)
+    game_ref(game),
+#ifdef __S_RELEASE__
+    calculations_font_data(get_raw_arial()),
+#endif // __S_RELEASE__
+    calculations_font(),
+    calculations_text()
 {
-    //
+#ifndef __S_RELEASE__
+    calculations_font = ResourceLoader::load<sf::Font>("assets/fonts/Arial.ttf");
+#else
+    calculations_font = ResourceLoader::load<sf::Font>(calculations_font_data);
+#endif // __S_RELEASE__
+
+    calculations_text.setFont(*calculations_font);
+    calculations_text.setCharacterSize(20);
+    calculations_text.setOutlineThickness(3);
+    calculations_text.setOutlineColor(sf::Color::Black);
 }
 
 void GameOverPanel::process_inputs()
@@ -298,6 +313,8 @@ void GameOverPanel::draw()
 
         MinesweeperGame::window->draw(background_sprite);
 
+        draw_calculations();
+
         for(auto& button : buttons) MinesweeperGame::window->draw(*button);
 
     }
@@ -308,4 +325,102 @@ void GameOverPanel::set_active(bool b) noexcept
     is_active = b;
 
     timer.restart();
+}
+
+void GameOverPanel::draw_calculations()
+{
+    // FLAGGED BOMBS
+    {
+        calculations_text.setFillColor(sf::Color(119, 255, 0));
+
+        // P1
+        calculations_text.setPosition(sf::Vector2f(423.f, 122.f));
+        calculations_text.setString("+100");
+
+        MinesweeperGame::window->draw(calculations_text);
+        // P1
+
+        // P2
+        calculations_text.setPosition(sf::Vector2f(541.f, 122.f));
+        calculations_text.setString("+100");
+
+        MinesweeperGame::window->draw(calculations_text);
+        // P2
+    }
+
+    // LAST SQUARE
+    {
+        calculations_text.setFillColor(sf::Color(119, 255, 0));
+
+        // P1
+        calculations_text.setPosition(sf::Vector2f(423.f, 171.f));
+        calculations_text.setString("+100");
+
+        MinesweeperGame::window->draw(calculations_text);
+        // P1
+
+        // P2
+        calculations_text.setPosition(sf::Vector2f(541.f, 171.f));
+        calculations_text.setString("+100");
+
+        MinesweeperGame::window->draw(calculations_text);
+        // P2
+    }
+
+    // MISSED FLAGS
+    {
+        calculations_text.setFillColor(sf::Color(255, 149, 0));
+
+        // P1
+        calculations_text.setPosition(sf::Vector2f(427.f, 221.f));
+        calculations_text.setString("-100");
+
+        MinesweeperGame::window->draw(calculations_text);
+        // P1
+
+        // P2
+        calculations_text.setPosition(sf::Vector2f(545.f, 221.f));
+        calculations_text.setString("-100");
+
+        MinesweeperGame::window->draw(calculations_text);
+        // P2
+    }
+
+    // EXPLODED
+    {
+        calculations_text.setFillColor(sf::Color(255, 149, 0));
+
+        // P1
+        calculations_text.setPosition(sf::Vector2f(427.f, 271.f));
+        calculations_text.setString("-100");
+
+        MinesweeperGame::window->draw(calculations_text);
+        // P1
+
+        // P2
+        calculations_text.setPosition(sf::Vector2f(545.f, 271.f));
+        calculations_text.setString("-100");
+
+        MinesweeperGame::window->draw(calculations_text);
+        // P2
+    }
+
+    // TOTAL
+    {
+        calculations_text.setFillColor(sf::Color(123, 0, 255));
+
+        // P1
+        calculations_text.setPosition(sf::Vector2f(433.f, 321.f));
+        calculations_text.setString("999");
+
+        MinesweeperGame::window->draw(calculations_text);
+        // P1
+
+        // P2
+        calculations_text.setPosition(sf::Vector2f(551.f, 321.f));
+        calculations_text.setString("999");
+
+        MinesweeperGame::window->draw(calculations_text);
+        // P2
+    }
 }

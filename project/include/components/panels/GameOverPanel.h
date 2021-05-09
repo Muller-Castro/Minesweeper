@@ -27,6 +27,8 @@
 #include <functional>
 
 #include <SFML/System/Clock.hpp>
+#include <SFML/Graphics/Font.hpp>
+#include <SFML/Graphics/Text.hpp>
 
 #include "components/Panel.h"
 
@@ -61,6 +63,16 @@ namespace Minesweeper {
         sf::Clock timer;
 
         std::reference_wrapper<Game> game_ref;
+
+#ifdef __S_RELEASE__
+        std::pair<std::string, std::string> calculations_font_data;
+#endif // __S_RELEASE__
+
+        std::shared_ptr<sf::Font> calculations_font;
+
+        sf::Text calculations_text;
+
+        void draw_calculations();
     };
 
 }
