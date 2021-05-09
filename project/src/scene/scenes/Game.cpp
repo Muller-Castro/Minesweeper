@@ -115,6 +115,7 @@ Game::Game() :
     flag_counter(),
     conn_info(),
     score(std::make_pair(0, 0)),
+    score_parameters(),
     panels(),
 #ifdef __S_RELEASE__
     peer_info_font_data(conn_info.is_online ? get_raw_arial() : decltype(peer_info_font_data){}),
@@ -570,14 +571,36 @@ void Game::update(float delta)
                 if(conn_info.is_host) {
 
                     // The player who made the last move has already passed the turn at this point, so look at the flipped turn
-                    if(!is_your_turn) player = "P1";
-                    else              player = "P2";
+                    if(!is_your_turn) {
+
+                        player = "P1";
+
+                        score_parameters.first.add_l_s_value();
+
+                        send(true, 'J', "ls");
+
+                    }else {
+
+                        player = "P2";
+
+                    }
 
                 }else {
 
                     // The player who made the last move has already passed the turn at this point, so look at the flipped turn
-                    if(!is_your_turn) player = "P2";
-                    else              player = "P1";
+                    if(!is_your_turn) {
+
+                        player = "P2";
+
+                        score_parameters.second.add_l_s_value();
+
+                        send(true, 'J', "ls");
+
+                    }else {
+
+                        player = "P1";
+
+                    }
 
                 }
 
@@ -595,7 +618,14 @@ void Game::update(float delta)
 
         finished = true;
 
-        if(conn_info.is_online) panels["$G_OVER"]->set_active(true);
+        if(conn_info.is_online) {
+
+            score_parameters.first.calculate();
+            score_parameters.second.calculate();
+
+            panels["$G_OVER"]->set_active(true);
+
+        }
 
         flash_timer.restart();
 
@@ -695,7 +725,7 @@ void Game::receive_packages()
         if((idx = received_data.find('G')) != std::string::npos) receive_new_difficulty(retrieve_data<'G'>(idx, received_data));
         if((idx = received_data.find('H')) != std::string::npos) receive_new_duration(retrieve_data<'H'>(idx, received_data));
         if((idx = received_data.find('I')) != std::string::npos) receive_request_to_retry(retrieve_data<'I'>(idx, received_data));
-
+        if((idx = received_data.find('J')) != std::string::npos) receive_score_parameter(retrieve_data<'J'>(idx, received_data));
         //////////////////////////////////////////
 
         p.clear();
@@ -900,6 +930,25 @@ void Game::receive_request_to_retry(const std::string& retry_str)
     }
 }
 
+void Game::receive_score_parameter(const std::string& score_parameter)
+{
+    if(conn_info.is_host) {
+
+        if     (score_parameter == "fb") score_parameters.second.add_f_b_value();
+        else if(score_parameter == "ls") score_parameters.second.add_l_s_value();
+        else if(score_parameter == "mf") score_parameters.second.sub_m_f_value();
+        else if(score_parameter == "e")  score_parameters.second.sub_e_value();
+
+    }else {
+
+        if     (score_parameter == "fb") score_parameters.first.add_f_b_value();
+        else if(score_parameter == "ls") score_parameters.first.add_l_s_value();
+        else if(score_parameter == "mf") score_parameters.first.sub_m_f_value();
+        else if(score_parameter == "e")  score_parameters.first.sub_e_value();
+
+    }
+}
+
 GridButton& Game::get_grid_button(const std::string& cell_pos)
 {
     size_t underscore_idx = cell_pos.find('_');
@@ -936,6 +985,9 @@ void Game::restart()
         retry_counter = 0;
 
         duration      = 0;
+
+        score_parameters.first.reset();
+        score_parameters.second.reset();
 
         {
             GameOverPanel& go_ref = dynamic_cast<GameOverPanel&>(*panels["$G_OVER"]);

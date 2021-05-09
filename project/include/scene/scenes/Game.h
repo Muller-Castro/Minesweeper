@@ -64,6 +64,29 @@ namespace Minesweeper {
         }
     };
 
+    struct ScoreParameters
+    {
+        static constexpr short F_B_VALUE = 20;
+        static constexpr short L_S_VALUE = 50;
+        static constexpr short M_F_VALUE = 20;
+        static constexpr short E_VALUE   = 50;
+
+        short flagged_bombs;
+        short last_square;
+        short missed_flags;
+        short exploded;
+        short total;
+
+        void add_f_b_value() noexcept { flagged_bombs += F_B_VALUE; }
+        void add_l_s_value() noexcept { last_square   += L_S_VALUE; }
+        void sub_m_f_value() noexcept { missed_flags  -= M_F_VALUE; }
+        void sub_e_value()   noexcept { exploded      -= E_VALUE;   }
+
+        short calculate()    noexcept { return (total = (flagged_bombs + last_square + missed_flags + exploded)); }
+
+        void reset()         noexcept { flagged_bombs = last_square = missed_flags = exploded = total = 0; }
+    };
+
     class Game final : public Scene, protected Network
     {
     public:
@@ -102,7 +125,9 @@ namespace Minesweeper {
 
         ConnectionInfo conn_info;
 
-        std::pair<unsigned short, unsigned short> score;
+        std::pair<short, short> score;
+
+        std::pair<ScoreParameters, ScoreParameters> score_parameters;
 
         std::map<std::string, std::unique_ptr<Panel>> panels;
 
@@ -170,6 +195,8 @@ namespace Minesweeper {
         void receive_new_duration(const std::string& duration_str);
 
         void receive_request_to_retry(const std::string&);
+
+        void receive_score_parameter(const std::string&);
 
         GridButton& get_grid_button(const std::string& cell_pos);
 

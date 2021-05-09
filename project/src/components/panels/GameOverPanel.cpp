@@ -23,6 +23,9 @@
 
 #include "components/panels/GameOverPanel.h"
 
+#include <sstream>
+#include <cmath>
+
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 
@@ -66,7 +69,6 @@
 #include "components/buttons/GameOverDurationCButton.h"
 #include "components/buttons/RetryButton.h"
 #include "components/buttons/OnlineQuitButton.h"
-#include "scene/scenes/Game.h"
 
 using namespace Minesweeper;
 
@@ -261,6 +263,7 @@ GameOverPanel::GameOverPanel(Game& game) :
     should_block_inputs(),
     timer(),
     game_ref(game),
+    s_parameters_buff(),
 #ifdef __S_RELEASE__
     calculations_font_data(get_raw_arial()),
 #endif // __S_RELEASE__
@@ -329,20 +332,28 @@ void GameOverPanel::set_active(bool b) noexcept
 
 void GameOverPanel::draw_calculations()
 {
+    std::ostringstream oss;
+
     // FLAGGED BOMBS
     {
         calculations_text.setFillColor(sf::Color(119, 255, 0));
 
         // P1
-        calculations_text.setPosition(sf::Vector2f(423.f, 122.f));
-        calculations_text.setString("+100");
+        oss << '+' << game_ref.get().score_parameters.first.flagged_bombs;
+        calculations_text.setString(oss.str());
+        oss.str("");
+
+        calculations_text.setPosition(sf::Vector2f(std::round(449.f - calculations_text.getLocalBounds().width / 2.f), 122.f));
 
         MinesweeperGame::window->draw(calculations_text);
         // P1
 
         // P2
-        calculations_text.setPosition(sf::Vector2f(541.f, 122.f));
-        calculations_text.setString("+100");
+        oss << '+' << game_ref.get().score_parameters.second.flagged_bombs;
+        calculations_text.setString(oss.str());
+        oss.str("");
+
+        calculations_text.setPosition(sf::Vector2f(std::round(567.f - calculations_text.getLocalBounds().width / 2.f), 122.f));
 
         MinesweeperGame::window->draw(calculations_text);
         // P2
@@ -353,15 +364,21 @@ void GameOverPanel::draw_calculations()
         calculations_text.setFillColor(sf::Color(119, 255, 0));
 
         // P1
-        calculations_text.setPosition(sf::Vector2f(423.f, 171.f));
-        calculations_text.setString("+100");
+        oss << '+' << game_ref.get().score_parameters.first.last_square;
+        calculations_text.setString(oss.str());
+        oss.str("");
+
+        calculations_text.setPosition(sf::Vector2f(std::round(449.f - calculations_text.getLocalBounds().width / 2.f), 171.f));
 
         MinesweeperGame::window->draw(calculations_text);
         // P1
 
         // P2
-        calculations_text.setPosition(sf::Vector2f(541.f, 171.f));
-        calculations_text.setString("+100");
+        oss << '+' << game_ref.get().score_parameters.second.last_square;
+        calculations_text.setString(oss.str());
+        oss.str("");
+
+        calculations_text.setPosition(sf::Vector2f(std::round(567.f - calculations_text.getLocalBounds().width / 2.f), 171.f));
 
         MinesweeperGame::window->draw(calculations_text);
         // P2
@@ -372,15 +389,21 @@ void GameOverPanel::draw_calculations()
         calculations_text.setFillColor(sf::Color(255, 149, 0));
 
         // P1
-        calculations_text.setPosition(sf::Vector2f(427.f, 221.f));
-        calculations_text.setString("-100");
+        oss << (game_ref.get().score_parameters.first.missed_flags == 0 ? "-" : "") << game_ref.get().score_parameters.first.missed_flags;
+        calculations_text.setString(oss.str());
+        oss.str("");
+
+        calculations_text.setPosition(sf::Vector2f(std::round(451.f - calculations_text.getLocalBounds().width / 2.f), 221.f));
 
         MinesweeperGame::window->draw(calculations_text);
         // P1
 
         // P2
-        calculations_text.setPosition(sf::Vector2f(545.f, 221.f));
-        calculations_text.setString("-100");
+        oss << (game_ref.get().score_parameters.second.missed_flags == 0 ? "-" : "") << game_ref.get().score_parameters.second.missed_flags;
+        calculations_text.setString(oss.str());
+        oss.str("");
+
+        calculations_text.setPosition(sf::Vector2f(std::round(569.f - calculations_text.getLocalBounds().width / 2.f), 221.f));
 
         MinesweeperGame::window->draw(calculations_text);
         // P2
@@ -391,15 +414,21 @@ void GameOverPanel::draw_calculations()
         calculations_text.setFillColor(sf::Color(255, 149, 0));
 
         // P1
-        calculations_text.setPosition(sf::Vector2f(427.f, 271.f));
-        calculations_text.setString("-100");
+        oss << (game_ref.get().score_parameters.first.exploded == 0 ? "-" : "") << game_ref.get().score_parameters.first.exploded;
+        calculations_text.setString(oss.str());
+        oss.str("");
+
+        calculations_text.setPosition(sf::Vector2f(std::round(451.f - calculations_text.getLocalBounds().width / 2.f), 271.f));
 
         MinesweeperGame::window->draw(calculations_text);
         // P1
 
         // P2
-        calculations_text.setPosition(sf::Vector2f(545.f, 271.f));
-        calculations_text.setString("-100");
+        oss << (game_ref.get().score_parameters.second.exploded == 0 ? "-" : "") << game_ref.get().score_parameters.second.exploded;
+        calculations_text.setString(oss.str());
+        oss.str("");
+
+        calculations_text.setPosition(sf::Vector2f(std::round(569.f - calculations_text.getLocalBounds().width / 2.f), 271.f));
 
         MinesweeperGame::window->draw(calculations_text);
         // P2
@@ -410,15 +439,21 @@ void GameOverPanel::draw_calculations()
         calculations_text.setFillColor(sf::Color(123, 0, 255));
 
         // P1
-        calculations_text.setPosition(sf::Vector2f(433.f, 321.f));
-        calculations_text.setString("999");
+        oss << game_ref.get().score_parameters.first.total;
+        calculations_text.setString(oss.str());
+        oss.str("");
+
+        calculations_text.setPosition(sf::Vector2f(std::round(451.f - calculations_text.getLocalBounds().width / 2.f), 321.f));
 
         MinesweeperGame::window->draw(calculations_text);
         // P1
 
         // P2
-        calculations_text.setPosition(sf::Vector2f(551.f, 321.f));
-        calculations_text.setString("999");
+        oss << game_ref.get().score_parameters.second.total;
+        calculations_text.setString(oss.str());
+        oss.str("");
+
+        calculations_text.setPosition(sf::Vector2f(std::round(569.f - calculations_text.getLocalBounds().width / 2.f), 321.f));
 
         MinesweeperGame::window->draw(calculations_text);
         // P2

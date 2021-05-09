@@ -292,25 +292,50 @@ void GridButton::evaluate_button()
 
         if(game_ref.get().conn_info.is_online) {
 
-            game_ref.get().panels["$G_OVER"]->set_active(true);
-
             game_ref.get().tip_text.setPosition(sf::Vector2f(300.f, 0.f)); // y position deferred to the drawing step
 
             std::string player;
 
             if(game_ref.get().conn_info.is_host) {
 
-                if(game_ref.get().is_your_turn) player = "P1";
-                else                            player = "P2";
+                if(game_ref.get().is_your_turn) {
+
+                    player = "P1";
+
+                    game_ref.get().score_parameters.first.sub_e_value();
+
+                    game_ref.get().send(true, 'J', "e");
+
+                }else {
+
+                    player = "P2";
+
+                }
 
             }else {
 
-                if(game_ref.get().is_your_turn) player = "P2";
-                else                            player = "P1";
+                if(game_ref.get().is_your_turn) {
+
+                    player = "P2";
+
+                    game_ref.get().score_parameters.second.sub_e_value();
+
+                    game_ref.get().send(true, 'J', "e");
+
+                }else {
+
+                    player = "P1";
+
+                }
 
             }
 
             game_ref.get().tip_text.setString(player + " stepped on the bomb!");
+
+            game_ref.get().score_parameters.first.calculate();
+            game_ref.get().score_parameters.second.calculate();
+
+            game_ref.get().panels["$G_OVER"]->set_active(true);
 
         }
 
@@ -426,11 +451,50 @@ void GridButton::check_flag_input()
 
             }
 
-            game_ref.get().is_your_turn = false;
-
             game_ref.get().last_button_pressed = cell_position;
 
             set_flag(!flagged, game_ref.get().conn_info.is_host);
+
+            if(flagged && game_ref.get().is_your_turn) {
+
+                if(game_ref.get().conn_info.is_host) {
+
+                    if(type == GridButton::Types::BOMB) {
+
+                        game_ref.get().score_parameters.first.add_f_b_value();
+
+                        game_ref.get().send(true, 'J', "fb");
+
+                    }else {
+
+                        game_ref.get().score_parameters.first.sub_m_f_value();
+
+                        game_ref.get().send(true, 'J', "mf");
+
+                    }
+
+                }else {
+
+                    if(type == GridButton::Types::BOMB) {
+
+                        game_ref.get().score_parameters.second.add_f_b_value();
+
+                        game_ref.get().send(true, 'J', "fb");
+
+                    }else {
+
+                        game_ref.get().score_parameters.second.sub_m_f_value();
+
+                        game_ref.get().send(true, 'J', "mf");
+
+                    }
+
+                }
+
+
+            }
+
+            game_ref.get().is_your_turn = false;
 
             game_ref.get().send(true, 'C', std::to_string(cell_position.y) + "_" + std::to_string(cell_position.x));
 

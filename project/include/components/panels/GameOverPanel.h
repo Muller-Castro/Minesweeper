@@ -31,10 +31,9 @@
 #include <SFML/Graphics/Text.hpp>
 
 #include "components/Panel.h"
+#include "scene/scenes/Game.h"
 
 namespace Minesweeper {
-
-    class Game;
 
     class GameOverPanel final : public Panel
     {
@@ -63,6 +62,8 @@ namespace Minesweeper {
         sf::Clock timer;
 
         std::reference_wrapper<Game> game_ref;
+
+        std::pair<ScoreParameters, ScoreParameters> s_parameters_buff;
 
 #ifdef __S_RELEASE__
         std::pair<std::string, std::string> calculations_font_data;
