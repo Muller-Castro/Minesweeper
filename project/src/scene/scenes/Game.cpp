@@ -496,7 +496,7 @@ void Game::update(float delta)
 
         GridButton& last_button_pressed_ref = *grid[last_button_pressed.y][last_button_pressed.x];
 
-        if(!((last_button_pressed_ref.disabled) && (last_button_pressed_ref.type == GridButton::Types::BOMB))) last_button_pressed_ref.sprite.setColor(sf::Color(9, 255, 15));
+        if(!(last_button_pressed_ref.disabled && (last_button_pressed_ref.type == GridButton::Types::BOMB))) last_button_pressed_ref.sprite.setColor(sf::Color(9, 255, 15));
 
     }
 
