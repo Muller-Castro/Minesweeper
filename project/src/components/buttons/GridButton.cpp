@@ -279,10 +279,7 @@ void GridButton::evaluate_button()
 
         }
 
-        game_ref.get().sound.stop();
-        game_ref.get().sound.setBuffer(*game_ref.get().oooh_sound);
-        game_ref.get().sound.setVolume(100.f);
-        game_ref.get().sound.play();
+        if(!game_ref.get().conn_info.is_online) game_ref.get().play_sound(game_ref.get().oooh_sound);
 
         if(game_ref.get().emoji) game_ref.get().emoji->set_face(Emoji::BANDAGE);
 
