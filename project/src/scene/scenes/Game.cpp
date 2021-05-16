@@ -940,6 +940,10 @@ void Game::receive_request_to_retry(const std::string& retry_str)
         });
 
     }
+
+    play_sound(mm_btn_pressed_sfx);
+
+    dynamic_cast<RetryButton&>(*panels["$G_OVER"]->get_buttons()[6]).sprite.setColor(sf::Color(153, 255, 153));
 }
 
 void Game::receive_score_parameter(const std::string& score_parameter)
