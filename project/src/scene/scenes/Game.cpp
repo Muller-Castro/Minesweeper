@@ -136,6 +136,7 @@ Game::Game() :
     your_turn_sound(),
     turn_time_out_sound(),
     online_game_finished_sound(),
+    mm_btn_pressed_sfx(),
     peer_info_font(),
     counter_description_font(),
     counter_font(),
@@ -175,6 +176,8 @@ Game::Game() :
         turn_time_out_sound        = ResourceLoader::load<sf::SoundBuffer>("assets/sounds/TurnTimeOut.wav");
 
         online_game_finished_sound = ResourceLoader::load<sf::SoundBuffer>("assets/sounds/OnlineGameFinished.wav");
+
+        mm_btn_pressed_sfx         = ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonPressed.wav");
 
         peer_info_font             = ResourceLoader::load<sf::Font>("assets/fonts/Arial.ttf");
 
@@ -234,6 +237,8 @@ Game::Game() :
         turn_time_out_sound        = ResourceLoader::load<sf::SoundBuffer>(get_raw_turn_time_out());
 
         online_game_finished_sound = ResourceLoader::load<sf::SoundBuffer>(get_raw_online_game_finished());
+
+        mm_btn_pressed_sfx         = ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_pressed());
 
         peer_info_font             = ResourceLoader::load<sf::Font>(peer_info_font_data);
 
@@ -324,13 +329,13 @@ Game::Game() :
             ResourceLoader::load<sf::Texture>("assets/textures/RestartButtonNHovered.png"),
             ResourceLoader::load<sf::Texture>("assets/textures/RestartButtonDown.png"),
             ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonHovered.wav"),
-            ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonPressed.wav")
+            mm_btn_pressed_sfx
 #else
             ResourceLoader::load<sf::Texture>(get_raw_restart_button_hovered()),
             ResourceLoader::load<sf::Texture>(get_raw_restart_button_n_hovered()),
             ResourceLoader::load<sf::Texture>(get_raw_restart_button_down()),
             ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_hovered()),
-            ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_pressed())
+            mm_btn_pressed_sfx
 #endif // __S_RELEASE__
         ));
 
@@ -905,6 +910,8 @@ void Game::receive_new_difficulty(const std::string& level)
     if(level == "lvl0")      dynamic_cast<GameOverBeginnerButton&>(*panels["$G_OVER"]->get_buttons()[0]).evaluate_button();
     else if(level == "lvl1") dynamic_cast<GameOverAverageButton&>(*panels["$G_OVER"]->get_buttons()[1]).evaluate_button();
     else if(level == "lvl2") dynamic_cast<GameOverExpertButton&>(*panels["$G_OVER"]->get_buttons()[2]).evaluate_button();
+
+    play_sound(mm_btn_pressed_sfx);
 }
 
 void Game::receive_new_duration(const std::string& duration_str)
@@ -914,6 +921,8 @@ void Game::receive_new_duration(const std::string& duration_str)
     if(duration_str == "dur0")      dynamic_cast<GameOverDurationAButton&>(*panels["$G_OVER"]->get_buttons()[3]).evaluate_button();
     else if(duration_str == "dur1") dynamic_cast<GameOverDurationBButton&>(*panels["$G_OVER"]->get_buttons()[4]).evaluate_button();
     else if(duration_str == "dur2") dynamic_cast<GameOverDurationCButton&>(*panels["$G_OVER"]->get_buttons()[5]).evaluate_button();
+
+    play_sound(mm_btn_pressed_sfx);
 }
 
 void Game::receive_request_to_retry(const std::string& retry_str)

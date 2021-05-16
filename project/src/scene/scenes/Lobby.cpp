@@ -173,7 +173,9 @@ Lobby::Lobby() :
     you_text(),
     background_shader(),
     sound(),
+    btns_sound(),
     client_arrived_s_buffer(),
+    mm_btn_pressed_sfx(),
     soundtrack(),
     listener()
 {
@@ -195,6 +197,7 @@ Lobby::Lobby() :
     general_info_font                = ResourceLoader::load<sf::Font>("assets/fonts/Arial.ttf");
     you_font                         = ResourceLoader::load<sf::Font>("assets/fonts/INET.ttf");
     client_arrived_s_buffer          = ResourceLoader::load<sf::SoundBuffer>("assets/sounds/ClientArrived.wav");
+    mm_btn_pressed_sfx               = ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonPressed.wav");
     soundtrack                       = ResourceLoader::load<MusicStream>("assets/musics/LobbySoundtrack.ogg");
 #else
     background_texture               = ResourceLoader::load<sf::Texture>(get_raw_main_menu_bg());
@@ -206,6 +209,7 @@ Lobby::Lobby() :
     general_info_font                = ResourceLoader::load<sf::Font>(general_info_font_data);
     you_font                         = ResourceLoader::load<sf::Font>(you_font_data);
     client_arrived_s_buffer          = ResourceLoader::load<sf::SoundBuffer>(get_raw_client_arrived());
+    mm_btn_pressed_sfx               = ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_pressed());
     soundtrack                       = ResourceLoader::load<MusicStream>(get_raw_lobby_soundtrack());
 #endif // __S_RELEASE__
 
@@ -349,13 +353,13 @@ Lobby::Lobby() :
         ResourceLoader::load<sf::Texture>("assets/textures/ClearButtonNHovered.png"),
         ResourceLoader::load<sf::Texture>("assets/textures/ClearButtonDown.png"),
         ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonHovered.wav"),
-        ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonPressed.wav")
+        mm_btn_pressed_sfx
 #else
         ResourceLoader::load<sf::Texture>(get_raw_clear_button_hovered()),
         ResourceLoader::load<sf::Texture>(get_raw_clear_button_n_hovered()),
         ResourceLoader::load<sf::Texture>(get_raw_clear_button_down()),
         ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_hovered()),
-        ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_pressed())
+        mm_btn_pressed_sfx
 #endif // __S_RELEASE__
 
     ));
@@ -371,13 +375,13 @@ Lobby::Lobby() :
         ResourceLoader::load<sf::Texture>("assets/textures/ClearButtonNHovered.png"),
         ResourceLoader::load<sf::Texture>("assets/textures/ClearButtonDown.png"),
         ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonHovered.wav"),
-        ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonPressed.wav")
+        mm_btn_pressed_sfx
 #else
         ResourceLoader::load<sf::Texture>(get_raw_clear_button_hovered()),
         ResourceLoader::load<sf::Texture>(get_raw_clear_button_n_hovered()),
         ResourceLoader::load<sf::Texture>(get_raw_clear_button_down()),
         ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_hovered()),
-        ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_pressed())
+        mm_btn_pressed_sfx
 #endif // __S_RELEASE__
 
     ));
@@ -393,13 +397,13 @@ Lobby::Lobby() :
         ResourceLoader::load<sf::Texture>("assets/textures/ClearButtonNHovered.png"),
         ResourceLoader::load<sf::Texture>("assets/textures/ClearButtonDown.png"),
         ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonHovered.wav"),
-        ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonPressed.wav")
+        mm_btn_pressed_sfx
 #else
         ResourceLoader::load<sf::Texture>(get_raw_clear_button_hovered()),
         ResourceLoader::load<sf::Texture>(get_raw_clear_button_n_hovered()),
         ResourceLoader::load<sf::Texture>(get_raw_clear_button_down()),
         ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_hovered()),
-        ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_pressed())
+        mm_btn_pressed_sfx
 #endif // __S_RELEASE__
 
     ));
@@ -417,13 +421,13 @@ Lobby::Lobby() :
         ResourceLoader::load<sf::Texture>("assets/textures/HostButtonNHovered.png"),
         ResourceLoader::load<sf::Texture>("assets/textures/HostButtonDown.png"),
         ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonHovered.wav"),
-        ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonPressed.wav")
+        mm_btn_pressed_sfx
 #else
         ResourceLoader::load<sf::Texture>(get_raw_host_button_hovered()),
         ResourceLoader::load<sf::Texture>(get_raw_host_button_n_hovered()),
         ResourceLoader::load<sf::Texture>(get_raw_host_button_down()),
         ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_hovered()),
-        ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_pressed())
+        mm_btn_pressed_sfx
 #endif // __S_RELEASE__
 
     ));
@@ -439,13 +443,13 @@ Lobby::Lobby() :
         ResourceLoader::load<sf::Texture>("assets/textures/JoinButtonNHovered.png"),
         ResourceLoader::load<sf::Texture>("assets/textures/JoinButtonDown.png"),
         ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonHovered.wav"),
-        ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonPressed.wav")
+        mm_btn_pressed_sfx
 #else
         ResourceLoader::load<sf::Texture>(get_raw_join_button_hovered()),
         ResourceLoader::load<sf::Texture>(get_raw_join_button_n_hovered()),
         ResourceLoader::load<sf::Texture>(get_raw_join_button_down()),
         ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_hovered()),
-        ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_pressed())
+        mm_btn_pressed_sfx
 #endif // __S_RELEASE__
 
     ));
@@ -463,13 +467,13 @@ Lobby::Lobby() :
         ResourceLoader::load<sf::Texture>("assets/textures/CancelButtonNHovered.png"),
         ResourceLoader::load<sf::Texture>("assets/textures/CancelButtonDown.png"),
         ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonHovered.wav"),
-        ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonPressed.wav")
+        mm_btn_pressed_sfx
 #else
         ResourceLoader::load<sf::Texture>(get_raw_cancel_button_hovered()),
         ResourceLoader::load<sf::Texture>(get_raw_cancel_button_n_hovered()),
         ResourceLoader::load<sf::Texture>(get_raw_cancel_button_down()),
         ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_hovered()),
-        ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_pressed())
+        mm_btn_pressed_sfx
 #endif // __S_RELEASE__
 
     ));
@@ -487,13 +491,13 @@ Lobby::Lobby() :
         ResourceLoader::load<sf::Texture>("assets/textures/SmallBeginnerButtonNHovered.png"),
         ResourceLoader::load<sf::Texture>("assets/textures/SmallBeginnerButtonDown.png"),
         ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonHovered.wav"),
-        ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonPressed.wav")
+        mm_btn_pressed_sfx
 #else
         ResourceLoader::load<sf::Texture>(get_raw_small_beginner_button_hovered()),
         ResourceLoader::load<sf::Texture>(get_raw_small_beginner_button_n_hovered()),
         ResourceLoader::load<sf::Texture>(get_raw_small_beginner_button_down()),
         ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_hovered()),
-        ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_pressed())
+        mm_btn_pressed_sfx
 #endif // __S_RELEASE__
 
     ));
@@ -509,13 +513,13 @@ Lobby::Lobby() :
         ResourceLoader::load<sf::Texture>("assets/textures/SmallAverageButtonNHovered.png"),
         ResourceLoader::load<sf::Texture>("assets/textures/SmallAverageButtonDown.png"),
         ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonHovered.wav"),
-        ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonPressed.wav")
+        mm_btn_pressed_sfx
 #else
         ResourceLoader::load<sf::Texture>(get_raw_small_average_button_hovered()),
         ResourceLoader::load<sf::Texture>(get_raw_small_average_button_n_hovered()),
         ResourceLoader::load<sf::Texture>(get_raw_small_average_button_down()),
         ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_hovered()),
-        ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_pressed())
+        mm_btn_pressed_sfx
 #endif // __S_RELEASE__
 
     ));
@@ -531,13 +535,13 @@ Lobby::Lobby() :
         ResourceLoader::load<sf::Texture>("assets/textures/SmallExpertButtonNHovered.png"),
         ResourceLoader::load<sf::Texture>("assets/textures/SmallExpertButtonDown.png"),
         ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonHovered.wav"),
-        ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonPressed.wav")
+        mm_btn_pressed_sfx
 #else
         ResourceLoader::load<sf::Texture>(get_raw_small_expert_button_hovered()),
         ResourceLoader::load<sf::Texture>(get_raw_small_expert_button_n_hovered()),
         ResourceLoader::load<sf::Texture>(get_raw_small_expert_button_down()),
         ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_hovered()),
-        ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_pressed())
+        mm_btn_pressed_sfx
 #endif // __S_RELEASE__
 
     ));
@@ -553,13 +557,13 @@ Lobby::Lobby() :
         ResourceLoader::load<sf::Texture>("assets/textures/DurationAButtonNHovered.png"),
         ResourceLoader::load<sf::Texture>("assets/textures/DurationAButtonDown.png"),
         ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonHovered.wav"),
-        ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonPressed.wav")
+        mm_btn_pressed_sfx
 #else
         ResourceLoader::load<sf::Texture>(get_raw_duration_a_button_hovered()),
         ResourceLoader::load<sf::Texture>(get_raw_duration_a_button_n_hovered()),
         ResourceLoader::load<sf::Texture>(get_raw_duration_a_button_down()),
         ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_hovered()),
-        ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_pressed())
+        mm_btn_pressed_sfx
 #endif // __S_RELEASE__
 
     ));
@@ -575,13 +579,13 @@ Lobby::Lobby() :
         ResourceLoader::load<sf::Texture>("assets/textures/DurationBButtonNHovered.png"),
         ResourceLoader::load<sf::Texture>("assets/textures/DurationBButtonDown.png"),
         ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonHovered.wav"),
-        ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonPressed.wav")
+        mm_btn_pressed_sfx
 #else
         ResourceLoader::load<sf::Texture>(get_raw_duration_b_button_hovered()),
         ResourceLoader::load<sf::Texture>(get_raw_duration_b_button_n_hovered()),
         ResourceLoader::load<sf::Texture>(get_raw_duration_b_button_down()),
         ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_hovered()),
-        ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_pressed())
+        mm_btn_pressed_sfx
 #endif // __S_RELEASE__
 
     ));
@@ -597,13 +601,13 @@ Lobby::Lobby() :
         ResourceLoader::load<sf::Texture>("assets/textures/DurationCButtonNHovered.png"),
         ResourceLoader::load<sf::Texture>("assets/textures/DurationCButtonDown.png"),
         ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonHovered.wav"),
-        ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonPressed.wav")
+        mm_btn_pressed_sfx
 #else
         ResourceLoader::load<sf::Texture>(get_raw_duration_c_button_hovered()),
         ResourceLoader::load<sf::Texture>(get_raw_duration_c_button_n_hovered()),
         ResourceLoader::load<sf::Texture>(get_raw_duration_c_button_down()),
         ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_hovered()),
-        ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_pressed())
+        mm_btn_pressed_sfx
 #endif // __S_RELEASE__
 
     ));
@@ -650,13 +654,13 @@ Lobby::Lobby() :
                 ResourceLoader::load<sf::Texture>("assets/textures/AllFieldsOKButtonNHovered.png"),
                 ResourceLoader::load<sf::Texture>("assets/textures/AllFieldsOKButtonDown.png"),
                 ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonHovered.wav"),
-                ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonPressed.wav")
+                mm_btn_pressed_sfx
 #else
                 ResourceLoader::load<sf::Texture>(get_raw_all_fields_ok_button_hovered()),
                 ResourceLoader::load<sf::Texture>(get_raw_all_fields_ok_button_n_hovered()),
                 ResourceLoader::load<sf::Texture>(get_raw_all_fields_ok_button_down()),
                 ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_hovered()),
-                ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_pressed())
+                mm_btn_pressed_sfx
 #endif // __S_RELEASE__
 
             )
@@ -684,13 +688,13 @@ Lobby::Lobby() :
                 ResourceLoader::load<sf::Texture>("assets/textures/AllFieldsOKButtonNHovered.png"),
                 ResourceLoader::load<sf::Texture>("assets/textures/AllFieldsOKButtonDown.png"),
                 ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonHovered.wav"),
-                ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonPressed.wav")
+                mm_btn_pressed_sfx
 #else
                 ResourceLoader::load<sf::Texture>(get_raw_all_fields_ok_button_hovered()),
                 ResourceLoader::load<sf::Texture>(get_raw_all_fields_ok_button_n_hovered()),
                 ResourceLoader::load<sf::Texture>(get_raw_all_fields_ok_button_down()),
                 ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_hovered()),
-                ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_pressed())
+                mm_btn_pressed_sfx
 #endif // __S_RELEASE__
 
             )
@@ -718,13 +722,13 @@ Lobby::Lobby() :
                 ResourceLoader::load<sf::Texture>("assets/textures/AllFieldsOKButtonNHovered.png"),
                 ResourceLoader::load<sf::Texture>("assets/textures/AllFieldsOKButtonDown.png"),
                 ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonHovered.wav"),
-                ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonPressed.wav")
+                mm_btn_pressed_sfx
 #else
                 ResourceLoader::load<sf::Texture>(get_raw_all_fields_ok_button_hovered()),
                 ResourceLoader::load<sf::Texture>(get_raw_all_fields_ok_button_n_hovered()),
                 ResourceLoader::load<sf::Texture>(get_raw_all_fields_ok_button_down()),
                 ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_hovered()),
-                ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_pressed())
+                mm_btn_pressed_sfx
 #endif // __S_RELEASE__
 
             )
@@ -752,13 +756,13 @@ Lobby::Lobby() :
                 ResourceLoader::load<sf::Texture>("assets/textures/AllFieldsOKButtonNHovered.png"),
                 ResourceLoader::load<sf::Texture>("assets/textures/AllFieldsOKButtonDown.png"),
                 ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonHovered.wav"),
-                ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonPressed.wav")
+                mm_btn_pressed_sfx
 #else
                 ResourceLoader::load<sf::Texture>(get_raw_all_fields_ok_button_hovered()),
                 ResourceLoader::load<sf::Texture>(get_raw_all_fields_ok_button_n_hovered()),
                 ResourceLoader::load<sf::Texture>(get_raw_all_fields_ok_button_down()),
                 ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_hovered()),
-                ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_pressed())
+                mm_btn_pressed_sfx
 #endif // __S_RELEASE__
 
             )
@@ -786,13 +790,13 @@ Lobby::Lobby() :
                 ResourceLoader::load<sf::Texture>("assets/textures/AllFieldsOKButtonNHovered.png"),
                 ResourceLoader::load<sf::Texture>("assets/textures/AllFieldsOKButtonDown.png"),
                 ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonHovered.wav"),
-                ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonPressed.wav")
+                mm_btn_pressed_sfx
 #else
                 ResourceLoader::load<sf::Texture>(get_raw_all_fields_ok_button_hovered()),
                 ResourceLoader::load<sf::Texture>(get_raw_all_fields_ok_button_n_hovered()),
                 ResourceLoader::load<sf::Texture>(get_raw_all_fields_ok_button_down()),
                 ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_hovered()),
-                ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_pressed())
+                mm_btn_pressed_sfx
 #endif // __S_RELEASE__
 
             )
@@ -820,13 +824,13 @@ Lobby::Lobby() :
                 ResourceLoader::load<sf::Texture>("assets/textures/AllFieldsOKButtonNHovered.png"),
                 ResourceLoader::load<sf::Texture>("assets/textures/AllFieldsOKButtonDown.png"),
                 ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonHovered.wav"),
-                ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonPressed.wav")
+                mm_btn_pressed_sfx
 #else
                 ResourceLoader::load<sf::Texture>(get_raw_all_fields_ok_button_hovered()),
                 ResourceLoader::load<sf::Texture>(get_raw_all_fields_ok_button_n_hovered()),
                 ResourceLoader::load<sf::Texture>(get_raw_all_fields_ok_button_down()),
                 ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_hovered()),
-                ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_pressed())
+                mm_btn_pressed_sfx
 #endif // __S_RELEASE__
 
             )
@@ -1039,6 +1043,14 @@ void Lobby::receive_packages()
         p.clear();
 
     }
+}
+
+void Lobby::play_sound(const std::shared_ptr<sf::SoundBuffer>& sound_buffer, float volume)
+{
+    btns_sound.stop();
+    btns_sound.setBuffer(*sound_buffer);
+    btns_sound.setVolume(volume);
+    btns_sound.play();
 }
 
 bool Lobby::evaluate_text_edits()

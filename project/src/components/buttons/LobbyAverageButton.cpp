@@ -74,7 +74,15 @@ void LobbyAverageButton::on_button_pressed()
 
 void LobbyAverageButton::set_active(bool b)
 {
-    active = b;
+    bool past_state = active;
 
-    if(active) SceneManager::shared_data["DIFFICULTY"] = '1';
+    active          = b;
+
+    if(active) {
+
+        SceneManager::shared_data["DIFFICULTY"] = '1';
+
+        if(!past_state) lobby_ref.get().play_sound(lobby_ref.get().mm_btn_pressed_sfx);
+
+    }
 }

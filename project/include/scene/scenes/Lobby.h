@@ -139,14 +139,18 @@ namespace Minesweeper {
         std::shared_ptr<sf::Shader> background_shader;
 
         sf::Sound sound;
+        sf::Sound btns_sound;
 
         std::shared_ptr<sf::SoundBuffer> client_arrived_s_buffer;
+        std::shared_ptr<sf::SoundBuffer> mm_btn_pressed_sfx;
 
         std::shared_ptr<MusicStream> soundtrack;
 
         std::unique_ptr<sf::TcpListener> listener;
 
         void receive_packages() override;
+
+        void play_sound(const std::shared_ptr<sf::SoundBuffer>& sound_buffer, float volume = 100.f);
 
         bool evaluate_text_edits();
         bool evaluate_port();

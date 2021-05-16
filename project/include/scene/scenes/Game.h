@@ -160,6 +160,7 @@ namespace Minesweeper {
         std::shared_ptr<sf::SoundBuffer> your_turn_sound;
         std::shared_ptr<sf::SoundBuffer> turn_time_out_sound;
         std::shared_ptr<sf::SoundBuffer> online_game_finished_sound;
+        std::shared_ptr<sf::SoundBuffer> mm_btn_pressed_sfx;
 
         std::shared_ptr<sf::Font> peer_info_font;
         std::shared_ptr<sf::Font> counter_description_font;
