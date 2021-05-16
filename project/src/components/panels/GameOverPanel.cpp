@@ -74,7 +74,7 @@ using namespace Minesweeper;
 
 GameOverPanel::GameOverPanel(Game& game) :
     Panel(
-        sf::Vector2f(177.f, 49.f),
+        sf::Vector2f(177.f, -520.f),
         sf::Vector2f(1.f, 1.f),
 #ifndef __S_RELEASE__
         ResourceLoader::load<sf::Texture>("assets/textures/GameOverPanel.png"),
@@ -86,7 +86,7 @@ GameOverPanel::GameOverPanel(Game& game) :
 
                 *this,
                 Button::Enabled::LEFT,
-                sf::Vector2f(280.f, 389.f),
+                sf::Vector2f(280.f, 389.f - 569.f),
                 sf::Vector2f(.8f, .7f),
 #ifndef __S_RELEASE__
                 ResourceLoader::load<sf::Texture>("assets/textures/BeginnerButtonHovered.png"),
@@ -108,7 +108,7 @@ GameOverPanel::GameOverPanel(Game& game) :
 
                 *this,
                 Button::Enabled::LEFT,
-                sf::Vector2f(280.f, 429.f),
+                sf::Vector2f(280.f, 429.f - 569.f),
                 sf::Vector2f(.8f, .7f),
 #ifndef __S_RELEASE__
                 ResourceLoader::load<sf::Texture>("assets/textures/AverageButtonHovered.png"),
@@ -130,7 +130,7 @@ GameOverPanel::GameOverPanel(Game& game) :
 
                 *this,
                 Button::Enabled::LEFT,
-                sf::Vector2f(280.f, 469.f),
+                sf::Vector2f(280.f, 469.f - 569.f),
                 sf::Vector2f(.8f, .7f),
 #ifndef __S_RELEASE__
                 ResourceLoader::load<sf::Texture>("assets/textures/ExpertButtonHovered.png"),
@@ -152,7 +152,7 @@ GameOverPanel::GameOverPanel(Game& game) :
 
                 *this,
                 Button::Enabled::LEFT,
-                sf::Vector2f(551.f, 398.f),
+                sf::Vector2f(551.f, 398.f - 569.f),
                 sf::Vector2f(1.6f, 1.3f),
 #ifndef __S_RELEASE__
                 ResourceLoader::load<sf::Texture>("assets/textures/DurationAButtonHovered.png"),
@@ -174,7 +174,7 @@ GameOverPanel::GameOverPanel(Game& game) :
 
                 *this,
                 Button::Enabled::LEFT,
-                sf::Vector2f(551.f, 438.f),
+                sf::Vector2f(551.f, 438.f - 569.f),
                 sf::Vector2f(1.6f, 1.3f),
 #ifndef __S_RELEASE__
                 ResourceLoader::load<sf::Texture>("assets/textures/DurationBButtonHovered.png"),
@@ -196,7 +196,7 @@ GameOverPanel::GameOverPanel(Game& game) :
 
                 *this,
                 Button::Enabled::LEFT,
-                sf::Vector2f(551.f, 478.f),
+                sf::Vector2f(551.f, 478.f - 569.f),
                 sf::Vector2f(1.6f, 1.3f),
 #ifndef __S_RELEASE__
                 ResourceLoader::load<sf::Texture>("assets/textures/DurationCButtonHovered.png"),
@@ -218,7 +218,7 @@ GameOverPanel::GameOverPanel(Game& game) :
 
                 *this,
                 Button::Enabled::LEFT,
-                sf::Vector2f(296.f, 524.f),
+                sf::Vector2f(296.f, 524.f - 569.f),
                 sf::Vector2f(1.f, 1.f),
 #ifndef __S_RELEASE__
                 ResourceLoader::load<sf::Texture>("assets/textures/RetryButtonHovered.png"),
@@ -240,7 +240,7 @@ GameOverPanel::GameOverPanel(Game& game) :
 
                 *this,
                 Button::Enabled::LEFT,
-                sf::Vector2f(502.f, 524.f),
+                sf::Vector2f(502.f, 524.f - 569.f),
                 sf::Vector2f(1.f, 1.f),
 #ifndef __S_RELEASE__
                 ResourceLoader::load<sf::Texture>("assets/textures/OnlineQuitButtonHovered.png"),
@@ -261,9 +261,13 @@ GameOverPanel::GameOverPanel(Game& game) :
         }
     ),
     should_block_inputs(),
+    curr_step(Steps::WAIT),
+    curr_score_param_step(ScoreParameterStep::FLAGGED_BOMBS),
+    background_rect_alpha(),
     timer(),
     game_ref(game),
     s_parameters_buff(),
+    go_down_tween(tweeny::from(-520.f).to(49.f).during(GameOverPanel::GO_DOWN_DURATION).via(tweeny::easing::cubicOut)),
 #ifdef __S_RELEASE__
     calculations_font_data(get_raw_arial()),
 #endif // __S_RELEASE__
@@ -299,7 +303,167 @@ void GameOverPanel::process_inputs()
 
 void GameOverPanel::update(float delta)
 {
-    //
+    if(is_active) {
+
+        switch(curr_step) {
+
+            case Steps::WAIT: {
+
+                if(timer.getElapsedTime().asSeconds() > GameOverPanel::WAIT_DURATION) curr_step = Steps::FADE;
+
+            } break;
+
+            case Steps::FADE: {
+
+                background_rect_alpha += delta * GameOverPanel::FADE_SPEED;
+
+                if(static_cast<int>(background_rect_alpha) >= 200) {
+
+                    background_rect_alpha = 200.f;
+
+                    curr_step = Steps::GO_DOWN;
+
+                }
+
+            } break;
+
+            case Steps::GO_DOWN: {
+
+                float new_y = go_down_tween.step(delta);
+
+                float y_offset = 0.f;
+
+                {
+                    float curr_x = background_sprite.getPosition().x;
+
+                    y_offset = background_sprite.getPosition().y;
+
+                    background_sprite.setPosition(sf::Vector2f(curr_x, new_y));
+
+                    y_offset = background_sprite.getPosition().y - y_offset;
+                }
+
+                for(auto& button : buttons) button->position.y += y_offset;
+
+                if(go_down_tween.progress() >= 1.f) {
+
+                    curr_step = Steps::CALCULATE;
+
+                    timer.restart();
+
+                }
+
+            } break;
+
+            case Steps::CALCULATE: {
+
+                switch(curr_score_param_step) {
+
+                    case ScoreParameterStep::FLAGGED_BOMBS: {
+
+                        if(timer.getElapsedTime().asSeconds() >= GameOverPanel::CALCULATION_DELAY) {
+
+                            bool next = count_score_parameter(true, s_parameters_buff.first.flagged_bombs, game_ref.get().score_parameters.first.flagged_bombs);
+
+                            next &= count_score_parameter(true, s_parameters_buff.second.flagged_bombs, game_ref.get().score_parameters.second.flagged_bombs);
+
+                            if(next) curr_score_param_step = ScoreParameterStep::LAST_SQUARE;
+
+                        }
+
+                    } break;
+
+                    case ScoreParameterStep::LAST_SQUARE: {
+
+                        bool next = count_score_parameter(true, s_parameters_buff.first.last_square, game_ref.get().score_parameters.first.last_square);
+
+                        next &= count_score_parameter(true, s_parameters_buff.second.last_square, game_ref.get().score_parameters.second.last_square);
+
+                        if(next) curr_score_param_step = ScoreParameterStep::MISSED_FLAGS;
+
+                    } break;
+
+                    case ScoreParameterStep::MISSED_FLAGS: {
+
+                        bool next = count_score_parameter(false, s_parameters_buff.first.missed_flags, game_ref.get().score_parameters.first.missed_flags);
+
+                        next &= count_score_parameter(false, s_parameters_buff.second.missed_flags, game_ref.get().score_parameters.second.missed_flags);
+
+                        if(next) curr_score_param_step = ScoreParameterStep::EXPLODED;
+
+                    } break;
+
+                    case ScoreParameterStep::EXPLODED: {
+
+                        bool next = count_score_parameter(false, s_parameters_buff.first.exploded, game_ref.get().score_parameters.first.exploded);
+
+                        next &= count_score_parameter(false, s_parameters_buff.second.exploded, game_ref.get().score_parameters.second.exploded);
+
+                        if(next) curr_score_param_step = ScoreParameterStep::TOTAL;
+
+                    } break;
+
+                    case ScoreParameterStep::TOTAL: {
+
+                        bool next = count_score_parameter(true, s_parameters_buff.first.total, game_ref.get().score_parameters.first.total);
+
+                        next &= count_score_parameter(true, s_parameters_buff.second.total, game_ref.get().score_parameters.second.total);
+
+                        if(next) {
+
+                            curr_step = Steps::PLAY_RESULTS_SFX;
+
+                            timer.restart();
+
+                        }
+
+                    } break;
+
+                    default: break;
+
+                }
+
+            } break;
+
+            case Steps::PLAY_RESULTS_SFX: {
+
+                if(timer.getElapsedTime().asSeconds() >= GameOverPanel::WINNER_DELAY) {
+
+                    const std::shared_ptr<sf::SoundBuffer>* sfx = nullptr;
+
+                    if(game_ref.get().conn_info.is_host) {
+
+                        if     (s_parameters_buff.first.total > s_parameters_buff.second.total) sfx = &game_ref.get().clapping_sound;
+                        else if(s_parameters_buff.first.total < s_parameters_buff.second.total) sfx = &game_ref.get().oooh_sound;
+
+                    }else {
+
+                        if     (s_parameters_buff.second.total > s_parameters_buff.first.total) sfx = &game_ref.get().clapping_sound;
+                        else if(s_parameters_buff.second.total < s_parameters_buff.first.total) sfx = &game_ref.get().oooh_sound;
+
+                    }
+
+                    if(sfx) game_ref.get().play_sound(*sfx);
+
+                    curr_step = Steps::SHOW_WINNER;
+
+                    timer.restart();
+
+                }
+
+            } break;
+
+            case Steps::SHOW_WINNER: {
+
+                //
+
+            } break;
+
+            default: break;
+
+        }
+
+    }
 
     Panel::update(delta);
 }
@@ -310,13 +474,30 @@ void GameOverPanel::draw()
 
         sf::RectangleShape shape(sf::Vector2f(800.f, 600.f));
 
-        shape.setFillColor(sf::Color(0, 0, 0, 200));
+        shape.setFillColor(sf::Color(0, 0, 0, static_cast<unsigned char>(background_rect_alpha)));
 
         MinesweeperGame::window->draw(shape);
 
         MinesweeperGame::window->draw(background_sprite);
 
         draw_calculations();
+
+        if((curr_step == Steps::SHOW_WINNER) && (s_parameters_buff.first.total != s_parameters_buff.second.total)) {
+
+            sf::RectangleShape winner_rect(sf::Vector2f(97.f, 296.f));
+
+            winner_rect.setFillColor(sf::Color(0, 0, 0, 0));
+
+            winner_rect.setOutlineColor(sf::Color::Black);
+
+            winner_rect.setOutlineThickness(5.f);
+
+            if     (s_parameters_buff.first.total  > s_parameters_buff.second.total) winner_rect.setPosition(sf::Vector2f(401.f, 58.f));
+            else if(s_parameters_buff.second.total > s_parameters_buff.first.total)  winner_rect.setPosition(sf::Vector2f(517.f, 58.f));
+
+            MinesweeperGame::window->draw(winner_rect);
+
+        }
 
         for(auto& button : buttons) MinesweeperGame::window->draw(*button);
 
@@ -326,6 +507,34 @@ void GameOverPanel::draw()
 void GameOverPanel::set_active(bool b) noexcept
 {
     is_active = b;
+
+    if(!is_active) {
+
+        should_block_inputs = false;
+
+        curr_step           = Steps::WAIT;
+
+        background_sprite.setPosition(background_sprite.getPosition().x, -520.f);
+
+        buttons[0]->set_sprite_position({buttons[0]->position.x, 389.f - 569.f});
+        buttons[1]->set_sprite_position({buttons[1]->position.x, 429.f - 569.f});
+        buttons[2]->set_sprite_position({buttons[2]->position.x, 469.f - 569.f});
+        buttons[3]->set_sprite_position({buttons[3]->position.x, 398.f - 569.f});
+        buttons[4]->set_sprite_position({buttons[4]->position.x, 438.f - 569.f});
+        buttons[5]->set_sprite_position({buttons[5]->position.x, 478.f - 569.f});
+        buttons[6]->set_sprite_position({buttons[6]->position.x, 524.f - 569.f});
+        buttons[7]->set_sprite_position({buttons[7]->position.x, 524.f - 569.f});
+
+        background_rect_alpha = 0.f;
+
+        go_down_tween.seek(0.f);
+
+        curr_score_param_step = ScoreParameterStep::FLAGGED_BOMBS;
+
+        s_parameters_buff.first.reset();
+        s_parameters_buff.second.reset();
+
+    }
 
     timer.restart();
 }
@@ -339,21 +548,21 @@ void GameOverPanel::draw_calculations()
         calculations_text.setFillColor(sf::Color(119, 255, 0));
 
         // P1
-        oss << '+' << game_ref.get().score_parameters.first.flagged_bombs;
+        oss << '+' << s_parameters_buff.first.flagged_bombs;
         calculations_text.setString(oss.str());
         oss.str("");
 
-        calculations_text.setPosition(sf::Vector2f(std::round(449.f - calculations_text.getLocalBounds().width / 2.f), 122.f));
+        calculations_text.setPosition(sf::Vector2f(std::round(449.f - calculations_text.getLocalBounds().width / 2.f), (122.f + (background_sprite.getPosition().y - 49.f))));
 
         MinesweeperGame::window->draw(calculations_text);
         // P1
 
         // P2
-        oss << '+' << game_ref.get().score_parameters.second.flagged_bombs;
+        oss << '+' << s_parameters_buff.second.flagged_bombs;
         calculations_text.setString(oss.str());
         oss.str("");
 
-        calculations_text.setPosition(sf::Vector2f(std::round(567.f - calculations_text.getLocalBounds().width / 2.f), 122.f));
+        calculations_text.setPosition(sf::Vector2f(std::round(567.f - calculations_text.getLocalBounds().width / 2.f), (122.f + (background_sprite.getPosition().y - 49.f))));
 
         MinesweeperGame::window->draw(calculations_text);
         // P2
@@ -364,21 +573,21 @@ void GameOverPanel::draw_calculations()
         calculations_text.setFillColor(sf::Color(119, 255, 0));
 
         // P1
-        oss << '+' << game_ref.get().score_parameters.first.last_square;
+        oss << '+' << s_parameters_buff.first.last_square;
         calculations_text.setString(oss.str());
         oss.str("");
 
-        calculations_text.setPosition(sf::Vector2f(std::round(449.f - calculations_text.getLocalBounds().width / 2.f), 171.f));
+        calculations_text.setPosition(sf::Vector2f(std::round(449.f - calculations_text.getLocalBounds().width / 2.f), (171.f + (background_sprite.getPosition().y - 49.f))));
 
         MinesweeperGame::window->draw(calculations_text);
         // P1
 
         // P2
-        oss << '+' << game_ref.get().score_parameters.second.last_square;
+        oss << '+' << s_parameters_buff.second.last_square;
         calculations_text.setString(oss.str());
         oss.str("");
 
-        calculations_text.setPosition(sf::Vector2f(std::round(567.f - calculations_text.getLocalBounds().width / 2.f), 171.f));
+        calculations_text.setPosition(sf::Vector2f(std::round(567.f - calculations_text.getLocalBounds().width / 2.f), (171.f + (background_sprite.getPosition().y - 49.f))));
 
         MinesweeperGame::window->draw(calculations_text);
         // P2
@@ -389,21 +598,21 @@ void GameOverPanel::draw_calculations()
         calculations_text.setFillColor(sf::Color(255, 149, 0));
 
         // P1
-        oss << (game_ref.get().score_parameters.first.missed_flags == 0 ? "-" : "") << game_ref.get().score_parameters.first.missed_flags;
+        oss << (s_parameters_buff.first.missed_flags == 0 ? "-" : "") << s_parameters_buff.first.missed_flags;
         calculations_text.setString(oss.str());
         oss.str("");
 
-        calculations_text.setPosition(sf::Vector2f(std::round(451.f - calculations_text.getLocalBounds().width / 2.f), 221.f));
+        calculations_text.setPosition(sf::Vector2f(std::round(451.f - calculations_text.getLocalBounds().width / 2.f), (221.f + (background_sprite.getPosition().y - 49.f))));
 
         MinesweeperGame::window->draw(calculations_text);
         // P1
 
         // P2
-        oss << (game_ref.get().score_parameters.second.missed_flags == 0 ? "-" : "") << game_ref.get().score_parameters.second.missed_flags;
+        oss << (s_parameters_buff.second.missed_flags == 0 ? "-" : "") << s_parameters_buff.second.missed_flags;
         calculations_text.setString(oss.str());
         oss.str("");
 
-        calculations_text.setPosition(sf::Vector2f(std::round(569.f - calculations_text.getLocalBounds().width / 2.f), 221.f));
+        calculations_text.setPosition(sf::Vector2f(std::round(569.f - calculations_text.getLocalBounds().width / 2.f), (221.f + (background_sprite.getPosition().y - 49.f))));
 
         MinesweeperGame::window->draw(calculations_text);
         // P2
@@ -414,21 +623,21 @@ void GameOverPanel::draw_calculations()
         calculations_text.setFillColor(sf::Color(255, 149, 0));
 
         // P1
-        oss << (game_ref.get().score_parameters.first.exploded == 0 ? "-" : "") << game_ref.get().score_parameters.first.exploded;
+        oss << (s_parameters_buff.first.exploded == 0 ? "-" : "") << s_parameters_buff.first.exploded;
         calculations_text.setString(oss.str());
         oss.str("");
 
-        calculations_text.setPosition(sf::Vector2f(std::round(451.f - calculations_text.getLocalBounds().width / 2.f), 271.f));
+        calculations_text.setPosition(sf::Vector2f(std::round(451.f - calculations_text.getLocalBounds().width / 2.f), (271.f + (background_sprite.getPosition().y - 49.f))));
 
         MinesweeperGame::window->draw(calculations_text);
         // P1
 
         // P2
-        oss << (game_ref.get().score_parameters.second.exploded == 0 ? "-" : "") << game_ref.get().score_parameters.second.exploded;
+        oss << (s_parameters_buff.second.exploded == 0 ? "-" : "") << s_parameters_buff.second.exploded;
         calculations_text.setString(oss.str());
         oss.str("");
 
-        calculations_text.setPosition(sf::Vector2f(std::round(569.f - calculations_text.getLocalBounds().width / 2.f), 271.f));
+        calculations_text.setPosition(sf::Vector2f(std::round(569.f - calculations_text.getLocalBounds().width / 2.f), (271.f + (background_sprite.getPosition().y - 49.f))));
 
         MinesweeperGame::window->draw(calculations_text);
         // P2
@@ -439,23 +648,36 @@ void GameOverPanel::draw_calculations()
         calculations_text.setFillColor(sf::Color(123, 0, 255));
 
         // P1
-        oss << game_ref.get().score_parameters.first.total;
+        oss << s_parameters_buff.first.total;
         calculations_text.setString(oss.str());
         oss.str("");
 
-        calculations_text.setPosition(sf::Vector2f(std::round(451.f - calculations_text.getLocalBounds().width / 2.f), 321.f));
+        calculations_text.setPosition(sf::Vector2f(std::round(451.f - calculations_text.getLocalBounds().width / 2.f), (321.f + (background_sprite.getPosition().y - 49.f))));
 
         MinesweeperGame::window->draw(calculations_text);
         // P1
 
         // P2
-        oss << game_ref.get().score_parameters.second.total;
+        oss << s_parameters_buff.second.total;
         calculations_text.setString(oss.str());
         oss.str("");
 
-        calculations_text.setPosition(sf::Vector2f(std::round(569.f - calculations_text.getLocalBounds().width / 2.f), 321.f));
+        calculations_text.setPosition(sf::Vector2f(std::round(569.f - calculations_text.getLocalBounds().width / 2.f), (321.f + (background_sprite.getPosition().y - 49.f))));
 
         MinesweeperGame::window->draw(calculations_text);
         // P2
     }
+}
+
+bool GameOverPanel::count_score_parameter(bool sum, short& value_a, short value_b) noexcept
+{
+    if(value_a != value_b) {
+
+        value_a += sum ? 1 : -1;
+
+        return false;
+
+    }
+
+    return true;
 }

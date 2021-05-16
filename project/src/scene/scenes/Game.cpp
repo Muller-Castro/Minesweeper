@@ -989,13 +989,14 @@ void Game::restart()
 
         duration      = 0;
 
+        if     (score_parameters.first.total  > score_parameters.second.total) ++score.first;
+        else if(score_parameters.second.total > score_parameters.first.total)  ++score.second;
+
         score_parameters.first.reset();
         score_parameters.second.reset();
 
         {
             GameOverPanel& go_ref = dynamic_cast<GameOverPanel&>(*panels["$G_OVER"]);
-
-            go_ref.should_block_inputs = false;
 
             go_ref.set_active(false);
 

@@ -75,6 +75,13 @@ namespace Minesweeper {
         bool is_hovered() const noexcept { return current_texture == HOVERED; }
         States get_state() const noexcept { return state; }
 
+        void set_sprite_position(const sf::Vector2f& new_pos) noexcept
+        {
+            position = new_pos;
+
+            sprite.setPosition(position);
+        }
+
     protected:
         static constexpr unsigned char HOVERED   = 0;
         static constexpr unsigned char N_HOVERED = 1;

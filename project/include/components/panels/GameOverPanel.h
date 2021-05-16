@@ -25,6 +25,9 @@
 #define GAME_OVER_PANEL_H
 
 #include <functional>
+#include <chrono>
+
+#include <tweeny.h>
 
 #include <SFML/System/Clock.hpp>
 #include <SFML/Graphics/Font.hpp>
@@ -57,13 +60,46 @@ namespace Minesweeper {
         friend class RetryButton;
         friend class OnlineQuitButton;
 
+        enum class Steps : unsigned char
+        {
+            WAIT,
+            FADE,
+            GO_DOWN,
+            CALCULATE,
+            PLAY_RESULTS_SFX,
+            SHOW_WINNER
+        };
+
+        enum class ScoreParameterStep : unsigned char
+        {
+            FLAGGED_BOMBS,
+            LAST_SQUARE,
+            MISSED_FLAGS,
+            EXPLODED,
+            TOTAL
+        };
+
+        static constexpr float WAIT_DURATION     = std::chrono::seconds(5).count();
+        static constexpr float FADE_SPEED        = std::chrono::milliseconds(100).count();
+        static constexpr float GO_DOWN_DURATION  = std::chrono::milliseconds(5000).count();
+        static constexpr float CALCULATION_DELAY = std::chrono::seconds(2).count();
+        static constexpr float WINNER_DELAY      = std::chrono::seconds(2).count();
+
         bool should_block_inputs;
+
+        Steps curr_step;
+
+        ScoreParameterStep curr_score_param_step;
+
+        float background_rect_alpha;
 
         sf::Clock timer;
 
         std::reference_wrapper<Game> game_ref;
 
         std::pair<ScoreParameters, ScoreParameters> s_parameters_buff;
+
+        tweeny::tween<float> go_down_tween;
 
 #ifdef __S_RELEASE__
         std::pair<std::string, std::string> calculations_font_data;
@@ -74,6 +110,8 @@ namespace Minesweeper {
         sf::Text calculations_text;
 
         void draw_calculations();
+
+        bool count_score_parameter(bool sum, short& value_a, short value_b) noexcept;
     };
 
 }
