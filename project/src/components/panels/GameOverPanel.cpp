@@ -33,6 +33,7 @@
 #include "assets/Arial.h"
 #include "assets/WinnerRectFRG.h"
 #include "assets/Whoosh.h"
+#include "assets/EarnedScore.h"
 #include "assets/GameOverPanelBG.h"
 #include "assets/BeginnerButtonNHovered.h"
 #include "assets/BeginnerButtonHovered.h"
@@ -267,6 +268,7 @@ GameOverPanel::GameOverPanel(Game& game) :
     curr_score_param_step(ScoreParameterStep::FLAGGED_BOMBS),
     background_rect_alpha(),
     timer(),
+    earned_score_timer(),
     game_ref(game),
     s_parameters_buff(),
     go_down_tween(tweeny::from(-520.f).to(49.f).during(GameOverPanel::GO_DOWN_DURATION).via(tweeny::easing::cubicOut)),
@@ -276,6 +278,7 @@ GameOverPanel::GameOverPanel(Game& game) :
     calculations_font(),
     winner_rect_shader(),
     whoosh_sound(),
+    earned_score(),
     calculations_text()
 {
 #ifndef __S_RELEASE__
@@ -284,6 +287,8 @@ GameOverPanel::GameOverPanel(Game& game) :
     winner_rect_shader = ResourceLoader::load<sf::Shader>("assets/shaders/WinnerRect.frg");
 
     whoosh_sound       = ResourceLoader::load<sf::SoundBuffer>("assets/sounds/Whoosh.wav");
+
+    earned_score       = ResourceLoader::load<sf::SoundBuffer>("assets/sounds/EarnedScore.wav");
 #else
     calculations_font  = ResourceLoader::load<sf::Font>(calculations_font_data);
 
@@ -292,6 +297,8 @@ GameOverPanel::GameOverPanel(Game& game) :
     winner_rect_shader->loadFromMemory(get_raw_winner_rect_frg().second, sf::Shader::Fragment);
 
     whoosh_sound       = ResourceLoader::load<sf::SoundBuffer>(get_raw_whoosh());
+
+    earned_score       = ResourceLoader::load<sf::SoundBuffer>(get_raw_earned_score());
 #endif // __S_RELEASE__
 
     calculations_text.setFont(*calculations_font);
@@ -367,17 +374,21 @@ void GameOverPanel::update(float delta)
 
                     timer.restart();
 
+                    earned_score_timer.restart();
+
                 }
 
             } break;
 
             case Steps::CALCULATE: {
 
+                const bool finished_calculation_delay = timer.getElapsedTime().asSeconds() >= GameOverPanel::CALCULATION_DELAY;
+
                 switch(curr_score_param_step) {
 
                     case ScoreParameterStep::FLAGGED_BOMBS: {
 
-                        if(timer.getElapsedTime().asSeconds() >= GameOverPanel::CALCULATION_DELAY) {
+                        if(finished_calculation_delay) {
 
                             bool next = count_score_parameter(true, s_parameters_buff.first.flagged_bombs, game_ref.get().score_parameters.first.flagged_bombs);
 
@@ -436,6 +447,20 @@ void GameOverPanel::update(float delta)
                     } break;
 
                     default: break;
+
+                }
+
+                if(finished_calculation_delay) {
+
+                    auto milli = earned_score_timer.getElapsedTime().asMilliseconds();
+
+                    if(milli >= GameOverPanel::EARNED_SCORE_DELAY) {
+
+                        game_ref.get().play_sound(earned_score, 15.f);
+
+                        earned_score_timer.restart();
+
+                    }
 
                 }
 

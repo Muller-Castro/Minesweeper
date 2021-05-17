@@ -81,11 +81,12 @@ namespace Minesweeper {
             TOTAL
         };
 
-        static constexpr float WAIT_DURATION     = std::chrono::seconds(5).count();
-        static constexpr float FADE_SPEED        = std::chrono::milliseconds(100).count();
-        static constexpr float GO_DOWN_DURATION  = std::chrono::milliseconds(5000).count();
-        static constexpr float CALCULATION_DELAY = std::chrono::seconds(2).count();
-        static constexpr float WINNER_DELAY      = std::chrono::seconds(2).count();
+        static constexpr float WAIT_DURATION      = std::chrono::seconds(5).count();
+        static constexpr float FADE_SPEED         = std::chrono::milliseconds(100).count();
+        static constexpr float GO_DOWN_DURATION   = std::chrono::milliseconds(5000).count();
+        static constexpr float CALCULATION_DELAY  = std::chrono::seconds(2).count();
+        static constexpr float EARNED_SCORE_DELAY = std::chrono::milliseconds(150).count();
+        static constexpr float WINNER_DELAY       = std::chrono::seconds(2).count();
 
         bool should_block_inputs;
 
@@ -96,6 +97,8 @@ namespace Minesweeper {
         float background_rect_alpha;
 
         sf::Clock timer;
+
+        sf::Clock earned_score_timer;
 
         std::reference_wrapper<Game> game_ref;
 
@@ -112,6 +115,8 @@ namespace Minesweeper {
         std::shared_ptr<sf::Shader> winner_rect_shader;
 
         std::shared_ptr<sf::SoundBuffer> whoosh_sound;
+
+        std::shared_ptr<sf::SoundBuffer> earned_score;
 
         sf::Text calculations_text;
 
