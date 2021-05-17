@@ -485,6 +485,13 @@ void Game::update(float delta)
                 if(grid_button->disabled) grid_button->sprite.setColor(grid_button->pressed_color);
                 else                      grid_button->sprite.setColor(sf::Color::White);
 
+                if(grid_button->flagged) {
+
+                    grid_button->p1_flag_sprite.setPosition(grid_button->position);
+                    grid_button->p2_flag_sprite.setPosition(grid_button->position);
+
+                }
+
             }
 
         }
