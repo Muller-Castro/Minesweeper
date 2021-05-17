@@ -229,6 +229,9 @@
 		<Unit filename="include/assets/DurationCButtonNHovered.h">
 			<Option target="Static Release" />
 		</Unit>
+		<Unit filename="include/assets/EarnedScore.h">
+			<Option target="Static Release" />
+		</Unit>
 		<Unit filename="include/assets/EmptyCell.h">
 			<Option target="Static Release" />
 		</Unit>
@@ -529,6 +532,12 @@
 		<Unit filename="include/assets/WaitingForOpponent.h">
 			<Option target="Static Release" />
 		</Unit>
+		<Unit filename="include/assets/Whoosh.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/WinnerRectFRG.h">
+			<Option target="Static Release" />
+		</Unit>
 		<Unit filename="include/assets/WrongPasswordPanel.h">
 			<Option target="Static Release" />
 		</Unit>
@@ -729,6 +738,9 @@
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="src/assets/DurationCButtonNHovered.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/EarnedScore.cpp">
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="src/assets/EmptyCell.cpp">
@@ -1029,6 +1041,12 @@
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="src/assets/WaitingForOpponent.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/Whoosh.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/WinnerRectFRG.cpp">
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="src/assets/WrongPasswordPanel.cpp">
