@@ -167,6 +167,8 @@ Game::Game() :
 
     oooh_sound            = ResourceLoader::load<sf::SoundBuffer>("assets/sounds/Oooh.wav");
 
+    mm_btn_pressed_sfx    = ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonPressed.wav");
+
     if(conn_info.is_online) {
 
         chicken_sound              = ResourceLoader::load<sf::SoundBuffer>("assets/sounds/Chicken.wav");
@@ -176,8 +178,6 @@ Game::Game() :
         turn_time_out_sound        = ResourceLoader::load<sf::SoundBuffer>("assets/sounds/TurnTimeOut.wav");
 
         online_game_finished_sound = ResourceLoader::load<sf::SoundBuffer>("assets/sounds/OnlineGameFinished.wav");
-
-        mm_btn_pressed_sfx         = ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonPressed.wav");
 
         peer_info_font             = ResourceLoader::load<sf::Font>("assets/fonts/Arial.ttf");
 
@@ -228,6 +228,8 @@ Game::Game() :
 
     oooh_sound            = ResourceLoader::load<sf::SoundBuffer>(get_raw_oooh());
 
+    mm_btn_pressed_sfx    = ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_pressed());
+
     if(conn_info.is_online) {
 
         chicken_sound              = ResourceLoader::load<sf::SoundBuffer>(get_raw_chicken());
@@ -237,8 +239,6 @@ Game::Game() :
         turn_time_out_sound        = ResourceLoader::load<sf::SoundBuffer>(get_raw_turn_time_out());
 
         online_game_finished_sound = ResourceLoader::load<sf::SoundBuffer>(get_raw_online_game_finished());
-
-        mm_btn_pressed_sfx         = ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_pressed());
 
         peer_info_font             = ResourceLoader::load<sf::Font>(peer_info_font_data);
 
