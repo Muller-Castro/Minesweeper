@@ -31,6 +31,8 @@
 
 #ifdef __S_RELEASE__
 #include "assets/Arial.h"
+#include "assets/WinnerRectFRG.h"
+#include "assets/Whoosh.h"
 #include "assets/GameOverPanelBG.h"
 #include "assets/BeginnerButtonNHovered.h"
 #include "assets/BeginnerButtonHovered.h"
@@ -272,12 +274,24 @@ GameOverPanel::GameOverPanel(Game& game) :
     calculations_font_data(get_raw_arial()),
 #endif // __S_RELEASE__
     calculations_font(),
+    winner_rect_shader(),
+    whoosh_sound(),
     calculations_text()
 {
 #ifndef __S_RELEASE__
-    calculations_font = ResourceLoader::load<sf::Font>("assets/fonts/Arial.ttf");
+    calculations_font  = ResourceLoader::load<sf::Font>("assets/fonts/Arial.ttf");
+
+    winner_rect_shader = ResourceLoader::load<sf::Shader>("assets/shaders/WinnerRect.frg");
+
+    whoosh_sound       = ResourceLoader::load<sf::SoundBuffer>("assets/sounds/Whoosh.wav");
 #else
-    calculations_font = ResourceLoader::load<sf::Font>(calculations_font_data);
+    calculations_font  = ResourceLoader::load<sf::Font>(calculations_font_data);
+
+    winner_rect_shader = ResourceLoader::load<sf::Shader>({"WinnerRectFRG", ""});
+
+    winner_rect_shader->loadFromMemory(get_raw_winner_rect_frg().second, sf::Shader::Fragment);
+
+    whoosh_sound       = ResourceLoader::load<sf::SoundBuffer>(get_raw_whoosh());
 #endif // __S_RELEASE__
 
     calculations_text.setFont(*calculations_font);
@@ -322,6 +336,8 @@ void GameOverPanel::update(float delta)
                     background_rect_alpha = 200.f;
 
                     curr_step = Steps::GO_DOWN;
+
+                    game_ref.get().play_sound(whoosh_sound);
 
                 }
 
@@ -429,17 +445,27 @@ void GameOverPanel::update(float delta)
 
                 if(timer.getElapsedTime().asSeconds() >= GameOverPanel::WINNER_DELAY) {
 
+                    const bool tied_game = s_parameters_buff.first.total == s_parameters_buff.second.total;
+
                     const std::shared_ptr<sf::SoundBuffer>* sfx = nullptr;
 
-                    if(game_ref.get().conn_info.is_host) {
+                    if(tied_game) {
 
-                        if     (s_parameters_buff.first.total > s_parameters_buff.second.total) sfx = &game_ref.get().clapping_sound;
-                        else if(s_parameters_buff.first.total < s_parameters_buff.second.total) sfx = &game_ref.get().oooh_sound;
+                        sfx = &game_ref.get().oooh_sound;
 
                     }else {
 
-                        if     (s_parameters_buff.second.total > s_parameters_buff.first.total) sfx = &game_ref.get().clapping_sound;
-                        else if(s_parameters_buff.second.total < s_parameters_buff.first.total) sfx = &game_ref.get().oooh_sound;
+                        if(game_ref.get().conn_info.is_host) {
+
+                            if     (s_parameters_buff.first.total > s_parameters_buff.second.total) sfx = &game_ref.get().clapping_sound;
+                            else if(s_parameters_buff.first.total < s_parameters_buff.second.total) sfx = &game_ref.get().oooh_sound;
+
+                        }else {
+
+                            if     (s_parameters_buff.second.total > s_parameters_buff.first.total) sfx = &game_ref.get().clapping_sound;
+                            else if(s_parameters_buff.second.total < s_parameters_buff.first.total) sfx = &game_ref.get().oooh_sound;
+
+                        }
 
                     }
 
@@ -455,7 +481,7 @@ void GameOverPanel::update(float delta)
 
             case Steps::SHOW_WINNER: {
 
-                //
+                winner_rect_shader->setUniform("in_time", timer.getElapsedTime().asSeconds());
 
             } break;
 
@@ -482,20 +508,22 @@ void GameOverPanel::draw()
 
         draw_calculations();
 
-        if((curr_step == Steps::SHOW_WINNER) && (s_parameters_buff.first.total != s_parameters_buff.second.total)) {
+        if(curr_step == Steps::SHOW_WINNER) {
 
-            sf::RectangleShape winner_rect(sf::Vector2f(97.f, 296.f));
+            const bool tied_game = s_parameters_buff.first.total == s_parameters_buff.second.total;
+
+            sf::RectangleShape winner_rect(sf::Vector2f(tied_game ? 213.f : 97.f, 296.f));
 
             winner_rect.setFillColor(sf::Color(0, 0, 0, 0));
 
             winner_rect.setOutlineColor(sf::Color::Black);
 
-            winner_rect.setOutlineThickness(5.f);
+            winner_rect.setOutlineThickness(10.f);
 
-            if     (s_parameters_buff.first.total  > s_parameters_buff.second.total) winner_rect.setPosition(sf::Vector2f(401.f, 58.f));
-            else if(s_parameters_buff.second.total > s_parameters_buff.first.total)  winner_rect.setPosition(sf::Vector2f(517.f, 58.f));
+            if     ((s_parameters_buff.first.total > s_parameters_buff.second.total) || tied_game) winner_rect.setPosition(sf::Vector2f(401.f, 58.f));
+            else if(s_parameters_buff.second.total > s_parameters_buff.first.total)                winner_rect.setPosition(sf::Vector2f(517.f, 58.f));
 
-            MinesweeperGame::window->draw(winner_rect);
+            MinesweeperGame::window->draw(winner_rect, winner_rect_shader.get());
 
         }
 

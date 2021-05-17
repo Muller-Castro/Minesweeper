@@ -32,6 +32,8 @@
 #include <SFML/System/Clock.hpp>
 #include <SFML/Graphics/Font.hpp>
 #include <SFML/Graphics/Text.hpp>
+#include <SFML/Graphics/Shader.hpp>
+#include <SFML/Audio/SoundBuffer.hpp>
 
 #include "components/Panel.h"
 #include "scene/scenes/Game.h"
@@ -106,6 +108,10 @@ namespace Minesweeper {
 #endif // __S_RELEASE__
 
         std::shared_ptr<sf::Font> calculations_font;
+
+        std::shared_ptr<sf::Shader> winner_rect_shader;
+
+        std::shared_ptr<sf::SoundBuffer> whoosh_sound;
 
         sf::Text calculations_text;
 
