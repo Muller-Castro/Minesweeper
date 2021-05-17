@@ -82,7 +82,7 @@ namespace Minesweeper {
         void sub_m_f_value() noexcept { missed_flags  -= M_F_VALUE; }
         void sub_e_value()   noexcept { exploded      -= E_VALUE;   }
 
-        void calculate()    noexcept
+        void calculate()     noexcept
         {
             total = (flagged_bombs + last_square + missed_flags + exploded);
 
