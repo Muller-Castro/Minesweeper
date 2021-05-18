@@ -265,6 +265,9 @@
 		<Unit filename="include/assets/GridButtonUp.h">
 			<Option target="Static Release" />
 		</Unit>
+		<Unit filename="include/assets/HandIcon.h">
+			<Option target="Static Release" />
+		</Unit>
 		<Unit filename="include/assets/HostButtonDown.h">
 			<Option target="Static Release" />
 		</Unit>
@@ -774,6 +777,9 @@
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="src/assets/GridButtonUp.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/HandIcon.cpp">
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="src/assets/HostButtonDown.cpp">
