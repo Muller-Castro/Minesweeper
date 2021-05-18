@@ -33,6 +33,9 @@
 #include <SFML/Graphics/Font.hpp>
 #include <SFML/Graphics/Text.hpp>
 #include <SFML/Graphics/Shader.hpp>
+#include <SFML/Graphics/Texture.hpp>
+#include <SFML/Graphics/Sprite.hpp>
+#include <SFML/Graphics/CircleShape.hpp>
 #include <SFML/Audio/SoundBuffer.hpp>
 
 #include "components/Panel.h"
@@ -81,12 +84,19 @@ namespace Minesweeper {
             TOTAL
         };
 
-        static constexpr float WAIT_DURATION      = std::chrono::seconds(5).count();
-        static constexpr float FADE_SPEED         = std::chrono::milliseconds(100).count();
-        static constexpr float GO_DOWN_DURATION   = std::chrono::milliseconds(5000).count();
-        static constexpr float CALCULATION_DELAY  = std::chrono::seconds(2).count();
-        static constexpr float EARNED_SCORE_DELAY = std::chrono::milliseconds(150).count();
-        static constexpr float WINNER_DELAY       = std::chrono::seconds(2).count();
+        static constexpr float WAIT_DURATION              = std::chrono::seconds(5).count();
+        static constexpr float FADE_SPEED                 = std::chrono::milliseconds(100).count();
+        static constexpr float GO_DOWN_DURATION           = std::chrono::milliseconds(5000).count();
+        static constexpr float CALCULATION_DELAY          = std::chrono::seconds(2).count();
+        static constexpr float EARNED_SCORE_DELAY         = std::chrono::milliseconds(150).count();
+        static constexpr float WINNER_DELAY               = std::chrono::seconds(2).count();
+        static constexpr float HAND_ICON_DELAY            = std::chrono::seconds(3).count();
+        static constexpr float HAND_ICON_FADE_S           = std::chrono::milliseconds(300).count();
+        static constexpr float HAND_ICON_RESCALE_DURATION = std::chrono::milliseconds(1000).count();
+        static constexpr float HAND_ICON_RESCALE_INTERVAL = std::chrono::seconds(2).count();
+        static constexpr float CLICK_CIRCLES_SCALE_S      = std::chrono::milliseconds(10000).count();
+        static constexpr float CLICK_CIRCLES_FADE_S       = std::chrono::milliseconds(13000).count();
+        static constexpr int   CLICK_CIRCLES_DIFFS        = 20;
 
         bool should_block_inputs;
 
@@ -94,17 +104,25 @@ namespace Minesweeper {
 
         ScoreParameterStep curr_score_param_step;
 
+        unsigned char click_circles_alpha;
+
         float background_rect_alpha;
+        float hand_icon_alpha;
+        float click_circles_radius;
 
         sf::Clock timer;
 
         sf::Clock earned_score_timer;
+
+        sf::Clock hand_icon_timer;
 
         std::reference_wrapper<Game> game_ref;
 
         std::pair<ScoreParameters, ScoreParameters> s_parameters_buff;
 
         tweeny::tween<float> go_down_tween;
+        tweeny::tween<float> hand_icon_tween;
+        tweeny::tween<float, unsigned char> click_circles_tween;
 
 #ifdef __S_RELEASE__
         std::pair<std::string, std::string> calculations_font_data;
@@ -114,11 +132,17 @@ namespace Minesweeper {
 
         std::shared_ptr<sf::Shader> winner_rect_shader;
 
+        std::shared_ptr<sf::Texture> hand_icon_texture;
+
         std::shared_ptr<sf::SoundBuffer> whoosh_sound;
 
         std::shared_ptr<sf::SoundBuffer> earned_score;
 
+        sf::CircleShape click_circle;
+
         sf::Text calculations_text;
+
+        sf::Sprite hand_icon_sprite;
 
         void draw_calculations();
 

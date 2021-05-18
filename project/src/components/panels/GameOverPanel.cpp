@@ -34,6 +34,7 @@
 #include "assets/WinnerRectFRG.h"
 #include "assets/Whoosh.h"
 #include "assets/EarnedScore.h"
+#include "assets/HandIcon.h"
 #include "assets/GameOverPanelBG.h"
 #include "assets/BeginnerButtonNHovered.h"
 #include "assets/BeginnerButtonHovered.h"
@@ -266,25 +267,41 @@ GameOverPanel::GameOverPanel(Game& game) :
     should_block_inputs(),
     curr_step(Steps::WAIT),
     curr_score_param_step(ScoreParameterStep::FLAGGED_BOMBS),
+    click_circles_alpha(),
     background_rect_alpha(),
+    hand_icon_alpha(),
+    click_circles_radius(),
     timer(),
     earned_score_timer(),
+    hand_icon_timer(),
     game_ref(game),
     s_parameters_buff(),
     go_down_tween(tweeny::from(-520.f).to(49.f).during(GameOverPanel::GO_DOWN_DURATION).via(tweeny::easing::cubicOut)),
+    hand_icon_tween(
+
+        tweeny::from(1.f).to(0.6f).during(GameOverPanel::HAND_ICON_RESCALE_DURATION / 2.f).via(tweeny::easing::cubicOut)
+               .to(1.f).during(GameOverPanel::HAND_ICON_RESCALE_DURATION).via(tweeny::easing::cubicOut)
+
+    ),
+    click_circles_tween(tweeny::from<float, unsigned char>(0.f, 255).to(50.f, 0).during(GameOverPanel::CLICK_CIRCLES_SCALE_S, GameOverPanel::CLICK_CIRCLES_FADE_S).via(tweeny::easing::backInOut, tweeny::easing::cubicOut)),
 #ifdef __S_RELEASE__
     calculations_font_data(get_raw_arial()),
 #endif // __S_RELEASE__
     calculations_font(),
     winner_rect_shader(),
+    hand_icon_texture(),
     whoosh_sound(),
     earned_score(),
-    calculations_text()
+    click_circle(),
+    calculations_text(),
+    hand_icon_sprite()
 {
 #ifndef __S_RELEASE__
     calculations_font  = ResourceLoader::load<sf::Font>("assets/fonts/Arial.ttf");
 
     winner_rect_shader = ResourceLoader::load<sf::Shader>("assets/shaders/WinnerRect.frg");
+
+    hand_icon_texture  = ResourceLoader::load<sf::Texture>("assets/textures/HandIcon.png");
 
     whoosh_sound       = ResourceLoader::load<sf::SoundBuffer>("assets/sounds/Whoosh.wav");
 
@@ -296,15 +313,26 @@ GameOverPanel::GameOverPanel(Game& game) :
 
     winner_rect_shader->loadFromMemory(get_raw_winner_rect_frg().second, sf::Shader::Fragment);
 
+    hand_icon_texture  = ResourceLoader::load<sf::Texture>(get_raw_hand_icon());
+
     whoosh_sound       = ResourceLoader::load<sf::SoundBuffer>(get_raw_whoosh());
 
     earned_score       = ResourceLoader::load<sf::SoundBuffer>(get_raw_earned_score());
 #endif // __S_RELEASE__
 
+    click_circle.setFillColor(sf::Color(0, 0, 0, 0));
+    click_circle.setOutlineThickness(5.f);
+    click_circle.setOutlineColor(sf::Color(51, 153, 255));
+    click_circle.setPosition(sf::Vector2f(0.f, 269.f));
+
     calculations_text.setFont(*calculations_font);
     calculations_text.setCharacterSize(20);
     calculations_text.setOutlineThickness(3);
     calculations_text.setOutlineColor(sf::Color::Black);
+
+    hand_icon_sprite.setTexture(*hand_icon_texture);
+    hand_icon_sprite.setPosition(sf::Vector2f(0.f, 270.f));
+    hand_icon_sprite.setColor(sf::Color(255, 255, 255, 0));
 }
 
 void GameOverPanel::process_inputs()
@@ -506,7 +534,51 @@ void GameOverPanel::update(float delta)
 
             case Steps::SHOW_WINNER: {
 
-                winner_rect_shader->setUniform("in_time", timer.getElapsedTime().asSeconds());
+                const float timer_seconds = timer.getElapsedTime().asSeconds();
+
+                winner_rect_shader->setUniform("in_time", timer_seconds);
+
+                if(timer_seconds >= GameOverPanel::HAND_ICON_DELAY) {
+
+                    if(hand_icon_sprite.getColor().a != 255) {
+
+                        hand_icon_alpha += delta * HAND_ICON_FADE_S;
+
+                        if(hand_icon_alpha >= 255.f) hand_icon_alpha = 255.f;
+
+                        hand_icon_sprite.setColor(sf::Color(255, 255, 255, static_cast<unsigned char>(hand_icon_alpha)));
+
+                    }else {
+
+                        if(hand_icon_timer.getElapsedTime().asSeconds() >= GameOverPanel::HAND_ICON_RESCALE_INTERVAL) {
+
+                            float new_scale = hand_icon_tween.step(delta);
+
+                            hand_icon_sprite.setScale(new_scale, new_scale);
+
+                        }
+
+                        if(hand_icon_tween.progress() >= 1.f) {
+
+                            hand_icon_tween.seek(0.f);
+
+                            hand_icon_timer.restart();
+
+                        }
+
+                        if(hand_icon_sprite.getScale().x < 1.f) {
+
+                            std::tie(click_circles_radius, click_circles_alpha) = click_circles_tween.step(delta);
+
+                        }else {
+
+                            click_circles_tween.seek(0.f);
+
+                        }
+
+                    }
+
+                }
 
             } break;
 
@@ -528,6 +600,52 @@ void GameOverPanel::draw()
         shape.setFillColor(sf::Color(0, 0, 0, static_cast<unsigned char>(background_rect_alpha)));
 
         MinesweeperGame::window->draw(shape);
+
+        if(curr_step == Steps::SHOW_WINNER) {
+
+            // CLICK CIRCLES DRAW
+            {
+                float click_circle_y = click_circle.getPosition().y;
+
+                sf::Color c_c_color  = click_circle.getOutlineColor();
+
+                for(int i = 0; i < 3; ++i) {
+
+                    int new_alpha = click_circles_alpha - (i * GameOverPanel::CLICK_CIRCLES_DIFFS);
+
+                    click_circle.setOutlineColor(sf::Color(c_c_color.r, c_c_color.g, c_c_color.b, new_alpha < 0 ? 0 : new_alpha));
+
+                    const float new_radius = click_circles_radius + (i * GameOverPanel::CLICK_CIRCLES_DIFFS);
+
+                    click_circle.setOrigin(sf::Vector2f(0.f, 0.f));
+
+                    click_circle.setPosition(sf::Vector2f(80.f, click_circle_y));
+                    click_circle.setOrigin(sf::Vector2f(new_radius, new_radius));
+                    click_circle.setRadius(new_radius);
+                    MinesweeperGame::window->draw(click_circle);
+
+                    click_circle.setOrigin(sf::Vector2f(0.f, 0.f));
+
+                    click_circle.setPosition(sf::Vector2f(700.f, click_circle_y));
+                    click_circle.setOrigin(sf::Vector2f(new_radius, new_radius));
+                    click_circle.setRadius(new_radius);
+                    MinesweeperGame::window->draw(click_circle);
+
+                }
+            }
+
+            // HAND ICON DRAW
+            {
+                float hand_icon_y = hand_icon_sprite.getPosition().y;
+
+                hand_icon_sprite.setPosition(sf::Vector2f(68.f, hand_icon_y));
+                MinesweeperGame::window->draw(hand_icon_sprite);
+
+                hand_icon_sprite.setPosition(sf::Vector2f(688.f, hand_icon_y));
+                MinesweeperGame::window->draw(hand_icon_sprite);
+            }
+
+        }
 
         MinesweeperGame::window->draw(background_sprite);
 
@@ -567,6 +685,8 @@ void GameOverPanel::set_active(bool b) noexcept
 
         curr_step           = Steps::WAIT;
 
+        hand_icon_sprite.setColor(sf::Color(255, 255, 255, 0));
+
         background_sprite.setPosition(background_sprite.getPosition().x, -520.f);
 
         buttons[0]->set_sprite_position({buttons[0]->position.x, 389.f - 569.f});
@@ -578,9 +698,17 @@ void GameOverPanel::set_active(bool b) noexcept
         buttons[6]->set_sprite_position({buttons[6]->position.x, 524.f - 569.f});
         buttons[7]->set_sprite_position({buttons[7]->position.x, 524.f - 569.f});
 
+        click_circles_alpha   = 0;
+
         background_rect_alpha = 0.f;
 
+        hand_icon_alpha       = 0.f;
+
+        click_circles_radius  = 0.f;
+
         go_down_tween.seek(0.f);
+        hand_icon_tween.seek(0.f);
+        click_circles_tween.seek(0.f);
 
         curr_score_param_step = ScoreParameterStep::FLAGGED_BOMBS;
 
