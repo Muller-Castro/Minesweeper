@@ -710,6 +710,8 @@ void GameOverPanel::set_active(bool b) noexcept
         hand_icon_tween.seek(0.f);
         click_circles_tween.seek(0.f);
 
+        winner_rect_shader->setUniform("in_time", 0.f);
+
         click_circle.setRadius(0.f);
 
         hand_icon_sprite.setScale(1.f, 1.f);
