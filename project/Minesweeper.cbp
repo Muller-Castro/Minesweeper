@@ -469,6 +469,15 @@
 		<Unit filename="include/assets/ReturnNHovered.h">
 			<Option target="Static Release" />
 		</Unit>
+		<Unit filename="include/assets/ReturnToResultsButtonDown.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/ReturnToResultsButtonHovered.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/ReturnToResultsButtonNHovered.h">
+			<Option target="Static Release" />
+		</Unit>
 		<Unit filename="include/assets/SelectDifficultyPanel.h">
 			<Option target="Static Release" />
 		</Unit>
@@ -583,6 +592,7 @@
 		<Unit filename="include/components/buttons/QuitButton.h" />
 		<Unit filename="include/components/buttons/RestartButton.h" />
 		<Unit filename="include/components/buttons/RetryButton.h" />
+		<Unit filename="include/components/buttons/ReturnToResultsButton.h" />
 		<Unit filename="include/components/buttons/StartButton.h" />
 		<Unit filename="include/components/panels/GameOverPanel.h" />
 		<Unit filename="include/io/MusicStream.h" />
@@ -604,6 +614,7 @@
 		</Unit>
 		<Unit filename="include/tools/AnimationPlayer.h" />
 		<Unit filename="include/tools/EncryptionKey.h" />
+		<Unit filename="include/tools/MouseCursor.h" />
 		<Unit filename="include/tools/Vector2Hash.h" />
 		<Unit filename="res/resource.rc">
 			<Option compilerVar="WINDRES" />
@@ -983,6 +994,15 @@
 		<Unit filename="src/assets/ReturnNHovered.cpp">
 			<Option target="Static Release" />
 		</Unit>
+		<Unit filename="src/assets/ReturnToResultsButtonDown.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/ReturnToResultsButtonHovered.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/ReturnToResultsButtonNHovered.cpp">
+			<Option target="Static Release" />
+		</Unit>
 		<Unit filename="src/assets/SelectDifficultyPanel.cpp">
 			<Option target="Static Release" />
 		</Unit>
@@ -1097,6 +1117,7 @@
 		<Unit filename="src/components/buttons/QuitButton.cpp" />
 		<Unit filename="src/components/buttons/RestartButton.cpp" />
 		<Unit filename="src/components/buttons/RetryButton.cpp" />
+		<Unit filename="src/components/buttons/ReturnToResultsButton.cpp" />
 		<Unit filename="src/components/buttons/StartButton.cpp" />
 		<Unit filename="src/components/panels/GameOverPanel.cpp" />
 		<Unit filename="src/io/MusicStream.cpp" />
@@ -1111,6 +1132,7 @@
 		<Unit filename="src/scene/scenes/SplashScreen.cpp" />
 		<Unit filename="src/scene/scenes/TestZone.cpp" />
 		<Unit filename="src/tools/AnimationPlayer.cpp" />
+		<Unit filename="src/tools/MouseCursor.cpp" />
 		<Extensions>
 			<lib_finder disable_auto="1" />
 		</Extensions>
