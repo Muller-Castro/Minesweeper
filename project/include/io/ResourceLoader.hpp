@@ -73,9 +73,9 @@ namespace Minesweeper {
     std::shared_ptr<ResourceType> ResourceLoader::load(const std::string& directory)
     {
 #ifdef __DEBUG__
-        const std::string fixed_directory = "bin/Debug/" + directory;
-#elif defined(__RELEASE__)
         const std::string fixed_directory = directory;
+#elif defined(__RELEASE__)
+        const std::string fixed_directory = "../../" + directory;
 #endif
 
         try {
