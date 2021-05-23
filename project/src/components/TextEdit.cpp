@@ -33,6 +33,7 @@
 #include "GlobalConfigurations.h"
 #include "Input.h"
 #include "scene/SceneManager.h"
+#include "tools/MouseCursor.h"
 
 using namespace Minesweeper;
 
@@ -158,9 +159,7 @@ void TextEdit::check_focus()
     if(MinesweeperGame::window->hasFocus() && mouse_entered) {
 
         {
-            sf::Cursor cursor;
-
-            if(cursor.loadFromSystem(sf::Cursor::Text)) MinesweeperGame::window->setMouseCursor(cursor);
+            MouseCursor::load(sf::Cursor::Text);
 
             caught_hover = TextEdit::is_hovering_any = true;
         }
@@ -171,13 +170,7 @@ void TextEdit::check_focus()
 
         if(caught_hover) caught_hover = TextEdit::is_hovering_any = false;
 
-        if(!TextEdit::is_hovering_any) {
-
-            sf::Cursor cursor;
-
-            if(cursor.loadFromSystem(sf::Cursor::Arrow)) MinesweeperGame::window->setMouseCursor(cursor);
-
-        }
+        if(!TextEdit::is_hovering_any) MouseCursor::load(sf::Cursor::Arrow);
 
         if(Input::is_pressed<Input::Mouse>(sf::Mouse::Left) || Input::is_pressed<Input::Mouse>(sf::Mouse::Right)) is_focused = false;
 
