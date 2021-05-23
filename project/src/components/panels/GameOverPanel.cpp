@@ -369,6 +369,10 @@ void GameOverPanel::process_inputs()
 
         if(should_allow_grid_view && !is_in_view_mode) check_external_bbs();
 
+    }else {
+
+        MouseCursor::load(sf::Cursor::Arrow);
+
     }
 }
 
