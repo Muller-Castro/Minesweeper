@@ -28,6 +28,7 @@
 
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/Window/Mouse.hpp>
 
 #ifdef __S_RELEASE__
 #include "assets/Arial.h"
@@ -64,6 +65,10 @@
 #include "assets/MainMenuButtonPressed.h"
 #endif // __S_RELEASE__
 #include "MinesweeperGame.h"
+#ifdef __DEBUG__
+#include "GlobalConfigurations.h"
+#endif // __DEBUG__
+#include "Input.h"
 #include "io/ResourceLoader.h"
 #include "components/buttons/GameOverBeginnerButton.h"
 #include "components/buttons/GameOverAverageButton.h"
@@ -73,6 +78,7 @@
 #include "components/buttons/GameOverDurationCButton.h"
 #include "components/buttons/RetryButton.h"
 #include "components/buttons/OnlineQuitButton.h"
+#include "tools/MouseCursor.h"
 
 using namespace Minesweeper;
 
@@ -265,6 +271,8 @@ GameOverPanel::GameOverPanel(Game& game) :
         }
     ),
     should_block_inputs(),
+    should_allow_grid_view(),
+    is_in_view_mode(),
     curr_step(Steps::WAIT),
     curr_score_param_step(ScoreParameterStep::FLAGGED_BOMBS),
     click_circles_alpha(),
@@ -294,7 +302,15 @@ GameOverPanel::GameOverPanel(Game& game) :
     earned_score(),
     click_circle(),
     calculations_text(),
-    hand_icon_sprite()
+    hand_icon_sprite(),
+    external_bbs{
+
+        sf::FloatRect(0.f  , 0.f  , 177.f, 600.f),
+        sf::FloatRect(0.f  , 0.f  , 800.f, 49.f) ,
+        sf::FloatRect(0.f  , 569.f, 800.f, 31.f) ,
+        sf::FloatRect(625.f, 0.f  , 175.f, 600.f)
+
+    }
 {
 #ifndef __S_RELEASE__
     calculations_font  = ResourceLoader::load<sf::Font>("assets/fonts/Arial.ttf");
@@ -339,13 +355,19 @@ void GameOverPanel::process_inputs()
 {
     if(is_active && !game_ref.get().panels["C_OUT"]->activated()) {
 
-        for(auto& button : buttons) {
+        if(!is_in_view_mode) {
 
-            button->process_inputs();
+            for(auto& button : buttons) {
 
-//            if(button->get_state() == Button::States::RELEASED) is_active = false;
+                button->process_inputs();
+
+//                if(button->get_state() == Button::States::RELEASED) is_active = false;
+
+            }
 
         }
+
+        if(should_allow_grid_view && !is_in_view_mode) check_external_bbs();
 
     }
 }
@@ -409,6 +431,8 @@ void GameOverPanel::update(float delta)
             } break;
 
             case Steps::CALCULATE: {
+
+                should_allow_grid_view = true;
 
                 const bool finished_calculation_delay = timer.getElapsedTime().asSeconds() >= GameOverPanel::CALCULATION_DELAY;
 
@@ -595,6 +619,12 @@ void GameOverPanel::draw()
 {
     if(is_active) {
 
+        if(is_in_view_mode) {
+
+            return;
+
+        }
+
         sf::RectangleShape shape(sf::Vector2f(800.f, 600.f));
 
         shape.setFillColor(sf::Color(0, 0, 0, static_cast<unsigned char>(background_rect_alpha)));
@@ -672,6 +702,30 @@ void GameOverPanel::draw()
 
         for(auto& button : buttons) MinesweeperGame::window->draw(*button);
 
+#ifdef __DEBUG__
+        if(GlobalConfigurations::show_bb && should_allow_grid_view) {
+
+            unsigned char r = 0, g = 0, b = 255;
+
+            for(const auto& f_rect : external_bbs) {
+
+                sf::RectangleShape bb_shape(sf::Vector2f(f_rect.width, f_rect.height));
+
+                bb_shape.setPosition(sf::Vector2f(f_rect.left, f_rect.top));
+
+                bb_shape.setFillColor(sf::Color(r, g, b, 125));
+
+                MinesweeperGame::window->draw(bb_shape);
+
+                r += 40;
+                g += 60;
+                b -= 80;
+
+            }
+
+        }
+#endif // __DEBUG__
+
     }
 }
 
@@ -681,9 +735,13 @@ void GameOverPanel::set_active(bool b) noexcept
 
     if(!is_active) {
 
-        should_block_inputs = false;
+        should_block_inputs    = false;
 
-        curr_step           = Steps::WAIT;
+        should_allow_grid_view = false;
+
+        is_in_view_mode        = false;
+
+        curr_step              = Steps::WAIT;
 
         hand_icon_sprite.setColor(sf::Color(255, 255, 255, 0));
 
@@ -854,6 +912,39 @@ void GameOverPanel::draw_calculations()
         MinesweeperGame::window->draw(calculations_text);
         // P2
     }
+}
+
+void GameOverPanel::check_external_bbs()
+{
+    bool is_not_on_a_bb = true;
+
+    for(const auto& f_rect : external_bbs) {
+
+        sf::Vector2i mouse_position = sf::Mouse::getPosition(*MinesweeperGame::window);
+
+        bool mouse_entered = f_rect.contains(sf::Vector2f(mouse_position.x, mouse_position.y));
+
+        if(MinesweeperGame::window->hasFocus() && mouse_entered) {
+
+            is_not_on_a_bb = false;
+
+            MouseCursor::load(sf::Cursor::Hand);
+
+            if(Input::is_just_pressed<Input::Mouse>(sf::Mouse::Left)) {
+
+                is_in_view_mode = true;
+
+                MouseCursor::load(sf::Cursor::Arrow);
+
+                break;
+
+            }
+
+        }
+
+    }
+
+    if(is_not_on_a_bb) MouseCursor::load(sf::Cursor::Arrow);
 }
 
 bool GameOverPanel::count_score_parameter(bool sum, short& value_a, short value_b) noexcept

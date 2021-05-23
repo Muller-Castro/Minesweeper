@@ -26,6 +26,7 @@
 
 #include <functional>
 #include <chrono>
+#include <array>
 
 #include <tweeny.h>
 
@@ -36,6 +37,7 @@
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/CircleShape.hpp>
+#include <SFML/Graphics/Rect.hpp>
 #include <SFML/Audio/SoundBuffer.hpp>
 
 #include "components/Panel.h"
@@ -100,6 +102,10 @@ namespace Minesweeper {
 
         bool should_block_inputs;
 
+        bool should_allow_grid_view;
+
+        bool is_in_view_mode;
+
         Steps curr_step;
 
         ScoreParameterStep curr_score_param_step;
@@ -144,7 +150,11 @@ namespace Minesweeper {
 
         sf::Sprite hand_icon_sprite;
 
+        std::array<sf::FloatRect, 4> external_bbs;
+
         void draw_calculations();
+
+        void check_external_bbs();
 
         bool count_score_parameter(bool sum, short& value_a, short value_b) noexcept;
     };
