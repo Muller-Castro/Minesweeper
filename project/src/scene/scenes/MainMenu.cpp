@@ -1,7 +1,7 @@
 /****************************************************************************************/
 /* MainMenu.cpp                                                                         */
 /****************************************************************************************/
-/* Copyright (c) 2020 Muller Castro.                                                    */
+/* Copyright (c) 2020-2021 Muller Castro.                                               */
 /*                                                                                      */
 /* Permission is hereby granted, free of charge, to any person obtaining                */
 /* a copy of this software and associated documentation files (the "Software"),         */
@@ -267,7 +267,7 @@ MainMenu::MainMenu() :
     credits_texts["LICENSE"].setPosition(35.f, 175.f);
     credits_texts["LICENSE"].setString(
 
-        "Copyright (c) 2020 Muller Castro\n\n"
+        "Copyright (c) 2020-2021 Muller Castro\n\n"
 
         "Permission is hereby granted, free of charge, to any person obtaining a copy\n"
         "of this software and associated documentation files (the \"Software\"), to\n"
