@@ -107,6 +107,7 @@ Game::Game() :
     is_first_click(true),
     is_your_turn(),
     finished(),
+    should_draw_tip_text(true),
     retry_counter(),
     duration(),
     grid_width(),
@@ -709,7 +710,7 @@ void Game::draw()
 
     if(conn_info.is_online) {
 
-        draw_tip_text();
+        if(should_draw_tip_text) draw_tip_text();
 
         if(finished && (flash_timer.getElapsedTime().asSeconds() <= 1.f)) draw_flashing_rect();
 
@@ -996,8 +997,9 @@ void Game::restart()
 {
     if(emoji) emoji->restart();
 
-    is_first_click = true;
-    finished       = false;
+    is_first_click       = true;
+    finished             = false;
+    should_draw_tip_text = true;
     flag_counter   = 0;
     grid.clear();
 

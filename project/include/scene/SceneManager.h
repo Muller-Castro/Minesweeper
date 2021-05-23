@@ -72,6 +72,7 @@ namespace Minesweeper {
         friend class ExpertButton;
         friend class ConnectionInfo;
         friend class Game;
+        friend class GameOverPanel;
         friend class GameOverBeginnerButton;
         friend class GameOverAverageButton;
         friend class GameOverExpertButton;

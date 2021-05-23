@@ -42,6 +42,7 @@
 
 #include "components/Panel.h"
 #include "scene/scenes/Game.h"
+#include "components/buttons/ReturnToResultsButton.h"
 
 namespace Minesweeper {
 
@@ -66,6 +67,7 @@ namespace Minesweeper {
         friend class GameOverDurationCButton;
         friend class RetryButton;
         friend class OnlineQuitButton;
+        friend class ReturnToResultsButton;
 
         enum class Steps : unsigned char
         {
@@ -149,6 +151,8 @@ namespace Minesweeper {
         sf::Text calculations_text;
 
         sf::Sprite hand_icon_sprite;
+
+        ReturnToResultsButton r_to_results_button;
 
         std::array<sf::FloatRect, 4> external_bbs;
 

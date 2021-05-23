@@ -61,6 +61,9 @@
 #include "assets/OnlineQuitButtonNHovered.h"
 #include "assets/OnlineQuitButtonHovered.h"
 #include "assets/OnlineQuitButtonDown.h"
+#include "assets/ReturnToResultsButtonNHovered.h"
+#include "assets/ReturnToResultsButtonHovered.h"
+#include "assets/ReturnToResultsButtonDown.h"
 #include "assets/MainMenuButtonHovered.h"
 #include "assets/MainMenuButtonPressed.h"
 #endif // __S_RELEASE__
@@ -303,6 +306,27 @@ GameOverPanel::GameOverPanel(Game& game) :
     click_circle(),
     calculations_text(),
     hand_icon_sprite(),
+    r_to_results_button(
+
+        *this,
+        Button::Enabled::LEFT,
+        sf::Vector2f(403.f, 0.f),
+        sf::Vector2f(1.f, 1.f),
+#ifndef __S_RELEASE__
+        ResourceLoader::load<sf::Texture>("assets/textures/ReturnToResultsButtonHovered.png"),
+        ResourceLoader::load<sf::Texture>("assets/textures/ReturnToResultsButtonNHovered.png"),
+        ResourceLoader::load<sf::Texture>("assets/textures/ReturnToResultsButtonDown.png"),
+        ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonHovered.wav"),
+        ResourceLoader::load<sf::SoundBuffer>("assets/sounds/MainMenuButtonPressed.wav")
+#else
+        ResourceLoader::load<sf::Texture>(get_raw_return_to_results_button_hovered()),
+        ResourceLoader::load<sf::Texture>(get_raw_return_to_results_button_n_hovered()),
+        ResourceLoader::load<sf::Texture>(get_raw_return_to_results_button_down()),
+        ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_hovered()),
+        ResourceLoader::load<sf::SoundBuffer>(get_raw_main_menu_button_pressed())
+#endif // __S_RELEASE__
+
+    ),
     external_bbs{
 
         sf::FloatRect(0.f  , 0.f  , 177.f, 600.f),
@@ -365,9 +389,13 @@ void GameOverPanel::process_inputs()
 
             }
 
-        }
+            if(should_allow_grid_view) check_external_bbs();
 
-        if(should_allow_grid_view && !is_in_view_mode) check_external_bbs();
+        }else {
+
+            r_to_results_button.process_inputs();
+
+        }
 
     }else {
 
@@ -426,6 +454,10 @@ void GameOverPanel::update(float delta)
 
                     curr_step = Steps::CALCULATE;
 
+                    game_ref.get().should_draw_tip_text = false;
+
+                    should_allow_grid_view = true;
+
                     timer.restart();
 
                     earned_score_timer.restart();
@@ -435,8 +467,6 @@ void GameOverPanel::update(float delta)
             } break;
 
             case Steps::CALCULATE: {
-
-                should_allow_grid_view = true;
 
                 const bool finished_calculation_delay = timer.getElapsedTime().asSeconds() >= GameOverPanel::CALCULATION_DELAY;
 
@@ -614,6 +644,8 @@ void GameOverPanel::update(float delta)
 
         }
 
+        if(is_in_view_mode) r_to_results_button.update(delta);
+
     }
 
     Panel::update(delta);
@@ -624,6 +656,8 @@ void GameOverPanel::draw()
     if(is_active) {
 
         if(is_in_view_mode) {
+
+            MinesweeperGame::window->draw(r_to_results_button);
 
             return;
 
@@ -780,10 +814,33 @@ void GameOverPanel::set_active(bool b) noexcept
 
         hand_icon_sprite.setScale(1.f, 1.f);
 
+        r_to_results_button.position = sf::Vector2f(r_to_results_button.position.x, 0.f);
+
         curr_score_param_step = ScoreParameterStep::FLAGGED_BOMBS;
 
         s_parameters_buff.first.reset();
         s_parameters_buff.second.reset();
+
+    }else {
+
+        // Set ReturnToResultsButton's position
+        {
+            std::string difficulty = SceneManager::shared_data["DIFFICULTY"];
+
+            float button_y = 0.f;
+
+            if(difficulty == "0") {
+
+                button_y = 165.f;
+
+            }else if((difficulty == "1") || (difficulty == "2")) {
+
+                button_y = 115.f;
+
+            }
+
+            r_to_results_button.position = sf::Vector2f(r_to_results_button.position.x, button_y);
+        }
 
     }
 

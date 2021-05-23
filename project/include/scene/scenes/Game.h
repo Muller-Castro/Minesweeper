@@ -117,6 +117,7 @@ namespace Minesweeper {
         bool is_first_click;
         bool is_your_turn;
         bool finished;
+        bool should_draw_tip_text;
 
         unsigned char retry_counter;
 
