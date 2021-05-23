@@ -23,6 +23,7 @@
 
 #include "components/buttons/JoinButton.h"
 
+#include "scene/SceneManager.h"
 #include "scene/scenes/Lobby.h"
 
 using namespace Minesweeper;
@@ -49,6 +50,8 @@ void JoinButton::on_button_pressed()
     if(lobby_ref.get().evaluate_text_edits()) {
 
         if(lobby_ref.get().evaluate_ip_port()) {
+
+            SceneManager::shared_data["H"] = "0";
 
             lobby_ref.get().current_state = Lobby::States::CONNECTING;
 

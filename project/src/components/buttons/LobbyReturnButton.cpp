@@ -55,6 +55,8 @@ void LobbyReturnButton::on_button_pressed()
 
             SceneManager::change_scene_to(SceneManager::Scenes::MAIN_MENU);
 
+            SceneManager::shared_data["H"].clear();
+
         } break;
 
         case Lobby::States::CONNECTING: {

@@ -74,7 +74,15 @@ void DurationCButton::on_button_pressed()
 
 void DurationCButton::set_active(bool b)
 {
-    active = b;
+    bool past_state = active;
 
-    if(active) SceneManager::shared_data["DURATION"] = 'L';
+    active          = b;
+
+    if(active) {
+
+        SceneManager::shared_data["DURATION"] = 'L';
+
+        if(!past_state) lobby_ref.get().play_sound(lobby_ref.get().mm_btn_pressed_sfx);
+
+    }
 }

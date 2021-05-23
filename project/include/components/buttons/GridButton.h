@@ -45,8 +45,8 @@ namespace Minesweeper {
             BOMB
         };
 
-        GridButton(Game& game, Types type_, bool disabled_, bool flagged_, const sf::Vector2i& cell_position_, Enabled enabled_, const sf::Vector2f& position_, const sf::Vector2f& scale_, const std::shared_ptr<sf::Texture>& hovered, const std::shared_ptr<sf::Texture>& non_hovered, const std::shared_ptr<sf::Texture>& down, const std::shared_ptr<sf::Texture>& icon, const std::shared_ptr<sf::Texture>& p1_flag, const std::shared_ptr<sf::Texture>& p2_flag, const std::shared_ptr<sf::Texture>& not_a_bomb_texture_, const std::shared_ptr<sf::SoundBuffer>& flag_sound_, const std::shared_ptr<sf::SoundBuffer>& hovered_sfx = {}, const std::shared_ptr<sf::SoundBuffer>& pressed_sfx = {});
-        ~GridButton() override {}
+        GridButton(Game& game, Types type_, bool disabled_, bool flagged_, bool is_blue_flag_, const sf::Vector2i& cell_position_, Enabled enabled_, const sf::Vector2f& position_, const sf::Vector2f& scale_, const std::shared_ptr<sf::Texture>& hovered, const std::shared_ptr<sf::Texture>& non_hovered, const std::shared_ptr<sf::Texture>& down, const std::shared_ptr<sf::Texture>& icon, const std::shared_ptr<sf::Texture>& p1_flag, const std::shared_ptr<sf::Texture>& p2_flag, const std::shared_ptr<sf::Texture>& not_a_bomb_texture_, const std::shared_ptr<sf::SoundBuffer>& flag_sound_, const std::shared_ptr<sf::SoundBuffer>& hovered_sfx = {}, const std::shared_ptr<sf::SoundBuffer>& pressed_sfx = {});
+        ~GridButton() noexcept override {}
 
         void process_inputs()    override;
         void update(float delta) override;
@@ -62,6 +62,7 @@ namespace Minesweeper {
 
         bool disabled;
         bool flagged;
+        bool is_blue_flag;
 
         Types type;
 
@@ -84,10 +85,12 @@ namespace Minesweeper {
 
         AnimationPlayer animations;
 
+        void evaluate_button();
         void add_bomb_animation(); // since this is going to be used twice...
+        void add_missed_flag_animation();
         void change_button_type(Types new_type, const std::shared_ptr<sf::Texture>& new_icon_texture);
         void check_flag_input();
-        void set_flag(bool b);
+        void set_flag(bool b, bool is_blue_flag_);
         void disable();
         void find_and_disable();
     };

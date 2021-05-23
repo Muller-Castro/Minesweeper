@@ -36,9 +36,11 @@
 #include <SFML/Graphics/Rect.hpp>
 #include <SFML/Graphics/RenderStates.hpp>
 
+#include "GameLogic.h"
+
 namespace Minesweeper {
 
-    class Button : public sf::Drawable
+    class Button : public GameLogic, public sf::Drawable
     {
     public:
         enum class Enabled : unsigned char
@@ -64,14 +66,21 @@ namespace Minesweeper {
         sf::Vector2f position, scale;
 
         Button(Enabled enabled_, const sf::Vector2f& position_, const sf::Vector2f& scale_, const std::shared_ptr<sf::Texture>& hovered, const std::shared_ptr<sf::Texture>& non_hovered, const std::shared_ptr<sf::Texture>& down, const std::shared_ptr<sf::SoundBuffer>& hovered_sfx = {}, const std::shared_ptr<sf::SoundBuffer>& pressed_sfx = {});
-        ~Button() override {}
+        ~Button() noexcept override {}
 
-        virtual void process_inputs();
-        virtual void update(float d);
-        virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
+        void process_inputs() override;
+        void update(float d)  override;
+        void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
         bool is_hovered() const noexcept { return current_texture == HOVERED; }
         States get_state() const noexcept { return state; }
+
+        void set_sprite_position(const sf::Vector2f& new_pos) noexcept
+        {
+            position = new_pos;
+
+            sprite.setPosition(position);
+        }
 
     protected:
         static constexpr unsigned char HOVERED   = 0;

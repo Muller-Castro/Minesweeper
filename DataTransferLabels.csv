@@ -11,3 +11,14 @@ I;Lobby;DurationA Button
 J;Lobby;DurationB Button
 K;Lobby;DurationC Button
 L;Lobby;Play Counter
+M;Lobby;Start
+A;Game;Ping
+B;Game;Max Ping
+C;Game;Flag
+D;Game;Grid Setup
+E;Game;Grid Button Press
+F;Game;Turn Time Out
+G;Game;New Difficulty
+H;Game;New Duration
+I;Game;Request to retry
+J;Game;Score Parameter

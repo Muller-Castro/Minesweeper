@@ -52,6 +52,12 @@ using namespace Minesweeper;
 bool GlobalConfigurations::show_bb = true;
 #endif // __DEBUG__
 
+#ifdef __DEBUG__
+bool GlobalConfigurations::show_grid_button_icons = true;
+#elif defined(__RELEASE__)
+bool GlobalConfigurations::show_grid_button_icons = false;
+#endif // __DEBUG__
+
 #ifndef __S_RELEASE__
 std::shared_ptr<sf::Font> GlobalConfigurations::font;
 std::string GlobalConfigurations::current_scene_name;
@@ -68,6 +74,9 @@ void GlobalConfigurations::process_inputs()
     else if(Input::is_just_pressed<Input::Key>(sf::Keyboard::F9)) GlobalConfigurations::show_bb = !GlobalConfigurations::show_bb;
     else if(Input::is_just_pressed<Input::Key>(sf::Keyboard::F10)) SceneManager::change_scene_to(SceneManager::Scenes::TEST_ZONE);
 #endif // __DEBUG__
+#ifndef __S_RELEASE__
+    else if(Input::is_just_pressed<Input::Key>(sf::Keyboard::F11)) GlobalConfigurations::show_grid_button_icons = !GlobalConfigurations::show_grid_button_icons;
+#endif // __S_RELEASE__
 }
 
 void GlobalConfigurations::update(float delta)
@@ -118,6 +127,9 @@ void GlobalConfigurations::update(float delta)
                   << " | F9: BB"
                   << " | F10: TZ"
 #endif // __DEBUG__
+#ifndef __S_RELEASE__
+                  << " | F11: Icons"
+#endif // __S_RELEASE__
                   ;
 
     MinesweeperGame::window->setTitle(new_win_title.str());

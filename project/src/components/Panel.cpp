@@ -23,6 +23,7 @@
 
 #include "components/Panel.h"
 
+#include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 
 #include "MinesweeperGame.h"
@@ -77,6 +78,12 @@ void Panel::update(float delta)
 void Panel::draw()
 {
     if(is_active) {
+
+        sf::RectangleShape shape(sf::Vector2f(800.f, 600.f));
+
+        shape.setFillColor(sf::Color(0, 0, 0, 200));
+
+        MinesweeperGame::window->draw(shape);
 
         MinesweeperGame::window->draw(background_sprite);
 

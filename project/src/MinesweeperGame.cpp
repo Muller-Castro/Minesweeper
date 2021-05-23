@@ -48,7 +48,6 @@ using namespace Minesweeper;
 PeerInfo MinesweeperGame::peer_info;
 PeerInfo MinesweeperGame::new_peer_info;
 sf::TcpSocket MinesweeperGame::tcp_socket;
-sf::UdpSocket MinesweeperGame::udp_socket;
 sf::RenderWindow* MinesweeperGame::window = nullptr;
 bool MinesweeperGame::is_running          = true;
 
@@ -98,6 +97,12 @@ int MinesweeperGame::run() noexcept
         run_result = -1;
 
     }
+
+    MinesweeperGame::tcp_socket.disconnect();
+
+    ResourceLoader::resources.clear();
+
+    MinesweeperGame::window->close();
 
     return run_result;
 }
@@ -165,13 +170,6 @@ void MinesweeperGame::process()
             ResourceLoader::erase_unique_references();
 
         }
-
-        MinesweeperGame::udp_socket.unbind();
-        MinesweeperGame::tcp_socket.disconnect();
-
-        ResourceLoader::resources.clear();
-
-        MinesweeperGame::window->close();
 
     }catch(const std::exception& e) {
 

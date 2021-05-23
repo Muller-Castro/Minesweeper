@@ -54,7 +54,7 @@ void HostButton::on_button_pressed()
 
         if(lobby_ref.get().evaluate_port()) {
 
-            lobby_ref.get().listener = std::unique_ptr<sf::TcpListener>(new sf::TcpListener());
+            lobby_ref.get().listener = std::make_unique<sf::TcpListener>();
 
             if(lobby_ref.get().listener->listen(std::stoul(lobby_ref.get().text_edits[1].get_text_str())) != sf::Socket::Done) {
 
@@ -67,6 +67,8 @@ void HostButton::on_button_pressed()
                 lobby_ref.get().listener.reset();
 
             }else {
+
+                SceneManager::shared_data["H"] = "1";
 
                 SceneManager::call_deferred([&]() {
 

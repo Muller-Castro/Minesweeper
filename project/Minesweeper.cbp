@@ -91,6 +91,10 @@
 		<Unit filename="../thirdparty/Encryptions/Encryptions/AES.cpp" />
 		<Unit filename="../thirdparty/Encryptions/Encryptions/SymAlg.cpp" />
 		<Unit filename="../thirdparty/Encryptions/common/includes.cpp" />
+		<Unit filename="../thirdparty/json11/json11.cpp" />
+		<Unit filename="../thirdparty/json11/json11.hpp" />
+		<Unit filename="include/Emoji.h" />
+		<Unit filename="include/GameLogic.h" />
 		<Unit filename="include/GlobalConfigurations.h" />
 		<Unit filename="include/Input.h" />
 		<Unit filename="include/Input.hpp" />
@@ -117,6 +121,9 @@
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="include/assets/AverageButtonNHovered.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/BandageFace.h">
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="include/assets/BeginnerButtonDown.h">
@@ -151,6 +158,12 @@
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="include/assets/CancelButtonNHovered.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/Chicken.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/ChickenedOutPanel.h">
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="include/assets/Clapping.h">
@@ -216,6 +229,9 @@
 		<Unit filename="include/assets/DurationCButtonNHovered.h">
 			<Option target="Static Release" />
 		</Unit>
+		<Unit filename="include/assets/EarnedScore.h">
+			<Option target="Static Release" />
+		</Unit>
 		<Unit filename="include/assets/EmptyCell.h">
 			<Option target="Static Release" />
 		</Unit>
@@ -234,6 +250,9 @@
 		<Unit filename="include/assets/FlagSet.h">
 			<Option target="Static Release" />
 		</Unit>
+		<Unit filename="include/assets/GameOverPanelBG.h">
+			<Option target="Static Release" />
+		</Unit>
 		<Unit filename="include/assets/GamePanel.h">
 			<Option target="Static Release" />
 		</Unit>
@@ -246,6 +265,9 @@
 		<Unit filename="include/assets/GridButtonUp.h">
 			<Option target="Static Release" />
 		</Unit>
+		<Unit filename="include/assets/HandIcon.h">
+			<Option target="Static Release" />
+		</Unit>
 		<Unit filename="include/assets/HostButtonDown.h">
 			<Option target="Static Release" />
 		</Unit>
@@ -253,6 +275,9 @@
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="include/assets/HostButtonNHovered.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/HushedFace.h">
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="include/assets/INET.h">
@@ -345,6 +370,27 @@
 		<Unit filename="include/assets/NotABomb.h">
 			<Option target="Static Release" />
 		</Unit>
+		<Unit filename="include/assets/NotABombP1.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/NotABombP2.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/OnlineGameFinished.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/OnlineGameMatchPanel.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/OnlineQuitButtonDown.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/OnlineQuitButtonHovered.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/OnlineQuitButtonNHovered.h">
+			<Option target="Static Release" />
+		</Unit>
 		<Unit filename="include/assets/Oooh.h">
 			<Option target="Static Release" />
 		</Unit>
@@ -405,6 +451,15 @@
 		<Unit filename="include/assets/RestartButtonNHovered.h">
 			<Option target="Static Release" />
 		</Unit>
+		<Unit filename="include/assets/RetryButtonDown.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/RetryButtonHovered.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/RetryButtonNHovered.h">
+			<Option target="Static Release" />
+		</Unit>
 		<Unit filename="include/assets/ReturnDown.h">
 			<Option target="Static Release" />
 		</Unit>
@@ -412,6 +467,15 @@
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="include/assets/ReturnNHovered.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/ReturnToResultsButtonDown.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/ReturnToResultsButtonHovered.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/ReturnToResultsButtonNHovered.h">
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="include/assets/SelectDifficultyPanel.h">
@@ -447,6 +511,9 @@
 		<Unit filename="include/assets/SmallExpertButtonNHovered.h">
 			<Option target="Static Release" />
 		</Unit>
+		<Unit filename="include/assets/SmilingFace.h">
+			<Option target="Static Release" />
+		</Unit>
 		<Unit filename="include/assets/SplashScreenSoundtrack.h">
 			<Option target="Static Release" />
 		</Unit>
@@ -459,7 +526,13 @@
 		<Unit filename="include/assets/StartButtonNHovered.h">
 			<Option target="Static Release" />
 		</Unit>
+		<Unit filename="include/assets/SunglassesFace.h">
+			<Option target="Static Release" />
+		</Unit>
 		<Unit filename="include/assets/Title.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/TurnTimeOut.h">
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="include/assets/Typing.h">
@@ -468,7 +541,19 @@
 		<Unit filename="include/assets/Universe.h">
 			<Option target="Static Release" />
 		</Unit>
+		<Unit filename="include/assets/WaitingForOpponent.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/Whoosh.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/WinnerRectFRG.h">
+			<Option target="Static Release" />
+		</Unit>
 		<Unit filename="include/assets/WrongPasswordPanel.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/YourTurn.h">
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="include/components/Button.h" />
@@ -477,6 +562,7 @@
 		<Unit filename="include/components/buttons/AllFieldsOKButton.h" />
 		<Unit filename="include/components/buttons/AverageButton.h" />
 		<Unit filename="include/components/buttons/BeginnerButton.h" />
+		<Unit filename="include/components/buttons/ChickenedOutOKButton.h" />
 		<Unit filename="include/components/buttons/ClearButton.h" />
 		<Unit filename="include/components/buttons/ConnectionCancelButton.h" />
 		<Unit filename="include/components/buttons/CreditsButton.h" />
@@ -485,6 +571,12 @@
 		<Unit filename="include/components/buttons/DurationBButton.h" />
 		<Unit filename="include/components/buttons/DurationCButton.h" />
 		<Unit filename="include/components/buttons/ExpertButton.h" />
+		<Unit filename="include/components/buttons/GameOverAverageButton.h" />
+		<Unit filename="include/components/buttons/GameOverBeginnerButton.h" />
+		<Unit filename="include/components/buttons/GameOverDurationAButton.h" />
+		<Unit filename="include/components/buttons/GameOverDurationBButton.h" />
+		<Unit filename="include/components/buttons/GameOverDurationCButton.h" />
+		<Unit filename="include/components/buttons/GameOverExpertButton.h" />
 		<Unit filename="include/components/buttons/GridButton.h" />
 		<Unit filename="include/components/buttons/HostButton.h" />
 		<Unit filename="include/components/buttons/JoinButton.h" />
@@ -493,13 +585,18 @@
 		<Unit filename="include/components/buttons/LobbyExpertButton.h" />
 		<Unit filename="include/components/buttons/LobbyReturnButton.h" />
 		<Unit filename="include/components/buttons/MainMenuButton.h" />
+		<Unit filename="include/components/buttons/OnlineQuitButton.h" />
 		<Unit filename="include/components/buttons/PlayOfflineButton.h" />
 		<Unit filename="include/components/buttons/PlayOfflineReturnButton.h" />
 		<Unit filename="include/components/buttons/PlayOnlineButton.h" />
 		<Unit filename="include/components/buttons/QuitButton.h" />
 		<Unit filename="include/components/buttons/RestartButton.h" />
+		<Unit filename="include/components/buttons/RetryButton.h" />
+		<Unit filename="include/components/buttons/ReturnToResultsButton.h" />
 		<Unit filename="include/components/buttons/StartButton.h" />
+		<Unit filename="include/components/panels/GameOverPanel.h" />
 		<Unit filename="include/io/MusicStream.h" />
+		<Unit filename="include/io/Network.h" />
 		<Unit filename="include/io/ResourceLoader.h" />
 		<Unit filename="include/io/ResourceLoader.hpp" />
 		<Unit filename="include/io/SimpleINIParser.h" />
@@ -517,10 +614,12 @@
 		</Unit>
 		<Unit filename="include/tools/AnimationPlayer.h" />
 		<Unit filename="include/tools/EncryptionKey.h" />
+		<Unit filename="include/tools/MouseCursor.h" />
 		<Unit filename="include/tools/Vector2Hash.h" />
 		<Unit filename="res/resource.rc">
 			<Option compilerVar="WINDRES" />
 		</Unit>
+		<Unit filename="src/Emoji.cpp" />
 		<Unit filename="src/GlobalConfigurations.cpp" />
 		<Unit filename="src/Input.cpp" />
 		<Unit filename="src/Main.cpp" />
@@ -547,6 +646,9 @@
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="src/assets/AverageButtonNHovered.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/BandageFace.cpp">
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="src/assets/BeginnerButtonDown.cpp">
@@ -581,6 +683,12 @@
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="src/assets/CancelButtonNHovered.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/Chicken.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/ChickenedOutPanel.cpp">
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="src/assets/Clapping.cpp">
@@ -646,6 +754,9 @@
 		<Unit filename="src/assets/DurationCButtonNHovered.cpp">
 			<Option target="Static Release" />
 		</Unit>
+		<Unit filename="src/assets/EarnedScore.cpp">
+			<Option target="Static Release" />
+		</Unit>
 		<Unit filename="src/assets/EmptyCell.cpp">
 			<Option target="Static Release" />
 		</Unit>
@@ -664,6 +775,9 @@
 		<Unit filename="src/assets/FlagSet.cpp">
 			<Option target="Static Release" />
 		</Unit>
+		<Unit filename="src/assets/GameOverPanelBG.cpp">
+			<Option target="Static Release" />
+		</Unit>
 		<Unit filename="src/assets/GamePanel.cpp">
 			<Option target="Static Release" />
 		</Unit>
@@ -676,6 +790,9 @@
 		<Unit filename="src/assets/GridButtonUp.cpp">
 			<Option target="Static Release" />
 		</Unit>
+		<Unit filename="src/assets/HandIcon.cpp">
+			<Option target="Static Release" />
+		</Unit>
 		<Unit filename="src/assets/HostButtonDown.cpp">
 			<Option target="Static Release" />
 		</Unit>
@@ -683,6 +800,9 @@
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="src/assets/HostButtonNHovered.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/HushedFace.cpp">
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="src/assets/INET.cpp">
@@ -775,6 +895,27 @@
 		<Unit filename="src/assets/NotABomb.cpp">
 			<Option target="Static Release" />
 		</Unit>
+		<Unit filename="src/assets/NotABombP1.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/NotABombP2.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/OnlineGameFinished.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/OnlineGameMatchPanel.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/OnlineQuitButtonDown.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/OnlineQuitButtonHovered.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/OnlineQuitButtonNHovered.cpp">
+			<Option target="Static Release" />
+		</Unit>
 		<Unit filename="src/assets/Oooh.cpp">
 			<Option target="Static Release" />
 		</Unit>
@@ -835,6 +976,15 @@
 		<Unit filename="src/assets/RestartButtonNHovered.cpp">
 			<Option target="Static Release" />
 		</Unit>
+		<Unit filename="src/assets/RetryButtonDown.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/RetryButtonHovered.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/RetryButtonNHovered.cpp">
+			<Option target="Static Release" />
+		</Unit>
 		<Unit filename="src/assets/ReturnDown.cpp">
 			<Option target="Static Release" />
 		</Unit>
@@ -842,6 +992,15 @@
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="src/assets/ReturnNHovered.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/ReturnToResultsButtonDown.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/ReturnToResultsButtonHovered.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/ReturnToResultsButtonNHovered.cpp">
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="src/assets/SelectDifficultyPanel.cpp">
@@ -877,6 +1036,9 @@
 		<Unit filename="src/assets/SmallExpertButtonNHovered.cpp">
 			<Option target="Static Release" />
 		</Unit>
+		<Unit filename="src/assets/SmilingFace.cpp">
+			<Option target="Static Release" />
+		</Unit>
 		<Unit filename="src/assets/SplashScreenSoundtrack.cpp">
 			<Option target="Static Release" />
 		</Unit>
@@ -889,7 +1051,13 @@
 		<Unit filename="src/assets/StartButtonNHovered.cpp">
 			<Option target="Static Release" />
 		</Unit>
+		<Unit filename="src/assets/SunglassesFace.cpp">
+			<Option target="Static Release" />
+		</Unit>
 		<Unit filename="src/assets/Title.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/TurnTimeOut.cpp">
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="src/assets/Typing.cpp">
@@ -898,7 +1066,19 @@
 		<Unit filename="src/assets/Universe.cpp">
 			<Option target="Static Release" />
 		</Unit>
+		<Unit filename="src/assets/WaitingForOpponent.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/Whoosh.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/WinnerRectFRG.cpp">
+			<Option target="Static Release" />
+		</Unit>
 		<Unit filename="src/assets/WrongPasswordPanel.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/YourTurn.cpp">
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="src/components/Button.cpp" />
@@ -907,6 +1087,7 @@
 		<Unit filename="src/components/buttons/AllFieldsOKButton.cpp" />
 		<Unit filename="src/components/buttons/AverageButton.cpp" />
 		<Unit filename="src/components/buttons/BeginnerButton.cpp" />
+		<Unit filename="src/components/buttons/ChickenedOutOKButton.cpp" />
 		<Unit filename="src/components/buttons/ClearButton.cpp" />
 		<Unit filename="src/components/buttons/ConnectionCancelButton.cpp" />
 		<Unit filename="src/components/buttons/CreditsButton.cpp" />
@@ -915,6 +1096,12 @@
 		<Unit filename="src/components/buttons/DurationBButton.cpp" />
 		<Unit filename="src/components/buttons/DurationCButton.cpp" />
 		<Unit filename="src/components/buttons/ExpertButton.cpp" />
+		<Unit filename="src/components/buttons/GameOverAverageButton.cpp" />
+		<Unit filename="src/components/buttons/GameOverBeginnerButton.cpp" />
+		<Unit filename="src/components/buttons/GameOverDurationAButton.cpp" />
+		<Unit filename="src/components/buttons/GameOverDurationBButton.cpp" />
+		<Unit filename="src/components/buttons/GameOverDurationCButton.cpp" />
+		<Unit filename="src/components/buttons/GameOverExpertButton.cpp" />
 		<Unit filename="src/components/buttons/GridButton.cpp" />
 		<Unit filename="src/components/buttons/HostButton.cpp" />
 		<Unit filename="src/components/buttons/JoinButton.cpp" />
@@ -923,13 +1110,18 @@
 		<Unit filename="src/components/buttons/LobbyExpertButton.cpp" />
 		<Unit filename="src/components/buttons/LobbyReturnButton.cpp" />
 		<Unit filename="src/components/buttons/MainMenuButton.cpp" />
+		<Unit filename="src/components/buttons/OnlineQuitButton.cpp" />
 		<Unit filename="src/components/buttons/PlayOfflineButton.cpp" />
 		<Unit filename="src/components/buttons/PlayOfflineReturnButton.cpp" />
 		<Unit filename="src/components/buttons/PlayOnlineButton.cpp" />
 		<Unit filename="src/components/buttons/QuitButton.cpp" />
 		<Unit filename="src/components/buttons/RestartButton.cpp" />
+		<Unit filename="src/components/buttons/RetryButton.cpp" />
+		<Unit filename="src/components/buttons/ReturnToResultsButton.cpp" />
 		<Unit filename="src/components/buttons/StartButton.cpp" />
+		<Unit filename="src/components/panels/GameOverPanel.cpp" />
 		<Unit filename="src/io/MusicStream.cpp" />
+		<Unit filename="src/io/Network.cpp" />
 		<Unit filename="src/io/ResourceLoader.cpp" />
 		<Unit filename="src/io/SimpleINIParser.cpp" />
 		<Unit filename="src/scene/Scene.cpp" />
@@ -940,6 +1132,7 @@
 		<Unit filename="src/scene/scenes/SplashScreen.cpp" />
 		<Unit filename="src/scene/scenes/TestZone.cpp" />
 		<Unit filename="src/tools/AnimationPlayer.cpp" />
+		<Unit filename="src/tools/MouseCursor.cpp" />
 		<Extensions>
 			<lib_finder disable_auto="1" />
 		</Extensions>

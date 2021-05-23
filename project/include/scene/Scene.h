@@ -30,19 +30,17 @@
 
 #include <SFML/Graphics/Drawable.hpp>
 
+#include "GameLogic.h"
+
 namespace Minesweeper {
 
     class SceneManager;
 
-    class Scene
+    class Scene : public DrawableGameLogic
     {
     public:
         Scene();
         virtual ~Scene() noexcept;
-
-        virtual void process_inputs()    = 0;
-        virtual void update(float delta) = 0;
-        virtual void draw()              = 0;
 
     protected:
         using DrawableLayer = std::pair<size_t, std::pair<std::reference_wrapper<const sf::Drawable>, sf::RenderStates>>;

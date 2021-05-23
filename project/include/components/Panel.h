@@ -30,27 +30,31 @@
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 
+#include "GameLogic.h"
 #include "components/Button.h"
 
 namespace Minesweeper {
 
-    class Panel
+    class Panel : public DrawableGameLogic
     {
     public:
         Panel();
         Panel(const sf::Vector2f& position, const sf::Vector2f& scale, const std::shared_ptr<sf::Texture>& background_texture_, std::vector<std::shared_ptr<Button>>&& buttons_, bool is_active_ = false);
 
-        void process_inputs();
-        void update(float delta);
-        void draw();
+        void process_inputs()    override;
+        void update(float delta) override;
+        void draw()              override;
 
         void move_panel(const sf::Vector2f& offset);
 
-        void set_active(bool b) noexcept { is_active = b; }
+        virtual void set_active(bool b) noexcept { is_active = b; }
 
         bool activated() const noexcept { return is_active; }
 
-    private:
+        std::vector<std::shared_ptr<Button>>& get_buttons() noexcept             { return buttons; };
+        const std::vector<std::shared_ptr<Button>>& get_buttons() const noexcept { return buttons; };
+
+    protected:
         bool is_active;
 
         std::shared_ptr<sf::Texture> background_texture;

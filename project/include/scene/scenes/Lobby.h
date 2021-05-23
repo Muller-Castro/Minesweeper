@@ -39,6 +39,7 @@
 #include <SFML/Network/TcpListener.hpp>
 
 #include "scene/Scene.h"
+#include "io/Network.h"
 #include "components/buttons/LobbyReturnButton.h"
 #include "components/TextEdit.h"
 #include "components/Button.h"
@@ -47,7 +48,7 @@
 
 namespace Minesweeper {
 
-    class Lobby final : public Scene
+    class Lobby final : public Scene, protected Network
     {
     public:
         Lobby();
@@ -92,7 +93,6 @@ namespace Minesweeper {
         };
 
         static constexpr float JOIN_DELAY = 2.f;
-        static constexpr float PING_DELAY = 1.f;
 
         float arrow_speed;
 
@@ -102,11 +102,8 @@ namespace Minesweeper {
 
         sf::Clock in_time;
         sf::Clock join_delay_timer;
-        sf::Clock ping_delay_timer;
 
         sf::VertexArray arrow;
-
-        sf::Socket::Status connection_status;
 
 #ifdef __S_RELEASE__
         std::pair<std::string, std::string> text_edit_font_data;
@@ -142,31 +139,18 @@ namespace Minesweeper {
         std::shared_ptr<sf::Shader> background_shader;
 
         sf::Sound sound;
+        sf::Sound btns_sound;
 
         std::shared_ptr<sf::SoundBuffer> client_arrived_s_buffer;
+        std::shared_ptr<sf::SoundBuffer> mm_btn_pressed_sfx;
 
         std::shared_ptr<MusicStream> soundtrack;
 
         std::unique_ptr<sf::TcpListener> listener;
 
-        void receive_packages();
-        void send(char label, const std::string& data);
+        void receive_packages() override;
 
-        template<char c>
-        std::string retrieve_data(size_t idx, const std::string& data)
-        {
-            std::string result;
-
-            for(std::string::const_iterator cit = data.cbegin() + idx + 1; cit != data.cend(); ++cit) {
-
-                if(*cit == c) break;
-
-                result += *cit;
-
-            }
-
-            return result;
-        }
+        void play_sound(const std::shared_ptr<sf::SoundBuffer>& sound_buffer, float volume = 100.f);
 
         bool evaluate_text_edits();
         bool evaluate_port();
@@ -177,21 +161,17 @@ namespace Minesweeper {
         void change_duration(Durations d, const std::string& duration);
         void receive_password(const std::string& password_str);
         void receive_password_response(const std::string& response_str);
-        void receive_ping(const std::string& ping_str) const;
-        void receive_max_ping(const std::string& max_ping_str);
-        void send_ping();
-        void send_max_ping();
 
         void update_connecting();
         void update_waiting();
         void update_you(float delta);
-        void update_ping();
         void draw_connecting();
         void draw_waiting();
         void draw_you();
         void draw_players_info();
         void draw_player_info_text(const std::pair<std::string, sf::Vector2f>& name, const std::pair<std::string, sf::Vector2f>& ip, const std::pair<std::string, sf::Vector2f>& ping, const std::pair<std::string, sf::Vector2f>& max_ping);
         void draw_inactivation_rects();
+        void draw_panel();
     };
 
 }

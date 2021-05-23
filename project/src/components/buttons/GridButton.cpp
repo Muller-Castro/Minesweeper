@@ -29,6 +29,10 @@
 
 #include <SFML/Graphics/RenderWindow.hpp>
 
+#ifndef __S_RELEASE__
+#include "GlobalConfigurations.h"
+#endif // __S_RELEASE__
+
 #include "tools/Vector2Hash.h"
 #include "scene/SceneManager.h"
 #include "scene/scenes/Game.h"
@@ -36,10 +40,11 @@
 
 using namespace Minesweeper;
 
-GridButton::GridButton(Game& game, Types type_, bool disabled_, bool flagged_, const sf::Vector2i& cell_position_, Enabled enabled_, const sf::Vector2f& position_, const sf::Vector2f& scale_, const std::shared_ptr<sf::Texture>& hovered, const std::shared_ptr<sf::Texture>& non_hovered, const std::shared_ptr<sf::Texture>& down, const std::shared_ptr<sf::Texture>& icon, const std::shared_ptr<sf::Texture>& p1_flag, const std::shared_ptr<sf::Texture>& p2_flag, const std::shared_ptr<sf::Texture>& not_a_bomb_texture_, const std::shared_ptr<sf::SoundBuffer>& flag_sound_, const std::shared_ptr<sf::SoundBuffer>& hovered_sfx, const std::shared_ptr<sf::SoundBuffer>& pressed_sfx) :
+GridButton::GridButton(Game& game, Types type_, bool disabled_, bool flagged_, bool is_blue_flag_, const sf::Vector2i& cell_position_, Enabled enabled_, const sf::Vector2f& position_, const sf::Vector2f& scale_, const std::shared_ptr<sf::Texture>& hovered, const std::shared_ptr<sf::Texture>& non_hovered, const std::shared_ptr<sf::Texture>& down, const std::shared_ptr<sf::Texture>& icon, const std::shared_ptr<sf::Texture>& p1_flag, const std::shared_ptr<sf::Texture>& p2_flag, const std::shared_ptr<sf::Texture>& not_a_bomb_texture_, const std::shared_ptr<sf::SoundBuffer>& flag_sound_, const std::shared_ptr<sf::SoundBuffer>& hovered_sfx, const std::shared_ptr<sf::SoundBuffer>& pressed_sfx) :
     Button(enabled_, position_, scale_, hovered, non_hovered, down, hovered_sfx, pressed_sfx),
     disabled(disabled_),
     flagged(flagged_),
+    is_blue_flag(is_blue_flag_),
     type(),
     game_ref(game),
     icon_texture(),
@@ -150,18 +155,18 @@ void GridButton::draw(sf::RenderTarget& target, sf::RenderStates states) const
 
     if(flagged) {
 
-        target.draw(p1_flag_sprite, states);
+        target.draw(is_blue_flag ? p1_flag_sprite : p2_flag_sprite, states);
 
     }
-#ifndef __DEBUG__
+#ifdef __S_RELEASE__
     else if(disabled) {
-#endif // __DEBUG__
+#else
+    else if(disabled || GlobalConfigurations::show_grid_button_icons) {
+#endif // __S_RELEASE__
 
         target.draw(icon_sprite, states);
 
-#ifndef __DEBUG__
     }
-#endif // __DEBUG__
 }
 
 void GridButton::on_button_up()
@@ -171,12 +176,20 @@ void GridButton::on_button_up()
 
 void GridButton::on_button_down()
 {
-    //
+    if(game_ref.get().emoji) game_ref.get().emoji->set_face(Emoji::HUSHED);
 }
 
 void GridButton::on_button_pressed()
 {
     if(game_ref.get().is_first_click) {
+
+        if(game_ref.get().conn_info.is_online) {
+
+            game_ref.get().last_button_pressed = cell_position;
+
+            game_ref.get().is_your_turn = false;
+
+        }
 
         sprite.setColor(pressed_color);
         set_current_texture(DOWN);
@@ -189,30 +202,71 @@ void GridButton::on_button_pressed()
 
     }else {
 
-        if(type == Types::BOMB) {
+        evaluate_button();
 
-            pressed_color = sf::Color::Red;
+        if(game_ref.get().conn_info.is_online) {
 
-            for(size_t y = 0; y < game_ref.get().grid.size(); ++y) {
+            game_ref.get().last_button_pressed = cell_position;
 
-                for(size_t x = 0; x < game_ref.get().grid[y].size(); ++x) {
+            game_ref.get().send(true, 'E', std::to_string(cell_position.y) + "_" + std::to_string(cell_position.x));
 
-                    GridButton* grid_button = game_ref.get().grid[y][x].get();
+            SceneManager::call_deferred([&]() {
 
-                    if(cell_position == grid_button->cell_position) continue;
+                game_ref.get().is_your_turn = false;
 
-                    if(grid_button->type == Types::BOMB && !grid_button->flagged) {
+            });
 
-                        grid_button->disable();
+        }
 
-                    }else if(grid_button->type != Types::BOMB && grid_button->flagged) {
+    }
+}
 
-                        grid_button->flagged = false;
-                        grid_button->disable();
+void GridButton::evaluate_button()
+{
+    if(type == Types::BOMB) {
+
+        pressed_color = game_ref.get().conn_info.is_online ? sf::Color::Yellow : sf::Color::Red;
+
+        for(size_t y = 0; y < game_ref.get().grid.size(); ++y) {
+
+            for(size_t x = 0; x < game_ref.get().grid[y].size(); ++x) {
+
+                GridButton* grid_button = game_ref.get().grid[y][x].get();
+
+                if(cell_position == grid_button->cell_position) continue;
+
+                if(grid_button->type == Types::BOMB && !grid_button->flagged) {
+
+                    grid_button->disable();
+
+                }else if(grid_button->type != Types::BOMB && grid_button->flagged) {
+
+                    grid_button->flagged = false;
+                    grid_button->disable();
+
+                    const std::shared_ptr<sf::Texture>* missed_flag_tex = nullptr;
+
+                    if(game_ref.get().conn_info.is_online) {
+
+                        missed_flag_tex = grid_button->is_blue_flag ? &game_ref.get().cached_grid_button_textures["N_A_BOMB_P1"] : &game_ref.get().cached_grid_button_textures["N_A_BOMB_P2"];
+
+                    }else {
+
+                        missed_flag_tex = &not_a_bomb_texture;
+
+                    }
+
+                    grid_button->icon_sprite.setTexture(*(*missed_flag_tex));
+                    grid_button->icon_sprite.setOrigin(8.f, 8.f);
+
+                    if(game_ref.get().conn_info.is_online) {
+
+                        grid_button->add_missed_flag_animation();
+                        grid_button->animations.play("MISSED_FLAG");
+
+                    }else {
 
                         // Recycling the "IGNITED_BOMB" animation
-                        grid_button->icon_sprite.setTexture(*not_a_bomb_texture);
-                        grid_button->icon_sprite.setOrigin(8.f, 8.f);
                         grid_button->add_bomb_animation();
                         grid_button->animations.play("IGNITED_BOMB");
                         // Recycling the "IGNITED_BOMB" animation
@@ -223,20 +277,70 @@ void GridButton::on_button_pressed()
 
             }
 
-            game_ref.get().sound.stop();
-            game_ref.get().sound.setBuffer(*game_ref.get().oooh_sound);
-            game_ref.get().sound.setVolume(100.f);
-            game_ref.get().sound.play();
+        }
 
-            game_ref.get().finished = true;
+        if(!game_ref.get().conn_info.is_online) game_ref.get().play_sound(game_ref.get().oooh_sound);
+
+        if(game_ref.get().emoji) game_ref.get().emoji->set_face(Emoji::BANDAGE);
+
+        game_ref.get().finished = true;
+
+        game_ref.get().flash_timer.restart();
+
+        if(game_ref.get().conn_info.is_online) {
+
+            game_ref.get().tip_text.setPosition(sf::Vector2f(300.f, 0.f)); // y position deferred to the drawing step
+
+            std::string player;
+
+            if(game_ref.get().conn_info.is_host) {
+
+                if(game_ref.get().is_your_turn) {
+
+                    player = "P1";
+
+                    game_ref.get().score_parameters.first.sub_e_value();
+
+                    game_ref.get().send(true, 'J', "e");
+
+                }else {
+
+                    player = "P2";
+
+                }
+
+            }else {
+
+                if(game_ref.get().is_your_turn) {
+
+                    player = "P2";
+
+                    game_ref.get().score_parameters.second.sub_e_value();
+
+                    game_ref.get().send(true, 'J', "e");
+
+                }else {
+
+                    player = "P1";
+
+                }
+
+            }
+
+            game_ref.get().tip_text.setString(player + " stepped on the bomb!");
+
+            game_ref.get().score_parameters.first.calculate();
+            game_ref.get().score_parameters.second.calculate();
+
+            game_ref.get().panels["$G_OVER"]->set_active(true);
 
         }
 
-        disable();
-
-        if(type == Types::NEUTRAL) find_and_disable();
-
     }
+
+    disable();
+
+    if(type == Types::NEUTRAL) find_and_disable();
 }
 
 void GridButton::add_bomb_animation()
@@ -268,6 +372,28 @@ void GridButton::add_bomb_animation()
         }
 
     );
+}
+
+void GridButton::add_missed_flag_animation()
+{
+    animations.add_animations({
+
+        Animation("MISSED_FLAG", 0.25f, {
+
+            KeyFrame(0.f, [&]() {
+
+                icon_sprite.setTextureRect(sf::IntRect(0, 0, 16, 16));
+
+            }),
+            KeyFrame(0.125f, [&]() {
+
+                icon_sprite.setTextureRect(sf::IntRect(16, 0, 16, 16));
+
+            })
+
+        })
+
+    });
 }
 
 void GridButton::change_button_type(Types new_type, const std::shared_ptr<sf::Texture>& new_icon_texture)
@@ -310,31 +436,133 @@ void GridButton::check_flag_input()
 
     if(MinesweeperGame::window->hasFocus() && mouse_entered && Input::is_just_pressed<Input::Mouse>(sf::Mouse::Right) && !Input::is_pressed<Input::Mouse>(sf::Mouse::Left)) {
 
+        if(game_ref.get().conn_info.is_online) {
+
+            if(game_ref.get().conn_info.is_host) {
+
+                if(!is_blue_flag) return;
+
+            }else {
+
+                if(is_blue_flag) return;
+
+            }
+
+            game_ref.get().last_button_pressed = cell_position;
+
+            set_flag(!flagged, game_ref.get().conn_info.is_host);
+
+            if(flagged && game_ref.get().is_your_turn) {
+
+                if(game_ref.get().conn_info.is_host) {
+
+                    if(type == GridButton::Types::BOMB) {
+
+                        game_ref.get().score_parameters.first.add_f_b_value();
+
+                        game_ref.get().send(true, 'J', "fb");
+
+                    }else {
+
+                        game_ref.get().score_parameters.first.sub_m_f_value();
+
+                        game_ref.get().send(true, 'J', "mf");
+
+                    }
+
+                }else {
+
+                    if(type == GridButton::Types::BOMB) {
+
+                        game_ref.get().score_parameters.second.add_f_b_value();
+
+                        game_ref.get().send(true, 'J', "fb");
+
+                    }else {
+
+                        game_ref.get().score_parameters.second.sub_m_f_value();
+
+                        game_ref.get().send(true, 'J', "mf");
+
+                    }
+
+                }
+
+
+            }
+
+            game_ref.get().is_your_turn = false;
+
+            game_ref.get().send(true, 'C', std::to_string(cell_position.y) + "_" + std::to_string(cell_position.x));
+
+        }else {
+
+            set_flag(!flagged, is_blue_flag);
+
+        }
+
         Button::sound.setBuffer(*flag_sound);
         Button::sound.setVolume(20.f);
         Button::sound.stop();
         Button::sound.play();
 
-        set_flag(!flagged);
-
     }
 }
 
-void GridButton::set_flag(bool b)
+void GridButton::set_flag(bool b, bool is_blue_flag_)
 {
-    flagged = b;
+    flagged      = b;
+    is_blue_flag = is_blue_flag_;
 
     animations.stop();
 
     if(flagged) {
 
-        if(game_ref.get().flag_counter > 0) --game_ref.get().flag_counter;
+        if(game_ref.get().flag_counter > 0) {
+
+            if(game_ref.get().conn_info.is_online) {
+
+                if(
+
+                   ( game_ref.get().conn_info.is_host &&  is_blue_flag) ||
+                   (!game_ref.get().conn_info.is_host && !is_blue_flag)
+
+                ) {
+
+                    --game_ref.get().flag_counter;
+
+                }
+
+            }else {
+
+                --game_ref.get().flag_counter;
+
+            }
+
+        }
 
         animations.play("WAVING_FLAG");
 
     }else {
 
-        ++game_ref.get().flag_counter;
+        if(game_ref.get().conn_info.is_online) {
+
+            if(
+
+               ( game_ref.get().conn_info.is_host &&  is_blue_flag) ||
+               (!game_ref.get().conn_info.is_host && !is_blue_flag)
+
+            ) {
+
+                ++game_ref.get().flag_counter;
+
+            }
+
+        }else {
+
+            ++game_ref.get().flag_counter;
+
+        }
 
     }
 }
