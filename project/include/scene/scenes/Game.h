@@ -66,10 +66,10 @@ namespace Minesweeper {
 
     struct ScoreParameters
     {
-        static constexpr short F_B_VALUE = 20;
-        static constexpr short L_S_VALUE = 50;
-        static constexpr short M_F_VALUE = 20;
-        static constexpr short E_VALUE   = 50;
+        static constexpr short F_B_VALUE = 10;
+        static constexpr short L_S_VALUE = 20;
+        static constexpr short M_F_VALUE = 10;
+        static constexpr short E_VALUE   = 20;
 
         short flagged_bombs;
         short last_square;
