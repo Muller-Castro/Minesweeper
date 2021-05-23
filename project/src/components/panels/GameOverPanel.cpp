@@ -735,6 +735,8 @@ void GameOverPanel::set_active(bool b) noexcept
 
     if(!is_active) {
 
+        MouseCursor::load(sf::Cursor::Arrow);
+
         should_block_inputs    = false;
 
         should_allow_grid_view = false;
