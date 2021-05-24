@@ -1,3 +1,9 @@
+/*
+	BigBomb fragment shader by Muller Castro
+
+	MIT License
+*/
+
 uniform sampler2D texture;
 uniform int time;
 uniform bool is_stroke;

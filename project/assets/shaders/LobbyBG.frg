@@ -1,3 +1,9 @@
+/*
+	LobbyBG fragment shader by Muller Castro
+
+	MIT License
+*/
+
 uniform sampler2D in_texture;
 uniform vec2      in_resolution;
 uniform float     in_width;

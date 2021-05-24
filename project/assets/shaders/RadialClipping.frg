@@ -1,3 +1,9 @@
+/*
+	RadialClipping fragment shader by Muller Castro
+
+	MIT License
+*/
+
 uniform float in_radius;
 uniform float in_angle;
 

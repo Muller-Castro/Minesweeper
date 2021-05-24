@@ -1,3 +1,9 @@
+/*
+	CreditsPanel fragment shader by Muller Castro
+
+	MIT License
+*/
+
 uniform float in_time;
 
 void main()

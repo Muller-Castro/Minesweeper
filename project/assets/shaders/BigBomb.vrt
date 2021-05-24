@@ -1,3 +1,9 @@
+/*
+	BigBomb vertex shader by Muller Castro
+
+	MIT License
+*/
+
 uniform int time;
 
 void main()

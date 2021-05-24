@@ -1,3 +1,9 @@
+/*
+	RecordGrid fragment shader by Muller Castro
+
+	MIT License
+*/
+
 uniform sampler2D in_texture;
 
 uniform float in_time;
