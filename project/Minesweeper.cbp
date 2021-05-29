@@ -196,9 +196,6 @@
 		<Unit filename="include/assets/CreditsPanelFRG.h">
 			<Option target="Static Release" />
 		</Unit>
-		<Unit filename="include/assets/CursorSFX.h">
-			<Option target="Static Release" />
-		</Unit>
 		<Unit filename="include/assets/Digital7Mono.h">
 			<Option target="Static Release" />
 		</Unit>
@@ -719,9 +716,6 @@
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="src/assets/CreditsPanelFRG.cpp">
-			<Option target="Static Release" />
-		</Unit>
-		<Unit filename="src/assets/CursorSFX.cpp">
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="src/assets/Digital7Mono.cpp">
