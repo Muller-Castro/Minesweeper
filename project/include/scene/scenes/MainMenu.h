@@ -72,6 +72,7 @@ namespace Minesweeper {
         AnimationPlayer animations;
 
 #ifdef __S_RELEASE__
+        std::pair<std::string, std::string> revision_font_data;
         std::pair<std::string, std::string> credits_font_data;
         std::pair<std::string, std::string> record_font_data;
 #endif // __S_RELEASE__
@@ -83,6 +84,7 @@ namespace Minesweeper {
         std::shared_ptr<sf::Texture> record_grid_texture;
         std::shared_ptr<sf::Texture> bomb_texture;
 
+        std::shared_ptr<sf::Font> revision_font;
         std::shared_ptr<sf::Font> credits_font;
         std::shared_ptr<sf::Font> record_font;
 
@@ -99,6 +101,8 @@ namespace Minesweeper {
         std::shared_ptr<sf::Shader> record_grid_shader;
 
         sf::RectangleShape credits_panel_shape;
+
+        sf::Text revision_text;
 
         sf::Text record_texts; // this will draw more than one text
 

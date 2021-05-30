@@ -109,6 +109,9 @@ void GlobalConfigurations::update(float delta)
     std::ostringstream new_win_title;
 
     new_win_title << win_data["WINDOW"]["Title"]
+#ifdef __S_RELEASE__
+                  << " | Re:0x0001"
+#endif // __S_RELEASE__
                   << " | Esc: Quit"
                   //<< " | F3: Resize"
 #ifndef __S_RELEASE__

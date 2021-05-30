@@ -55,6 +55,7 @@
 #include "assets/CreditsPanelFRG.h"
 #include "assets/RecordGridFRG.h"
 #include "assets/MainMenuSoundtrack.h"
+#include "assets/Arial.h"
 #include "assets/INET.h"
 #include "assets/Digital7Mono.h"
 #include "assets/AverageButtonNHovered.h"
@@ -140,6 +141,7 @@ MainMenu::MainMenu() :
     ),
 
 #ifdef __S_RELEASE__
+    revision_font_data(get_raw_arial()),
     credits_font_data(get_raw_inet()),
     record_font_data(get_raw_digital7_mono()),
 #endif // __S_RELEASE__
@@ -149,6 +151,7 @@ MainMenu::MainMenu() :
     p2_flag_texture(),
     record_grid_texture(),
     bomb_texture(),
+    revision_font(),
     credits_font(),
     record_font(),
     soundtrack(),
@@ -161,6 +164,7 @@ MainMenu::MainMenu() :
     credits_panel_shader(),
     record_grid_shader(),
     credits_panel_shape(),
+    revision_text(),
     record_texts(),
     record_values(),
     credits_texts{
@@ -221,12 +225,23 @@ MainMenu::MainMenu() :
     credits_panel_shape.setSize(sf::Vector2f(800.f, 43.f));
 
 #ifndef __S_RELEASE__
-    credits_font = ResourceLoader::load<sf::Font>("assets/fonts/INET.ttf");
-    record_font  = ResourceLoader::load<sf::Font>("assets/fonts/Digital7Mono.ttf");
+    revision_font = ResourceLoader::load<sf::Font>("assets/fonts/Arial.ttf");
+    credits_font  = ResourceLoader::load<sf::Font>("assets/fonts/INET.ttf");
+    record_font   = ResourceLoader::load<sf::Font>("assets/fonts/Digital7Mono.ttf");
 #else
-    credits_font = ResourceLoader::load<sf::Font>(credits_font_data);
-    record_font  = ResourceLoader::load<sf::Font>(record_font_data);
+    revision_font = ResourceLoader::load<sf::Font>(revision_font_data);
+    credits_font  = ResourceLoader::load<sf::Font>(credits_font_data);
+    record_font   = ResourceLoader::load<sf::Font>(record_font_data);
 #endif // __S_RELEASE__
+
+    revision_text.setFont(*revision_font);
+    revision_text.setCharacterSize(14);
+    revision_text.setLetterSpacing(6.f);
+    revision_text.setString("Re:0x0001");
+    revision_text.setFillColor(sf::Color::White);
+    revision_text.setOutlineColor(sf::Color::Black);
+    revision_text.setOutlineThickness(2.f);
+    revision_text.setPosition(sf::Vector2f(15.f, 564.f));
 
     load_records();
 
@@ -530,6 +545,8 @@ void MainMenu::update(float delta)
 void MainMenu::draw()
 {
     MinesweeperGame::window->draw(background_sprite);
+
+    if(!show_credits) MinesweeperGame::window->draw(revision_text);
 
     if(show_credits) {
 
