@@ -246,7 +246,7 @@ MainMenu::MainMenu() :
     credits_texts["ROLES"].setPosition(35.f, 35.f);
     credits_texts["ROLES"].setString(
 
-        "Project Management, Programming and Idealization:\n\n\n"
+        "Project Management, Design and Programming:\n\n\n"
         "Art and soundtracks:"
 
     );
@@ -256,8 +256,8 @@ MainMenu::MainMenu() :
     credits_texts["NAMES"].setPosition(260.f, 30.f);
     credits_texts["NAMES"].setString(
 
-        "                                    Muller Castro\n\n\n"
-        "Muller Castro (shaders) and Matheus Aguilera"
+        "                              Muller Castro\n\n\n"
+        "Muller Castro and Matheus Aguilera"
     );
     credits_texts["NAMES"].setCharacterSize(26);
     credits_texts["NAMES"].setFillColor(sf::Color(255, 204, 0));
@@ -534,12 +534,24 @@ void MainMenu::draw()
     if(show_credits) {
 
         // Panels
+        sf::RectangleShape outline_rect(credits_panel_shape.getSize());
+
+        outline_rect.setFillColor(sf::Color(0, 0, 0, 0));
+        outline_rect.setOutlineColor(sf::Color::Black);
+        outline_rect.setOutlineThickness(2.f);
+
         credits_panel_shader->setUniform("in_time", in_time.getElapsedTime().asSeconds() + 5.f);
         credits_panel_shape.setPosition(0.f, 30.f);
+
+        outline_rect.setPosition(0.f, 30.f);
+        MinesweeperGame::window->draw(outline_rect);
         MinesweeperGame::window->draw(credits_panel_shape, credits_panel_shader.get());
 
         credits_panel_shader->setUniform("in_time", in_time.getElapsedTime().asSeconds());
         credits_panel_shape.setPosition(0.f, 105.f);
+
+        outline_rect.setPosition(0.f, 105.f);
+        MinesweeperGame::window->draw(outline_rect);
         MinesweeperGame::window->draw(credits_panel_shape, credits_panel_shader.get());
         // Panels
 
