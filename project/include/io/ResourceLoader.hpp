@@ -1,7 +1,7 @@
 /****************************************************************************************/
 /* ResourceLoader.hpp                                                                   */
 /****************************************************************************************/
-/* Copyright (c) 2020 Muller Castro.                                                    */
+/* Copyright (c) 2020-2021 Muller Castro.                                               */
 /*                                                                                      */
 /* Permission is hereby granted, free of charge, to any person obtaining                */
 /* a copy of this software and associated documentation files (the "Software"),         */
@@ -73,9 +73,9 @@ namespace Minesweeper {
     std::shared_ptr<ResourceType> ResourceLoader::load(const std::string& directory)
     {
 #ifdef __DEBUG__
-        const std::string fixed_directory = "bin/Debug/" + directory;
-#elif defined(__RELEASE__)
         const std::string fixed_directory = directory;
+#elif defined(__RELEASE__)
+        const std::string fixed_directory = "../../" + directory;
 #endif
 
         try {

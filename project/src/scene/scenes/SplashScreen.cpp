@@ -1,7 +1,7 @@
 /****************************************************************************************/
 /* SplashScreen.cpp                                                                     */
 /****************************************************************************************/
-/* Copyright (c) 2020 Muller Castro.                                                    */
+/* Copyright (c) 2020-2021 Muller Castro.                                               */
 /*                                                                                      */
 /* Permission is hereby granted, free of charge, to any person obtaining                */
 /* a copy of this software and associated documentation files (the "Software"),         */
@@ -113,7 +113,7 @@ SplashScreen::SplashScreen() :
     credits_text.setPosition(35.f, 450.f);
     credits_text.setFont(*credits_font);
 
-    credits_text.setString("             Created by Muller and Matheus, 2020.\n"
+    credits_text.setString("      Free and open source Minesweeper, 2020-2021.\n"
                            "Get it on: https://github.com/Muller-Castro/Minesweeper");
 
     credits_text.setCharacterSize(32);

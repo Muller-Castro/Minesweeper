@@ -196,9 +196,6 @@
 		<Unit filename="include/assets/CreditsPanelFRG.h">
 			<Option target="Static Release" />
 		</Unit>
-		<Unit filename="include/assets/CursorSFX.h">
-			<Option target="Static Release" />
-		</Unit>
 		<Unit filename="include/assets/Digital7Mono.h">
 			<Option target="Static Release" />
 		</Unit>
@@ -248,6 +245,9 @@
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="include/assets/FlagSet.h">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="include/assets/GameBGFRG.h">
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="include/assets/GameOverPanelBG.h">
@@ -721,9 +721,6 @@
 		<Unit filename="src/assets/CreditsPanelFRG.cpp">
 			<Option target="Static Release" />
 		</Unit>
-		<Unit filename="src/assets/CursorSFX.cpp">
-			<Option target="Static Release" />
-		</Unit>
 		<Unit filename="src/assets/Digital7Mono.cpp">
 			<Option target="Static Release" />
 		</Unit>
@@ -773,6 +770,9 @@
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="src/assets/FlagSet.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/GameBGFRG.cpp">
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="src/assets/GameOverPanelBG.cpp">

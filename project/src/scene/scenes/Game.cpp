@@ -1,7 +1,7 @@
 /****************************************************************************************/
 /* Game.cpp                                                                             */
 /****************************************************************************************/
-/* Copyright (c) 2020 Muller Castro.                                                    */
+/* Copyright (c) 2020-2021 Muller Castro.                                               */
 /*                                                                                      */
 /* Permission is hereby granted, free of charge, to any person obtaining                */
 /* a copy of this software and associated documentation files (the "Software"),         */
@@ -43,6 +43,7 @@
 #include "tools/Vector2Hash.h"
 #include "MinesweeperGame.h"
 #ifdef __S_RELEASE__
+#include "assets/GameBGFRG.h"
 #include "assets/MainMenuButtonHovered.h"
 #include "assets/MainMenuButtonPressed.h"
 #include "assets/ChickenedOutPanel.h"
@@ -128,6 +129,7 @@ Game::Game() :
     grid(),
     cached_grid_button_textures(),
     cached_grid_button_sounds(),
+    background_shader(),
     panel_texture(),
     counter_panel_texture(),
     online_match_panel_texture(),
@@ -158,6 +160,8 @@ Game::Game() :
     is_your_turn = conn_info.is_online ? conn_info.is_host : true;
 
 #ifndef __S_RELEASE__
+    background_shader     = ResourceLoader::load<sf::Shader>("assets/shaders/GameBG.frg");
+
     panel_texture         = ResourceLoader::load<sf::Texture>("assets/textures/GamePanel.png");
 
     counter_panel_texture = ResourceLoader::load<sf::Texture>("assets/textures/CounterPanel.png");
@@ -219,6 +223,10 @@ Game::Game() :
     cached_grid_button_sounds["BOMB_E"]      = ResourceLoader::load<sf::SoundBuffer>("assets/sounds/BombExplosion.wav");
     cached_grid_button_sounds["FLAG_S"]      = ResourceLoader::load<sf::SoundBuffer>("assets/sounds/FlagSet.wav");
 #else
+    background_shader     = ResourceLoader::load<sf::Shader>({"GameBGFRG", ""});
+
+    background_shader->loadFromMemory(get_raw_game_bg_frg().second, sf::Shader::Fragment);
+
     panel_texture         = ResourceLoader::load<sf::Texture>(get_raw_game_panel());
 
     counter_panel_texture = ResourceLoader::load<sf::Texture>(get_raw_counter_panel());
@@ -282,6 +290,7 @@ Game::Game() :
 #endif // __S_RELEASE__
 
     panel_sprite.setTexture(*panel_texture);
+    panel_sprite.setPosition(sf::Vector2f(15.f, 19.f));
     counter_panel_sprite.setTexture(*counter_panel_texture);
 
     if(conn_info.is_online) {
@@ -303,7 +312,9 @@ Game::Game() :
 
     counter_description_text.setFont(*counter_description_font);
     counter_description_text.setCharacterSize(29);
-    counter_description_text.setFillColor(sf::Color::Black);
+    counter_description_text.setFillColor(sf::Color(252, 234, 43));
+    counter_description_text.setOutlineColor(sf::Color::Black);
+    counter_description_text.setOutlineThickness(1.f);
 
     counter_text.setFont(*counter_font);
 //    counter_text.setOutlineColor(sf::Color::Black);
@@ -454,6 +465,8 @@ void Game::process_inputs()
 
 void Game::update(float delta)
 {
+    background_shader->setUniform("in_time", timer.getElapsedTime().asSeconds());
+
     if(conn_info.is_online) {
 
         update_ping();
@@ -682,6 +695,12 @@ void Game::update(float delta)
 
 void Game::draw()
 {
+    {
+        sf::RectangleShape background_shape(sf::Vector2f(800.f, 600.f));
+
+        MinesweeperGame::window->draw(background_shape, background_shader.get());
+    }
+
     MinesweeperGame::window->draw(panel_sprite);
 
     if(conn_info.is_online) MinesweeperGame::window->draw(online_match_panel_sprite);
@@ -708,15 +727,11 @@ void Game::draw()
 
     }
 
-    if(conn_info.is_online) {
+    if(conn_info.is_online && should_draw_tip_text) draw_tip_text();
 
-        if(should_draw_tip_text) draw_tip_text();
+    if(finished && (flash_timer.getElapsedTime().asSeconds() <= 1.f)) draw_flashing_rect();
 
-        if(finished && (flash_timer.getElapsedTime().asSeconds() <= 1.f)) draw_flashing_rect();
-
-        draw_panel();
-
-    }
+    if(conn_info.is_online) draw_panel();
 }
 
 void Game::receive_packages()
@@ -1002,6 +1017,7 @@ void Game::restart()
     should_draw_tip_text = true;
     flag_counter   = 0;
     grid.clear();
+    flash_timer.restart();
 
     if(conn_info.is_online) {
 
@@ -1030,8 +1046,6 @@ void Game::restart()
         }
 
         timer.restart();
-
-        flash_timer.restart();
 
         last_button_pressed = sf::Vector2i(-1, 0);
 
