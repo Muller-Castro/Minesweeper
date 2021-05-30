@@ -32,6 +32,7 @@
 #include <unordered_set>
 #include <unordered_map>
 
+#include <SFML/Graphics/Shader.hpp>
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
@@ -150,6 +151,8 @@ namespace Minesweeper {
 
         std::unordered_map<std::string, std::shared_ptr<sf::Texture>>     cached_grid_button_textures;
         std::unordered_map<std::string, std::shared_ptr<sf::SoundBuffer>> cached_grid_button_sounds;
+
+        std::shared_ptr<sf::Shader> background_shader;
 
         std::shared_ptr<sf::Texture> panel_texture;
         std::shared_ptr<sf::Texture> counter_panel_texture;
