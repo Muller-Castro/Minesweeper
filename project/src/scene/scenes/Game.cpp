@@ -708,15 +708,11 @@ void Game::draw()
 
     }
 
-    if(conn_info.is_online) {
+    if(conn_info.is_online && should_draw_tip_text) draw_tip_text();
 
-        if(should_draw_tip_text) draw_tip_text();
+    if(finished && (flash_timer.getElapsedTime().asSeconds() <= 1.f)) draw_flashing_rect();
 
-        if(finished && (flash_timer.getElapsedTime().asSeconds() <= 1.f)) draw_flashing_rect();
-
-        draw_panel();
-
-    }
+    if(conn_info.is_online) draw_panel();
 }
 
 void Game::receive_packages()
@@ -1002,6 +998,7 @@ void Game::restart()
     should_draw_tip_text = true;
     flag_counter   = 0;
     grid.clear();
+    flash_timer.restart();
 
     if(conn_info.is_online) {
 
@@ -1030,8 +1027,6 @@ void Game::restart()
         }
 
         timer.restart();
-
-        flash_timer.restart();
 
         last_button_pressed = sf::Vector2i(-1, 0);
 
