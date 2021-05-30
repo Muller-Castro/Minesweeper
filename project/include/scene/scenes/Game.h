@@ -173,6 +173,7 @@ namespace Minesweeper {
         std::shared_ptr<MusicStream> soundtrack;
 
         sf::Clock timer;
+        sf::Clock bg_shader_timer;
         sf::Clock flash_timer;
 
         sf::Vector2i last_button_pressed;

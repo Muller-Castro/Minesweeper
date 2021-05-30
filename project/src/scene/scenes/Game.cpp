@@ -145,6 +145,7 @@ Game::Game() :
     counter_font(),
     soundtrack(),
     timer(),
+    bg_shader_timer(),
     flash_timer(),
     last_button_pressed(-1, 0),
     panel_sprite(),
@@ -465,7 +466,7 @@ void Game::process_inputs()
 
 void Game::update(float delta)
 {
-    background_shader->setUniform("in_time", timer.getElapsedTime().asSeconds());
+    background_shader->setUniform("in_time", bg_shader_timer.getElapsedTime().asSeconds());
 
     if(conn_info.is_online) {
 
