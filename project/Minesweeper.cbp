@@ -247,6 +247,9 @@
 		<Unit filename="include/assets/FlagSet.h">
 			<Option target="Static Release" />
 		</Unit>
+		<Unit filename="include/assets/GameBGFRG.h">
+			<Option target="Static Release" />
+		</Unit>
 		<Unit filename="include/assets/GameOverPanelBG.h">
 			<Option target="Static Release" />
 		</Unit>
@@ -767,6 +770,9 @@
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="src/assets/FlagSet.cpp">
+			<Option target="Static Release" />
+		</Unit>
+		<Unit filename="src/assets/GameBGFRG.cpp">
 			<Option target="Static Release" />
 		</Unit>
 		<Unit filename="src/assets/GameOverPanelBG.cpp">
