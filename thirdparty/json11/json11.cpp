@@ -20,7 +20,7 @@
  */
 
 #include "json11.hpp"
-#include <cassert>
+#include <exception>
 #include <cmath>
 #include <cstdlib>
 #include <cstdio>
@@ -630,7 +630,7 @@ struct JsonParser final {
      * the input and return res. If not, flag an error.
      */
     Json expect(const string &expected, Json res) {
-        assert(i != 0);
+        if(i == 0) throw std::exception();
         i--;
         if (str.compare(i, expected.length(), expected) == 0) {
             i += expected.length();

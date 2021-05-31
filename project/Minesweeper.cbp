@@ -80,6 +80,7 @@
 			<Add option='-isystem &quot;..\thirdparty\SFML-2.5.1\include&quot;' />
 			<Add option='-isystem &quot;..\thirdparty\tweeny-3.1.1\include&quot;' />
 			<Add option='-isystem &quot;..\thirdparty\Encryptions&quot;' />
+			<Add option='-isystem &quot;..\thirdparty\json11&quot;' />
 			<Add directory="include" />
 		</Compiler>
 		<Linker>
@@ -92,7 +93,6 @@
 		<Unit filename="../thirdparty/Encryptions/Encryptions/SymAlg.cpp" />
 		<Unit filename="../thirdparty/Encryptions/common/includes.cpp" />
 		<Unit filename="../thirdparty/json11/json11.cpp" />
-		<Unit filename="../thirdparty/json11/json11.hpp" />
 		<Unit filename="include/Emoji.h" />
 		<Unit filename="include/GameLogic.h" />
 		<Unit filename="include/GlobalConfigurations.h" />
