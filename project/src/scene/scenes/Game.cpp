@@ -1366,12 +1366,12 @@ void Game::draw_flashing_rect()
 
     }else if(difficulty == "1") {
 
-        rect_pos  = sf::Vector2f(240.f, 135.f);
+        rect_pos  = sf::Vector2f(240.f, conn_info.is_online ? 135.f : 116.f);
         rect_size = sf::Vector2f(320.f, 460.f);
 
     }else if(difficulty == "2") {
 
-        rect_pos  = sf::Vector2f(20.f, 135.f);
+        rect_pos  = sf::Vector2f(20.f, conn_info.is_online ? 135.f : 116.f);
         rect_size = sf::Vector2f(760.f, 460.f);
 
     }
