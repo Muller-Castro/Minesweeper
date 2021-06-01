@@ -22,3 +22,8 @@
 - [tweeny](https://github.com/mobius3/tweeny)
 - [Encryptions](https://github.com/calccrypto/Encryptions)
 - [json11](https://github.com/dropbox/json11)
+
+## Notes
+- You need to generate an AES-128 key and set it in *"project/include/tools/EncryptionKey.h"* in order to encrypt the file that stores the player's record. [You can use this service to do that.](https://asecuritysite.com/encryption/keygen)
+- The **Debug** build target should run only through Code::Blocks, while the **Release** target should run directly by the executable inside of the *bin* folder. The **StaticRelease** can do both.
+- If you're having problems connecting with the other peer then you just need to forward the proper ports and make sure you're using the public IP address. Also try to allow TCP permissions on your firewall.
