@@ -1,5 +1,5 @@
 <p align="center">
-   <img src ="project/assets/textures/Title.png" />
+   <img src ="Logo.png" />
 </p>
 
 **Minesweeper** is a remake of the classic game of the same name for Microsoft Windows with an additional feature allowing for a turn-based **online** multi-player mode between two players
