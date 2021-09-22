@@ -2,7 +2,7 @@
    <img src ="Logo.png" />
 </p>
 
-**Minesweeper** is a remake of the classic game of the same name for Microsoft Windows with an additional feature allowing for a turn-based **online** multi-player mode between two players
+**Minesweeper** is a remake of the classic game of the same name for Microsoft Windows with an additional feature allowing for a turn-based **online** multi-player mode between two players (using the TCP protocol)
 
 ## Download
 [Minesweeper x86_64 executable zip file](https://github.com/Muller-Castro/Minesweeper/releases)
